@@ -1,8 +1,8 @@
 <script lang="ts">
+  import ChannelList from "channels/ChannelList.svelte";
   import { client } from "Client";
   import Loader from "Loader.svelte";
   import ServerList from "servers/ServerList.svelte";
-  import { onMount } from "svelte";
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen">
@@ -10,5 +10,6 @@
     <Loader />
   {:then}
     <ServerList />
+    <ChannelList />
   {/await}
 </div>

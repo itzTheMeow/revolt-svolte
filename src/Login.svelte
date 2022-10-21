@@ -34,7 +34,12 @@
   }
   if (!hasSession) {
     onMount(() => {
-      (window as any).hcaptcha.render(hcap);
+      const captest = setInterval(() => {
+        const hcaptcha = (window as any).hcaptcha;
+        if (!hcaptcha) return;
+        clearInterval(captest);
+        hcaptcha.render(hcap);
+      }, 50);
     });
 
     (window as any).hcapDone = (k: string) => (capkey = k);

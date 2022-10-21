@@ -4,6 +4,17 @@
 
 * {
   scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+*::-webkit-scrollbar {
+  width: var(--scroll-width, 8px);
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+}
+*::-webkit-scrollbar-button {
+  display: none;
 }
 
 .overflow-y-auto {
