@@ -33,10 +33,8 @@
       >
     </div>
   {/if}
-  {#if $SelectedServer?._id == server._id}
-    <div
-      class="absolute top-0 left-0 w-12 h-12 rounded-full"
-      style="border: 2px solid {$Theme['accent']};"
-    />
-  {/if}
+  <div
+    class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20"
+    style={$SelectedServer?._id == server._id ? `border: 2px solid ${$Theme["accent"]};` : ""}
+  />
 </div>
