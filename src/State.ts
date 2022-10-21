@@ -27,3 +27,4 @@ export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
 
 export const pendBottom = writable<boolean>(false);
+export const selectInput = writable<HTMLInputElement | null>(null);

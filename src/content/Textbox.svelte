@@ -8,6 +8,7 @@
     pendBottom,
     SelectedChannel,
     SelectedServer,
+    selectInput,
     uploadedFiles,
   } from "State";
   import { ArrowBigRightLine, Hash, Paperclip, Volume } from "tabler-icons-svelte";
@@ -19,7 +20,6 @@
   let inputtedMessage: string,
     MessageInput: HTMLInputElement,
     FileInput: HTMLInputElement,
-    selectInput: HTMLInputElement | null,
     SendButton: HTMLDivElement;
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
@@ -50,9 +50,9 @@
 
   async function sendMessage() {
     if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length)) {
-      if (selectInput) {
-        selectInput.focus();
-        selectInput = null;
+      if ($selectInput) {
+        $selectInput.focus();
+        selectInput.set(null);
       }
       return;
     }
@@ -183,7 +183,7 @@
     bind:this={SendButton}
     on:touchstart={() => {
       //@ts-ignore
-      if (document.activeElement?.tagName == "INPUT") selectInput = document.activeElement;
+      if (document.activeElement?.tagName == "INPUT") selectInput.set(document.activeElement);
     }}
     on:click={() => sendMessage()}
   >
