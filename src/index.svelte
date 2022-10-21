@@ -1,16 +1,14 @@
 <script lang="ts">
+  import { client } from "Client";
+  import Loader from "Loader.svelte";
+  import ServerList from "servers/ServerList.svelte";
   import { onMount } from "svelte";
-
-  let time = new Date().toLocaleTimeString();
-
-  onMount(() => {
-    setInterval(() => {
-      time = new Date().toLocaleTimeString();
-    }, 1000);
-  });
 </script>
 
-<div class="text-primary">
-  hello from svelte.<br />
-  Current Time: {time}
+<div class="flex items-center justify-center h-screen w-screen">
+  {#await new Promise((r) => client.once("ready", () => r(void 0)))}
+    <Loader />
+  {:then}
+    <ServerList />
+  {/await}
 </div>

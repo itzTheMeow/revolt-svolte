@@ -2,12 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Svelte</title>
+    <meta name="apple-mobile-web-app-title" content="Svolte" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Svolte</title>
     <link rel="stylesheet" href="/index.css" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <script src="https://js.hcaptcha.com/1/api.js?render=explicit" async defer></script>
   </head>
 
-  <body>
-    <script type="module" src="/index.js"></script>
+  <body style="overflow: hidden">
+    <script type="module" src="/index.js" defer></script>
   </body>
 </html>

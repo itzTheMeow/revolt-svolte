@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  scrollbar-width: thin;
+}
+
+.overflow-y-auto {
+  overflow-x: hidden;
+}
