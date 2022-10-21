@@ -9,6 +9,7 @@ export const SelectedChannel = writable<Channel | null>(null);
 
 let messagecachelocal: { [key: string]: Message[] } = {};
 export const MessageCache = writable(messagecachelocal);
+MessageCache.subscribe((d) => (messagecachelocal = d));
 export function pushMessages(channel: Channel, msgs: Message[]) {
   messagecachelocal[channel._id] = (messagecachelocal[channel._id] || []).filter(
     (c) => !msgs.find((m) => m._id == c._id)
