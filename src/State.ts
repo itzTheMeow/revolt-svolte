@@ -1,3 +1,4 @@
+import type { AutocompleteResult } from "revolt-toolset/dist/autocomplete";
 import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
 
@@ -17,5 +18,12 @@ export function pushMessages(channel: Channel, msgs: Message[]) {
   messagecachelocal[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
   MessageCache.set(messagecachelocal);
 }
+
+export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
+  []
+);
+
+export const MessageInputSelected = writable<boolean>(false),
+  autocomplete = writable<AutocompleteResult | null>(null);
 
 export const pendBottom = writable<boolean>(false);
