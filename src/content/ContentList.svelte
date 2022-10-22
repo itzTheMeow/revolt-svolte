@@ -4,6 +4,7 @@
     MobileLayout,
     PaneLeft,
     PaneState,
+    PaneStates,
     SelectedChannel,
     updatePaneState,
   } from "State";
@@ -20,7 +21,9 @@
 <div
   class="h-full flex flex-col {$MobileLayout ? 'absolute top-0' : 'flex-1 min-w-0'}"
   style="background-color:{$Theme['primary-background']};{$MobileLayout
-    ? `left:${$PaneLeft}px;width:${$AppWidth}px;`
+    ? `left:${$PaneLeft}px;width:${$AppWidth}px;${
+        $PaneState !== PaneStates.MIDDLE ? 'pointer-events:none;' : ''
+      }`
     : ''}"
   id="Pane"
 >
