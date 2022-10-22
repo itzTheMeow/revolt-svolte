@@ -7,9 +7,13 @@
 
   export let message: Message;
 
-  const shouldSeparate =
-    $MessageCache[$SelectedChannel!._id][$MessageCache[$SelectedChannel!._id].indexOf(message) - 1]
-      ?.author_id !== message.author_id;
+  let shouldSeparate = true;
+  $: {
+    shouldSeparate =
+      $MessageCache[$SelectedChannel!._id][
+        $MessageCache[$SelectedChannel!._id].indexOf(message) - 1
+      ]?.author_id !== message.author_id;
+  }
 </script>
 
 {#if $SelectedChannel}
