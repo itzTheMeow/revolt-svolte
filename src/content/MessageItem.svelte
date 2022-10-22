@@ -21,7 +21,7 @@
 </script>
 
 {#if $SelectedChannel}
-  <div class={shouldSeparate ? "mt-4" : ""}>
+  <div class={shouldSeparate ? "mt-3" : ""}>
     <div class="flex gap-2">
       {#if shouldSeparate}
         <img
