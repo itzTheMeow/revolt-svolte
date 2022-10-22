@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { MessageCache, pendBottom, pushMessages, SelectedChannel } from "State";
+  import {
+    MessageCache,
+    PaneState,
+    PaneStates,
+    pendBottom,
+    pushMessages,
+    SelectedChannel,
+  } from "State";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import { Hash, Volume } from "tabler-icons-svelte";
@@ -13,12 +20,13 @@
   on:click={async () => {
     $SelectedChannel = channel;
     pendBottom.set(true);
+    PaneState.set(PaneStates.MIDDLE);
     if (!$MessageCache[$SelectedChannel._id]?.length) {
       const m = await channel.fetchMessages({
         limit: 100,
       });
-      pendBottom.set(true);
       pushMessages($SelectedChannel, m);
+      pendBottom.set(true);
     }
   }}
 >
