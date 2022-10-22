@@ -131,12 +131,12 @@
       <Loader />
     </div>
   {:then}
-    {#if $PaneState !== PaneStates.RIGHT}
+    {#if !$MobileLayout || $PaneState !== PaneStates.RIGHT}
       <ServerList />
       <ChannelList />
     {/if}
     <ContentList />
-    {#if $PaneState !== PaneStates.LEFT}
+    {#if !$MobileLayout || $PaneState !== PaneStates.LEFT}
       <MemberBar />
     {/if}
   {/await}

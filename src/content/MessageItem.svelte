@@ -32,7 +32,7 @@
       {:else}
         <div class="h-0.5 w-10" />
       {/if}
-      <div class="flex flex-col">
+      <div class="flex flex-col flex-1">
         {#if shouldSeparate}
           <div class="flex items-center gap-1.5 -mb-0.5" style="line-height:1.1;">
             <div
