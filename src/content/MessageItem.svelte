@@ -1,7 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import type { Message } from "revolt.js";
-  import { MessageCache, SelectedChannel, SelectedServer } from "State";
+  import { MessageCache, MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { escapeHTML, escapeRegex, Matches, proxyURL } from "utils";
 
@@ -78,7 +78,7 @@
         {#each message.attachments || [] as attachment}
           <div
             class="rounded mt-1 block"
-            style="max-width:90vw;max-height:50vh;{['width', 'height']
+            style="max-width:{$MobileLayout ? '90vw' : '50vw'};max-height:50vh;{['width', 'height']
               .map(
                 (h) =>
                   h +
