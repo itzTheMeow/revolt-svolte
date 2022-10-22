@@ -47,5 +47,33 @@ window.addEventListener("focus", recalcMobileLayout);
 recalcMobileLayout();
 setInterval(recalcMobileLayout, 65);
 
+export enum PaneStates {
+  LEFT,
+  MIDDLE,
+  RIGHT,
+}
+export const PaneState = writable<PaneStates>(PaneStates.LEFT),
+  PaneLeft = writable<number>(0);
+PaneState.subscribe(updatePaneState);
+export function updatePaneState(state: PaneStates) {
+  console.log(state);
+  switch (state) {
+    case PaneStates.LEFT:
+      PaneLeft.set(
+        document.getElementById("ChannelList")?.getBoundingClientRect().right || window.innerWidth
+      );
+      break;
+    case PaneStates.MIDDLE:
+      PaneLeft.set(0);
+      break;
+    case PaneStates.RIGHT:
+      PaneLeft.set(
+        -(document.getElementById("Pane")?.getBoundingClientRect().width || window.innerWidth)
+      );
+      break;
+  }
+  return state;
+}
+
 export const pendBottom = writable<boolean>(false);
 export const selectInput = writable<HTMLInputElement | null>(null);

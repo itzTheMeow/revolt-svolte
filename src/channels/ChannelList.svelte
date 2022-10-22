@@ -7,6 +7,7 @@
 <div
   class="overflow-y-auto h-full w-56 py-1"
   style="background-color:{$Theme['secondary-background']}"
+  id="ChannelList"
 >
   {#if $SelectedServer}
     {#each $SelectedServer.orderedChannels as category}

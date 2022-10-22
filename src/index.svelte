@@ -9,13 +9,23 @@
     AppWidth,
     MessageCache,
     MobileLayout,
+    PaneLeft,
+    PaneState,
+    PaneStates,
     pendBottom,
     pushMessages,
     selectInput,
+    updatePaneState,
   } from "State";
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
   import { disableBodyScroll } from "body-scroll-lock";
+
+  import TWEEN from "@tweenjs/tween.js";
+  requestAnimationFrame(function animate(time: number) {
+    requestAnimationFrame(animate);
+    TWEEN.update(time);
+  });
 
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
@@ -38,17 +48,90 @@
       selectInput.set(null);
     }
   });
+
+  let Container: HTMLDivElement;
+  onMount(() => {
+    updatePaneState($PaneState);
+    let startedDragging: [number, number, number] | null = null;
+    let curPos: [number, number] | null = null;
+    let isSliding = false;
+    Container.addEventListener("touchstart", (e) => {
+      isSliding = false;
+      if (
+        document.activeElement?.tagName == "INPUT" &&
+        (e.changedTouches[0].target as HTMLElement).tagName == "INPUT"
+      )
+        return;
+      startedDragging = [e.changedTouches[0].pageX, e.changedTouches[0].pageY, Number($PaneLeft)];
+    });
+    Container.addEventListener("touchmove", (e) => {
+      if (!startedDragging) return;
+      if (
+        document.activeElement?.tagName == "INPUT" &&
+        (e.changedTouches[0].target as HTMLElement).tagName == "INPUT"
+      )
+        return;
+      curPos = [e.changedTouches[0].pageX, e.changedTouches[0].pageY];
+      if (
+        Math.abs(curPos[1] - startedDragging[1]) <= 15 &&
+        ((($PaneState == PaneStates.RIGHT || $PaneState == PaneStates.MIDDLE) &&
+          curPos[0] - startedDragging[0] >= 20) ||
+          (($PaneState == PaneStates.LEFT || $PaneState == PaneStates.MIDDLE) &&
+            startedDragging[0] - curPos[0] >= 20))
+      )
+        isSliding = true;
+      if (isSliding) {
+        let left = startedDragging[2] + (curPos[0] - startedDragging[0]);
+        if ($PaneState == PaneStates.LEFT && left < 0) left = 0;
+        PaneLeft.set(left);
+      }
+    });
+    Container.addEventListener("touchend", () => {
+      if (isSliding) {
+        if ($PaneState == PaneStates.LEFT) {
+          PaneState.set(
+            updatePaneState(
+              $PaneLeft <= window.innerWidth / 2 ? PaneStates.MIDDLE : PaneStates.LEFT
+            )
+          );
+        } else if ($PaneState == PaneStates.MIDDLE) {
+          PaneState.set(
+            updatePaneState(
+              $PaneLeft >= window.innerWidth / 4
+                ? PaneStates.LEFT
+                : $PaneLeft <= -(window.innerWidth / 3)
+                ? PaneStates.RIGHT
+                : PaneStates.MIDDLE
+            )
+          );
+        } else if ($PaneState == PaneStates.RIGHT) {
+          PaneState.set(
+            updatePaneState(
+              $PaneLeft <= window.innerWidth / 2 ? PaneStates.MIDDLE : PaneStates.RIGHT
+            )
+          );
+        }
+      }
+      startedDragging = curPos = null;
+      isSliding = false;
+    });
+  });
 </script>
 
 <div
-  class="flex items-center justify-center {$MobileLayout ? 'pb-6' : ''}"
+  class="flex {$MobileLayout ? 'pb-6' : ''}"
   style="background-color:{$Theme['primary-background']};height:{$AppHeight}px;width:{$AppWidth}px;"
+  bind:this={Container}
 >
   {#await new Promise((r) => client.once("ready", () => r(void 0)))}
-    <Loader />
+    <div class="m-auto">
+      <Loader />
+    </div>
   {:then}
-    <ServerList />
-    <ChannelList />
+    {#if $PaneState !== PaneStates.RIGHT}
+      <ServerList />
+      <ChannelList />
+    {/if}
     <ContentList />
   {/await}
 </div>
