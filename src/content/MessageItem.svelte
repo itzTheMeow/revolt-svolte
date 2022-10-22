@@ -76,34 +76,12 @@
             })}
         </div>
         {#each message.attachments || [] as attachment}
-          <div
-            class="rounded mt-1 block"
-            style="max-width:{$MobileLayout ? '90vw' : '50vw'};max-height:50vh;{['width', 'height']
-              .map(
-                (h) =>
-                  h +
-                  ':' +
-                  Math.floor(
-                    Math.min(
-                      1,
-                      Math.min(
-                        //@ts-ignore
-                        (window.innerWidth * 0.9) / attachment.metadata.width,
-                        //@ts-ignore
-                        (window.innerHeight * 0.7) / attachment.metadata.height
-                      )
-                    ) *
-                      //@ts-ignore
-                      attachment.metadata[h]
-                  ) +
-                  'px'
-              )
-              .join(';')}"
-          >
+          <div class="rounded mt-1 block" style="max-width:90%;max-height:50vh;">
             {#if attachment.metadata.type == "Image"}
               <img
                 class="block rounded"
-                style="max-width:inherit;max-height:inherit;width:inherit;height:inherit;"
+                style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
+                  .width} / {attachment.metadata.height};"
                 src={proxyURL(
                   client.generateFileURL(attachment, {
                     width: Math.floor(window.innerWidth * 0.9),
@@ -115,7 +93,9 @@
             {:else if attachment.metadata.type == "Video"}
               <!-- svelte-ignore a11y-media-has-caption -->
               <video
-                class="block"
+                class="block rounded"
+                style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
+                  .width} / {attachment.metadata.height};"
                 src={proxyURL(client.generateFileURL(attachment), "any")}
                 alt={attachment.filename}
                 controls
