@@ -81,6 +81,7 @@
     SendButton.classList.remove("loading");
     fc.style.display = "";
     pendBottom.set(true);
+    recalculateAutocomplete();
   }
 </script>
 
@@ -163,7 +164,7 @@
     autocomplete="on"
     bind:this={MessageInput}
     bind:value={inputtedMessage}
-    on:keydown={handleAutocomplete}
+    on:keydown={recalculateAutocomplete}
     on:keyup={(e) => {
       if (handleAutocomplete(e)) return;
       if (e.key == "Enter") sendMessage();
