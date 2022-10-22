@@ -10,8 +10,8 @@
   let shouldSeparate = true;
   $: {
     const previousMessage =
-      $MessageCache[$SelectedChannel!._id][
-        $MessageCache[$SelectedChannel!._id].indexOf(message) - 1
+      $MessageCache[$SelectedChannel!._id]?.[
+        $MessageCache[$SelectedChannel!._id]?.indexOf(message) - 1
       ];
     shouldSeparate =
       !previousMessage ||
@@ -21,48 +21,61 @@
 </script>
 
 {#if $SelectedChannel}
-  <div>
-    {#if shouldSeparate}
-      <div class="flex items-center gap-1.5 mt-2">
-        <div
-          class="font-semibold"
-          style="color:{message.masquerade?.colour ||
-            message.member?.orderedRoles.find((r) => r[1].colour)?.[1].colour ||
-            'inherit'};"
-        >
-          {message.masquerade?.name || message.member?.nickname || message.author?.username}
-        </div>
-        {#if message.author?.bot}
-          <div
-            class="rounded px-0.5"
-            style="background-color:{$Theme['accent']};font-size:0.65rem;"
-          >
-            {message.masquerade ? "BRIDGE" : "BOT"}
+  <div class={shouldSeparate ? "mt-2" : ""}>
+    <div class="flex gap-2">
+      {#if shouldSeparate}
+        <img
+          class="rounded-full h-10 w-10 object-cover"
+          src={proxyURL(message.author?.generateAvatarURL({ max_side: 256 }) || "", "image")}
+          alt=""
+        />
+      {:else}
+        <div class="h-0.5 w-10" />
+      {/if}
+      <div class="flex flex-col">
+        {#if shouldSeparate}
+          <div class="flex items-center gap-1.5 -mb-0.5">
+            <div
+              class="font-semibold"
+              style="color:{message.masquerade?.colour ||
+                message.member?.orderedRoles.find((r) => r[1].colour)?.[1].colour ||
+                'inherit'};"
+            >
+              {message.masquerade?.name || message.member?.nickname || message.author?.username}
+            </div>
+            {#if message.author?.bot}
+              <div
+                class="rounded px-0.5"
+                style="background-color:{$Theme['accent']};font-size:0.65rem;"
+              >
+                {message.masquerade ? "BRIDGE" : "BOT"}
+              </div>
+            {/if}
           </div>
         {/if}
+        <div class="whitespace-pre-wrap">
+          {@html escapeHTML(message.content || "")
+            .replace(escapeRegex(Matches.user), (_, id) => {
+              const u = client.users.get(id);
+              return `<span style="color:${$Theme["accent"]};">@${escapeHTML(
+                u?.username || "Unknown User"
+              )}</span>`;
+            })
+            .replace(escapeRegex(Matches.channel), (_, id) => {
+              const c = $SelectedServer?.channels.find((c) => c?._id == id);
+              return `<span style="color:${$Theme["accent"]};">#${escapeHTML(
+                c?.name || "unknown-channel"
+              )}</span>`;
+            })
+            .replace(escapeRegex(Matches.emojiCustom), (_, id) => {
+              const e = client.emojis.get(id);
+              if (!e) return _;
+              return `<img src="${proxyURL(e.imageURL, "image")}" class="inline object-contain ${
+                message.content == _ ? "h-12 w-12" : "h-5 w-5"
+              } -mx-0.5 align-middle" />`;
+            })}
+        </div>
       </div>
-    {/if}
-    <div class="whitespace-pre-wrap">
-      {@html escapeHTML(message.content || "")
-        .replace(escapeRegex(Matches.user), (_, id) => {
-          const u = client.users.get(id);
-          return `<span style="color:${$Theme["accent"]};">@${escapeHTML(
-            u?.username || "Unknown User"
-          )}</span>`;
-        })
-        .replace(escapeRegex(Matches.channel), (_, id) => {
-          const c = $SelectedServer?.channels.find((c) => c?._id == id);
-          return `<span style="color:${$Theme["accent"]};">#${escapeHTML(
-            c?.name || "unknown-channel"
-          )}</span>`;
-        })
-        .replace(escapeRegex(Matches.emojiCustom), (_, id) => {
-          const e = client.emojis.get(id);
-          if (!e) return _;
-          return `<img src="${proxyURL(e.imageURL, "image")}" class="inline object-contain ${
-            message.content == _ ? "h-12 w-12" : "h-5 w-5"
-          } -mx-0.5 align-middle" />`;
-        })}
     </div>
     {#each message.attachments || [] as attachment}
       <div
