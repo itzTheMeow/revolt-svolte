@@ -34,7 +34,7 @@
       {/if}
       <div class="flex flex-col">
         {#if shouldSeparate}
-          <div class="flex items-center gap-1.5 -mb-0.5">
+          <div class="flex items-center gap-1.5 -mb-0.5" style="line-height:1.1;">
             <div
               class="font-semibold"
               style="color:{message.masquerade?.colour ||
@@ -45,7 +45,7 @@
             </div>
             {#if message.author?.bot}
               <div
-                class="rounded px-0.5"
+                class="rounded p-0.5 flex items-center justify-center"
                 style="background-color:{$Theme['accent']};font-size:0.65rem;"
               >
                 {message.masquerade ? "BRIDGE" : "BOT"}
