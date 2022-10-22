@@ -87,6 +87,8 @@
         if ($PaneState == PaneStates.LEFT && left < 0) left = 0;
         else if (left < membar) left = membar;
         PaneLeft.set(left);
+        e.preventDefault();
+        return false;
       }
     });
     Container.addEventListener("touchend", () => {
