@@ -67,9 +67,7 @@ export function updatePaneState(state: PaneStates) {
       PaneLeft.set(0);
       break;
     case PaneStates.RIGHT:
-      PaneLeft.set(
-        -(document.getElementById("Pane")?.getBoundingClientRect().width || window.innerWidth)
-      );
+      PaneLeft.set(-(document.getElementById("MemberBar")?.offsetWidth || window.innerWidth));
       break;
   }
   return state;
