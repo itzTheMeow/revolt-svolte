@@ -129,7 +129,7 @@
 
 <!-- Textbox / Buttons -->
 
-<div class="bg-slate-800 h-12 flex w-full" style="background-color:{$Theme['message-box']};">
+<div class="h-12 flex w-full" style="background-color:{$Theme['message-box']};">
   <input
     type="file"
     class="hidden"

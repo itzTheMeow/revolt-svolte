@@ -6,7 +6,7 @@
 
 {#if $uploadedFiles.length}
   <div
-    class="bg-slate-900 flex py-2 overflow-x-auto w-full"
+    class="flex py-2 overflow-x-auto w-full"
     style="height:20%;background-color:{$Theme['primary-header']};"
   >
     {#each $uploadedFiles as file}

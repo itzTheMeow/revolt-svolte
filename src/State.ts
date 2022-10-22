@@ -33,5 +33,19 @@ export const uploadedFiles = writable<{ name: string; type: string; url: string;
 export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
 
+export const MobileLayout = writable<boolean>(false);
+export const AppHeight = writable<number>(window.innerHeight);
+export const AppWidth = writable<number>(window.innerWidth);
+function recalcMobileLayout() {
+  MobileLayout.set(window.innerWidth <= 600);
+  AppHeight.set(window.innerHeight);
+  AppWidth.set(window.innerWidth);
+}
+window.addEventListener("resize", recalcMobileLayout);
+window.addEventListener("orientationchange", recalcMobileLayout);
+window.addEventListener("focus", recalcMobileLayout);
+recalcMobileLayout();
+setInterval(recalcMobileLayout, 65);
+
 export const pendBottom = writable<boolean>(false);
 export const selectInput = writable<HTMLInputElement | null>(null);

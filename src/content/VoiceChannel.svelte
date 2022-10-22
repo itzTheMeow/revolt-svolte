@@ -71,7 +71,7 @@
       {:else if voiceState.status == VoiceStatus.CONNECTED}
         {#if voiceState.isProducing("audio")}
           <div
-            class="p-3 bg-slate-900 inline-flex items-center justify-center rounded-full cursor-pointer"
+            class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
             style="background-color:{$Theme['tooltip']};"
             on:click={async () => {
               await voiceState.stopProducing("audio");
@@ -82,7 +82,7 @@
           </div>
         {:else}
           <div
-            class="p-3 bg-slate-900 inline-flex items-center justify-center rounded-full cursor-pointer"
+            class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
             style="background-color:{$Theme['tooltip']};"
             on:click={async () => {
               await voiceState.startProducing("audio");
@@ -94,7 +94,7 @@
         {/if}
         {#if voiceState.isDeaf()}
           <div
-            class="mx-1.5 p-3 bg-slate-900 inline-flex items-center justify-center rounded-full cursor-pointer"
+            class="mx-1.5 p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
             style="background-color:{$Theme['tooltip']};"
             on:click={async () => {
               await voiceState.stopDeafen();
@@ -105,7 +105,7 @@
           </div>
         {:else}
           <div
-            class="mx-1.5 p-3 bg-slate-900 inline-flex items-center justify-center rounded-full cursor-pointer"
+            class="mx-1.5 p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
             style="background-color:{$Theme['tooltip']};"
             on:click={async () => {
               await voiceState.startDeafen();

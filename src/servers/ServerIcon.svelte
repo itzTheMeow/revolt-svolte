@@ -25,12 +25,12 @@
     </div>
   {:else}
     <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
-      <span
-        >{server.name
+      <span>
+        {server.name
           .split(" ")
           .map((a) => a[0].toUpperCase())
-          .join("")}</span
-      >
+          .join("")}
+      </span>
     </div>
   {/if}
   <div

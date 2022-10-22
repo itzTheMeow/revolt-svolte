@@ -4,8 +4,18 @@
   import ContentList from "content/ContentList.svelte";
   import Loader from "Loader.svelte";
   import ServerList from "servers/ServerList.svelte";
-  import { MessageCache, pendBottom, pushMessages, selectInput } from "State";
+  import {
+    AppHeight,
+    AppWidth,
+    MessageCache,
+    MobileLayout,
+    pendBottom,
+    pushMessages,
+    selectInput,
+  } from "State";
   import { afterUpdate } from "svelte";
+  import { Theme } from "Theme";
+  import { disableBodyScroll } from "body-scroll-lock";
 
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
@@ -20,9 +30,9 @@
     }
     if (previous == document.body.innerHTML) return;
     previous = document.body.innerHTML;
-    /*[ListServers, ListChannels, ListMessages, AutocompletePanel].forEach(
-      (e) => e && disableBodyScroll(e, { allowTouchMove: () => true })
-    );*/
+    document
+      .querySelectorAll(".overflow-y-auto")
+      .forEach((e) => e && disableBodyScroll(e, { allowTouchMove: () => true }));
     if ($selectInput) {
       $selectInput.focus();
       selectInput.set(null);
@@ -30,7 +40,10 @@
   });
 </script>
 
-<div class="flex items-center justify-center h-screen w-screen">
+<div
+  class="flex items-center justify-center {$MobileLayout ? 'pb-6' : ''}"
+  style="background-color:{$Theme['primary-background']};height:{$AppHeight}px;width:{$AppWidth}px;"
+>
   {#await new Promise((r) => client.once("ready", () => r(void 0)))}
     <Loader />
   {:then}
