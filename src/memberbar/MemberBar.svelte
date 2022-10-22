@@ -8,7 +8,7 @@
 <div
   class="overflow-y-auto h-full w-64 py-1 {$MobileLayout ? 'absolute' : ''}"
   style="background-color:{$Theme['secondary-background']};{$MobileLayout
-    ? `width:${$AppWidth}px;`
+    ? `left:${$PaneLeft + $AppWidth}px;`
     : ''}"
   id="MemberBar"
   bind:this={membar}

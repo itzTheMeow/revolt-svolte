@@ -18,7 +18,7 @@
 </script>
 
 <div
-  class="h-full flex flex-col flex-1 {$MobileLayout ? 'absolute top-0' : 'min-w-0'}"
+  class="h-full flex flex-col {$MobileLayout ? 'absolute top-0' : 'flex-1 min-w-0'}"
   style="background-color:{$Theme['primary-background']};{$MobileLayout
     ? `left:${$PaneLeft}px;width:${$AppWidth}px;`
     : ''}"

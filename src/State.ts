@@ -56,7 +56,6 @@ export const PaneState = writable<PaneStates>(PaneStates.LEFT),
   PaneLeft = writable<number>(0);
 PaneState.subscribe(updatePaneState);
 export function updatePaneState(state: PaneStates) {
-  console.log(state);
   switch (state) {
     case PaneStates.LEFT:
       PaneLeft.set(
