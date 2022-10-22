@@ -8,6 +8,7 @@
     AppHeight,
     AppWidth,
     MessageCache,
+    MessageInputSelected,
     MobileLayout,
     PaneLeft,
     PaneState,
@@ -27,7 +28,6 @@
     requestAnimationFrame(animate);
     TWEEN.update(time);
   });
-  const BAR_BOTTOM = 26;
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
   });
@@ -131,7 +131,8 @@
 
 <div
   class="flex relative"
-  style="height:{$AppHeight - ($MobileLayout ? BAR_BOTTOM : 0)}px;width:{$AppWidth}px;"
+  style="height:{$AppHeight -
+    ($MobileLayout && !$MessageInputSelected ? 26 : 0)}px;width:{$AppWidth}px;"
   bind:this={Container}
 >
   {#await new Promise((r) => client.once("ready", () => r(void 0)))}

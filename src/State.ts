@@ -32,11 +32,14 @@ export const uploadedFiles = writable<{ name: string; type: string; url: string;
 
 export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
+let mselect = false;
+MessageInputSelected.subscribe((i) => (mselect = i));
 
 export const MobileLayout = writable<boolean>(false);
 export const AppHeight = writable<number>(window.innerHeight);
 export const AppWidth = writable<number>(window.innerWidth);
 function recalcMobileLayout() {
+  if (mselect) return;
   MobileLayout.set(window.innerWidth <= 700);
   AppHeight.set(window.innerHeight);
   AppWidth.set(window.innerWidth);
