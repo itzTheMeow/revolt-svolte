@@ -9,23 +9,37 @@
 
   let shouldSeparate = true;
   $: {
-    shouldSeparate =
+    const previousMessage =
       $MessageCache[$SelectedChannel!._id][
         $MessageCache[$SelectedChannel!._id].indexOf(message) - 1
-      ]?.author_id !== message.author_id;
+      ];
+    shouldSeparate =
+      !previousMessage ||
+      previousMessage.author_id !== message.author_id ||
+      JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade);
   }
 </script>
 
 {#if $SelectedChannel}
   <div>
     {#if shouldSeparate}
-      <div
-        class="font-semibold mt-2"
-        style="color:{message.masquerade?.colour ||
-          message.member?.orderedRoles.find((r) => r[1].colour)?.[1].colour ||
-          'inherit'};"
-      >
-        {message.masquerade?.name || message.member?.nickname || message.author?.username}
+      <div class="flex items-center gap-1.5 mt-2">
+        <div
+          class="font-semibold"
+          style="color:{message.masquerade?.colour ||
+            message.member?.orderedRoles.find((r) => r[1].colour)?.[1].colour ||
+            'inherit'};"
+        >
+          {message.masquerade?.name || message.member?.nickname || message.author?.username}
+        </div>
+        {#if message.author?.bot}
+          <div
+            class="rounded px-0.5"
+            style="background-color:{$Theme['accent']};font-size:0.65rem;"
+          >
+            {message.masquerade ? "BRIDGE" : "BOT"}
+          </div>
+        {/if}
       </div>
     {/if}
     <div class="whitespace-pre-wrap">

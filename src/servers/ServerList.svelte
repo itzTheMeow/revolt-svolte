@@ -1,8 +1,7 @@
 <script>
   import { client } from "Client";
   import { Theme } from "Theme";
-
-  const { default: ServerIcon } = require("./ServerIcon.svelte");
+  import ServerIcon from "./ServerIcon.svelte";
 </script>
 
 <div

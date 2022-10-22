@@ -17,7 +17,7 @@
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
-  let inputtedMessage: string,
+  let inputtedMessage = "",
     MessageInput: HTMLInputElement,
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement;

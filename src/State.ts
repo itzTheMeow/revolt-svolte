@@ -5,6 +5,13 @@ import { writable } from "svelte/store";
 export const fetchedMembers = new Set<string>();
 
 export const SelectedServer = writable<Server | null>(null);
+let serverID = "";
+SelectedServer.subscribe((s) => {
+  serverID = s?._id || "";
+  if (!s || fetchedMembers.has(s._id)) return;
+  fetchedMembers.add(s._id);
+  s.fetchMembers().then(() => s._id == serverID && SelectedServer.set(s));
+});
 export const SelectedChannel = writable<Channel | null>(null);
 
 let messagecachelocal: { [key: string]: Message[] } = {};
