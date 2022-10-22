@@ -25,12 +25,12 @@
     <div class="flex gap-2">
       {#if shouldSeparate}
         <img
-          class="rounded-full h-10 w-10 object-cover"
+          class="rounded-full h-10 w-10 shrink-0 object-cover"
           src={proxyURL(message.author?.generateAvatarURL({ max_side: 256 }) || "", "image")}
           alt=""
         />
       {:else}
-        <div class="h-0.5 w-10" />
+        <div class="h-0.5 w-10 shrink-0" />
       {/if}
       <div class="flex flex-col flex-1">
         {#if shouldSeparate}
