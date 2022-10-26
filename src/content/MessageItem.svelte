@@ -1,7 +1,13 @@
 <script lang="ts">
   import { client } from "Client";
   import type { Message } from "revolt.js";
-  import { MessageCache, MobileLayout, SelectedChannel, SelectedServer } from "State";
+  import {
+    HoveredMessage,
+    MessageCache,
+    MobileLayout,
+    SelectedChannel,
+    SelectedServer,
+  } from "State";
   import { Theme } from "Theme";
   import { escapeHTML, escapeRegex, Matches, proxyURL } from "utils";
 
@@ -21,7 +27,22 @@
 </script>
 
 {#if $SelectedChannel}
-  <div class={shouldSeparate ? "mt-3" : ""}>
+  <div
+    class={shouldSeparate ? "mt-3" : ""}
+    style={$HoveredMessage == message._id
+      ? `background-color:${$Theme["secondary-background"]};`
+      : ""}
+    on:mouseenter={() => HoveredMessage.set(message._id)}
+    on:mousemove={() => HoveredMessage.set(message._id)}
+    on:mouseleave={() => HoveredMessage.set(null)}
+    on:wheel={() => HoveredMessage.set(message._id)}
+    on:click={(e) => {
+      if (!$MobileLayout) return;
+      HoveredMessage.set(message._id);
+      e.preventDefault();
+      return false;
+    }}
+  >
     <div class="flex gap-2">
       {#if shouldSeparate}
         <img

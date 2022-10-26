@@ -47,6 +47,7 @@ export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
 let mselect = false;
 MessageInputSelected.subscribe((i) => (mselect = i));
+export const HoveredMessage = writable<string | null>(null);
 
 export const MobileLayout = writable<boolean>(false);
 export const AppHeight = writable<number>(window.innerHeight);

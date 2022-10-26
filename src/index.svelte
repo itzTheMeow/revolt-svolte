@@ -7,6 +7,7 @@
   import {
     AppHeight,
     AppWidth,
+    HoveredMessage,
     MessageCache,
     MessageInputSelected,
     MobileLayout,
@@ -34,7 +35,7 @@
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
   });
-
+  window.addEventListener("touchstart", () => HoveredMessage.set(null));
   document.addEventListener("paste", (e) => {
     [...(e.clipboardData?.items || [])].forEach((item) => {
       if (item.kind === "file") {
