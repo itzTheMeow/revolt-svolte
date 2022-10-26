@@ -26,7 +26,12 @@
       {#if shouldSeparate}
         <img
           class="rounded-full h-10 w-10 shrink-0 object-cover"
-          src={proxyURL(message.author?.generateAvatarURL({ max_side: 256 }) || "", "image")}
+          src={proxyURL(
+            message.masquerade?.avatar
+              ? message.generateMasqAvatarURL()
+              : message.author?.generateAvatarURL({ max_side: 256 }) || "",
+            "image"
+          )}
           alt=""
         />
       {:else}
