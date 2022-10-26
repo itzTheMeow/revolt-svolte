@@ -6,6 +6,7 @@
     autocomplete,
     MessageInputSelected,
     pendBottom,
+    pushFile,
     SelectedChannel,
     SelectedServer,
     selectInput,
@@ -138,16 +139,7 @@
     multiple
     on:change={() => {
       const files = [...(FileInput.files || [])];
-      files.forEach((file) => {
-        if ($uploadedFiles.length >= 5) return;
-        $uploadedFiles.push({
-          name: file.name,
-          type: file.type.split("/")[0],
-          url: URL.createObjectURL(file),
-          data: file,
-        });
-        $uploadedFiles = $uploadedFiles;
-      });
+      files.forEach(pushFile);
     }}
   />
   <div

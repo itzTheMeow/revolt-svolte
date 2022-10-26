@@ -14,6 +14,7 @@
     PaneState,
     PaneStates,
     pendBottom,
+    pushFile,
     pushMessages,
     selectInput,
     updatePaneState,
@@ -32,6 +33,15 @@
   });
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
+  });
+
+  document.addEventListener("paste", (e) => {
+    [...(e.clipboardData?.items || [])].forEach((item) => {
+      if (item.kind === "file") {
+        const blob = item.getAsFile();
+        if (blob) pushFile(blob);
+      }
+    });
   });
 
   let previous = "";

@@ -29,6 +29,19 @@ export function pushMessages(channel: Channel, msgs: Message[]) {
 export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
   []
 );
+export function pushFile(file: File) {
+  uploadedFiles.update((files) => {
+    if (files.length < 5) {
+      files.push({
+        name: file.name,
+        type: file.type.split("/")[0],
+        url: URL.createObjectURL(file),
+        data: file,
+      });
+    }
+    return files;
+  });
+}
 
 export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
