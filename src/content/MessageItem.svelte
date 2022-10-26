@@ -45,7 +45,7 @@
             </div>
             {#if message.author?.bot}
               <div
-                class="rounded p-0.5 flex items-center justify-center"
+                class="rounded px-1 py-0.5 flex items-center justify-center"
                 style="background-color:{$Theme['accent']};font-size:0.65rem;"
               >
                 {message.masquerade ? "BRIDGE" : "BOT"}
