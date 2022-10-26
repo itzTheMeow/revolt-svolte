@@ -23,6 +23,8 @@
   import { disableBodyScroll } from "body-scroll-lock";
   import MemberBar from "memberbar/MemberBar.svelte";
   import TWEEN from "@tweenjs/tween.js";
+  import { ElectronFullscreen, Native } from "Native";
+  import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -55,6 +57,8 @@
     document.body.style.width = `${$AppWidth}px`;
     document.body.style.height = `${$AppHeight}px`;
   }
+  AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
+  AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
 
   let Container: HTMLDivElement;
   onMount(() => {
@@ -129,10 +133,46 @@
   });
 </script>
 
+{#if Native.isNative}
+  <div
+    class="w-full flex items-center pl-2 bg-inherit"
+    style="height:{Native.titlebarHeight}px;border-bottom:1px solid rgba(0,0,0,0.2);"
+  >
+    <div class="flex-1" style="-webkit-app-region:drag;">
+      <div class="font-semibold">Svolte</div>
+    </div>
+    <div
+      class="cursor-pointer hover:brightness-75 bg-inherit active:brightness-50 rounded-none h-full flex items-center justify-center"
+      style="width:{Native.titlebarHeight * 1.5}px;"
+      on:click={Native.min}
+    >
+      <Minus size={Native.titlebarHeight - 10} />
+    </div>
+    <div
+      class="cursor-pointer hover:brightness-75 bg-inherit active:brightness-50 rounded-none h-full flex items-center justify-center"
+      style="width:{Native.titlebarHeight * 1.5}px;"
+      on:click={Native.max}
+    >
+      {#if $ElectronFullscreen}
+        <Minimize size={Native.titlebarHeight - 10} />
+      {:else}
+        <Maximize size={Native.titlebarHeight - 12} />
+      {/if}
+    </div>
+    <div
+      class="cursor-pointer hover:bg-error transition-colors active:brightness-75 rounded-none h-full flex items-center justify-center"
+      style="width:{Native.titlebarHeight * 1.5}px;"
+      on:click={Native.close}
+    >
+      <X size={Native.titlebarHeight - 8} />
+    </div>
+  </div>
+{/if}
 <div
   class="flex relative"
   style="height:{$AppHeight -
-    ($MobileLayout && !$MessageInputSelected ? 26 : 0)}px;width:{$AppWidth}px;"
+    ($MobileLayout && !$MessageInputSelected ? 26 : 0) -
+    (Native.isNative ? Native.titlebarHeight : 0)}px;width:{$AppWidth}px;"
   bind:this={Container}
 >
   {#await new Promise((r) => client.once("ready", () => r(void 0)))}
