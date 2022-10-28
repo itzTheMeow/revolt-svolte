@@ -190,8 +190,7 @@
     style="background-color:{$Theme['accent']};"
     bind:this={SendButton}
     on:touchstart={() => {
-      //@ts-ignore
-      if (document.activeElement?.tagName == "INPUT") selectInput.set(document.activeElement);
+      selectInput.set(MessageInput);
     }}
     on:click={() => sendMessage()}
   >
