@@ -42,12 +42,29 @@ export function pushFile(file: File) {
     return files;
   });
 }
+export const replyingTo = writable<Message[]>([]);
+export function updateReplies(reply: Message, shift = false) {
+  replyingTo.update((replies) => {
+    const i = replies.findIndex((r) => r._id == reply._id);
+    if (shift && i >= 0) replies.splice(i, 1);
+    if (!shift && replies.length < 5 && i == -1) replies.push(reply);
+    return replies;
+  });
+}
 
 export const MessageInputSelected = writable<boolean>(false),
   autocomplete = writable<AutocompleteResult | null>(null);
 let mselect = false;
 MessageInputSelected.subscribe((i) => (mselect = i));
 export const HoveredMessage = writable<string | null>(null);
+export function addScroll(amt: number) {
+  const list = document.getElementById("MessageList");
+  if (list) list.scrollTop += amt;
+}
+export function scrolledToBottom() {
+  const list = document.getElementById("MessageList");
+  return !list ? 0 : list.scrollHeight - list.scrollTop - list.offsetHeight;
+}
 
 export const MobileLayout = writable<boolean>(false);
 export const AppHeight = writable<number>(window.innerHeight);

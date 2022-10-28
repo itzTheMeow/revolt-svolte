@@ -7,9 +7,11 @@
     MobileLayout,
     SelectedChannel,
     SelectedServer,
+    updateReplies,
   } from "State";
+  import { CornerUpLeft } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { escapeHTML, escapeRegex, Matches, proxyURL } from "utils";
+  import { escapeHTML, escapeRegex, Matches, MessageDetails, proxyURL } from "utils";
 
   export let message: Message;
 
@@ -28,7 +30,7 @@
 
 {#if $SelectedChannel}
   <div
-    class={shouldSeparate ? "mt-3" : ""}
+    class="relative {shouldSeparate ? 'mt-3' : ''}"
     style={$HoveredMessage == message._id
       ? `background-color:${$Theme["secondary-background"]};`
       : ""}
@@ -47,12 +49,7 @@
       {#if shouldSeparate}
         <img
           class="rounded-full h-10 w-10 shrink-0 object-cover"
-          src={proxyURL(
-            message.masquerade?.avatar
-              ? message.generateMasqAvatarURL()
-              : message.author?.generateAvatarURL({ max_side: 256 }) || "",
-            "image"
-          )}
+          src={MessageDetails(message).avatar}
           alt=""
         />
       {:else}
@@ -61,13 +58,8 @@
       <div class="flex flex-col flex-1">
         {#if shouldSeparate}
           <div class="flex items-center gap-1.5 -mb-0.5" style="line-height:1.1;">
-            <div
-              class="font-semibold"
-              style="color:{message.masquerade?.colour ||
-                message.member?.orderedRoles.find((r) => r[1].colour)?.[1].colour ||
-                'inherit'};"
-            >
-              {message.masquerade?.name || message.member?.nickname || message.author?.username}
+            <div class="font-semibold" style="color:{MessageDetails(message).color || 'inherit'};">
+              {MessageDetails(message).name}
             </div>
             {#if message.author?.bot}
               <div
@@ -142,5 +134,18 @@
         {/each}
       </div>
     </div>
+    {#if $HoveredMessage == message._id}
+      <div
+        class="absolute -top-4 right-3 h-8 flex rounded-lg"
+        style="background-color:{$Theme['primary-header']};"
+      >
+        <div
+          class="rounded-lg h-8 w-8 bg-inherit cursor-pointer flex items-center justify-center hover:brightness-90 active:brightness-75"
+          on:click={() => updateReplies(message)}
+        >
+          <CornerUpLeft />
+        </div>
+      </div>
+    {/if}
   </div>
 {/if}

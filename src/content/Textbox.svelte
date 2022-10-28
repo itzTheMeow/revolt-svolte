@@ -7,6 +7,7 @@
     MessageInputSelected,
     pendBottom,
     pushFile,
+    replyingTo,
     SelectedChannel,
     SelectedServer,
     selectInput,
@@ -16,6 +17,7 @@
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
+  import TextboxReply from "./TextboxReply.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
   let inputtedMessage = "",
@@ -78,10 +80,12 @@
     const message = await $SelectedChannel.sendMessage({
       content,
       attachments: attachments.length ? attachments : null,
+      replies: $replyingTo.map((r) => ({ id: r._id, mention: false })),
     });
     SendButton.classList.remove("loading");
     fc.style.display = "";
     pendBottom.set(true);
+    replyingTo.set([]);
     recalculateAutocomplete();
   }
 </script>
@@ -125,6 +129,16 @@
         rounded
         onclick={() => handleAutocompleteTab($autocomplete?.tab(u))}
       />
+    {/each}
+  </div>
+{/if}
+
+<!-- Replies -->
+
+{#if $replyingTo.length}
+  <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
+    {#each $replyingTo as reply}
+      <TextboxReply message={reply} />
     {/each}
   </div>
 {/if}
