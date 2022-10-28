@@ -108,3 +108,6 @@ export function updatePaneState(state: PaneStates) {
 
 export const pendBottom = writable<boolean>(false);
 export const selectInput = writable<HTMLInputElement | null>(null);
+export function selectBottom() {
+  selectInput.set(document.getElementById("Textbox") as HTMLInputElement);
+}

@@ -6,8 +6,8 @@
     PaneStates,
     pendBottom,
     pushMessages,
+    selectBottom,
     SelectedChannel,
-    selectInput,
   } from "State";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
@@ -18,7 +18,7 @@
 
   async function switchTo() {
     $SelectedChannel = channel;
-    if (!$MobileLayout) selectInput.set(document.getElementById("Textbox") as HTMLInputElement);
+    if (!$MobileLayout) selectBottom();
     pendBottom.set(true);
     PaneState.set(PaneStates.MIDDLE);
     if (!$MessageCache[$SelectedChannel._id]?.length) {

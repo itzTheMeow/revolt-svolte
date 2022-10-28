@@ -5,6 +5,7 @@
     HoveredMessage,
     MessageCache,
     MobileLayout,
+    selectBottom,
     SelectedChannel,
     SelectedServer,
     updateReplies,
@@ -141,7 +142,10 @@
       >
         <div
           class="rounded-lg h-8 w-8 bg-inherit cursor-pointer flex items-center justify-center hover:brightness-90 active:brightness-75"
-          on:click={() => updateReplies(message)}
+          on:click={() => {
+            updateReplies(message);
+            selectBottom();
+          }}
         >
           <CornerUpLeft />
         </div>
