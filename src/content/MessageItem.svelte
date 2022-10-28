@@ -89,7 +89,10 @@
             .replace(escapeRegex(Matches.emojiCustom), (_, id) => {
               const e = client.emojis.get(id);
               if (!e) return _;
-              return `<img src="${proxyURL(e.imageURL, "image")}" class="inline object-contain ${
+              return `<img src="${proxyURL(
+                `https://autumn.revolt.chat/emojis/${id}`,
+                "image"
+              )}" class="inline object-contain ${
                 message.content == _ ? "h-12 w-12" : "h-5 w-5"
               } -mx-0.5 align-middle" />`;
             })}
