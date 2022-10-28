@@ -1,11 +1,13 @@
 <script lang="ts">
   import {
     MessageCache,
+    MobileLayout,
     PaneState,
     PaneStates,
     pendBottom,
     pushMessages,
     SelectedChannel,
+    selectInput,
   } from "State";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
@@ -13,12 +15,10 @@
   import type { Channel } from "revolt.js";
 
   export let channel: Channel;
-</script>
 
-<div
-  class="cursor-pointer m-1.5 p-2 rounded flex items-center box-border bg-black bg-opacity-30 hover:bg-opacity-20 relative"
-  on:click={async () => {
+  async function switchTo() {
     $SelectedChannel = channel;
+    if (!$MobileLayout) selectInput.set(document.getElementById("Textbox") as HTMLInputElement);
     pendBottom.set(true);
     PaneState.set(PaneStates.MIDDLE);
     if (!$MessageCache[$SelectedChannel._id]?.length) {
@@ -28,7 +28,12 @@
       pushMessages($SelectedChannel, m);
       pendBottom.set(true);
     }
-  }}
+  }
+</script>
+
+<div
+  class="cursor-pointer m-1.5 p-2 rounded flex items-center box-border bg-black bg-opacity-30 hover:bg-opacity-20 relative"
+  on:click={switchTo}
 >
   {#if channel.icon}
     <img

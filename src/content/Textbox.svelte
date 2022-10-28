@@ -164,6 +164,7 @@
     <Paperclip />
   </div>
   <input
+    id="Textbox"
     class="flex-1 bg-inherit p-1"
     style="outline:none;"
     type="text"

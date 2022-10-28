@@ -51,6 +51,10 @@
       const ListMessages = document.getElementById("MessageList");
       if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight * 2;
       $pendBottom = false;
+      if ($selectInput) {
+        $selectInput.focus();
+        selectInput.set(null);
+      }
     }
     if (previous == document.body.innerHTML) return;
     previous = document.body.innerHTML;
