@@ -138,6 +138,7 @@
     {#if $HoveredMessage == message._id}
       <div
         class="absolute -top-4 right-3 h-8 flex rounded-lg"
+        data-hover-item
         style="background-color:{$Theme['primary-header']};"
       >
         <div

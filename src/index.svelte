@@ -35,7 +35,11 @@
   client.on("message", (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
   });
-  window.addEventListener("touchstart", () => HoveredMessage.set(null));
+  window.addEventListener("touchstart", (e) => {
+    const target = e.target as HTMLElement;
+    if ([...document.querySelectorAll("[data-hover-item]")].find((i) => i.contains(target))) return;
+    HoveredMessage.set(null);
+  });
   document.addEventListener("paste", (e) => {
     [...(e.clipboardData?.items || [])].forEach((item) => {
       if (item.kind === "file") {
