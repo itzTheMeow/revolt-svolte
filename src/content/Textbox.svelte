@@ -59,6 +59,7 @@
       }
       return;
     }
+    selectInput.set(MessageInput);
     const content = inputtedMessage ? inputtedMessage : null;
     const fc = SendButton.firstElementChild as HTMLDivElement;
     SendButton.classList.add("loading");
