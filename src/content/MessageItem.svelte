@@ -88,7 +88,6 @@
             })
             .replace(escapeRegex(Matches.emojiCustom), (_, id) => {
               const e = client.emojis.get(id);
-              if (!e) return _;
               return `<img src="${proxyURL(
                 `https://autumn.revolt.chat/emojis/${id}`,
                 "image"
