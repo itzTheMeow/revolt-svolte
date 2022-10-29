@@ -191,10 +191,10 @@
     style="background-color:{$Theme['accent']};"
     bind:this={SendButton}
     on:touchstart={() => {
-      MessageInput.focus();
+      if (!$MessageInputSelected) MessageInput.focus();
     }}
     on:touchend={() => {
-      MessageInput.focus();
+      if (!$MessageInputSelected) MessageInput.focus();
     }}
     on:click={() => sendMessage()}
   >
