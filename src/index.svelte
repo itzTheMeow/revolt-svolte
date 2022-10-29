@@ -36,6 +36,7 @@
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
   });
   window.addEventListener("touchstart", (e) => {
+    if (!$HoveredMessage) return;
     const target = e.target as HTMLElement;
     if ([...document.querySelectorAll("[data-hover-item]")].find((i) => i.contains(target))) return;
     HoveredMessage.set(null);
