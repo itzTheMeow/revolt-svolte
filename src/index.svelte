@@ -17,6 +17,7 @@
     pendBottom,
     pushFile,
     pushMessages,
+    selectBottom,
     selectInput,
     updatePaneState,
   } from "State";
@@ -45,7 +46,10 @@
     [...(e.clipboardData?.items || [])].forEach((item) => {
       if (item.kind === "file") {
         const blob = item.getAsFile();
-        if (blob) pushFile(blob);
+        if (blob) {
+          pushFile(blob);
+          selectBottom();
+        }
       }
     });
   });
