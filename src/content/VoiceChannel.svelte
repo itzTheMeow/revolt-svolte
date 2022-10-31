@@ -16,6 +16,10 @@
   let voiceState = VOICE_STATE;
   VOICE_STATE.events.on("stateChange", () => (voiceState = voiceState));
 
+  let isConnectedHere = false;
+  $: isConnectedHere =
+    voiceState.status == VoiceStatus.CONNECTED && voiceState.roomId == channel._id;
+
   export let channel: Channel;
 </script>
 
@@ -24,7 +28,7 @@
     <div>Loading...</div>
   {:then _}
     <div class="mb-auto mt-3 text-lg font-semibold">{channel.name}</div>
-    {#if voiceState.status == VoiceStatus.CONNECTED}
+    {#if isConnectedHere}
       <div class="flex">
         {#each [...voiceState.participants.keys()] as uid}
           <div class="relative w-16 h-16 mx-2">
@@ -68,7 +72,7 @@
         >
           <PhoneCall size={20} />
         </div>
-      {:else if voiceState.status == VoiceStatus.CONNECTED}
+      {:else if isConnectedHere}
         {#if voiceState.isProducing("audio")}
           <div
             class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
