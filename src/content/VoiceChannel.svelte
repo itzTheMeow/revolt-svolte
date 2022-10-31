@@ -59,20 +59,7 @@
       <div>RTC Connecting...</div>
     {/if}
     <div class="mt-auto mb-4 flex items-center">
-      {#if voiceState.status == VoiceStatus.READY || (!isConnectedHere && voiceState.status == VoiceStatus.CONNECTED)}
-        <div
-          class="p-3 bg-success inline-flex items-center justify-center rounded-full cursor-pointer"
-          on:click={async () => {
-            try {
-              await voiceState.connect(channel);
-            } catch (err) {
-              alert("WebRTC is probably not enabled in settings!\n" + err);
-            }
-          }}
-        >
-          <PhoneCall size={20} />
-        </div>
-      {:else if isConnectedHere}
+      {#if isConnectedHere}
         {#if voiceState.isProducing("audio")}
           <div
             class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
@@ -127,6 +114,19 @@
           }}
         >
           <PhoneOff size={20} />
+        </div>
+      {:else if voiceState.status == VoiceStatus.READY || voiceState.status == VoiceStatus.CONNECTED}
+        <div
+          class="p-3 bg-success inline-flex items-center justify-center rounded-full cursor-pointer"
+          on:click={async () => {
+            try {
+              await voiceState.connect(channel);
+            } catch (err) {
+              alert("WebRTC is probably not enabled in settings!\n" + err);
+            }
+          }}
+        >
+          <PhoneCall size={20} />
         </div>
       {/if}
     </div>
