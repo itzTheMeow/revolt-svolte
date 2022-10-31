@@ -59,7 +59,7 @@
       <div>RTC Connecting...</div>
     {/if}
     <div class="mt-auto mb-4 flex items-center">
-      {#if voiceState.status == VoiceStatus.READY}
+      {#if voiceState.status == VoiceStatus.READY || (!isConnectedHere && voiceState.status == VoiceStatus.CONNECTED)}
         <div
           class="p-3 bg-success inline-flex items-center justify-center rounded-full cursor-pointer"
           on:click={async () => {
