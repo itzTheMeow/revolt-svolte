@@ -70,10 +70,6 @@
 
   async function sendMessage() {
     if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length)) {
-      if ($selectInput) {
-        $selectInput.focus();
-        selectInput.set(null);
-      }
       return;
     }
     selectInput.set(MessageInput);
