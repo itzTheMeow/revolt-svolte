@@ -32,7 +32,8 @@
   let inputtedMessage = "",
     MessageInput: HTMLInputElement,
     FileInput: HTMLInputElement,
-    SendButton: HTMLDivElement;
+    SendButton: HTMLDivElement,
+    hasBottom = false;
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
     autocomplete.set(
@@ -200,10 +201,10 @@
     style="background-color:{$Theme['accent']};"
     bind:this={SendButton}
     on:touchstart={() => {
-      if (!$MessageInputSelected) selectBottom();
+      hasBottom = $MessageInputSelected;
     }}
     on:touchend={() => {
-      if (!$MessageInputSelected) selectBottom();
+      if (!$MessageInputSelected && hasBottom) MessageInput.focus();
     }}
     on:click={() => sendMessage()}>
     <ArrowBigRightLine />
