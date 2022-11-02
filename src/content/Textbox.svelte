@@ -70,10 +70,9 @@
   }
 
   async function sendMessage() {
-    if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length)) {
+    if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length))
       return;
-    }
-    selectInput.set(MessageInput);
+
     const content = inputtedMessage ? inputtedMessage : null;
     const fc = SendButton.firstElementChild as HTMLDivElement;
     SendButton.classList.add("loading");
@@ -205,6 +204,7 @@
     }}
     on:touchend={() => {
       if (!$MessageInputSelected && hasBottom) MessageInput.focus();
+      hasBottom = false;
     }}
     on:click={() => sendMessage()}>
     <ArrowBigRightLine />
