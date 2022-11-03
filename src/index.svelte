@@ -56,6 +56,7 @@
 
   let previous = "";
   afterUpdate(() => {
+    let focused = false;
     if ($pendBottom) {
       const ListMessages = document.getElementById("MessageList");
       if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight * 2;
@@ -63,6 +64,7 @@
       if ($selectInput) {
         $selectInput.focus();
         selectInput.set(null);
+        focused = true;
       }
     }
     if (previous == document.body.innerHTML) return;
@@ -70,9 +72,10 @@
     document
       .querySelectorAll(".overflow-y-auto")
       .forEach((e) => e && disableBodyScroll(e, { allowTouchMove: () => true }));
-    if ($selectInput) {
+    if ($selectInput && !focused) {
       $selectInput.focus();
       selectInput.set(null);
+      focused = true;
     }
   });
 
