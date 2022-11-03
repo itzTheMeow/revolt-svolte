@@ -183,8 +183,10 @@
     class="btn btn-square btn-primary rounded-none border-none"
     style="background-color:{$Theme['accent']};"
     bind:this={SendButton}
-    on:touchend={() => {
-      if (document.activeElement?.id !== "Textbox") MessageInput.focus();
+    on:touchend={(e) => {
+      e.preventDefault();
+      sendMessage();
+      return false;
     }}
     on:click={() => sendMessage()}
   >
