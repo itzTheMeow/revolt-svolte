@@ -1,23 +1,17 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { Client } from "revolt.js";
-
-  const hasSession = localStorage.getItem("session");
 
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;
   let passInput: HTMLInputElement;
-  let hcap: HTMLDivElement;
   let errtxt: HTMLDivElement;
 
-  let capkey = "";
   async function signIn() {
     errtxt.innerHTML = "";
     const email = userInput.value,
       password = passInput.value;
     if (!email) return (errtxt.innerText = "Enter an email!");
     if (!password) return (errtxt.innerText = "Enter a password!");
-    if (!capkey) return (errtxt.innerText = "Solve the captcha!");
 
     signinBtn.classList.add("loading");
     const client = new Client();
@@ -26,23 +20,11 @@
       window.location.reload();
     });
     try {
-      await client.login({ email, password, captcha: capkey, friendly_name: "AncientRev" });
+      await client.login({ email, password, friendly_name: "AncientRev" });
     } catch (err) {
       errtxt.innerText = `Failed to log in: ${err}`;
       signinBtn.classList.remove("loading");
     }
-  }
-  if (!hasSession) {
-    onMount(() => {
-      const captest = setInterval(() => {
-        const hcaptcha = (window as any).hcaptcha;
-        if (!hcaptcha) return;
-        clearInterval(captest);
-        hcaptcha.render(hcap);
-      }, 50);
-    });
-
-    (window as any).hcapDone = (k: string) => (capkey = k);
   }
 </script>
 
@@ -59,13 +41,6 @@
     class="input input-bordered w-72 mb-2"
     placeholder="Password"
     bind:this={passInput}
-  />
-  <div
-    bind:this={hcap}
-    class="h-captcha"
-    data-theme="dark"
-    data-sitekey="3daae85e-09ab-4ff6-9f24-e8f4f335e433"
-    data-callback="hcapDone"
   />
   <div class="text-error text-sm" bind:this={errtxt} />
   <div class="btn btn-primary mt-2" bind:this={signinBtn} on:click={signIn}>Sign In</div>
