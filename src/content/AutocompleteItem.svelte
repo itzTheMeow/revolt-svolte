@@ -6,20 +6,25 @@
   export let onclick: () => any;
 
   const iconSize = 20;
+
 </script>
 
 <div
-  class="p-1 bg-white bg-opacity-5 flex items-center rounded mx-2 my-1.5 cursor-pointer"
-  on:click={onclick}
->
-  {#if typeof icon == "string"}
+  class="p-1 bg-white bg-opacity-5 flex items-center rounded mx-2 my-1.5
+    cursor-pointer"
+  on:touchend={(e) => {
+    e.preventDefault();
+    onclick();
+    return false;
+  }}
+  on:click={onclick}>
+  {#if typeof icon == 'string'}
     <img
       src={icon}
       width={iconSize}
       height={iconSize}
       class="object-cover aspect-square {rounded ? 'rounded-full' : ''}"
-      alt=""
-    />
+      alt="" />
   {:else}
     <svelte:component this={icon} size={iconSize} />
   {/if}
