@@ -37,7 +37,6 @@ export function init() {
       }
     } catch (err) {
       try {
-        console.error(err);
         return res.sendStatus(200);
       } catch {}
     }
