@@ -31,7 +31,7 @@ client.once("ready", async () => {
 });
 
 if (client.unreads) {
-  observe(client.unreads, () => {
+  observe((<any>client.unreads).channels, () => {
     UnreadState.set(Date.now());
   });
   setInterval(() => client.unreads?.sync(), 60000);
