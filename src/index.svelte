@@ -1,6 +1,6 @@
 <script lang="ts">
   import ChannelList from "channels/ChannelList.svelte";
-  import { client } from "Client";
+  import { client, ClientReady } from "Client";
   import ContentList from "content/ContentList.svelte";
   import Loader from "Loader.svelte";
   import ServerList from "servers/ServerList.svelte";
@@ -29,7 +29,6 @@
   import TWEEN from "@tweenjs/tween.js";
   import { ElectronFullscreen, Native } from "Native";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
-  import { testMuted } from "utils";
   import Unreads from "revolt.js/dist/util/Unreads";
 
   requestAnimationFrame(function animate(time: number) {
@@ -212,11 +211,11 @@
     (Native.isNative ? Native.titlebarHeight : 0)}px;width:{$AppWidth}px;"
   bind:this={Container}
 >
-  {#await new Promise((r) => client.once("ready", () => r(void 0)))}
+  {#if !$ClientReady}
     <div class="m-auto">
       <Loader />
     </div>
-  {:then}
+  {:else}
     {#if !$MobileLayout || $PaneState !== PaneStates.RIGHT}
       <ServerList />
       <ChannelList />
@@ -225,5 +224,5 @@
     {#if !$MobileLayout || $PaneState !== PaneStates.LEFT}
       <MemberBar />
     {/if}
-  {/await}
+  {/if}
 </div>

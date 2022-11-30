@@ -6,6 +6,7 @@ import { writable } from "svelte/store";
 import { Theme } from "Theme";
 import { NotifSettings } from "./State";
 
+export const ClientReady = writable(false);
 export const client = new Client({
   unreads: true,
 });
@@ -28,6 +29,7 @@ client.once("ready", async () => {
   } catch (err) {
     console.error(err);
   }
+  ClientReady.set(true);
 });
 
 if (client.unreads) {
