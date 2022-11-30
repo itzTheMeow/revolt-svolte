@@ -32,7 +32,7 @@ client.once("ready", async () => {
 
 if (client.unreads) {
   observe((<any>client.unreads).channels, () => {
-    UnreadState.set(Date.now());
+    UnreadState.set(Date.now() * Math.random());
   });
   setInterval(() => client.unreads?.sync(), 60000);
 }

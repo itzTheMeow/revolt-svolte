@@ -5,6 +5,7 @@
   import {
     autocomplete,
     MessageInputSelected,
+    NotifSettings,
     pendBottom,
     pushFile,
     replyingTo,
@@ -14,7 +15,7 @@
   } from "State";
   import { ArrowBigRightLine, Hash, Paperclip, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
+  import { proxyURL, testMuted } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
@@ -54,7 +55,8 @@
   async function sendMessage() {
     if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length)) return;
 
-    const content = inputtedMessage ? inputtedMessage : null;
+    const content = inputtedMessage ? inputtedMessage : null,
+      channel = $SelectedChannel;
     const fc = SendButton.firstElementChild as HTMLDivElement;
     SendButton.classList.add("loading");
     fc.style.display = "none";
@@ -74,7 +76,7 @@
         console.error("no attachment", err);
       }
     }
-    const message = await $SelectedChannel.sendMessage({
+    const message = await channel.sendMessage({
       content,
       attachments: attachments.length ? attachments : null,
       replies,
@@ -83,7 +85,6 @@
     fc.style.display = "";
     pendBottom.set(true);
     recalculateAutocomplete();
-    client.unreads?.sync();
   }
 </script>
 

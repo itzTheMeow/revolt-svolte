@@ -1,9 +1,9 @@
 <script lang="ts">
   import { UnreadState } from "Client";
-  import { Channel, Server } from "revolt.js";
+  import type { Server } from "revolt.js";
   import { MessageCache, NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
+  import { proxyURL, testMuted } from "utils";
 
   export let server: Server;
   let isSelected = false;
@@ -13,17 +13,7 @@
   $: {
     $UnreadState;
     isSelected = $SelectedServer?._id == server._id;
-    isUnread = !!server.isUnread({
-      isMuted(target) {
-        return target instanceof Server
-          ? $NotifSettings.server?.[target._id] == "muted"
-          : target instanceof Channel
-          ? $NotifSettings.channel?.[target._id]
-            ? $NotifSettings.channel?.[target._id] == "muted"
-            : $NotifSettings.server?.[target.server_id || ""] == "muted"
-          : false;
-      },
-    });
+    isUnread = !!server.isUnread(testMuted($NotifSettings));
   }
 </script>
 

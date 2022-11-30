@@ -11,9 +11,9 @@
     SelectedChannel,
   } from "State";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
+  import { proxyURL, testMuted } from "utils";
   import { Hash, Volume } from "tabler-icons-svelte";
-  import { Channel, Server } from "revolt.js";
+  import type { Channel } from "revolt.js";
   import { UnreadState } from "Client";
 
   export let channel: Channel;
@@ -38,17 +38,7 @@
   $: {
     $UnreadState;
     isSelected = $SelectedChannel?._id == channel._id;
-    isUnread = !!channel.isUnread({
-      isMuted(target) {
-        return target instanceof Server
-          ? $NotifSettings.server?.[target._id] == "muted"
-          : target instanceof Channel
-          ? $NotifSettings.channel?.[target._id]
-            ? $NotifSettings.channel?.[target._id] == "muted"
-            : $NotifSettings.server?.[target.server_id || ""] == "muted"
-          : false;
-      },
-    });
+    isUnread = !!channel.isUnread(testMuted($NotifSettings));
   }
 </script>
 

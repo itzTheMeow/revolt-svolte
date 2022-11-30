@@ -1,4 +1,4 @@
-import type { Message } from "revolt.js";
+import { Channel, Server, type Message } from "revolt.js";
 
 export function escapeHTML(txt: string) {
   return txt
@@ -44,4 +44,18 @@ type NotifType = "none" | "muted" | "mention" | "all";
 export interface NotificationSettings {
   server?: { [key: string]: NotifType };
   channel?: { [key: string]: NotifType };
+}
+
+export function testMuted(notifs: NotificationSettings) {
+  return {
+    isMuted(target: Server | Channel | undefined) {
+      return target instanceof Server
+        ? notifs.server?.[target._id] == "muted"
+        : target instanceof Channel
+        ? notifs.channel?.[target._id]
+          ? notifs.channel?.[target._id] == "muted"
+          : notifs.server?.[target.server_id || ""] == "muted"
+        : false;
+    },
+  };
 }
