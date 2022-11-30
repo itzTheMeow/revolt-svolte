@@ -1,9 +1,11 @@
 import type { AutocompleteResult } from "revolt-toolset/dist/autocomplete";
 import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
+import type { NotificationSettings } from "utils";
 
 export const fetchedMembers = new Set<string>();
 
+export const ServerOrder = writable<string[]>([]);
 export const SelectedServer = writable<Server | null>(null);
 let serverID = "";
 SelectedServer.subscribe((s) => {
@@ -13,6 +15,7 @@ SelectedServer.subscribe((s) => {
   s.fetchMembers().then(() => s._id == serverID && SelectedServer.set(s));
 });
 export const SelectedChannel = writable<Channel | null>(null);
+export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
 let messagecachelocal: { [key: string]: Message[] } = {};
 export const MessageCache = writable(messagecachelocal);

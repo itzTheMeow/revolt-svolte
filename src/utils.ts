@@ -39,3 +39,9 @@ export function MessageDetails(message: Message) {
       message.member?.orderedRoles.reverse().find((r) => r[1].colour)?.[1].colour,
   };
 }
+
+type NotifType = "none" | "muted" | "mention" | "all";
+export interface NotificationSettings {
+  server?: { [key: string]: NotifType };
+  channel?: { [key: string]: NotifType };
+}

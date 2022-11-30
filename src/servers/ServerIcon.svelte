@@ -1,21 +1,36 @@
 <script lang="ts">
-  import type { Server } from "revolt.js";
-  import { SelectedServer } from "State";
+  import { Channel, Server } from "revolt.js";
+  import { MessageCache, NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
 
   export let server: Server;
 
-  const hasIcon = !!server.icon;
+  let isUnread = false;
+  let numUnreads = 0;
+  $: {
+    $MessageCache;
+    isUnread = !!server.isUnread({
+      isMuted(target) {
+        return target instanceof Server
+          ? $NotifSettings.server?.[target._id] == "muted"
+          : target instanceof Channel
+          ? $NotifSettings.channel?.[target._id]
+            ? $NotifSettings.channel?.[target._id] == "muted"
+            : $NotifSettings.server?.[target.server_id || ""] == "muted"
+          : false;
+      },
+    });
+  }
 </script>
 
 <div
-  class="avatar {hasIcon
+  class="avatar {server.icon
     ? ''
     : 'placeholder'} cursor-pointer box-border rounded-full w-12 h-12 relative"
   on:click={() => SelectedServer.set(server)}
 >
-  {#if hasIcon}
+  {#if server.icon}
     <div class="w-12 h-12 rounded-full">
       <img
         src={proxyURL(server.generateIconURL({ max_side: 64 }), "image")}
@@ -34,7 +49,19 @@
     </div>
   {/if}
   <div
-    class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20"
+    class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20 !overflow-visible"
     style={$SelectedServer?._id == server._id ? `border: 2px solid ${$Theme["accent"]};` : ""}
-  />
+  >
+    {#if isUnread}
+      <div
+        class="absolute -right-0.5 -bottom-0.5 flex items-center justify-center text-xs px-1 h-5 rounded-full text-right"
+        style:background-color={$Theme["secondary-foreground"]}
+        style:border="2px solid {$Theme["background"]}"
+        style:color={$Theme["secondary-background"]}
+        style:min-width="1.25rem"
+      >
+        {numUnreads || ""}
+      </div>
+    {/if}
+  </div>
 </div>
