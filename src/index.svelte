@@ -42,19 +42,7 @@
       client.unreads?.markRead(message.channel_id, message._id);
       const unreads = new Unreads(client);
       await unreads.sync();
-      if (
-        (() => {
-          const c = message.channel;
-          if (testMuted($NotifSettings).isMuted(c)) return false;
-          if (
-            !c?.last_message_id ||
-            c.channel_type === "SavedMessages" ||
-            c.channel_type === "VoiceChannel"
-          )
-            return false;
-          return (unreads.getUnread(c._id)?.last_id ?? "0").localeCompare(c.last_message_id) === -1;
-        })()
-      )
+      if ((unreads.getUnread(message.channel_id)?.last_id ?? "0").localeCompare(message._id) === -1)
         message.channel?.ack(message, true);
     }
   });
