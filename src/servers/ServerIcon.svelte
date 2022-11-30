@@ -6,11 +6,13 @@
   import { proxyURL } from "utils";
 
   export let server: Server;
+  let isSelected = false;
 
   let isUnread = false;
   let numUnreads = 0;
   $: {
     $UnreadState;
+    isSelected = $SelectedServer?._id == server._id;
     isUnread = !!server.isUnread({
       isMuted(target) {
         return target instanceof Server
@@ -51,17 +53,19 @@
   {/if}
   <div
     class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20 !overflow-visible"
-    style={$SelectedServer?._id == server._id ? `border: 2px solid ${$Theme["accent"]};` : ""}
+    style={isSelected ? `border: 2px solid ${$Theme["accent"]};` : ""}
   >
     {#if isUnread}
       <div
-        class="absolute -right-0.5 -bottom-0.5 flex items-center justify-center text-xs px-1 h-5 rounded-full text-right"
+        class="absolute {isSelected
+          ? '-right-1 -bottom-1'
+          : '-right-0.5 -bottom-0.5'} flex items-center justify-center text-xs px-1 h-5 rounded-full text-right"
         style:background-color={$Theme["secondary-foreground"]}
-        style:border="2px solid {$Theme["background"]}"
+        style:border="3px solid {$Theme["background"]}"
         style:color={$Theme["secondary-background"]}
         style:min-width="1.25rem"
       >
-        {numUnreads || ""}
+        {(numUnreads >= 100 ? "99+" : numUnreads) || ""}
       </div>
     {/if}
   </div>
