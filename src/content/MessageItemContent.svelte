@@ -28,7 +28,7 @@
         `https://autumn.revolt.chat/emojis/${id}`,
         "image"
       )}" class="inline object-contain ${
-        message.content?.slice() == _ ? "h-12 w-12" : "h-5 w-5"
+        message.content?.trim() == _ ? "h-12 w-12" : "h-5 w-5"
       } -mx-0.5 align-middle" />`;
     })}
 </div>
