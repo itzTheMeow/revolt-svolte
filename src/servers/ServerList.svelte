@@ -1,8 +1,17 @@
 <script>
   import { client } from "Client";
+  import { ServerOrder } from "State";
   import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import ServerIcon from "./ServerIcon.svelte";
+
+  let orderedServers = [...client.servers.values()];
+  $: {
+    orderedServers = [
+      ...$ServerOrder.map((s) => client.servers.get(s)),
+      ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s._id)),
+    ];
+  }
 </script>
 
 <div
@@ -10,7 +19,7 @@
   style="background-color:{$Theme['background']};scrollbar-width:none;--scroll-width:0px;"
   id="ServerList"
 >
-  {#each [...client.servers.values()].sort( (s1, s2) => (s1.name.toLowerCase() > s2.name.toLowerCase() ? 1 : -1) ) as server}
+  {#each orderedServers as server}
     <ServerIcon {server} />
   {/each}
 
