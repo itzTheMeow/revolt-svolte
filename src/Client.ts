@@ -1,12 +1,15 @@
+import { observe } from "mobx";
 import { DEFAULT_THEME } from "revolt-toolset";
 import { Client } from "revolt.js";
 import { ServerOrder } from "State";
+import { writable } from "svelte/store";
 import { Theme } from "Theme";
 import { NotifSettings } from "./State";
 
 export const client = new Client({
   unreads: true,
 });
+export const UnreadState = writable(Date.now());
 client.once("ready", async () => {
   try {
     const settings = await client.syncFetchSettings([
@@ -26,3 +29,10 @@ client.once("ready", async () => {
     console.error(err);
   }
 });
+
+if (client.unreads) {
+  observe(client.unreads, () => {
+    UnreadState.set(Date.now());
+  });
+  setInterval(() => client.unreads?.sync(), 60000);
+}

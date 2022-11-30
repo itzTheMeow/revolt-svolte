@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { UnreadState } from "Client";
   import { Channel, Server } from "revolt.js";
   import { MessageCache, NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
@@ -9,7 +10,7 @@
   let isUnread = false;
   let numUnreads = 0;
   $: {
-    $MessageCache;
+    $UnreadState;
     isUnread = !!server.isUnread({
       isMuted(target) {
         return target instanceof Server

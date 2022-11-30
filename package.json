@@ -33,6 +33,7 @@
     "esbuild-svelte": "^0.7.1",
     "express": "^4.18.1",
     "mediasoup-client": "^3.6.57",
+    "mobx": "^6.7.0",
     "postcss": "^8.4.16",
     "revolt-toolset": "^0.0.17",
     "revolt.js": "^6.0.18",

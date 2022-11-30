@@ -83,6 +83,7 @@
     fc.style.display = "";
     pendBottom.set(true);
     recalculateAutocomplete();
+    client.unreads?.sync();
   }
 </script>
 
