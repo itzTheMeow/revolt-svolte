@@ -31,6 +31,7 @@
       pushMessages($SelectedChannel, m);
       pendBottom.set(true);
     }
+    if (channel.isUnread(testMuted($NotifSettings))) channel.ack(undefined, true);
   }
 
   let isUnread = false;
