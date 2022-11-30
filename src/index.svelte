@@ -54,9 +54,8 @@
             return false;
           return (unreads.getUnread(c._id)?.last_id ?? "0").localeCompare(c.last_message_id) === -1;
         })()
-      ) {
+      )
         message.channel?.ack(message, true);
-      }
     }
   });
   window.addEventListener("touchstart", (e) => {
