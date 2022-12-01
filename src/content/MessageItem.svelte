@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { DateTime } from "luxon";
   import type { Message } from "revolt.js";
   import { HoveredMessage, MessageCache, MobileLayout, SelectedChannel } from "State";
   import { Theme } from "Theme";
@@ -11,8 +12,9 @@
 
   export let message: Message;
 
-  let isReply = false;
-  let shouldSeparate = true;
+  let isReply = false,
+    shouldSeparate = true,
+    isHovered = false;
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!._id]?.[
@@ -25,6 +27,7 @@
       previousMessage.author_id !== message.author_id ||
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
+    isHovered = $HoveredMessage == message._id;
   }
 </script>
 
@@ -34,9 +37,7 @@
   {/if}
   <div
     class="relative {shouldSeparate ? 'mt-3' : ''}"
-    style={$HoveredMessage == message._id
-      ? `background-color:${$Theme["secondary-background"]};`
-      : ""}
+    style={isHovered ? `background-color:${$Theme["secondary-background"]};` : ""}
     on:mouseenter={() => HoveredMessage.set(message._id)}
     on:mousemove={() => HoveredMessage.set(message._id)}
     on:mouseleave={() => HoveredMessage.set(null)}
@@ -48,7 +49,7 @@
       return false;
     }}
   >
-    <div class="flex gap-2">
+    <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
       {#if shouldSeparate}
         <img
           class="rounded-full h-10 w-10 shrink-0 object-cover"
@@ -56,7 +57,15 @@
           alt=""
         />
       {:else}
-        <div class="h-0.5 w-10 shrink-0" />
+        <div
+          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
+          style:font-size="0.65rem"
+          style:color={$Theme["tertiary-foreground"]}
+        >
+          {#if isHovered}
+            {DateTime.fromMillis(message.createdAt).toFormat("t")}
+          {/if}
+        </div>
       {/if}
       <div class="flex flex-col flex-1">
         {#if shouldSeparate}
@@ -66,7 +75,7 @@
         <MessageItemAttachments {message} />
       </div>
     </div>
-    {#if $HoveredMessage == message._id}
+    {#if isHovered}
       <MessageItemToolbar {message} />
     {/if}
   </div>
