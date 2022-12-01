@@ -23,7 +23,8 @@
       isReply ||
       !previousMessage ||
       previousMessage.author_id !== message.author_id ||
-      JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade);
+      JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
+      Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
   }
 </script>
 

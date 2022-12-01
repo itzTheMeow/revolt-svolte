@@ -1,4 +1,5 @@
 import { Channel, Server, type Message } from "revolt.js";
+import { DateTime } from "luxon";
 
 export function escapeHTML(txt: string) {
   return txt
@@ -22,6 +23,8 @@ export const Matches = {
 };
 
 export function MessageDetails(message: Message) {
+  const dstr = (dt: DateTime) => dt.toFormat("yyyy-LL-dd");
+  const time = DateTime.fromMillis(message.createdAt);
   return {
     avatar: proxyURL(
       message.masquerade?.avatar
@@ -36,7 +39,18 @@ export function MessageDetails(message: Message) {
       "Unknown User",
     color:
       message.masquerade?.colour ||
-      message.member?.orderedRoles.reverse().find((r) => r[1].colour)?.[1].colour,
+      message.member?.orderedRoles.reverse().find((r) => r[1].colour)?.[1].colour ||
+      "",
+    time:
+      dstr(time) == dstr(DateTime.now())
+        ? time.toFormat("t")
+        : `${
+            dstr(time) == dstr(DateTime.now().minus({ day: 1 }))
+              ? "Yesterday"
+              : Math.abs(time.diffNow(["days"]).days) >= 7
+              ? time.toFormat("DD")
+              : time.toRelative({ unit: "days" })
+          } at ${time.toFormat("t")}`,
   };
 }
 
