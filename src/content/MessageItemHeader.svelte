@@ -19,7 +19,7 @@
       {message.masquerade ? "BRIDGE" : "BOT"}
     </div>
   {/if}
-  <div class="text-xs self-end" style:color={$Theme["tertiary-foreground"]}>
+  <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
     {MessageDetails(message).time}
   </div>
 </div>
