@@ -10,7 +10,7 @@
     orderedServers = [
       ...$ServerOrder.map((s) => client.servers.get(s)),
       ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s._id)),
-    ];
+    ].filter((o) => o);
   }
 </script>
 
