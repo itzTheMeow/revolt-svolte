@@ -36,6 +36,8 @@ esbuild
   })
   .then(() => {
     fs.copyFileSync("src/index.html", "dist/index.html");
+    fs.copyFileSync("svolte-logo.png", "dist/logo.png");
+    fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
     init();
   })
   //@ts-ignore

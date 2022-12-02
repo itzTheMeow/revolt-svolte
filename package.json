@@ -4,7 +4,7 @@
   "description": "Svelte, TypeScript, and DaisyUI template.",
   "main": "serverDist/build.js",
   "scripts": {
-    "build": "tsc -b tsconfig.json",
+    "build": "rimraf dist && rimraf serverDist && tsc -b tsconfig.json",
     "start": "npm run build && node .",
     "dev": "npm run build && node . --watch"
   },
@@ -39,6 +39,7 @@
     "postcss": "^8.4.16",
     "revolt-toolset": "^0.0.17",
     "revolt.js": "^6.0.18",
+    "rimraf": "^3.0.2",
     "sharp": "^0.31.1",
     "svelte": "^3.49.0",
     "svelte-preprocess": "^4.10.7",
