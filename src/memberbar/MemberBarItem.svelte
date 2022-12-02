@@ -36,7 +36,7 @@
 {:else}
   <div
     class="block mb-1 font-bold select-none overflow-hidden whitespace-nowrap overflow-ellipsis"
-    style:color={UserColor(item.colour || "inherit")}
+    style={UserColor(item.colour || "inherit")}
   >
     {item.name}{item.count > 1 ? ` - ${item.count.toLocaleString()}` : ""}
   </div>
