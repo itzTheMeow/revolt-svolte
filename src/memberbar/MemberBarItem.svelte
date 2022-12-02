@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type API, Member } from "revolt.js";
   import { Theme } from "Theme";
-  import { MemberDetails, UserDetails } from "utils";
+  import { MemberDetails, UserColor, UserDetails } from "utils";
 
   export let item: (API.Role & { count: number }) | Member;
 </script>
@@ -19,7 +19,7 @@
     <div class="flex flex-col" style:width="calc(100% - 2.5rem - 0.375rem)">
       <div
         class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis"
-        style:color={MemberDetails(item).color || "inherit"}
+        style={UserColor(MemberDetails(item).color || "inherit")}
       >
         {MemberDetails(item).name}
       </div>

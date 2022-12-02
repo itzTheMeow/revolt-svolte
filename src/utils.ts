@@ -64,6 +64,11 @@ export function MessageDetails(message: Message) {
           } at ${time.toFormat("t")}`,
   };
 }
+export function UserColor(color: string) {
+  return color.includes("gradient")
+    ? `background:${color};background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;`
+    : `color:${color};`;
+}
 
 type NotifType = "none" | "muted" | "mention" | "all";
 export interface NotificationSettings {

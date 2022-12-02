@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { Message } from "revolt.js";
   import { Theme } from "Theme";
-  import { MessageDetails } from "utils";
+  import { MessageDetails, UserColor } from "utils";
 
   export let message: Message;
 </script>
 
 <div class="flex items-center gap-1.5 -mb-0.5" style:line-height="1.1">
-  <div class="font-semibold" style:color={MessageDetails(message).color || "inherit"}>
+  <div class="font-semibold" style={UserColor(MessageDetails(message).color || "inherit")}>
     {MessageDetails(message).name}
   </div>
   {#if message.author?.bot}
