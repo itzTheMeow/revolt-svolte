@@ -22,6 +22,15 @@
         style={UserColor(MemberDetails(item).color || "inherit")}
       >
         {MemberDetails(item).name}
+        {#if item.user?.bot}
+          <div
+            class="rounded px-1 py-0.5 flex items-center justify-center"
+            style:background-color={$Theme["accent"]}
+            style:font-size="0.65rem"
+          >
+            BOT
+          </div>
+        {/if}
       </div>
       {#if item.user?.status?.text && UserDetails(item.user).online}
         <div
