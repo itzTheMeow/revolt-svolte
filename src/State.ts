@@ -12,7 +12,10 @@ SelectedServer.subscribe((s) => {
   serverID = s?._id || "";
   if (!s || fetchedMembers.has(s._id)) return;
   fetchedMembers.add(s._id);
-  s.fetchMembers().then(() => s._id == serverID && SelectedServer.set(s));
+  // again shouldnt be hardcoded
+  s.syncMembers(serverID == "01F7ZSBSFHQ8TA81725KQCSDDP").then(
+    () => s._id == serverID && SelectedServer.set(s)
+  );
 });
 export const SelectedChannel = writable<Channel | null>(null);
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });

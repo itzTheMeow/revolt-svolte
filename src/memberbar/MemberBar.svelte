@@ -39,7 +39,11 @@
         )
       );
       memberList = l;
-      if (!$memstate) $SelectedServer.syncMembers().then(() => memstate.set(true));
+      if (!$memstate)
+        $SelectedServer
+          // *really* shouldnt be hardcoding this but revite does and theres no way to tell if a server is 'large'
+          .syncMembers($SelectedServer._id == "01F7ZSBSFHQ8TA81725KQCSDDP")
+          .then(() => memstate.set(true));
     } else memberList = [];
   }
 </script>

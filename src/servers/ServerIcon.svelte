@@ -1,7 +1,7 @@
 <script lang="ts">
   import { UnreadState } from "Client";
   import type { Server } from "revolt.js";
-  import { MessageCache, NotifSettings, SelectedServer } from "State";
+  import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { proxyURL, testMuted } from "utils";
 
