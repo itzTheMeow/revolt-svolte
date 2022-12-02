@@ -7,7 +7,10 @@
 </script>
 
 {#if item instanceof Member}
-  <div class="inline-flex gap-1.5 w-full items-center mb-1.5 select-none">
+  <div
+    class="inline-flex gap-1.5 w-full items-center mb-1.5 select-none"
+    style:opacity={UserDetails(item.user).online ? "1" : "0.5"}
+  >
     <img
       class="rounded-full h-10 w-10 object-cover"
       src={MemberDetails(item).avatar}
