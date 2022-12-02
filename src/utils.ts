@@ -1,4 +1,4 @@
-import { Channel, Server, type Message } from "revolt.js";
+import { Channel, Member, Server, User, type Message } from "revolt.js";
 import { DateTime } from "luxon";
 
 export function escapeHTML(txt: string) {
@@ -22,25 +22,32 @@ export const Matches = {
   emojiDefault: /:([A-z0-9_]+?):/g,
 };
 
+export function UserDetails(user: User | undefined) {
+  return {
+    online: user?.online && user.status?.presence !== "Invisible",
+  };
+}
+export function MemberDetails(member: Member | undefined) {
+  return {
+    avatar: proxyURL(
+      member?.avatar
+        ? member.generateAvatarURL({ max_side: 256 })
+        : member?.user?.generateAvatarURL({ max_side: 256 }),
+      "image"
+    ),
+    color: member?.orderedRoles.find((r) => r[1].colour)?.[1].colour || "",
+    name: member?.nickname || member?.user?.username || "Unknown User",
+  };
+}
 export function MessageDetails(message: Message) {
   const dstr = (dt: DateTime) => dt.toFormat("yyyy-LL-dd");
   const time = DateTime.fromMillis(message.createdAt);
   return {
-    avatar: proxyURL(
-      message.masquerade?.avatar
-        ? message.generateMasqAvatarURL()
-        : message.author?.generateAvatarURL({ max_side: 256 }) || "",
-      "image"
-    ),
-    name:
-      message.masquerade?.name ||
-      message.member?.nickname ||
-      message.author?.username ||
-      "Unknown User",
-    color:
-      message.masquerade?.colour ||
-      message.member?.orderedRoles.reverse().find((r) => r[1].colour)?.[1].colour ||
-      "",
+    avatar: message.masquerade?.avatar
+      ? proxyURL(message.generateMasqAvatarURL(), "image")
+      : MemberDetails(message.member).avatar,
+    name: message.masquerade?.name || MemberDetails(message.member).name,
+    color: message.masquerade?.colour || MemberDetails(message.member).color,
     time:
       dstr(time) == dstr(DateTime.now())
         ? time.toFormat("t")
