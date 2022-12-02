@@ -35,7 +35,11 @@ export function MemberDetails(member: Member | undefined) {
         : member?.user?.generateAvatarURL({ max_side: 256 }),
       "image"
     ),
-    color: member?.orderedRoles.find((r) => r[1].colour)?.[1].colour || "",
+    color:
+      member?.orderedRoles
+        .map((r) => r[1])
+        .reverse()
+        .find((r) => r.colour)?.colour || "",
     name: member?.nickname || member?.user?.username || "Unknown User",
   };
 }
