@@ -21,11 +21,13 @@
       <li>
         <div
           class="active:bg-inherit"
-          on:click={() => {
+          on:click={(e) => {
+            e.preventDefault();
             opt.clicked();
             setTimeout(() => {
               CMState.set(null);
             }, 10);
+            return false;
           }}
         >
           {#if opt.icon}
