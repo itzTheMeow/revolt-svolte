@@ -110,7 +110,7 @@
     CMState.set({
       pos: {
         left: UploaderButton.getBoundingClientRect().left + 4,
-        bottom: $AppHeight - UploaderButton.getBoundingClientRect().top + 4,
+        bottom: UploaderButton.getBoundingClientRect().height + 4,
       },
       time: Date.now(),
       options: [
