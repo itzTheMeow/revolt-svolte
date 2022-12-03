@@ -98,6 +98,49 @@
     pendBottom.set(true);
     recalculateAutocomplete();
   }
+
+  function handleUpload(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
+    if (!$MobileLayout || !navigator.clipboard.read) return FileInput.click();
+    if ($CMState) {
+      if (!$CMState.time || Date.now() - $CMState.time < 600) FileInput.click();
+      return CMState.set(null);
+    }
+
+    CMState.set({
+      pos: {
+        left: UploaderButton.getBoundingClientRect().left + 4,
+        bottom: $AppHeight - UploaderButton.getBoundingClientRect().top + 4,
+      },
+      time: Date.now(),
+      options: [
+        {
+          name: "From Clipboard",
+          async clicked() {
+            const files = await navigator.clipboard.read?.();
+            files?.forEach(async (file) => {
+              const mime = file.types.find((f) => f.startsWith("image/"));
+              if (!mime) return;
+              const blob = await file.getType(mime);
+              if (blob) {
+                pushFile(new File([blob], `image.${mime.split("/").pop()}`));
+                selectBottom();
+              }
+            });
+          },
+          icon: Clipboard,
+        },
+        {
+          name: "Choose File",
+          clicked() {
+            FileInput.click();
+          },
+          icon: FileUpload,
+        },
+      ],
+    });
+    return false;
+  }
 </script>
 
 <TextboxUploaded />
@@ -172,48 +215,8 @@
     style="background-color:{$Theme['primary-header']};"
     id="UploaderButton"
     bind:this={UploaderButton}
-    on:click={(e) => {
-      e.preventDefault();
-      if (!$MobileLayout || !navigator.clipboard.read) return FileInput.click();
-      if ($CMState) {
-        if (!$CMState.time || Date.now() - $CMState.time < 600) FileInput.click();
-        return CMState.set(null);
-      }
-
-      CMState.set({
-        pos: {
-          left: UploaderButton.getBoundingClientRect().left + 4,
-          bottom: $AppHeight - UploaderButton.getBoundingClientRect().top + 4,
-        },
-        time: Date.now(),
-        options: [
-          {
-            name: "From Clipboard",
-            async clicked() {
-              const files = await navigator.clipboard.read?.();
-              files?.forEach(async (file) => {
-                const mime = file.types.find((f) => f.startsWith("image/"));
-                if (!mime) return;
-                const blob = await file.getType(mime);
-                if (blob) {
-                  pushFile(new File([blob], `image.${mime.split("/").pop()}`));
-                  selectBottom();
-                }
-              });
-            },
-            icon: Clipboard,
-          },
-          {
-            name: "Choose File",
-            clicked() {
-              FileInput.click();
-            },
-            icon: FileUpload,
-          },
-        ],
-      });
-      return false;
-    }}
+    on:click={handleUpload}
+    on:touchstart={handleUpload}
   >
     <Paperclip />
   </div>
