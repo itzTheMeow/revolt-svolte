@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-interface ContextMenuState {
+export interface ContextMenuState {
   pos: {
     top?: number;
     left?: number;
