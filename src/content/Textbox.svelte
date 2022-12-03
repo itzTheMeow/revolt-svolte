@@ -123,7 +123,7 @@
               if (!mime) return;
               const blob = await file.getType(mime);
               if (blob) {
-                pushFile(new File([blob], `image.${mime.split("/").pop()}`));
+                pushFile(new File([blob], `image.${mime.split("/").pop()}`, {type:mime}));
                 selectBottom();
               }
             });
