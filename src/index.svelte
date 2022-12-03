@@ -226,6 +226,6 @@
       <MemberBar />
     {/if}
   {/if}
-</div>
 
-<ContextMenu />
+  <ContextMenu />
+</div>
