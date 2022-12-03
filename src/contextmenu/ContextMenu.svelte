@@ -3,6 +3,14 @@
   import { clickoutside } from "utils";
   import { CMState } from "./ContextMenuState";
 
+  function handleClick(e: MouseEvent | TouchEvent, opt: ) {
+    e.preventDefault();
+    opt.clicked();
+    setTimeout(() => {
+      CMState.set(null);
+    }, 10);
+    return false;
+  }
   function handleClickOut(e: MouseEvent | TouchEvent) {
     if(!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null);
   }
@@ -21,14 +29,7 @@
       <li>
         <div
           class="active:bg-inherit"
-          on:click={(e) => {
-            e.preventDefault();
-            opt.clicked();
-            setTimeout(() => {
-              CMState.set(null);
-            }, 10);
-            return false;
-          }}
+          on:click={(e) => handleClick(e, opt)}
         >
           {#if opt.icon}
             <svelte:component this={opt.icon} />
