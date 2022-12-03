@@ -5,7 +5,7 @@
 
   function handleClick(e: MouseEvent | TouchEvent) {
     e.preventDefault();
-    if(!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null)}
+    if(!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null);
     return false;
   }
 </script>
