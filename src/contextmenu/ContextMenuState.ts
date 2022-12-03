@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 
+export interface ContextMenuStateOption { name: string; clicked: () => any; icon?: any };
 export interface ContextMenuState {
   pos: {
     top?: number;
@@ -8,7 +9,7 @@ export interface ContextMenuState {
     bottom?: number;
   };
   time?: number;
-  options: { name: string; clicked: () => any; icon?: any }[];
+  options: ContextMenuStateOption[];
 }
 
 export const CMState = writable<ContextMenuState | null>(null);
