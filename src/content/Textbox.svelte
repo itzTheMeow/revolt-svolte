@@ -216,7 +216,7 @@
     id="UploaderButton"
     bind:this={UploaderButton}
     on:click={handleUpload}
-    on:touchstart={handleUpload}
+    on:touchend={handleUpload}
   >
     <Paperclip />
   </div>
