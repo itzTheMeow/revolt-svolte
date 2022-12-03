@@ -2,6 +2,12 @@
   import { Theme } from "Theme";
   import { clickoutside } from "utils";
   import { CMState } from "./ContextMenuState";
+
+  function handleClick(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
+    if(!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null)}
+    return false;
+  }
 </script>
 
 {#if $CMState}
@@ -11,9 +17,7 @@
       .map((e) => `${e[0]}:${e[1]}px`)
       .join(";")}
     style:background={$Theme["primary-background"]}
-    use:clickoutside={(e) =>
-      //@ts-ignore
-      !e.composedPath().includes(document.getElementById("UploaderButton")) && CMState.set(null)}
+    use:clickoutside={handleClick}
   >
     {#each $CMState.options as opt}
       <li>
