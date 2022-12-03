@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Theme } from "Theme";
   import { clickoutside } from "utils";
-  import { CMState, ContextMenuStateOption } from "./ContextMenuState";
+  import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
   function handleClick(e: MouseEvent | TouchEvent, opt: ContextMenuStateOption) {
     e.preventDefault();
