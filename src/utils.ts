@@ -89,3 +89,21 @@ export function testMuted(notifs: NotificationSettings) {
     },
   };
 }
+
+export function clickoutside(
+  node: HTMLElement,
+  onEventFunction: (e: MouseEvent | TouchEvent) => any
+) {
+  const handleClick = (event: MouseEvent | TouchEvent) => {
+    if (!event.composedPath().includes(node)) onEventFunction(event);
+  };
+
+  document.addEventListener("click", handleClick);
+  document.addEventListener("touchstart", handleClick);
+  return {
+    destroy() {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    },
+  };
+}

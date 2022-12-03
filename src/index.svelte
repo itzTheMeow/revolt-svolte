@@ -30,6 +30,7 @@
   import { ElectronFullscreen, Native } from "Native";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import Unreads from "revolt.js/dist/util/Unreads";
+  import ContextMenu from "contextmenu/ContextMenu.svelte";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -226,3 +227,5 @@
     {/if}
   {/if}
 </div>
+
+<ContextMenu />
