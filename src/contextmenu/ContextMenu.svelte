@@ -30,6 +30,7 @@
         <div
           class="active:bg-inherit"
           on:click={(e) => handleClick(e, opt)}
+          on:touchend={(e) => handleClick(e, opt)}
         >
           {#if opt.icon}
             <svelte:component this={opt.icon} />
