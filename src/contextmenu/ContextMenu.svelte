@@ -3,10 +3,8 @@
   import { clickoutside } from "utils";
   import { CMState } from "./ContextMenuState";
 
-  function handleClick(e: MouseEvent | TouchEvent) {
-    e.preventDefault();
+  function handleClickOut(e: MouseEvent | TouchEvent) {
     if(!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null);
-    return false;
   }
 </script>
 
@@ -17,7 +15,7 @@
       .map((e) => `${e[0]}:${e[1]}px`)
       .join(";")}
     style:background={$Theme["primary-background"]}
-    use:clickoutside={handleClick}
+    use:clickoutside={handleClickOut}
   >
     {#each $CMState.options as opt}
       <li>
