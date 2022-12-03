@@ -6,7 +6,7 @@
 
 {#if $CMState}
   <ul
-    class="menu rounded-md sticky w-fit h-fit shadow-sm shadow-black"
+    class="menu rounded-md absolute w-fit h-fit shadow-sm shadow-black"
     style={Object.entries($CMState.pos)
       .map((e) => `${e[0]}:${e[1]}px`)
       .join(";")}
