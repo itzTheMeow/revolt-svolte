@@ -207,6 +207,7 @@
     on:change={() => {
       const files = [...(FileInput.files || [])];
       files.forEach(pushFile);
+      selectBottom();
     }}
   />
   <!-- svelte-ignore missing-declaration -->
