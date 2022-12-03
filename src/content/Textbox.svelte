@@ -7,6 +7,7 @@
     AppHeight,
     autocomplete,
     MessageInputSelected,
+    MobileLayout,
     NotifSettings,
     pendBottom,
     pushFile,
@@ -173,6 +174,7 @@
     bind:this={UploaderButton}
     on:click={(e) => {
       e.preventDefault();
+      if (!$MobileLayout || !navigator.clipboard.read) return FileInput.click();
       if ($CMState) {
         if (!$CMState.time || Date.now() - $CMState.time < 600) FileInput.click();
         return CMState.set(null);
