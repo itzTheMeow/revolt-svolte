@@ -17,6 +17,7 @@ import rehypeDomStringify from "rehype-dom-stringify";
 import { client } from "../../Client";
 import { RevoltEmojiDictionary } from "revolt-toolset";
 import { RE_MENTIONS } from "revolt.js";
+import "./prism";
 
 export const MarkdownRenderer = (plugin?: Plugin) => {
   const ren = unified()
