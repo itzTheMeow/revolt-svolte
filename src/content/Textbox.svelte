@@ -117,11 +117,11 @@
           async clicked() {
             const files = await navigator.clipboard.read?.();
             files?.forEach(async (file) => {
-              const mime = file.types.find((f) => f.startsWith("image/"));
+              const mime = file.types[0];
               if (!mime) return;
               const blob = await file.getType(mime);
               if (blob) {
-                pushFile(new File([blob], `image.${mime.split("/").pop()}`, { type: mime }));
+                pushFile(new File([blob], `${mime.split("/")[0]}.${mime.split("/").pop()}`, { type: mime }));
                 selectBottom();
               }
             });
