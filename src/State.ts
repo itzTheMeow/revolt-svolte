@@ -1,4 +1,4 @@
-import type { AutocompleteResult } from "revolt-toolset/dist/autocomplete";
+import type { AutocompleteResult } from "revolt-toolset";
 import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";

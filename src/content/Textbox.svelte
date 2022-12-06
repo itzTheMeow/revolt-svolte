@@ -2,13 +2,11 @@
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { uploadAttachment } from "revolt-toolset";
-  import { parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset/dist/autocomplete";
+  import { parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset";
   import {
-    AppHeight,
     autocomplete,
     MessageInputSelected,
     MobileLayout,
-    NotifSettings,
     pendBottom,
     pushFile,
     replyingTo,
@@ -123,7 +121,7 @@
               if (!mime) return;
               const blob = await file.getType(mime);
               if (blob) {
-                pushFile(new File([blob], `image.${mime.split("/").pop()}`, {type:mime}));
+                pushFile(new File([blob], `image.${mime.split("/").pop()}`, { type: mime }));
                 selectBottom();
               }
             });
