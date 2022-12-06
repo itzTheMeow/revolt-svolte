@@ -20,6 +20,7 @@
     pushMessages,
     selectBottom,
     selectInput,
+    SelectedChannel,
     updatePaneState,
   } from "State";
   import { afterUpdate, onMount } from "svelte";
@@ -38,7 +39,7 @@
   });
   client.on("message", async (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
-    if (message.author_id == client.user?._id) {
+    if (message.author_id == client.user?._id || (document.hasFocus && $SelectedChannel?._id == message.channel_id)) {
       client.unreads?.markRead(message.channel_id, message._id);
       const unreads = new Unreads(client);
       await unreads.sync();
