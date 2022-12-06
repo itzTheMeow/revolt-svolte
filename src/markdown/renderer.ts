@@ -14,7 +14,7 @@ import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism";
 import rehypeDomStringify from "rehype-dom-stringify";
 
-import { client } from "../../Client";
+import { client } from "../Client";
 import { RevoltEmojiDictionary } from "revolt-toolset";
 import { RE_MENTIONS } from "revolt.js";
 import "./prism";
