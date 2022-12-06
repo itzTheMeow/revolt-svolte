@@ -5,7 +5,7 @@
   import { client } from "Client";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
-  import { getServerMember, MemberOrUserDetails } from "utils";
+  import { getServerMember, MemberOrUserDetails, proxyURL } from "utils";
   import { SelectedServer } from "State";
 
   type Child =
@@ -43,6 +43,41 @@
           }) => {
             if (!node.properties.type) return void 0;
             switch (node.properties.type) {
+              case "channel":
+                node.children.push({
+                  type: "element",
+                  tagName: "span",
+                  properties: {
+                    style: `color:${$Theme["accent"]};`,
+                  },
+                  children: [
+                    {
+                      type: "text",
+                      value: `#${
+                        $SelectedServer?.channels.find((c) => c?._id == node.properties.match)
+                          ?.name || "unknown-channel"
+                      }`,
+                    },
+                  ],
+                });
+                break;
+              case "emoji":
+                node.children.push({
+                  type: "element",
+                  tagName: "img",
+                  properties: {
+                    src: proxyURL(
+                      `https://autumn.revolt.chat/emojis/${node.properties.match}`,
+                      "image"
+                    ),
+                    class: `inline object-contain ${
+                      message.content?.trim() == `:${node.properties.match}:`
+                        ? "h-12 w-12"
+                        : "h-5 w-5"
+                    } -mx-0.5 align-middle`,
+                  },
+                });
+                break;
               case "mention":
                 node.children.push({
                   type: "element",
@@ -81,3 +116,8 @@
     {message.content}
   {/if}
 </div>
+
+<!-- just to make sure it 100% includes the classes for emojis in the bundle -->
+{#if false}
+  <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} -mx-0.5 align-middle" />
+{/if}
