@@ -19,6 +19,17 @@ import { RevoltEmojiDictionary } from "revolt-toolset";
 import { RE_MENTIONS } from "revolt.js";
 import "./prism";
 
+export const DENY_TAGS = [
+  "img",
+  "video",
+  "figure",
+  "picture",
+  "source",
+  "audio",
+  "script",
+  "style",
+];
+
 export const MarkdownRenderer = (plugin?: Plugin) => {
   const ren = unified()
     .use(remarkParse)

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Message } from "revolt.js";
-  import { MarkdownRenderer } from "./markdown/renderer";
+  import { DENY_TAGS, MarkdownRenderer } from "./markdown/renderer";
 
   import { client } from "Client";
   import { Theme } from "Theme";
@@ -31,16 +31,29 @@
         visit(
           tree,
           "element",
-          (node: {
-            type: "element";
-            tagName: string;
-            properties: {
-              type: "spoiler" | "channel" | "timestamp" | "emoji" | "mention";
-              match: string;
-              arg1?: string;
-            };
-            children: Child[];
-          }) => {
+          (
+            node: {
+              type: "element";
+              tagName: string;
+              properties: {
+                type: "spoiler" | "channel" | "timestamp" | "emoji" | "mention";
+                match: string;
+                arg1?: string;
+              };
+              children: Child[];
+            },
+            _,
+            parent: { children: Child[]; properties: Record<string, string> }
+          ) => {
+            if (
+              parent &&
+              DENY_TAGS.includes(node.tagName.toLowerCase()) &&
+              (node.tagName !== "img" || parent.properties?.type !== "emoji")
+            ) {
+              const i = parent.children.indexOf(node);
+              if (i >= 0) parent.children.splice(i, 1);
+              return void 0;
+            }
             if (!node.properties.type) return void 0;
             switch (node.properties.type) {
               case "channel":
