@@ -1,5 +1,6 @@
 import { Channel, Member, Server, User, type Message } from "revolt.js";
 import { DateTime } from "luxon";
+import { client } from "Client";
 
 export function escapeHTML(txt: string) {
   return txt
@@ -22,9 +23,22 @@ export const Matches = {
   emojiDefault: /:([A-z0-9_]+?):/g,
 };
 
+export function getServerMember(server: Server | null, id: string) {
+  if (!server) return undefined;
+  let mem: Member | undefined;
+  client.members.forEach((m) => {
+    if (m._id.user == id && m._id.server == server._id) mem = m;
+  });
+  return mem;
+}
+
+export function MemberOrUserDetails(user?: User, member?: Member) {
+  return { name: member ? MemberDetails(member).name : UserDetails(user).name };
+}
 export function UserDetails(user: User | undefined) {
   return {
     online: user?.online && user.status?.presence !== "Invisible",
+    name: user?.username || "Unknown User",
   };
 }
 export function MemberDetails(member: Member | undefined) {
@@ -40,7 +54,7 @@ export function MemberDetails(member: Member | undefined) {
         .map((r) => r[1])
         .reverse()
         .find((r) => r.colour)?.colour || "",
-    name: member?.nickname || member?.user?.username || "Unknown User",
+    name: member?.nickname || UserDetails(member?.user).name,
   };
 }
 export function MessageDetails(message: Message) {
