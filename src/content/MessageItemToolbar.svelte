@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { client } from "Client";
+  import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
-  import { MobileLayout, selectBottom, updateReplies } from "State";
-  import { CornerUpLeft } from "tabler-icons-svelte";
+  import { MobileLayout, pushMessages, selectBottom, spliceMessages, updateReplies } from "State";
+  import { CornerUpLeft, Trash } from "tabler-icons-svelte";
   import { Theme } from "Theme";
+  import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
   export let message: Message;
 </script>
@@ -12,15 +15,34 @@
   data-hover-item
   style="background-color:{$Theme['primary-header']};"
 >
-  <div
-    class="rounded-lg {$MobileLayout
-      ? 'h-12 w-12'
-      : 'h-8 w-8'} bg-inherit cursor-pointer flex items-center justify-center hover:brightness-90 active:brightness-75"
+  <MessageItemToolbarItem
+    icon={CornerUpLeft}
     on:click={() => {
       updateReplies(message);
       selectBottom();
     }}
-  >
-    <CornerUpLeft />
-  </div>
+  />
+  {#if message.channel?.havePermission("ManageMessages") || message.author_id == client.user?._id}
+    <MessageItemToolbarItem
+      icon={Trash}
+      on:click={() => {
+        ModalStack.push({
+          type: "confirm",
+          title: "Delete Message",
+          text: "Are you sure you want to delete this message?",
+          confirm: "Delete",
+          red: true,
+          confirmed: async () => {
+            await message.delete();
+          },
+        });
+      }}
+      on:shiftclick={() => {
+        if (!message.channel) return;
+        spliceMessages(message.channel, [message]);
+        message.delete();
+      }}
+      style="color:{$Theme['error']};"
+    />
+  {/if}
 </div>

@@ -22,6 +22,7 @@
     selectInput,
     SelectedChannel,
     updatePaneState,
+    spliceMessages,
   } from "State";
   import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
@@ -32,6 +33,7 @@
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import Unreads from "revolt.js/dist/util/Unreads";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
+  import ModalRenderer from "modals/ModalRenderer.svelte";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -39,13 +41,22 @@
   });
   client.on("message", async (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
-    if (message.author_id == client.user?._id || (document.hasFocus && $SelectedChannel?._id == message.channel_id)) {
+    if (
+      message.author_id == client.user?._id ||
+      (document.hasFocus() && $SelectedChannel?._id == message.channel_id)
+    ) {
       client.unreads?.markRead(message.channel_id, message._id);
       const unreads = new Unreads(client);
       await unreads.sync();
       if ((unreads.getUnread(message.channel_id)?.last_id ?? "0").localeCompare(message._id) === -1)
         message.channel?.ack(message, true);
     }
+  });
+  client.on("message/update", async (message) => {
+    if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
+  });
+  client.on("message/delete", (_, message) => {
+    if (message && $MessageCache[message.channel_id]) spliceMessages(message.channel!, [message]);
   });
   window.addEventListener("touchstart", (e) => {
     if (!$HoveredMessage) return;
@@ -229,4 +240,5 @@
   {/if}
 
   <ContextMenu />
+  <ModalRenderer />
 </div>

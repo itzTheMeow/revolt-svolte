@@ -20,16 +20,25 @@ SelectedServer.subscribe((s) => {
 export const SelectedChannel = writable<Channel | null>(null);
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
-let messagecachelocal: { [key: string]: Message[] } = {};
-export const MessageCache = writable(messagecachelocal);
-MessageCache.subscribe((d) => (messagecachelocal = d));
+export const MessageCache = writable<{ [key: string]: Message[] }>({});
 export function pushMessages(channel: Channel, msgs: Message[]) {
-  messagecachelocal[channel._id] = (messagecachelocal[channel._id] || []).filter(
-    (c) => !msgs.find((m) => m._id == c._id)
-  );
-  messagecachelocal[channel._id].push(...msgs);
-  messagecachelocal[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
-  MessageCache.set(messagecachelocal);
+  MessageCache.update((cache) => {
+    cache[channel._id] = (cache[channel._id] || []).filter(
+      (c) => !msgs.find((m) => m._id == c._id)
+    );
+    cache[channel._id].push(...msgs);
+    cache[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
+    return cache;
+  });
+}
+export function spliceMessages(channel: Channel, msgs: Message[]) {
+  MessageCache.update((cache) => {
+    cache[channel._id] = (cache[channel._id] || []).filter(
+      (c) => !msgs.find((m) => m._id == c._id)
+    );
+    cache[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
+    return cache;
+  });
 }
 
 export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
