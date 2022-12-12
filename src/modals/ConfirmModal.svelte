@@ -18,9 +18,9 @@
   <div class="py-4">
     {modal.text}
   </div>
-  <div class="modal-action flex-start">
+  <div class="modal-action !flex-start">
     <div
-      class="btn border-none"
+      class="btn border-none text-inherit"
       bind:this={confirmer}
       style:background-color={$Theme[modal.red ? "error" : "accent"]}
       on:click={async () => {
@@ -33,7 +33,7 @@
       {modal.confirm || "Confirm"}
     </div>
     <div
-      class="btn border-none"
+      class="btn border-none text-inherit"
       style:background-color={$Theme["secondary-background"]}
       on:click={() => {
         modal.canceled?.();
