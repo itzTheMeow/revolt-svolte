@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>svelte-logo</dc:title>
+        <dc:title>svolte-logo</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -54,7 +54,7 @@
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0" />
   <title
-     id="title2">svelte-logo</title>
+     id="title2">svolte-logo</title>
   <g
      inkscape:groupmode="layer"
      id="layer1"
