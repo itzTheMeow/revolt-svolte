@@ -20,7 +20,7 @@
         <div
           class="text-base text-primary ml-2 mt-0.5 {$CollapsedCategories.includes(category.id)
             ? 'mb-1'
-            : '-mb-0.5'} font-bold flex cursor-pointer items-center"
+            : '-mb-0.5'} font-bold flex cursor-pointer items-center gap-0.5"
           style="color:{$Theme['accent']};"
           on:click={() => {
             if ($CollapsedCategories.includes(category.id))
