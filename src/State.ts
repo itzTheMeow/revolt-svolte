@@ -1,3 +1,4 @@
+import { client } from "Client";
 import type { AutocompleteResult } from "revolt-toolset";
 import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
@@ -95,6 +96,15 @@ window.addEventListener("orientationchange", recalcMobileLayout);
 window.addEventListener("focus", recalcMobileLayout);
 recalcMobileLayout();
 setInterval(recalcMobileLayout, 65);
+
+export const CollapsedCategories = writable<string[]>([]);
+{
+  let setcount = 2;
+  CollapsedCategories.subscribe((collapsed) => {
+    if (setcount) return (setcount -= 1);
+    client.syncSetSettings({ collapsed });
+  });
+}
 
 export enum PaneStates {
   LEFT,
