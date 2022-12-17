@@ -1,4 +1,3 @@
-import { SvolteAudio } from "Audio";
 import EventEmitter from "eventemitter3";
 import * as mediasoupClient from "mediasoup-client";
 import { types } from "mediasoup-client";
@@ -225,10 +224,24 @@ export default class VoiceClient extends EventEmitter<VoiceEvents> {
         consumers.audio = consumer;
     }
 
-    consumers.stream = SvolteAudio.createMediaStreamSource(new MediaStream([consumer.track]));
-    consumers.stream.connect((consumers.gain = SvolteAudio.createGain()));
-    consumers.gain.gain.value = 1;
-    consumers.gain.connect(SvolteAudio.destination);
+    const mediaStream = new MediaStream([consumer.track]);
+    const audio = new Audio();
+
+    audio.onplaying = () => playbtn?.remove();
+    const playbtn = document.createElement("div");
+    playbtn.innerText = "Click to play audio.";
+    playbtn.className = "btn btn-primary absolute";
+    playbtn.style.top = "30%";
+    playbtn.style.left = "0px";
+    document.body.appendChild(playbtn);
+    playbtn.onclick = () => {
+      playbtn.classList.add("loading");
+      audio.play();
+    };
+
+    audio.srcObject = mediaStream;
+    audio.load();
+    audio.play();
 
     await this.signaling.setConsumerPause(consumer.id, false);
     this.consumers.set(userId, consumers);
@@ -238,20 +251,16 @@ export default class VoiceClient extends EventEmitter<VoiceEvents> {
     const consumers = this.consumers.get(userId);
     if (consumers === undefined) return;
     if (type === undefined) {
-      if (consumers.audio) consumers.audio.close();
-      if (consumers.stream) consumers.stream.disconnect();
-      if (consumers.gain) consumers.gain.disconnect();
+      if (consumers.audio !== undefined) consumers.audio.close();
       this.consumers.delete(userId);
     } else {
       switch (type) {
         case "audio": {
-          if (consumers.audio) {
+          if (consumers.audio !== undefined) {
             consumers.audio.close();
             this.signaling.stopConsume(consumers.audio.id);
           }
-          if (consumers.stream) consumers.stream.disconnect();
-          if (consumers.gain) consumers.gain.disconnect();
-          consumers.audio = consumers.stream = consumers.gain = undefined;
+          consumers.audio = undefined;
           break;
         }
       }
