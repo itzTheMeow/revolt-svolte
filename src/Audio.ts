@@ -1,7 +1,10 @@
 export const SvolteAudio = new AudioContext();
 
+const audio = new Audio();
+audio.srcObject = SvolteAudio.createMediaStreamDestination().stream;
+
 document.addEventListener("click", () => {
-  if (SvolteAudio.state == "suspended") {
-    SvolteAudio.resume();
+  if (audio.paused) {
+    audio.play();
   }
 });
