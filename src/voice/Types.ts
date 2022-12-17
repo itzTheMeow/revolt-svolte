@@ -80,6 +80,8 @@ export interface ConsumerList {
   //video?: Consumer,
   //saudio?: Consumer,
   //svideo?: Consumer,
+  stream?: MediaStreamAudioSourceNode;
+  gain?: GainNode;
 }
 
 export interface TransportInitData {
