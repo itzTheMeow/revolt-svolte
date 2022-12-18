@@ -13,6 +13,7 @@
     selectBottom,
     SelectedChannel,
     SelectedServer,
+    selectInput,
     uploadedFiles,
   } from "State";
   import {
@@ -72,6 +73,7 @@
     fc.style.display = "none";
     pendBottom.set(true);
     inputtedMessage = "";
+    recalculateAutocomplete();
     const toUpload = [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
@@ -205,9 +207,10 @@
     bind:this={FileInput}
     multiple
     on:change={() => {
+      const takeBottom = !$MobileLayout || !!$selectInput;
       const files = [...(FileInput.files || [])];
       files.forEach(pushFile);
-      selectBottom();
+      if (takeBottom) selectBottom();
     }}
   />
   <!-- svelte-ignore missing-declaration -->
@@ -232,21 +235,30 @@
       bind:value={inputtedMessage}
       on:keydown={(e) => {
         recalculateAutocomplete();
-        if (e.key == "Enter" && !e.shiftKey) e.preventDefault();
-      }}
-      on:keyup={(e) => {
         if (handleAutocomplete(e)) return;
         if (e.key == "Enter" && !e.shiftKey) {
           sendMessage();
+          e.preventDefault();
         }
+      }}
+      on:keyup={() => {
         recalculateAutocomplete();
       }}
       on:touchmove={() => recalculateAutocomplete()}
       on:touchend={() => recalculateAutocomplete()}
       on:mouseup={() => recalculateAutocomplete()}
-      on:click={() => MessageInputSelected.set(true)}
-      on:focus={() => MessageInputSelected.set(true)}
-      on:blur={() => MessageInputSelected.set(false)}
+      on:click={() => {
+        MessageInputSelected.set(true);
+        recalculateAutocomplete();
+      }}
+      on:focus={() => {
+        MessageInputSelected.set(true);
+        recalculateAutocomplete();
+      }}
+      on:blur={() => {
+        MessageInputSelected.set(false);
+        recalculateAutocomplete();
+      }}
     />
   </div>
   <div
