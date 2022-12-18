@@ -85,7 +85,7 @@
                     ),
                     class: `inline object-contain ${
                       text?.trim() == `:${node.properties.match}:` ? "h-12 w-12" : "h-5 w-5"
-                    } -mx-0.5 align-middle`,
+                    } mt-1 align-middle`,
                   },
                 });
                 break;
@@ -130,5 +130,5 @@
 
 <!-- just to make sure it 100% includes the classes for emojis in the bundle -->
 {#if false}
-  <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} -mx-0.5 align-middle" />
+  <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
 {/if}
