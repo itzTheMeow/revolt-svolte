@@ -6,7 +6,6 @@
   export let onclick: () => any;
 
   const iconSize = 20;
-
 </script>
 
 <div
@@ -17,14 +16,16 @@
     onclick();
     return false;
   }}
-  on:click={onclick}>
-  {#if typeof icon == 'string'}
+  on:click={onclick}
+>
+  {#if typeof icon == "string"}
     <img
       src={icon}
       width={iconSize}
       height={iconSize}
       class="object-cover aspect-square {rounded ? 'rounded-full' : ''}"
-      alt="" />
+      alt=""
+    />
   {:else}
     <svelte:component this={icon} size={iconSize} />
   {/if}
