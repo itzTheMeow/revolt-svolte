@@ -233,7 +233,10 @@
       on:keydown={recalculateAutocomplete}
       on:keyup={(e) => {
         if (handleAutocomplete(e)) return;
-        if (e.key == "Enter" && !e.shiftKey) sendMessage();
+        if (e.key == "Enter" && !e.shiftKey) {
+          sendMessage();
+          e.preventDefault();
+        }
         recalculateAutocomplete();
       }}
       on:touchmove={() => recalculateAutocomplete()}
