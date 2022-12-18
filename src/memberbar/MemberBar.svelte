@@ -53,7 +53,7 @@
 </script>
 
 <div
-  class="overflow-y-auto h-full w-64 py-1 {$MobileLayout ? 'absolute' : ''}"
+  class="overflow-y-auto h-full w-64 {$MobileLayout ? 'absolute' : ''}"
   style="background-color:{$Theme['secondary-background']};{$MobileLayout
     ? `left:${$PaneLeft + $AppWidth}px;`
     : ''}"

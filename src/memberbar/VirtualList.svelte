@@ -140,6 +140,7 @@
   bind:offsetHeight={viewport_height}
   on:scroll={handle_scroll}
   style="height: {height};"
+  class="py-1.5"
 >
   <svelte-virtual-list-contents
     bind:this={contents}
