@@ -7,7 +7,6 @@
     autocomplete,
     MessageInputSelected,
     MobileLayout,
-    pendBottom,
     pushFile,
     replyingTo,
     selectBottom,
@@ -71,7 +70,6 @@
     const fc = SendButton.firstElementChild as HTMLDivElement;
     SendButton.classList.add("loading");
     fc.style.display = "none";
-    pendBottom.set(true);
     inputtedMessage = "";
     recalculateAutocomplete();
     const toUpload = [...$uploadedFiles];
@@ -95,7 +93,6 @@
     });
     SendButton.classList.remove("loading");
     fc.style.display = "";
-    pendBottom.set(true);
     recalculateAutocomplete();
   }
 

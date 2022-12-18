@@ -3,7 +3,6 @@ import { DEFAULT_THEME } from "revolt-toolset";
 import { Client } from "revolt.js";
 import {
   CollapsedCategories,
-  pendBottom,
   pushMessages,
   SelectedChannel,
   SelectedServer,
@@ -39,7 +38,6 @@ client.once("ready", async () => {
           limit: 100,
         }).then((m) => {
           pushMessages(c, m);
-          pendBottom.set(true);
         });
         return c;
       });

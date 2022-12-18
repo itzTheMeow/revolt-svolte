@@ -11,11 +11,9 @@
     MessageCache,
     MessageInputSelected,
     MobileLayout,
-    NotifSettings,
     PaneLeft,
     PaneState,
     PaneStates,
-    pendBottom,
     pushFile,
     pushMessages,
     selectBottom,
@@ -25,7 +23,7 @@
     spliceMessages,
     SelectedServer,
   } from "State";
-  import { afterUpdate, onMount } from "svelte";
+  import { afterUpdate, beforeUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
   import { disableBodyScroll } from "body-scroll-lock";
   import MemberBar from "memberbar/MemberBar.svelte";
@@ -93,13 +91,20 @@
     if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
   });
 
-  let previous = "";
+  let previous = "",
+    pendBottom = false;
+  beforeUpdate(() => {
+    const ListMessages = document.getElementById("MessageList");
+    if (ListMessages) {
+      pendBottom = ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
+    }
+  });
   afterUpdate(() => {
     let focused = false;
-    if ($pendBottom) {
+    if (pendBottom) {
       const ListMessages = document.getElementById("MessageList");
-      if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight * 2;
-      $pendBottom = false;
+      if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight;
+      pendBottom = false;
       if ($selectInput) {
         $selectInput.focus();
         selectInput.set(null);

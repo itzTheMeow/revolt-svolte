@@ -5,7 +5,6 @@
     NotifSettings,
     PaneState,
     PaneStates,
-    pendBottom,
     pushMessages,
     selectBottom,
     SelectedChannel,
@@ -24,14 +23,12 @@
   async function switchTo() {
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
-    pendBottom.set(true);
     PaneState.set(PaneStates.MIDDLE);
     if (!$MessageCache[$SelectedChannel._id]?.length) {
       const m = await channel.fetchMessages({
         limit: 100,
       });
       pushMessages($SelectedChannel, m);
-      pendBottom.set(true);
     }
     if (channel.isUnread(testMuted($NotifSettings))) channel.ack(undefined, true);
   }

@@ -1,17 +1,12 @@
 <script lang="ts">
   import type { Message } from "revolt.js";
-  import { addScroll, pendBottom, scrolledToBottom, updateReplies } from "State";
-  import { onMount } from "svelte";
+  import { updateReplies } from "State";
   import { CircleX, CornerUpLeft } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
 
   export let message: Message;
   let ReplyBox: HTMLDivElement;
-
-  onMount(() => {
-    if (scrolledToBottom() == ReplyBox.offsetHeight + 4) pendBottom.set(true);
-  });
 </script>
 
 <div
