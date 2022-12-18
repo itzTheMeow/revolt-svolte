@@ -83,6 +83,9 @@
       }
     });
   });
+  window.addEventListener("contextmenu", (e) => {
+    if ((<HTMLElement>e.target).tagName !== "INPUT") e.preventDefault();
+  });
 
   let previous = "";
   afterUpdate(() => {
