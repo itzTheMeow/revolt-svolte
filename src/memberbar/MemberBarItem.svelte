@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Indicator from "extra/Indicator.svelte";
   import { type API, Member } from "revolt.js";
   import { Theme } from "Theme";
   import { MemberDetails, UserColor, UserDetails } from "utils";
@@ -11,11 +12,33 @@
     class="inline-flex gap-1.5 w-full items-center mb-1.5 select-none"
     style:opacity={UserDetails(item.user).online ? "1" : "0.5"}
   >
-    <img
-      class="rounded-full h-10 w-10 object-cover"
-      src={MemberDetails(item).avatar}
-      alt={item.user?.username}
-    />
+    <div class="relative h-10 w-10">
+      <img
+        class="rounded-full h-full w-full object-cover"
+        src={MemberDetails(item).avatar}
+        alt={item.user?.username}
+      />
+      {#if UserDetails(item.user).online}
+        <Indicator
+          pos="bottomRight"
+          bg={$Theme["secondary-background"]}
+          color={(() => {
+            switch (item.user?.status?.presence) {
+              case "Busy":
+                return $Theme["status-busy"];
+              case "Focus":
+                return $Theme["status-focus"];
+              case "Idle":
+                return $Theme["status-away"];
+              case "Online":
+              default:
+                return $Theme["status-online"];
+            }
+          })()}
+          isSelected
+        />
+      {/if}
+    </div>
     <div class="flex flex-col" style:width="calc(100% - 2.5rem - 0.375rem)">
       <div
         class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis flex items-center gap-1.5"
