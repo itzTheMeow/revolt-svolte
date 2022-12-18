@@ -63,7 +63,7 @@
   }
 
   async function sendMessage() {
-    if (!$SelectedChannel || (!inputtedMessage && !$uploadedFiles.length)) return;
+    if (!$SelectedChannel || (!inputtedMessage.trim() && !$uploadedFiles.length)) return;
 
     const content = inputtedMessage ? inputtedMessage : null,
       channel = $SelectedChannel;
@@ -230,12 +230,14 @@
       autocomplete="on"
       bind:this={MessageInput}
       bind:value={inputtedMessage}
-      on:keydown={recalculateAutocomplete}
+      on:keydown={(e) => {
+        recalculateAutocomplete();
+        if (e.key == "Enter" && !e.shiftKey) e.preventDefault();
+      }}
       on:keyup={(e) => {
         if (handleAutocomplete(e)) return;
         if (e.key == "Enter" && !e.shiftKey) {
           sendMessage();
-          e.preventDefault();
         }
         recalculateAutocomplete();
       }}
