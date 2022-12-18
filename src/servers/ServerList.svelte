@@ -3,6 +3,7 @@
   import { ServerOrder } from "State";
   import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
+  import ServerEntry from "./ServerEntry.svelte";
   import ServerIcon from "./ServerIcon.svelte";
 
   let orderedServers = [...client.servers.values()];
@@ -23,12 +24,9 @@
     <ServerIcon {server} />
   {/each}
 
-  <div
-    class="avatar placeholder cursor-pointer box-border rounded-full w-12 h-12"
-    on:click={() => window.location.reload()}
-  >
+  <ServerEntry placeholder onclick={() => window.location.reload()}>
     <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
       <Refresh />
     </div>
-  </div>
+  </ServerEntry>
 </div>

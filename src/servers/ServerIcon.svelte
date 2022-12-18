@@ -4,6 +4,7 @@
   import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { proxyURL, testMuted } from "utils";
+  import ServerEntry from "./ServerEntry.svelte";
 
   export let server: Server;
   let isSelected = false;
@@ -17,12 +18,7 @@
   }
 </script>
 
-<div
-  class="avatar {server.icon
-    ? ''
-    : 'placeholder'} cursor-pointer box-border rounded-full w-12 h-12 relative"
-  on:click={() => SelectedServer.set(server)}
->
+<ServerEntry placeholder={!server.icon} onclick={() => SelectedServer.set(server)}>
   {#if server.icon}
     <div class="w-12 h-12 rounded-full">
       <img
@@ -59,4 +55,4 @@
       </div>
     {/if}
   </div>
-</div>
+</ServerEntry>
