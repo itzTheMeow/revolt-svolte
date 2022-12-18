@@ -4,6 +4,17 @@
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import ChannelItem from "./ChannelItem.svelte";
+
+  let scrolledTop = true,
+    scroller: HTMLDivElement;
+  function handleScroll() {
+    scrolledTop =
+      scroller.scrollTop == 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
+  }
+  let useBanner = true;
+  $: {
+    useBanner = !!$SelectedServer?.banner && scrolledTop;
+  }
 </script>
 
 <div
@@ -13,19 +24,19 @@
 >
   {#if $SelectedServer}
     <div
-      class="w-full {$SelectedServer.banner ? 'h-28' : 'h-10'} bg-cover bg-center flex"
-      style:background-image={$SelectedServer.banner
+      class="w-full {useBanner ? 'h-28' : 'h-10'} bg-cover bg-center flex"
+      style:background-image={useBanner
         ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
         : ""}
     >
       <div
-        class="w-full mt-auto flex items-center pb-0.5 pt-1"
+        class="w-full mt-auto flex items-center py-1"
         style:background="linear-gradient(0deg, {$Theme["secondary-background"]}, transparent)"
       >
         <div class="font-bold text-lg w-full ml-2">{$SelectedServer.name}</div>
       </div>
     </div>
-    <div class="py-1 overflow-y-auto flex-1">
+    <div class="py-1 overflow-y-auto flex-1" on:scroll={handleScroll} bind:this={scroller}>
       {#each $SelectedServer.orderedChannels as category}
         {#if $SelectedServer.orderedChannels.indexOf(category) && category.title !== "Default"}
           <div
