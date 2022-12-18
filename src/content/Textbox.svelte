@@ -221,10 +221,10 @@
   >
     <Paperclip />
   </div>
-  <div class="flex-1 flex items-center px-1 py-2" style:background-color={$Theme["message-box"]}>
+  <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
     <textarea
       id="Textbox"
-      class="w-full resize-none bg-inherit"
+      class="w-full resize-none bg-inherit px-1 py-3 box-content"
       style:outline="none"
       style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
       autocomplete="on"
