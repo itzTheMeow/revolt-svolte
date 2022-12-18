@@ -4,7 +4,7 @@
   import { client } from "Client";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
-  import { getServerMember, MemberOrUserDetails, proxyURL } from "utils";
+  import { getServerMember, MemberDetails, MemberOrUserDetails, proxyURL } from "utils";
   import { SelectedServer } from "State";
 
   type Child =
@@ -94,17 +94,33 @@
                   type: "element",
                   tagName: "span",
                   properties: {
-                    style: `color:${$Theme["accent"]};`,
+                    class:
+                      "inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm",
+                    style: `color:${$Theme["accent"]};background-color:rgba(0,0,0,0.3);`,
                   },
                   children: [
                     {
                       type: "text",
-                      value: `@${
-                        MemberOrUserDetails(
-                          client.users.get(node.properties.match),
-                          getServerMember($SelectedServer, node.properties.match)
-                        )?.name
-                      }`,
+                      value: "@",
+                    },
+                    {
+                      type: "element",
+                      tagName: "span",
+                      properties: {
+                        style: `color:${
+                          MemberDetails(getServerMember($SelectedServer, node.properties.match))
+                            ?.color || $Theme["accent"]
+                        };`,
+                      },
+                      children: [
+                        {
+                          type: "text",
+                          value: MemberOrUserDetails(
+                            client.users.get(node.properties.match),
+                            getServerMember($SelectedServer, node.properties.match)
+                          )?.name,
+                        },
+                      ],
                     },
                   ],
                 });
@@ -128,7 +144,8 @@
   {/if}
 </div>
 
-<!-- just to make sure it 100% includes the classes for emojis in the bundle -->
+<!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
 {#if false}
   <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
+  <div class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm" />
 {/if}
