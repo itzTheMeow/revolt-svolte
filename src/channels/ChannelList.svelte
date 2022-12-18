@@ -28,7 +28,7 @@
 </script>
 
 <div
-  class="h-full w-56 select-none flex flex-col"
+  class="h-full w-56 flex flex-col"
   style="background-color:{$Theme['secondary-background']}"
   id="ChannelList"
 >

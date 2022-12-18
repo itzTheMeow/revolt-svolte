@@ -9,7 +9,7 @@
 
 {#if item instanceof Member}
   <div
-    class="inline-flex gap-1.5 w-full items-center mb-1.5 select-none"
+    class="inline-flex gap-1.5 w-full items-center mb-1.5"
     style:opacity={UserDetails(item.user).online ? "1" : "0.5"}
   >
     <div class="relative h-10 w-10">
@@ -69,7 +69,7 @@
   </div>
 {:else}
   <div
-    class="block mb-1 font-bold select-none overflow-hidden whitespace-nowrap overflow-ellipsis"
+    class="block mb-1 font-bold overflow-hidden whitespace-nowrap overflow-ellipsis"
     style={UserColor(item.colour || "inherit")}
   >
     {item.name}{item.count > 1 ? ` - ${item.count.toLocaleString()}` : ""}

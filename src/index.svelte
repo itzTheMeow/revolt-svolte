@@ -89,6 +89,9 @@
     if (tag == "INPUT" || (tag == "A" && target.getAttribute("type") == "link")) return;
     e.preventDefault();
   });
+  window.addEventListener("dragstart", (e) => {
+    if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
+  });
 
   let previous = "";
   afterUpdate(() => {
@@ -198,7 +201,7 @@
 
 {#if Native.isNative}
   <div
-    class="w-full flex items-center pl-2 bg-inherit"
+    class="w-full flex items-center pl-2 bg-inherit select-none"
     style="height:{Native.titlebarHeight}px;border-bottom:1px solid rgba(0,0,0,0.2);"
   >
     <div class="flex-1" style="-webkit-app-region:drag;">
@@ -232,7 +235,7 @@
   </div>
 {/if}
 <div
-  class="flex relative"
+  class="flex relative select-none"
   style="height:{$AppHeight -
     ($MobileLayout && !$MessageInputSelected ? 26 : 0) -
     (Native.isNative ? Native.titlebarHeight : 0)}px;width:{$AppWidth}px;"

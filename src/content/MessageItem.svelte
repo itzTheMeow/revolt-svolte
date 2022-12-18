@@ -56,7 +56,9 @@
         />
       {:else}
         <div
-          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
+          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap {!$MobileLayout
+            ? 'select-text'
+            : ''}"
           style:font-size="0.65rem"
           style:color={$Theme["tertiary-foreground"]}
         >
@@ -65,7 +67,7 @@
           {/if}
         </div>
       {/if}
-      <div class="flex flex-col flex-1">
+      <div class="flex flex-col flex-1 {!$MobileLayout ? 'select-text' : ''}">
         {#if shouldSeparate}
           <MessageItemHeader {message} />
         {/if}
