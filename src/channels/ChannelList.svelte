@@ -10,7 +10,7 @@
     scroller: HTMLDivElement;
   function handleScroll() {
     scrolledTop =
-      scroller.scrollTop == 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
+      scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
   let useBanner = true;
   $: {
