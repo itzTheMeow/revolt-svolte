@@ -23,6 +23,7 @@
     SelectedChannel,
     updatePaneState,
     spliceMessages,
+    SelectedServer,
   } from "State";
   import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
@@ -38,6 +39,13 @@
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
     TWEEN.update(time);
+  });
+  client.users.observe_(() => {
+    MessageCache.update((c) => c);
+  });
+  client.members.observe_(() => {
+    MessageCache.update((c) => c);
+    SelectedServer.update((s) => s);
   });
   client.on("message", async (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
