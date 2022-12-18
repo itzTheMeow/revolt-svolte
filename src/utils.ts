@@ -126,12 +126,6 @@ export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
       pendBottom =
         pendBottom ||
         ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
-      console.log(
-        ListMessages.scrollTop,
-        ListMessages.scrollHeight - ListMessages.clientHeight,
-        pendBottom,
-        prevScroll
-      );
     }
   });
   afterUpdate(() => {
