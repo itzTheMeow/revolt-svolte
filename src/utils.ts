@@ -104,6 +104,19 @@ export function testMuted(notifs: NotificationSettings) {
   };
 }
 
+export async function copyText(text: string) {
+  if (navigator.clipboard?.writeText) await navigator.clipboard?.writeText(text);
+  else {
+    const i = document.createElement("input");
+    document.body.appendChild(i);
+    i.value = text;
+    i.select();
+    i.setSelectionRange(0, text.length);
+    document.execCommand("copy");
+    i.remove();
+  }
+}
+
 export function clickoutside(
   node: HTMLElement,
   onEventFunction: (e: MouseEvent | TouchEvent) => any

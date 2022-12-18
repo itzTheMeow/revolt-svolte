@@ -11,11 +11,12 @@
     SelectedChannel,
   } from "State";
   import { Theme } from "Theme";
-  import { proxyURL, testMuted } from "utils";
-  import { Hash, Volume } from "tabler-icons-svelte";
+  import { copyText, proxyURL, testMuted } from "utils";
+  import { Copy, Hash, Volume } from "tabler-icons-svelte";
   import type { Channel } from "revolt.js";
   import { UnreadState } from "Client";
   import Indicator from "extra/Indicator.svelte";
+  import { CMState } from "contextmenu/ContextMenuState";
 
   export let channel: Channel;
   let isSelected = false;
@@ -42,11 +43,22 @@
     isSelected = $SelectedChannel?._id == channel._id;
     isUnread = !!channel.isUnread(testMuted($NotifSettings));
   }
+
+  function contextmenu(e: MouseEvent) {
+    CMState.set({
+      pos: {
+        top: e.clientY,
+        left: e.clientX,
+      },
+      options: [{ name: "Copy ID", clicked: () => copyText(channel._id), icon: Copy }],
+    });
+  }
 </script>
 
 <div
   class="cursor-pointer m-1.5 p-2 rounded flex items-center box-border bg-black bg-opacity-30 hover:bg-opacity-20 relative"
   on:click={switchTo}
+  on:contextmenu={contextmenu}
 >
   {#if channel.icon}
     <img
