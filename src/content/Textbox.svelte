@@ -30,7 +30,7 @@
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
   let inputtedMessage = "",
-    MessageInput: HTMLInputElement,
+    MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement,
     hasBottom = false,
@@ -121,7 +121,9 @@
               if (!mime) return;
               const blob = await file.getType(mime);
               if (blob) {
-                pushFile(new File([blob], `${mime.split("/")[0]}.${mime.split("/").pop()}`, { type: mime }));
+                pushFile(
+                  new File([blob], `${mime.split("/")[0]}.${mime.split("/").pop()}`, { type: mime })
+                );
                 selectBottom();
               }
             });
@@ -196,7 +198,7 @@
 
 <!-- Textbox / Buttons -->
 
-<div class="h-12 flex w-full" style="background-color:{$Theme['message-box']};">
+<div class="flex w-full min-h-12">
   <input
     type="file"
     class="hidden"
@@ -210,7 +212,7 @@
   />
   <!-- svelte-ignore missing-declaration -->
   <div
-    class="btn btn-square btn-secondary rounded-none border-none"
+    class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
     style="background-color:{$Theme['primary-header']};"
     id="UploaderButton"
     bind:this={UploaderButton}
@@ -219,29 +221,31 @@
   >
     <Paperclip />
   </div>
-  <input
-    id="Textbox"
-    class="flex-1 bg-inherit p-1"
-    style="outline:none;"
-    type="text"
-    autocomplete="on"
-    bind:this={MessageInput}
-    bind:value={inputtedMessage}
-    on:keydown={recalculateAutocomplete}
-    on:keyup={(e) => {
-      if (handleAutocomplete(e)) return;
-      if (e.key == "Enter") sendMessage();
-      recalculateAutocomplete();
-    }}
-    on:touchmove={() => recalculateAutocomplete()}
-    on:touchend={() => recalculateAutocomplete()}
-    on:mouseup={() => recalculateAutocomplete()}
-    on:click={() => MessageInputSelected.set(true)}
-    on:focus={() => MessageInputSelected.set(true)}
-    on:blur={() => MessageInputSelected.set(false)}
-  />
+  <div class="flex-1 flex items-center px-1 py-2" style:background-color={$Theme["message-box"]}>
+    <textarea
+      id="Textbox"
+      class="w-full resize-none bg-inherit"
+      style:outline="none"
+      style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
+      autocomplete="on"
+      bind:this={MessageInput}
+      bind:value={inputtedMessage}
+      on:keydown={recalculateAutocomplete}
+      on:keyup={(e) => {
+        if (handleAutocomplete(e)) return;
+        if (e.key == "Enter" && !e.shiftKey) sendMessage();
+        recalculateAutocomplete();
+      }}
+      on:touchmove={() => recalculateAutocomplete()}
+      on:touchend={() => recalculateAutocomplete()}
+      on:mouseup={() => recalculateAutocomplete()}
+      on:click={() => MessageInputSelected.set(true)}
+      on:focus={() => MessageInputSelected.set(true)}
+      on:blur={() => MessageInputSelected.set(false)}
+    />
+  </div>
   <div
-    class="btn btn-square btn-primary rounded-none border-none"
+    class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
     style="background-color:{$Theme['accent']};"
     bind:this={SendButton}
     on:touchend={(e) => {
