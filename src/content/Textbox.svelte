@@ -15,6 +15,7 @@
     selectInput,
     uploadedFiles,
   } from "State";
+  import { afterUpdate, beforeUpdate } from "svelte";
   import {
     ArrowBigRightLine,
     Clipboard,
@@ -24,7 +25,7 @@
     Volume,
   } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { proxyURL, testMuted } from "utils";
+  import { handleUpdates, proxyURL, testMuted } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
@@ -140,6 +141,8 @@
     });
     return false;
   }
+
+  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 <TextboxUploaded />

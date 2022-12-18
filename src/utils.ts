@@ -116,7 +116,29 @@ export async function copyText(text: string) {
     i.remove();
   }
 }
-
+export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
+  let pendBottom = false;
+  beforeUpdate(() => {
+    const ListMessages = document.getElementById("MessageList");
+    if (ListMessages) {
+      pendBottom =
+        pendBottom ||
+        ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
+      console.log(
+        ListMessages.scrollTop,
+        ListMessages.scrollHeight - ListMessages.clientHeight,
+        pendBottom
+      );
+    }
+  });
+  afterUpdate(() => {
+    if (pendBottom) {
+      const ListMessages = document.getElementById("MessageList");
+      if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight * 2;
+      pendBottom = false;
+    }
+  });
+}
 export function clickoutside(
   node: HTMLElement,
   onEventFunction: (e: MouseEvent | TouchEvent) => any

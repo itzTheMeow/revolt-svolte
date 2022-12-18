@@ -33,6 +33,7 @@
   import Unreads from "revolt.js/dist/util/Unreads";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
   import ModalRenderer from "modals/ModalRenderer.svelte";
+  import { handleUpdates } from "utils";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -91,25 +92,15 @@
     if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
   });
 
-  let previous = "",
-    pendBottom = false;
-  beforeUpdate(() => {
-    const ListMessages = document.getElementById("MessageList");
-    if (ListMessages) {
-      pendBottom = ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
-    }
-  });
+  handleUpdates(beforeUpdate, afterUpdate);
+
+  let previous = "";
   afterUpdate(() => {
     let focused = false;
-    if (pendBottom) {
-      const ListMessages = document.getElementById("MessageList");
-      if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight;
-      pendBottom = false;
-      if ($selectInput) {
-        $selectInput.focus();
-        selectInput.set(null);
-        focused = true;
-      }
+    if ($selectInput) {
+      $selectInput.focus();
+      selectInput.set(null);
+      focused = true;
     }
     if (previous == document.body.innerHTML) return;
     previous = document.body.innerHTML;
