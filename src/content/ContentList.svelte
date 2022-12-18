@@ -21,11 +21,15 @@
 <div
   class="h-full flex flex-col {$MobileLayout ? 'absolute top-0' : 'flex-1 min-w-0'}"
   style="background-color:{$Theme['primary-background']};{$MobileLayout
-    ? `left:${$PaneLeft}px;width:${$AppWidth}px;${
-        $PaneState !== PaneStates.MIDDLE ? 'pointer-events:none;' : ''
-      }`
+    ? `left:${$PaneLeft}px;width:${$AppWidth}px;`
     : ''}"
   id="Pane"
+  on:touchstart={(e) => {
+    if ($MobileLayout && $PaneState !== PaneStates.MIDDLE) {
+      e.preventDefault();
+      return false;
+    }
+  }}
 >
   {#if $SelectedChannel}
     {#if $SelectedChannel.channel_type !== "VoiceChannel"}
