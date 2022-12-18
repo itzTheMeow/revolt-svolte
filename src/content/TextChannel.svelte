@@ -9,6 +9,7 @@
 
 <div class="overflow-y-auto flex-1 flex flex-col break-words p-1.5" id="MessageList">
   {#if $MessageCache[channel._id]?.length}
+    <div class="mt-auto" />
     {#each $MessageCache[channel._id].slice(-75) as message}
       <MessageItem {message} />
     {/each}
