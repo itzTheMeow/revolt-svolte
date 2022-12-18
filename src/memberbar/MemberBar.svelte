@@ -1,7 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import type { Member, API } from "revolt.js";
-  import { AppWidth, MobileLayout, PaneLeft, SelectedServer } from "State";
+  import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
   import { writable } from "svelte/store";
   import { Theme } from "Theme";
   import MemberBarItem from "./MemberBarItem.svelte";
@@ -16,7 +16,9 @@
     if ($SelectedServer) {
       const l: typeof memberList = [];
       const members = [...client.members.values()].filter(
-        (m) => m.server?._id == $SelectedServer?._id
+        (m) =>
+          m.server?._id == $SelectedServer?._id &&
+          (!$SelectedChannel || m.hasPermission($SelectedChannel, "ViewChannel"))
       );
       const offline = members.filter((m) => !UserDetails(m.user).online);
       members
@@ -32,7 +34,9 @@
         { name: "Online", permissions: { a: 0, d: 0 } },
         members.filter((m) => !m.hoistedRole && !offline.includes(m)),
       ]);
+      if (!l[l.length - 1][2].length) l.pop();
       l.push(["", { name: "Offline", permissions: { a: 0, d: 0 } }, offline]);
+      if (!l[l.length - 1][2].length) l.pop();
       l.forEach((item) =>
         item[2].sort((m1, m2) =>
           MemberDetails(m1).name.toLowerCase() > MemberDetails(m2).name.toLowerCase() ? 1 : -1
