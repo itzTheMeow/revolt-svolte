@@ -15,6 +15,7 @@
   import { Hash, Volume } from "tabler-icons-svelte";
   import type { Channel } from "revolt.js";
   import { UnreadState } from "Client";
+  import Indicator from "extra/Indicator.svelte";
 
   export let channel: Channel;
   let isSelected = false;
@@ -66,17 +67,13 @@
     style={isSelected ? `border: 2px solid ${$Theme["accent"]};` : ""}
   >
     {#if isUnread}
-      <div
-        class="absolute {isSelected
-          ? '-left-1 -top-1.5'
-          : '-left-0.5 -top-1'} flex items-center justify-center text-xs px-1 h-5 rounded-full text-left"
-        style:background-color={$Theme["secondary-foreground"]}
-        style:border="3px solid {$Theme["secondary-background"]}"
-        style:color={$Theme["secondary-background"]}
-        style:min-width="1.25rem"
-      >
-        {(numUnreads >= 100 ? "99+" : numUnreads) || ""}
-      </div>
+      <Indicator
+        {isSelected}
+        pos="topLeft"
+        color={$Theme["secondary-foreground"]}
+        bg={$Theme["secondary-background"]}
+        text={numUnreads >= 100 ? "99+" : String(numUnreads || "")}
+      />
     {/if}
   </div>
 </div>
