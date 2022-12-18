@@ -36,9 +36,13 @@
               type: "element";
               tagName: string;
               properties: {
-                type: "spoiler" | "channel" | "timestamp" | "emoji" | "mention";
-                match: string;
+                type?: "spoiler" | "channel" | "timestamp" | "emoji" | "mention" | "link";
+                match?: string;
                 arg1?: string;
+
+                href?: string;
+                style?: string;
+                class?: string;
               };
               children: Child[];
             },
@@ -54,7 +58,16 @@
               if (i >= 0) parent.children.splice(i, 1);
               return void 0;
             }
-            if (!node.properties.type) return void 0;
+            if (node.tagName == "a") {
+              if (!node.properties.href?.match(/^https?/gi)) delete node.properties.href;
+              else {
+                node.properties.style = `color:${$Theme["accent"]};`;
+                node.properties.class = "inline-block hover:brightness-75 active:translate-y-[1px]";
+                node.properties.type = "link";
+              }
+              return void 0;
+            }
+            if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
               case "channel":
                 node.children.push({
@@ -100,10 +113,6 @@
                   },
                   children: [
                     {
-                      type: "text",
-                      value: "@",
-                    },
-                    {
                       type: "element",
                       tagName: "span",
                       properties: {
@@ -115,10 +124,12 @@
                       children: [
                         {
                           type: "text",
-                          value: MemberOrUserDetails(
-                            client.users.get(node.properties.match),
-                            getServerMember($SelectedServer, node.properties.match)
-                          )?.name,
+                          value:
+                            "@" +
+                            MemberOrUserDetails(
+                              client.users.get(node.properties.match),
+                              getServerMember($SelectedServer, node.properties.match)
+                            )?.name,
                         },
                       ],
                     },
@@ -146,6 +157,10 @@
 
 <!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
 {#if false}
+  <!-- a -->
+  <div class="inline-block hover:brightness-75 active:translate-y-[1px]" />
+  <!-- emoji -->
   <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
+  <!-- mention -->
   <div class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm" />
 {/if}

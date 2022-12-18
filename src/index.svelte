@@ -84,7 +84,10 @@
     });
   });
   window.addEventListener("contextmenu", (e) => {
-    if ((<HTMLElement>e.target).tagName !== "INPUT") e.preventDefault();
+    const target = <HTMLElement>e.target,
+      tag = target.tagName;
+    if (tag == "INPUT" || (tag == "A" && target.getAttribute("type") == "link")) return;
+    e.preventDefault();
   });
 
   let previous = "";
