@@ -70,7 +70,6 @@
       <Indicator
         {isSelected}
         pos="topLeft"
-        color={$Theme["secondary-foreground"]}
         bg={$Theme["secondary-background"]}
         text={numUnreads >= 100 ? "99+" : String(numUnreads || "")}
       />

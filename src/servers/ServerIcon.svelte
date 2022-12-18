@@ -1,5 +1,6 @@
 <script lang="ts">
   import { UnreadState } from "Client";
+  import Indicator from "extra/Indicator.svelte";
   import type { Server } from "revolt.js";
   import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
@@ -42,17 +43,12 @@
     style={isSelected ? `border: 2px solid ${$Theme["accent"]};` : ""}
   >
     {#if isUnread}
-      <div
-        class="absolute {isSelected
-          ? '-right-1 -bottom-1'
-          : '-right-0.5 -bottom-0.5'} flex items-center justify-center text-xs px-1 h-5 rounded-full text-right"
-        style:background-color={$Theme["secondary-foreground"]}
-        style:border="3px solid {$Theme["background"]}"
-        style:color={$Theme["secondary-background"]}
-        style:min-width="1.25rem"
-      >
-        {(numUnreads >= 100 ? "99+" : numUnreads) || ""}
-      </div>
+      <Indicator
+        pos="bottomRight"
+        bg={$Theme["background"]}
+        text={numUnreads >= 100 ? "99+" : String(numUnreads || "")}
+        {isSelected}
+      />
     {/if}
   </div>
 </ServerEntry>
