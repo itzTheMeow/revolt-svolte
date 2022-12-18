@@ -45,8 +45,6 @@
     on:click={(e) => {
       if (!$MobileLayout) return;
       HoveredMessage.set(message._id);
-      e.preventDefault();
-      return false;
     }}
   >
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">

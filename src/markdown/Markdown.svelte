@@ -43,6 +43,7 @@
                 href?: string;
                 style?: string;
                 class?: string;
+                target?: "_blank";
               };
               children: Child[];
             },
@@ -64,6 +65,7 @@
                 node.properties.style = `color:${$Theme["accent"]};`;
                 node.properties.class = "inline-block hover:brightness-75 active:translate-y-[1px]";
                 node.properties.type = "link";
+                node.properties.target = "_blank";
               }
               return void 0;
             }
