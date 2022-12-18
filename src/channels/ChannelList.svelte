@@ -1,5 +1,6 @@
 <script lang="ts">
   import { CollapsedCategories, SelectedServer } from "State";
+  import { onDestroy, onMount } from "svelte";
   import { ChevronDown, ChevronRight } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
@@ -15,6 +16,15 @@
   $: {
     useBanner = !!$SelectedServer?.banner && scrolledTop;
   }
+
+  let si: NodeJS.Timer;
+  onMount(() => {
+    if (si) clearInterval(si);
+    si = setInterval(handleScroll, 6);
+  });
+  onDestroy(() => {
+    if (si) clearInterval(si);
+  });
 </script>
 
 <div
@@ -37,7 +47,7 @@
         <div class="font-bold text-lg w-full ml-2">{$SelectedServer.name}</div>
       </div>
     </div>
-    <div class="py-1 overflow-y-auto flex-1" on:scroll={handleScroll} bind:this={scroller}>
+    <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
       {#each $SelectedServer.orderedChannels as category}
         {#if $SelectedServer.orderedChannels.indexOf(category) && category.title !== "Default"}
           <div
