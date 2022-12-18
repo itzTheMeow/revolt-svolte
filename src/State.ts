@@ -4,12 +4,24 @@ import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";
 
+export const SelectionState: { server: string | null; channel: string | null } = {
+  server: null,
+  channel: null,
+  ...JSON.parse(localStorage.getItem("selstate") || "{}"),
+};
+
 export const fetchedMembers = new Set<string>();
 
+// super hacky but whatever
+let went = 3;
 export const ServerOrder = writable<string[]>([]);
 export const SelectedServer = writable<Server | null>(null);
 let serverID = "";
 SelectedServer.subscribe((s) => {
+  if (went) went--;
+  if (!went) SelectionState.server = s?._id || null;
+  localStorage.setItem("selstate", JSON.stringify(SelectionState));
+
   serverID = s?._id || "";
   if (!s || fetchedMembers.has(s._id)) return;
   fetchedMembers.add(s._id);
@@ -19,6 +31,11 @@ SelectedServer.subscribe((s) => {
   );
 });
 export const SelectedChannel = writable<Channel | null>(null);
+SelectedChannel.subscribe((c) => {
+  if (went) went--;
+  if (!went) SelectionState.channel = c?._id || null;
+  localStorage.setItem("selstate", JSON.stringify(SelectionState));
+});
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
 export const MessageCache = writable<{ [key: string]: Message[] }>({});
