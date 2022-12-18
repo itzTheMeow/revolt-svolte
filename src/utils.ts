@@ -117,25 +117,32 @@ export async function copyText(text: string) {
   }
 }
 export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
-  let pendBottom = false;
+  let pendBottom = false,
+    prevScroll = 0;
   beforeUpdate(() => {
     const ListMessages = document.getElementById("MessageList");
     if (ListMessages) {
+      prevScroll = ListMessages.clientHeight;
       pendBottom =
         pendBottom ||
         ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
       console.log(
         ListMessages.scrollTop,
         ListMessages.scrollHeight - ListMessages.clientHeight,
-        pendBottom
+        pendBottom,
+        prevScroll
       );
     }
   });
   afterUpdate(() => {
-    if (pendBottom) {
-      const ListMessages = document.getElementById("MessageList");
-      if (ListMessages) ListMessages.scrollTop = ListMessages.scrollHeight * 2;
-      pendBottom = false;
+    const ListMessages = document.getElementById("MessageList");
+    if (ListMessages) {
+      if (pendBottom) {
+        ListMessages.scrollTop = ListMessages.scrollHeight * 2;
+        pendBottom = false;
+      } else {
+        ListMessages.scrollTop += prevScroll - ListMessages.clientHeight;
+      }
     }
   });
 }
