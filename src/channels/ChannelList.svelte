@@ -25,9 +25,10 @@
   {#if $SelectedServer}
     <div
       class="w-full {useBanner ? 'h-28' : 'h-10'} bg-cover bg-center flex"
-      style:background-image={useBanner
+      style:background-image={$SelectedServer.banner
         ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
         : ""}
+      style:transition="height 200ms"
     >
       <div
         class="w-full mt-auto flex items-center py-1"
