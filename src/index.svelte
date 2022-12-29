@@ -5,9 +5,11 @@
   import { client, ClientReady } from "Client";
   import ContentList from "content/ContentList.svelte";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
+  import { CMState } from "contextmenu/ContextMenuState";
   import Loader from "Loader.svelte";
   import MemberBar from "memberbar/MemberBar.svelte";
   import ModalRenderer from "modals/ModalRenderer.svelte";
+  import { ModalStack } from "modals/ModalStack";
   import { ElectronFullscreen, Native } from "Native";
   import Unreads from "revolt.js/dist/util/Unreads";
   import ServerList from "servers/ServerList.svelte";
@@ -102,6 +104,32 @@
   });
   window.addEventListener("dragstart", (e) => {
     if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
+  });
+  window.addEventListener("click", async (e) => {
+    const target = <HTMLElement>e.target;
+    const uid = target.getAttribute("data-userpopup");
+    if (uid) {
+      try {
+        const member =
+          [...client.members.values()].find(
+            (m) => m._id.server == $SelectedServer?._id && m._id.user == uid
+          ) || (await $SelectedServer?.fetchMember(uid));
+        if (member)
+          return CMState.set({
+            type: "member",
+            pos: {
+              top: e.clientY,
+              left: e.clientX,
+            },
+            member,
+            target,
+          });
+      } catch {}
+      ModalStack.push({
+        type: "user",
+        id: uid,
+      });
+    }
   });
 
   handleUpdates(beforeUpdate, afterUpdate);

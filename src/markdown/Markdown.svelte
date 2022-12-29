@@ -123,6 +123,7 @@
                         class:
                           "absolute top-0 left-0 w-full h-full rounded-[inherit] opacity-10 hover:opacity-25 cursor-pointer",
                         style: `background:${details.color || $Theme["accent"]};`,
+                        "data-userpopup": node.properties.match,
                       },
                     },
                     {
