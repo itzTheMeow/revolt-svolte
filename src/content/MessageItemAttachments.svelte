@@ -28,16 +28,10 @@
         style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
           .width} / {attachment.metadata.height};"
         src={proxyURL(client.generateFileURL(attachment), "any")}
-        alt={attachment.filename}
         controls
       />
     {:else if attachment.metadata.type == "Audio"}
-      <audio
-        class="block"
-        src={proxyURL(client.generateFileURL(attachment), "any")}
-        alt={attachment.filename}
-        controls
-      />
+      <audio class="block" src={proxyURL(client.generateFileURL(attachment), "any")} controls />
     {:else}
       <a href={client.generateFileURL(attachment)} target="_blank">
         Download {attachment.filename}

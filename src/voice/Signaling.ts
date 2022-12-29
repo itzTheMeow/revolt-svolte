@@ -1,16 +1,14 @@
 import EventEmitter from "eventemitter3";
-
 import type { RtpCapabilities, RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import type { DtlsParameters } from "mediasoup-client/lib/Transport";
-
 import {
-  type AuthenticationResult,
-  type Room,
-  type TransportInitDataTuple,
   WSCommandType,
   WSErrorCode,
-  type ProduceType,
+  type AuthenticationResult,
   type ConsumerData,
+  type ProduceType,
+  type Room,
+  type TransportInitDataTuple,
 } from "./Types";
 
 interface SignalingEvents {

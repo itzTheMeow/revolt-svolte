@@ -1,6 +1,6 @@
 <script lang="ts">
   import Indicator from "extra/Indicator.svelte";
-  import { type API, Member } from "revolt.js";
+  import { Member, type API } from "revolt.js";
   import { Theme } from "Theme";
   import { MemberDetails, UserColor, UserDetails } from "utils";
 

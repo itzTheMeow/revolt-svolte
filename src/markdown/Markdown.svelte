@@ -2,10 +2,10 @@
   import { DENY_TAGS, MarkdownRenderer } from "./renderer";
 
   import { client } from "Client";
+  import { SelectedServer } from "State";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
   import { getServerMember, MemberDetails, MemberOrUserDetails, proxyURL } from "utils";
-  import { SelectedServer } from "State";
 
   type Child =
     | {

@@ -2,7 +2,7 @@
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
-  import { MobileLayout, pushMessages, selectBottom, spliceMessages, updateReplies } from "State";
+  import { MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
   import { CornerUpLeft, Trash } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";

@@ -1,8 +1,15 @@
 <script lang="ts">
+  import TWEEN from "@tweenjs/tween.js";
+  import { disableBodyScroll } from "body-scroll-lock";
   import ChannelList from "channels/ChannelList.svelte";
   import { client, ClientReady } from "Client";
   import ContentList from "content/ContentList.svelte";
+  import ContextMenu from "contextmenu/ContextMenu.svelte";
   import Loader from "Loader.svelte";
+  import MemberBar from "memberbar/MemberBar.svelte";
+  import ModalRenderer from "modals/ModalRenderer.svelte";
+  import { ElectronFullscreen, Native } from "Native";
+  import Unreads from "revolt.js/dist/util/Unreads";
   import ServerList from "servers/ServerList.svelte";
   import {
     AppHeight,
@@ -17,22 +24,15 @@
     pushFile,
     pushMessages,
     selectBottom,
-    selectInput,
     SelectedChannel,
-    updatePaneState,
-    spliceMessages,
     SelectedServer,
+    selectInput,
+    spliceMessages,
+    updatePaneState,
   } from "State";
   import { afterUpdate, beforeUpdate, onMount } from "svelte";
-  import { Theme } from "Theme";
-  import { disableBodyScroll } from "body-scroll-lock";
-  import MemberBar from "memberbar/MemberBar.svelte";
-  import TWEEN from "@tweenjs/tween.js";
-  import { ElectronFullscreen, Native } from "Native";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
-  import Unreads from "revolt.js/dist/util/Unreads";
-  import ContextMenu from "contextmenu/ContextMenu.svelte";
-  import ModalRenderer from "modals/ModalRenderer.svelte";
+  import { Theme } from "Theme";
   import { handleUpdates } from "utils";
 
   requestAnimationFrame(function animate(time: number) {

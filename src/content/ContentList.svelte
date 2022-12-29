@@ -8,10 +8,10 @@
     SelectedChannel,
     updatePaneState,
   } from "State";
-  import { Theme } from "Theme";
-  import VoiceChannel from "./VoiceChannel.svelte";
-  import TextChannel from "./TextChannel.svelte";
   import { onMount } from "svelte";
+  import { Theme } from "Theme";
+  import TextChannel from "./TextChannel.svelte";
+  import VoiceChannel from "./VoiceChannel.svelte";
 
   onMount(() => {
     updatePaneState($PaneState);

@@ -1,22 +1,19 @@
 import "katex/dist/katex.min.css";
-import { unified, type Plugin } from "unified";
-import createComponent from "./createComponent";
-
-import remarkParse from "remark-parse";
+import rehypeDomStringify from "rehype-dom-stringify";
+import rehypeKatex from "rehype-katex";
+import rehypePrism from "rehype-prism";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import { remarkHtmlToText } from "./htmlToText";
-
+import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import { handlers } from "./handlers";
-import rehypeKatex from "rehype-katex";
-import rehypePrism from "rehype-prism";
-import rehypeDomStringify from "rehype-dom-stringify";
-
-import { client } from "../Client";
 import { RevoltEmojiDictionary } from "revolt-toolset";
 import { RE_MENTIONS } from "revolt.js";
+import { unified, type Plugin } from "unified";
+import { client } from "../Client";
+import createComponent from "./createComponent";
+import { handlers } from "./handlers";
+import { remarkHtmlToText } from "./htmlToText";
 import "./prism";
 
 export const DENY_TAGS = [

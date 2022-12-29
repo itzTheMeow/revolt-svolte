@@ -1,17 +1,15 @@
 import EventEmitter from "eventemitter3";
 import * as mediasoupClient from "mediasoup-client";
 import { types } from "mediasoup-client";
-
 import { Device, Producer, Transport } from "mediasoup-client/lib/types";
-
 import Signaling from "./Signaling";
 import {
-  type ProduceType,
+  WSErrorCode,
   WSEventType,
+  type ConsumerList,
+  type ProduceType,
   type VoiceError,
   type VoiceUser,
-  type ConsumerList,
-  WSErrorCode,
 } from "./Types";
 
 const UnsupportedError = types.UnsupportedError;

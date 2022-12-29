@@ -1,11 +1,11 @@
 <script lang="ts">
   import { client } from "Client";
-  import type { Member, API } from "revolt.js";
+  import type { API, Member } from "revolt.js";
   import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
   import { writable } from "svelte/store";
   import { Theme } from "Theme";
-  import MemberBarItem from "./MemberBarItem.svelte";
   import { MemberDetails, UserDetails } from "utils";
+  import MemberBarItem from "./MemberBarItem.svelte";
   import VirtualList from "./VirtualList.svelte";
 
   let membar: HTMLDivElement;
