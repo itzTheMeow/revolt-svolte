@@ -38,7 +38,7 @@ export function MemberOrUserDetails(user?: User, member?: Member) {
 }
 export function UserDetails(user: User | undefined) {
   return {
-    online: user?.online && user.status?.presence !== "Invisible",
+    online: user?.online && user?.status?.presence && user.status.presence !== "Invisible",
     name: user?.username || "Unknown User",
   };
 }
@@ -85,6 +85,7 @@ export function UserColor(color: string) {
     : `color:${color};`;
 }
 export function StatusColor(user: User | undefined): keyof Omit<ThemeSettings, "light"> {
+  if (!UserDetails(user).online) return "status-invisible";
   switch (user?.status?.presence) {
     case "Busy":
       return "status-busy";
@@ -93,8 +94,9 @@ export function StatusColor(user: User | undefined): keyof Omit<ThemeSettings, "
     case "Idle":
       return "status-away";
     case "Online":
-    default:
       return "status-online";
+    default:
+      return "status-invisible";
   }
 }
 

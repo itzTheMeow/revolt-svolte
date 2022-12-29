@@ -19,6 +19,7 @@
         right: $AppWidth - BarItem.getBoundingClientRect().left + 6,
       },
       target: e.target,
+      bar: true,
     });
   }
 </script>
@@ -32,7 +33,9 @@
     <div
       class="absolute top-0 left-0 w-full h-full opacity-20"
       style:background={MemberDetails(item).color || "currentColor"}
-      style:display={$CMState?.type == "member" && $CMState.member._id.user == item.user?._id
+      style:display={$CMState?.type == "member" &&
+      $CMState.member._id.user == item.user?._id &&
+      $CMState.bar
         ? "block"
         : "var(--d)"}
     />

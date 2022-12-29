@@ -24,6 +24,7 @@ export type ContextMenuState =
   | (BaseContextMenuState & {
       type: "member";
       member: Member;
+      bar?: true;
     });
 
 export const CMState = writable<ContextMenuState | null>(null);
