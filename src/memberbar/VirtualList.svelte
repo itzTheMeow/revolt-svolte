@@ -145,7 +145,7 @@
   <svelte-virtual-list-contents
     bind:this={contents}
     style="padding-top: {top}px; padding-bottom: {bottom}px;"
-    style:width="calc(100% - 2rem)"
+    style:width="calc(100% - 1rem)"
     class="flex flex-col w-fit mx-auto"
   >
     {#each visible as row (row.index)}

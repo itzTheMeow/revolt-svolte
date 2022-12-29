@@ -57,10 +57,13 @@
       </div>
       <div class="flex flex-col" style:width="calc(100% - 2.5rem - 0.375rem)">
         <div
-          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis flex items-center gap-1.5"
+          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis inline-flex items-center gap-1.5"
           style:line-height="1.1"
         >
-          <div style={UserColor(MemberDetails(item).color || "inherit")}>
+          <div
+            class="overflow-hidden overflow-ellipsis"
+            style={UserColor(MemberDetails(item).color || "inherit")}
+          >
             {MemberDetails(item).name}
           </div>
           {#if item.user?.bot}
@@ -86,7 +89,7 @@
   </div>
 {:else}
   <div
-    class="block mb-0.5 font-bold overflow-hidden whitespace-nowrap overflow-ellipsis"
+    class="block mb-0.5 px-1 font-bold overflow-hidden whitespace-nowrap overflow-ellipsis"
     style={UserColor(item.colour || "inherit")}
   >
     {item.name}{item.count > 1 ? ` - ${item.count.toLocaleString()}` : ""}
