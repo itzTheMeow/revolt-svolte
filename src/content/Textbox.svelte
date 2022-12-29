@@ -1,8 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
-  import { uploadAttachment } from "revolt-toolset";
-  import { parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset";
+  import { parseAutocomplete, uploadAttachment, type AutocompleteTabResult } from "revolt-toolset";
   import {
     autocomplete,
     MessageInputSelected,
@@ -25,7 +24,7 @@
     Volume,
   } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { handleUpdates, proxyURL, testMuted } from "utils";
+  import { handleUpdates, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
@@ -106,6 +105,7 @@
     }
 
     CMState.set({
+      type: "options",
       pos: {
         left: UploaderButton.getBoundingClientRect().left + 4,
         bottom: UploaderButton.getBoundingClientRect().height + 6,

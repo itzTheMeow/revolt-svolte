@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { UnreadState } from "Client";
+  import { CMState } from "contextmenu/ContextMenuState";
+  import Indicator from "extra/Indicator.svelte";
+  import type { Channel } from "revolt.js";
   import {
     MessageCache,
     MobileLayout,
@@ -9,13 +13,9 @@
     selectBottom,
     SelectedChannel,
   } from "State";
+  import { Copy, Hash, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { copyText, proxyURL, testMuted } from "utils";
-  import { Copy, Hash, Volume } from "tabler-icons-svelte";
-  import type { Channel } from "revolt.js";
-  import { UnreadState } from "Client";
-  import Indicator from "extra/Indicator.svelte";
-  import { CMState } from "contextmenu/ContextMenuState";
 
   export let channel: Channel;
   let isSelected = false;
@@ -43,6 +43,7 @@
 
   function contextmenu(e: MouseEvent) {
     CMState.set({
+      type: "options",
       pos: {
         top: e.clientY,
         left: e.clientX,

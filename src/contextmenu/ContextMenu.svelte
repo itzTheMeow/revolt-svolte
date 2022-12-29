@@ -28,21 +28,25 @@
         .join(";")}
     use:clickoutside={handleClickOut}
   >
-    {#each $CMState.options as opt}
-      <li>
-        <div
-          class="active:bg-inherit flex items-center gap-2 justify-center !rounded-md {!$MobileLayout
-            ? 'px-3 py-1 text-[0.95rem]'
-            : ''}"
-          on:click={(e) => handleClick(e, opt)}
-          on:touchend={(e) => handleClick(e, opt)}
-        >
-          {#if opt.icon}
-            <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />
-          {/if}
-          <span>{opt.name}</span>
-        </div>
-      </li>
-    {/each}
+    {#if $CMState.type == "options"}
+      {#each $CMState.options as opt}
+        <li>
+          <div
+            class="active:bg-inherit flex items-center gap-2 justify-center !rounded-md {!$MobileLayout
+              ? 'px-3 py-1 text-[0.95rem]'
+              : ''}"
+            on:click={(e) => handleClick(e, opt)}
+            on:touchend={(e) => handleClick(e, opt)}
+          >
+            {#if opt.icon}
+              <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />
+            {/if}
+            <span>{opt.name}</span>
+          </div>
+        </li>
+      {/each}
+    {:else if $CMState.type == "member"}
+      uuid {$CMState.member._id.user}
+    {/if}
   </ul>
 {/if}
