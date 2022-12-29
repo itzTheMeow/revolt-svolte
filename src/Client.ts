@@ -1,14 +1,7 @@
 import { observe } from "mobx";
 import { DEFAULT_THEME } from "revolt-toolset";
 import { Client } from "revolt.js";
-import {
-  CollapsedCategories,
-  pushMessages,
-  SelectedChannel,
-  SelectedServer,
-  SelectionState,
-  ServerOrder,
-} from "State";
+import { CollapsedCategories, SelectedServer, SelectionState, ServerOrder } from "State";
 import { writable } from "svelte/store";
 import { Theme } from "Theme";
 import { NotifSettings } from "./State";
@@ -29,19 +22,7 @@ client.once("ready", async () => {
     CollapsedCategories.set(JSON.parse(settings.collapsed?.[1] || "[]"));
     localStorage.setItem("theme", JSON.stringify(theme));
     SelectedServer.update(() => {
-      const server = SelectionState.server
-        ? client.servers.get(SelectionState.server) || null
-        : null;
-      SelectedChannel.update(() => {
-        const c = server?.channels.find((c) => c?._id === SelectionState.channel) || null;
-        c?.fetchMessages({
-          limit: 100,
-        }).then((m) => {
-          pushMessages(c, m);
-        });
-        return c;
-      });
-      return server;
+      return SelectionState.server ? client.servers.get(SelectionState.server) || null : null;
     });
   } catch (err) {
     console.error(err);

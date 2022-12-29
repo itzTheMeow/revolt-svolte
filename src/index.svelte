@@ -65,6 +65,18 @@
   client.on("message/delete", (_, message) => {
     if (message && $MessageCache[message.channel_id]) spliceMessages(message.channel!, [message]);
   });
+  const fetching = new Set();
+  SelectedChannel.subscribe((c) => {
+    if (c && !$MessageCache[c._id] && !fetching.has(c._id)) {
+      fetching.add(c._id);
+      c.fetchMessages({
+        limit: 100,
+      }).then((m) => {
+        pushMessages(c, m);
+        fetching.delete(c);
+      });
+    }
+  });
   window.addEventListener("touchstart", (e) => {
     if (!$HoveredMessage) return;
     const target = e.target as HTMLElement;

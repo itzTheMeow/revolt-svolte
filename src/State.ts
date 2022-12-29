@@ -4,11 +4,14 @@ import type { Channel, Message, Server } from "revolt.js";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";
 
-export const SelectionState: { server: string | null; channel: string | null } = {
+export const SelectionState: {
+  server: string | null;
+  map: Record<string, string>;
+} = {
   server: null,
-  channel: null,
   ...JSON.parse(localStorage.getItem("selstate") || "{}"),
 };
+if (!SelectionState.map) SelectionState.map = {};
 
 export const fetchedMembers = new Set<string>();
 
@@ -19,7 +22,16 @@ export const SelectedServer = writable<Server | null>(null);
 let serverID = "";
 SelectedServer.subscribe((s) => {
   if (went) went--;
-  if (!went) SelectionState.server = s?._id || null;
+  if (!went) {
+    SelectionState.server = s?._id || null;
+    if (!s) SelectedChannel.set(null);
+    else {
+      const channel = client.channels.get(SelectionState.map[s._id]);
+      if (channel) SelectedChannel.set(channel);
+      else
+        SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
+    }
+  }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
   serverID = s?._id || "";
@@ -33,7 +45,10 @@ SelectedServer.subscribe((s) => {
 export const SelectedChannel = writable<Channel | null>(null);
 SelectedChannel.subscribe((c) => {
   if (went) went--;
-  if (!went) SelectionState.channel = c?._id || null;
+  if (!went) {
+    if (c) SelectionState.map[serverID] = c._id;
+    else delete SelectionState.map[serverID];
+  }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 });
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
