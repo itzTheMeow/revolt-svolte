@@ -14,6 +14,7 @@ export interface BaseContextMenuState {
     bottom?: number;
   };
   time?: number;
+  target?: HTMLElement | EventTarget | null;
 }
 export type ContextMenuState =
   | (BaseContextMenuState & {

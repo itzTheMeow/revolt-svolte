@@ -3,6 +3,7 @@
   import { Theme } from "Theme";
   import { clickoutside } from "utils";
   import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
+  import MemberContextMenu from "./MemberContextMenu.svelte";
 
   function handleClick(e: MouseEvent | TouchEvent, opt: ContextMenuStateOption) {
     e.preventDefault();
@@ -13,40 +14,39 @@
     return false;
   }
   function handleClickOut(e: MouseEvent | TouchEvent) {
-    if (!e.composedPath().includes(document.getElementById("UploaderButton")!)) CMState.set(null);
+    if (!e.composedPath().includes($CMState?.target!)) CMState.set(null);
   }
 </script>
 
 {#if $CMState}
-  <ul
-    class="menu rounded-md absolute w-fit h-fit shadow-sm shadow-black {!$MobileLayout
-      ? 'p-1'
-      : ''}"
-    style={`background-color:${$Theme["primary-background"]};` +
-      Object.entries($CMState.pos)
-        .map((e) => `${e[0]}:${e[1]}px`)
-        .join(";")}
+  <div
+    class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit"
+    style={Object.entries($CMState?.pos || {})
+      .map((e) => `${e[0]}:${e[1]}px`)
+      .join(";") + `background-color:${$Theme["primary-background"]}`}
     use:clickoutside={handleClickOut}
   >
     {#if $CMState.type == "options"}
-      {#each $CMState.options as opt}
-        <li>
-          <div
-            class="active:bg-inherit flex items-center gap-2 justify-center !rounded-md {!$MobileLayout
-              ? 'px-3 py-1 text-[0.95rem]'
-              : ''}"
-            on:click={(e) => handleClick(e, opt)}
-            on:touchend={(e) => handleClick(e, opt)}
-          >
-            {#if opt.icon}
-              <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />
-            {/if}
-            <span>{opt.name}</span>
-          </div>
-        </li>
-      {/each}
+      <ul class="menu {!$MobileLayout ? 'p-1' : ''}">
+        {#each $CMState.options as opt}
+          <li>
+            <div
+              class="active:bg-inherit flex items-center gap-2 justify-center !rounded-md {!$MobileLayout
+                ? 'px-3 py-1 text-[0.95rem]'
+                : ''}"
+              on:click={(e) => handleClick(e, opt)}
+              on:touchend={(e) => handleClick(e, opt)}
+            >
+              {#if opt.icon}
+                <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />
+              {/if}
+              <span>{opt.name}</span>
+            </div>
+          </li>
+        {/each}
+      </ul>
     {:else if $CMState.type == "member"}
-      uuid {$CMState.member._id.user}
+      <MemberContextMenu member={$CMState.member} />
     {/if}
-  </ul>
+  </div>
 {/if}

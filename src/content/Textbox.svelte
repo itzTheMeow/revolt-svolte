@@ -138,6 +138,7 @@
           icon: FileUpload,
         },
       ],
+      target: UploaderButton,
     });
     return false;
   }
@@ -217,7 +218,6 @@
   <div
     class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
     style="background-color:{$Theme['primary-header']};"
-    id="UploaderButton"
     bind:this={UploaderButton}
     on:click={handleUpload}
     on:touchend={handleUpload}

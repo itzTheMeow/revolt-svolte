@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CMState } from "contextmenu/ContextMenuState";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
@@ -54,11 +55,19 @@
           class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
           src={MessageDetails(message).avatar}
           alt=""
-          on:click={() =>
-            ModalStack.push({
-              type: "user",
-              id: message.author_id,
-            })}
+          on:click={(e) => {
+            if (message.member)
+              CMState.set({
+                type: "member",
+                member: message.member,
+                pos: {
+                  top: e.clientY,
+                  left: e.clientX,
+                },
+                target: e.target,
+              });
+            else ModalStack.push({ type: "user", id: message.author_id });
+          }}
         />
       {:else}
         <div

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CMState } from "contextmenu/ContextMenuState";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
   import { Theme } from "Theme";
@@ -11,11 +12,19 @@
   <div
     class="font-semibold cursor-pointer hover:underline"
     style={UserColor(MessageDetails(message).color || "inherit")}
-    on:click={() =>
-      ModalStack.push({
-        type: "user",
-        id: message.author_id,
-      })}
+    on:click={(e) => {
+      if (message.member)
+        CMState.set({
+          type: "member",
+          member: message.member,
+          pos: {
+            top: e.clientY,
+            left: e.clientX,
+          },
+          target: e.target,
+        });
+      else ModalStack.push({ type: "user", id: message.author_id });
+    }}
   >
     {MessageDetails(message).name}
   </div>
