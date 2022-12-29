@@ -23,7 +23,7 @@
     class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit"
     style={Object.entries($CMState?.pos || {})
       .map((e) => `${e[0]}:${e[1]}px`)
-      .join(";") + `background-color:${$Theme["primary-background"]}`}
+      .join(";") + `;background-color:${$Theme["primary-background"]}`}
     use:clickoutside={handleClickOut}
   >
     {#if $CMState.type == "options"}
