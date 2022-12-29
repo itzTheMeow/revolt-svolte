@@ -27,3 +27,7 @@ export type ContextMenuState =
     });
 
 export const CMState = writable<ContextMenuState | null>(null);
+
+window.addEventListener("keydown", (e) => {
+  if (e.key == "Escape") CMState.set(null);
+});
