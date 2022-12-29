@@ -10,7 +10,7 @@
 <div class="p-4">
   <div class="w-12 h-12 relative">
     <img
-      class="avatar rounded-full w-full h-full object-contain"
+      class="avatar rounded-full w-full h-full object-cover"
       src={MemberDetails(member).avatar}
       alt={MemberDetails(member).name}
     />
