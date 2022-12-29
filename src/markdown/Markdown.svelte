@@ -5,7 +5,7 @@
   import { SelectedServer } from "State";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
-  import { getServerMember, MemberDetails, MemberOrUserDetails, proxyURL } from "utils";
+  import { getServerMember, MemberDetails, MemberOrUserDetails, proxyURL, UserColor } from "utils";
 
   type Child =
     | {
@@ -105,33 +105,40 @@
                 });
                 break;
               case "mention":
+                const member = getServerMember($SelectedServer, node.properties.match),
+                  details = MemberDetails(member);
                 node.children.push({
                   type: "element",
                   tagName: "span",
                   properties: {
                     class:
-                      "inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm",
-                    style: `color:${$Theme["accent"]};background-color:rgba(0,0,0,0.3);`,
+                      "inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative",
+                    style: `color:${$Theme["accent"]};`,
                   },
                   children: [
                     {
                       type: "element",
                       tagName: "span",
                       properties: {
-                        style: `color:${
-                          MemberDetails(getServerMember($SelectedServer, node.properties.match))
-                            ?.color || $Theme["accent"]
-                        };`,
+                        class:
+                          "absolute top-0 left-0 w-full h-full rounded-[inherit] opacity-10 hover:opacity-25 cursor-pointer",
+                        style: `background:${details.color || $Theme["accent"]};`,
+                      },
+                    },
+                    {
+                      type: "element",
+                      tagName: "span",
+                      properties: {
+                        class: "relative pointer-events-none",
+                        style: UserColor(details?.color || $Theme["accent"] || ""),
                       },
                       children: [
                         {
                           type: "text",
                           value:
                             "@" +
-                            MemberOrUserDetails(
-                              client.users.get(node.properties.match),
-                              getServerMember($SelectedServer, node.properties.match)
-                            )?.name,
+                            MemberOrUserDetails(client.users.get(node.properties.match), member)
+                              ?.name,
                         },
                       ],
                     },
@@ -164,5 +171,10 @@
   <!-- emoji -->
   <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
   <!-- mention -->
-  <div class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm" />
+  <div
+    class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative pointer-events-none"
+  />
+  <div
+    class="absolute top-0 left-0 w-full h-full rounded-[inherit] opacity-10 hover:opacity-25 cursor-pointer"
+  />
 {/if}
