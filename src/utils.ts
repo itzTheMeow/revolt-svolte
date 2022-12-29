@@ -1,5 +1,6 @@
 import { client } from "Client";
 import { DateTime } from "luxon";
+import type { ThemeSettings } from "revolt-toolset";
 import { Channel, Member, Server, User, type Message } from "revolt.js";
 
 export function escapeHTML(txt: string) {
@@ -82,6 +83,19 @@ export function UserColor(color: string) {
   return color.includes("gradient")
     ? `background:${color};background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;`
     : `color:${color};`;
+}
+export function StatusColor(user: User | undefined): keyof Omit<ThemeSettings, "light"> {
+  switch (user?.status?.presence) {
+    case "Busy":
+      return "status-busy";
+    case "Focus":
+      return "status-focus";
+    case "Idle":
+      return "status-away";
+    case "Online":
+    default:
+      return "status-online";
+  }
 }
 
 type NotifType = "none" | "muted" | "mention" | "all";

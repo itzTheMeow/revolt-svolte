@@ -2,7 +2,7 @@
   import Indicator from "extra/Indicator.svelte";
   import { Member, type API } from "revolt.js";
   import { Theme } from "Theme";
-  import { MemberDetails, UserColor, UserDetails } from "utils";
+  import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
 
   export let item: (API.Role & { count: number }) | Member;
 </script>
@@ -22,19 +22,7 @@
         <Indicator
           pos="bottomRight"
           bg={$Theme["secondary-background"]}
-          color={(() => {
-            switch (item.user?.status?.presence) {
-              case "Busy":
-                return $Theme["status-busy"];
-              case "Focus":
-                return $Theme["status-focus"];
-              case "Idle":
-                return $Theme["status-away"];
-              case "Online":
-              default:
-                return $Theme["status-online"];
-            }
-          })()}
+          color={$Theme[StatusColor(item.user)]}
           isSelected
         />
       {/if}
