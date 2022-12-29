@@ -1,15 +1,17 @@
 import { writable } from "svelte/store";
 
-export type ModalData = {
-  type: "confirm";
-  title: string;
-  text: string;
-  confirm?: string;
-  cancel?: string;
-  red?: boolean;
-  confirmed?: () => any;
-  canceled?: () => any;
-};
+export type ModalData =
+  | {
+      type: "confirm";
+      title: string;
+      text: string;
+      confirm?: string;
+      cancel?: string;
+      red?: boolean;
+      confirmed?: () => any;
+      canceled?: () => any;
+    }
+  | { type: "user"; id: string };
 export interface Modal {
   close(): void;
 }

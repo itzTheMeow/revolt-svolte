@@ -1,6 +1,7 @@
 <script lang="ts">
   import ConfirmModal from "./ConfirmModal.svelte";
   import { ModalStack, type ModalData } from "./ModalStack";
+  import UserModal from "./UserModal.svelte";
 
   let stack: ModalData[] = [];
   ModalStack.stack.subscribe((s) => {
@@ -11,5 +12,7 @@
 {#each stack as modal}
   {#if modal.type == "confirm"}
     <ConfirmModal {modal} />
+  {:else if modal.type == "user"}
+    <UserModal {modal} />
   {/if}
 {/each}

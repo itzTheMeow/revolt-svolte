@@ -1,5 +1,6 @@
 <script lang="ts">
   import { DateTime } from "luxon";
+  import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
   import { HoveredMessage, MessageCache, MobileLayout, SelectedChannel } from "State";
   import { Theme } from "Theme";
@@ -50,9 +51,14 @@
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
       {#if shouldSeparate}
         <img
-          class="rounded-full h-10 w-10 shrink-0 object-cover"
+          class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
           src={MessageDetails(message).avatar}
           alt=""
+          on:click={() =>
+            ModalStack.push({
+              type: "user",
+              id: message.author_id,
+            })}
         />
       {:else}
         <div
