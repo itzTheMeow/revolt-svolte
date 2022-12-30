@@ -47,10 +47,10 @@
   <div
     class="relative {shouldSeparate ? 'mt-3' : ''}"
     style={isHovered ? `background-color:${$Theme["secondary-background"]};` : ""}
-    on:mouseenter={() => HoveredMessage.set(message._id)}
-    on:mousemove={() => HoveredMessage.set(message._id)}
-    on:mouseleave={() => HoveredMessage.set(null)}
-    on:wheel={() => HoveredMessage.set(message._id)}
+    on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message._id)}
+    on:mousemove={() => !$MobileLayout && HoveredMessage.set(message._id)}
+    on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
+    on:wheel={() => !$MobileLayout && HoveredMessage.set(message._id)}
     on:click={handleClick}
   >
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
