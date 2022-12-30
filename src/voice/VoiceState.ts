@@ -83,6 +83,7 @@ class VoiceStateReference {
       client.on("userLeft", this.syncState);
       client.on("userStartProduce", this.syncState);
       client.on("userStopProduce", this.syncState);
+      client.on("close", this.syncState);
 
       runInAction(() => {
         if (!client.supported()) {
@@ -190,9 +191,9 @@ class VoiceStateReference {
   async startProducing(type: ProduceType) {
     switch (type) {
       case "audio": {
-        if (this.client?.audioProducer !== undefined) return alert("No audio producer."); // ! TODO: let the user know
+        if (this.client?.audioProducer !== undefined) return alert("No audio producer.");
 
-        if (navigator.mediaDevices === undefined) return alert("No media devices."); // ! TODO: let the user know
+        if (navigator.mediaDevices === undefined) return alert("No media devices.");
 
         const mediaDevice = window.localStorage.getItem("audioInputDevice");
 
