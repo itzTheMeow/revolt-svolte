@@ -23,9 +23,11 @@
     on:pause={() => (isPlaying = false)}
     on:ended={() => ((isPlaying = false), (didEnd = true))}
   />
-  <div class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-0.5">
+  <div
+    class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-1 px-1.5"
+  >
     <div
-      class="cursor-pointer hover:brightness-50"
+      class="cursor-pointer hover:brightness-75"
       on:click={() => {
         if (didEnd) {
           video.currentTime = 0;

@@ -35,10 +35,8 @@ function getOnDown(node: HTMLElement, cb: Callback) {
 }
 
 function getOnMove(node: HTMLElement, cb: Callback) {
-  const track = node.parentNode as HTMLElement;
-
   return function (e: MouseEvent | TouchEvent) {
-    const { left, width } = track.getBoundingClientRect();
+    const { left, width } = node.getBoundingClientRect();
     const clickOffset = "touches" in e ? e.touches[0].clientX : e.clientX;
     const clickPos = Math.min(Math.max((clickOffset - left) / width, 0), 1) || 0;
     cb(clickPos);
