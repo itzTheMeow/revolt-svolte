@@ -11,6 +11,7 @@
   export let max = 100;
   export let step = 1;
   export let value = min;
+  export let className = "";
 
   function stepRound(v: number) {
     const offset = min % step,
@@ -20,7 +21,7 @@
 </script>
 
 <div
-  class="relative h-1.5 rounded-full cursor-pointer mx-1.5 my-1"
+  class="relative h-1.5 rounded-full cursor-pointer mx-1.5 my-1 {className}"
   style:background={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
   use:handle={{
     drag(v) {
