@@ -33,8 +33,13 @@
   >
     {MessageDetails(message).name}
   </div>
+  {#if message.masquerade}
+    <UserTag
+      text={message.author?.bot ? "BRIDGE" : `MASKED @${message.author?.username || "MASKED"}`}
+    />
+  {/if}
   {#if message.author?.bot}
-    <UserTag text={message.masquerade ? "BRIDGE" : "BOT"} />
+    <UserTag text="BOT" />
   {/if}
   <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
     {MessageDetails(message).time}
