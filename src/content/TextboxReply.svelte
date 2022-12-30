@@ -28,7 +28,10 @@
   </div>
   <div
     class="ml-auto cursor-pointer hover:brightness-75"
-    on:click={() => updateReplies(message, true)}
+    on:click={(e) => {
+      updateReplies(message, true);
+      e.preventDefault();
+    }}
   >
     <CircleX size={18} />
   </div>
