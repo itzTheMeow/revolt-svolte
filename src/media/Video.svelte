@@ -111,6 +111,7 @@
     bind:currentTime={seekTime}
     bind:duration
     bind:volume
+    preload="metadata"
   />
   {#if !$MobileLayout}
     <div
