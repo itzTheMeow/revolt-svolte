@@ -1,22 +1,37 @@
 <!-- Adapted from @bulatdashiev/svelte-slider on NPM. -->
-<script>
+<script lang="ts">
+  import { createEventDispatcher } from "svelte";
   import { Theme } from "Theme";
   import tinycolor from "tinycolor2";
   import handle from "./handle";
+
+  const dispatch = createEventDispatcher();
 
   export let min = 0;
   export let max = 100;
   export let step = 1;
   export let value = min;
+
+  function stepRound(v: number) {
+    const offset = min % step,
+      width = max - min;
+    return Math.round((min + v * width - offset) / step) * step + offset;
+  }
 </script>
 
 <div
-  class="relative h-1.5 rounded-full cursor-pointer"
+  class="relative h-1.5 rounded-full cursor-pointer mx-1.5 my-1"
   style:background={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
-  use:handle={(v) => {
-    const offset = min % step,
-      width = max - min;
-    value = Math.round((min + v * width - offset) / step) * step + offset;
+  use:handle={{
+    drag(v) {
+      value = stepRound(v);
+    },
+    dragstart() {
+      dispatch("dragstart");
+    },
+    dragend() {
+      dispatch("dragend");
+    },
   }}
 >
   <div

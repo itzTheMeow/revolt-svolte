@@ -11,9 +11,16 @@
   let isPlaying = false,
     didEnd = false,
     seekTime = 0,
-    duration = 0;
+    duration = 0,
+    shouldReplay = false;
 
   let video: HTMLVideoElement;
+
+  $: {
+    duration = Math.round(duration * 100) / 100;
+    seekTime = Math.round(seekTime * 100) / 100;
+    didEnd = seekTime == duration;
+  }
 </script>
 
 <div class="block rounded overflow-hidden relative" {style}>
@@ -23,7 +30,7 @@
     bind:this={video}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}
-    on:ended={() => ((isPlaying = false), (didEnd = true))}
+    on:ended={() => (isPlaying = false)}
     bind:currentTime={seekTime}
     bind:duration
   />
@@ -49,7 +56,13 @@
       {/if}
     </div>
     <div class="flex-1">
-      <Slider max={duration} bind:value={seekTime} step={0.1} />
+      <Slider
+        max={duration}
+        bind:value={seekTime}
+        step={0.01}
+        on:dragstart={() => ((shouldReplay = isPlaying), video.pause())}
+        on:dragend={() => shouldReplay && video.play()}
+      />
     </div>
   </div>
 </div>
