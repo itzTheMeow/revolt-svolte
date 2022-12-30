@@ -24,7 +24,7 @@
           target: e.target,
         });
       else ModalStack.push({ type: "user", id: message.author_id });
-      return false;
+      e.stopPropagation();
     }}
   >
     {MessageDetails(message).name}
