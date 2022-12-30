@@ -7,6 +7,11 @@
 
   export let message: Message;
   let ReplyBox: HTMLDivElement;
+
+  function delReply(e: Event) {
+    e.preventDefault();
+    updateReplies(message, true);
+  }
 </script>
 
 <div
@@ -28,11 +33,8 @@
   </div>
   <div
     class="ml-auto cursor-pointer hover:brightness-75"
-    on:click={(e) => {
-      updateReplies(message, true);
-      e.preventDefault();
-      return false;
-    }}
+    on:click={delReply}
+    on:touchend={delReply}
   >
     <CircleX size={18} />
   </div>
