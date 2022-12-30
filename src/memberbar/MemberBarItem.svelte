@@ -3,6 +3,7 @@
   import Indicator from "extra/Indicator.svelte";
   import { Member, type API } from "revolt.js";
   import { AppWidth } from "State";
+  import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
 
@@ -60,7 +61,7 @@
       </div>
       <div class="flex flex-col" style:width="calc(100% - 2.5rem - 0.375rem)">
         <div
-          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis inline-flex items-center gap-1.5"
+          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis inline-flex items-center gap-1"
           style:line-height="1.1"
         >
           <div
@@ -76,6 +77,11 @@
               style:font-size="0.65rem"
             >
               BOT
+            </div>
+          {/if}
+          {#if item._id.user == item.server?.owner}
+            <div>
+              <Crown size={16} color="gold" />
             </div>
           {/if}
         </div>
