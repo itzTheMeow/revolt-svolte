@@ -63,7 +63,7 @@
               if (!node.properties.href?.match(/^https?/gi)) delete node.properties.href;
               else {
                 node.properties.style = `color:${$Theme["accent"]};`;
-                node.properties.class = "inline-block hover:brightness-75 active:translate-y-[1px]";
+                node.properties.class = "hover:brightness-75";
                 node.properties.type = "link";
                 node.properties.target = "_blank";
               }
@@ -168,7 +168,7 @@
 <!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
 {#if false}
   <!-- a -->
-  <div class="inline-block hover:brightness-75 active:translate-y-[1px]" />
+  <div class="hover:brightness-75" />
   <!-- emoji -->
   <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
   <!-- mention -->
