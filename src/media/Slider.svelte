@@ -4,7 +4,6 @@
   import handle from "./handle";
   const dispatch = createEventDispatcher();
 
-  export let name = [];
   export let min = 0;
   export let max = 100;
   export let step = 1;
@@ -37,7 +36,6 @@
   }
 </script>
 
-<input type="number" value={value[0]} name={name[0]} />
 <div class="track">
   <div class="progress" style={progress} />
   <div
@@ -62,9 +60,6 @@
 </div>
 
 <style>
-  input {
-    display: none;
-  }
   .track {
     margin: 16px 8px;
     position: relative;
