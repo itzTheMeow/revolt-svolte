@@ -169,3 +169,5 @@ export function selectBottom(blur = false) {
   if (blur) box.blur();
   else selectInput.set(box);
 }
+
+export const fullscreenElement = writable<Element | null>(null);

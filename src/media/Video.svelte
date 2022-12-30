@@ -1,7 +1,8 @@
 <script lang="ts">
   import { client } from "Client";
   import type { File } from "revolt-api";
-  import { PlayerPause, PlayerPlay, Rotate } from "tabler-icons-svelte";
+  import { fullscreenElement } from "State";
+  import { Maximize, Minimize, PlayerPause, PlayerPlay, Rotate } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
@@ -15,7 +16,7 @@
     duration = 0,
     shouldReplay = false;
 
-  let video: HTMLVideoElement;
+  let video: HTMLVideoElement, player: HTMLDivElement;
 
   $: {
     duration = Math.round(duration * 100) / 100;
@@ -24,7 +25,7 @@
   }
 </script>
 
-<div class="block rounded overflow-hidden relative" {style}>
+<div class="block rounded overflow-hidden relative" {style} bind:this={player}>
   <!-- svelte-ignore a11y-media-has-caption -->
   <video
     src={proxyURL(client.generateFileURL(src), "any")}
@@ -67,6 +68,16 @@
         on:dragstart={() => ((shouldReplay = isPlaying), video.pause())}
         on:dragend={() => shouldReplay && video.play()}
       />
+    </div>
+    <div
+      class="cursor-pointer hover:brightness-75"
+      on:click={() => ($fullscreenElement ? document.exitFullscreen() : player.requestFullscreen())}
+    >
+      {#if $fullscreenElement}
+        <Minimize size={18} />
+      {:else}
+        <Maximize size={18} />
+      {/if}
     </div>
   </div>
 </div>

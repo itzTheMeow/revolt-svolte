@@ -18,6 +18,7 @@
   import {
     AppHeight,
     AppWidth,
+    fullscreenElement,
     HoveredMessage,
     MessageCache,
     MessageInputSelected,
@@ -32,7 +33,7 @@
     SelectedServer,
     selectInput,
     spliceMessages,
-    updatePaneState,
+    updatePaneState
   } from "State";
   import { afterUpdate, beforeUpdate, onMount } from "svelte";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
@@ -140,6 +141,12 @@
       else if ($imagePreview) imagePreview.set(null);
     }
   });
+  setInterval(() => {
+    if (document.fullscreenElement) {
+      if (!$fullscreenElement || !document.fullscreenElement.isEqualNode($fullscreenElement))
+        fullscreenElement.set(document.fullscreenElement);
+    } else fullscreenElement.set(null);
+  }, 10);
 
   handleUpdates(beforeUpdate, afterUpdate);
 
