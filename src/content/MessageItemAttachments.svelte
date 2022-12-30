@@ -15,7 +15,7 @@
           .width} / {attachment.metadata.height};"
         src={proxyURL(
           client.generateFileURL(attachment, {
-            width: Math.floor(window.innerWidth * 0.9),
+            max_side: Math.floor(Math.min(window.innerHeight, window.innerWidth) * 0.9),
           }),
           "image"
         )}
