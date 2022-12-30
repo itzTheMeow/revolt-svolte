@@ -2,7 +2,8 @@
   import { client } from "Client";
   import type { File } from "revolt-api";
   import { PlayerPause, PlayerPlay, Rotate } from "tabler-icons-svelte";
-  import { proxyURL } from "utils";
+  import { Theme } from "Theme";
+  import { formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
 
   export let src: File;
@@ -54,6 +55,9 @@
       {:else}
         <PlayerPlay size={20} />
       {/if}
+    </div>
+    <div class="text-xs font-mono" style:color={$Theme["tertiary-foreground"]}>
+      {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
     </div>
     <div class="flex-1">
       <Slider

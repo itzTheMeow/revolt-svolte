@@ -1,5 +1,5 @@
 import { client } from "Client";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 import type { ThemeSettings } from "revolt-toolset";
 import { Channel, Member, Server, User, type Message } from "revolt.js";
 
@@ -172,4 +172,14 @@ export function clickoutside(
       document.removeEventListener("touchstart", handleClick);
     },
   };
+}
+
+/** Format duration from seconds. */
+export function formatDuration(duration: number) {
+  return Duration.fromObject({
+    minutes: 0,
+    seconds: Math.round(duration),
+  })
+    .normalize()
+    .toFormat("mm:ss");
 }
