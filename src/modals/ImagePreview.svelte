@@ -47,7 +47,7 @@
 
 {#if $imagePreview}
   <div
-    class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-center justify-center"
+    class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center"
     on:mouseup={(e) => {
       //@ts-ignore
       !preview.contains(e.target) && !mouseDown && imagePreview.set(null);
