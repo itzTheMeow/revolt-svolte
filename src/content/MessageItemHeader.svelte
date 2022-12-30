@@ -13,7 +13,6 @@
     class="font-semibold cursor-pointer hover:underline"
     style={UserColor(MessageDetails(message).color || "inherit")}
     data-clickable
-    data-hover-item
     on:click={(e) => {
       if (message.member)
         CMState.set({
