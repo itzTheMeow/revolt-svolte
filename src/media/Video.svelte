@@ -9,7 +9,9 @@
   export let style = "";
 
   let isPlaying = false,
-    didEnd = false;
+    didEnd = false,
+    seekTime = 0,
+    duration = 0;
 
   let video: HTMLVideoElement;
 </script>
@@ -22,6 +24,8 @@
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}
     on:ended={() => ((isPlaying = false), (didEnd = true))}
+    bind:currentTime={seekTime}
+    bind:duration
   />
   <div
     class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-1 px-1.5"
@@ -45,7 +49,7 @@
       {/if}
     </div>
     <div class="flex-1">
-      <Slider />
+      <Slider max={duration} bind:value={seekTime} step={0.1} />
     </div>
   </div>
 </div>
