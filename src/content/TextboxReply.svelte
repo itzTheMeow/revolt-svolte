@@ -31,6 +31,7 @@
     on:click={(e) => {
       updateReplies(message, true);
       e.preventDefault();
+      return false;
     }}
   >
     <CircleX size={18} />
