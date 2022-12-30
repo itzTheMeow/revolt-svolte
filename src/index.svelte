@@ -156,6 +156,7 @@
 
   $: {
     document.body.style.backgroundColor = $Theme["primary-background"]!;
+    document.body.style.caretColor = $Theme["accent"]!;
     document.body.style.width = `${$AppWidth}px`;
     document.body.style.height = `${$AppHeight}px`;
   }
