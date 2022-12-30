@@ -21,6 +21,12 @@ export const ModalStack = new (class {
 
   constructor() {}
 
+  public async getStack() {
+    return new Promise<ModalData[]>((r) => this.stack.update((s) => (r(s), s)));
+  }
+  public async top() {
+    return (await this.getStack()).slice(-1)[0];
+  }
   public push(item: ModalData) {
     this.stack.update((stk) => {
       stk.push(item);

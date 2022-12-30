@@ -2,6 +2,7 @@
   import { client } from "Client";
   import type { Message } from "revolt.js";
   import { proxyURL } from "utils";
+  import { imagePreview } from "../modals/ImagePreview";
 
   export let message: Message;
 </script>
@@ -10,16 +11,13 @@
   <div class="rounded mt-1 block" style="max-width:90%;max-height:50vh;">
     {#if attachment.metadata.type == "Image"}
       <img
-        class="block rounded"
+        class="block rounded cursor-pointer"
         style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
           .width} / {attachment.metadata.height};"
-        src={proxyURL(
-          client.generateFileURL(attachment, {
-            max_side: Math.floor(Math.min(window.innerHeight, window.innerWidth) * 0.9),
-          }),
-          "image"
-        )}
+        src={proxyURL(client.generateFileURL(attachment), "image")}
         alt={attachment.filename}
+        data-clickable
+        on:click={() => imagePreview.set(attachment)}
       />
     {:else if attachment.metadata.type == "Video"}
       <!-- svelte-ignore a11y-media-has-caption -->

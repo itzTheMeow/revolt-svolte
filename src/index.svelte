@@ -8,6 +8,8 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import Loader from "Loader.svelte";
   import MemberBar from "memberbar/MemberBar.svelte";
+  import { imagePreview } from "modals/ImagePreview";
+  import ImagePreview from "modals/ImagePreview.svelte";
   import ModalRenderer from "modals/ModalRenderer.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { ElectronFullscreen, Native } from "Native";
@@ -129,6 +131,13 @@
         type: "user",
         id: uid,
       });
+    }
+  });
+  window.addEventListener("keydown", async (e) => {
+    if (e.key == "Escape") {
+      if ($CMState) CMState.set(null);
+      else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
+      else if ($imagePreview) imagePreview.set(null);
     }
   });
 
@@ -294,6 +303,7 @@
     {/if}
   {/if}
 
-  <ContextMenu />
+  <ImagePreview />
   <ModalRenderer />
+  <ContextMenu />
 </div>
