@@ -1,59 +1,25 @@
 <!-- Adapted from @bulatdashiev/svelte-slider on NPM. -->
 <script>
-  import { createEventDispatcher } from "svelte";
   import handle from "./handle";
-  const dispatch = createEventDispatcher();
 
   export let min = 0;
   export let max = 100;
   export let step = 1;
-  export let value = [min, max];
-
-  let pos,
-    active = false;
-
-  $: if (active) setValue(pos);
-  $: if (!active) setPos(value);
-  $: min, max, clamp();
-  $: progress = `
-    left: 0%;
-    right: ${100 - Math.max(pos[0], pos[0]) * 100}%;
-  `;
-  function setValue(pos) {
-    const offset = min % step;
-    const width = max - min;
-    value = pos
-      .map((v) => min + v * width)
-      .map((v) => Math.round((v - offset) / step) * step + offset);
-    dispatch("input", value);
-  }
-  function setPos(value) {
-    pos = value.map((v) => Math.min(Math.max(v, min), max)).map((v) => (v - min) / (max - min));
-  }
-  function clamp() {
-    setPos(value);
-    setValue(pos);
-  }
+  export let value = min;
 </script>
 
 <div class="track">
-  <div class="progress" style={progress} />
+  <div class="progress" style:width="{(value / (max - min)) * 100}%" />
   <div
     class="thumb"
-    style={`left: ${pos[0] * 100}%;`}
-    use:handle={{
-      dragstart() {
-        active = true;
-      },
-      drag(v) {
-        pos[0] = v;
-      },
-      dragend() {
-        active = false;
-      },
+    style:left="{(value / (max - min)) * 100}%"
+    use:handle={(v) => {
+      const offset = min % step,
+        width = max - min;
+      value = Math.round((min + v * width - offset) / step) * step + offset;
     }}
   >
-    <div class="thumb-content" class:active>
+    <div class="thumb-content">
       <div class="thumb-item" />
     </div>
   </div>
@@ -106,8 +72,5 @@
     background: var(--thumb-bg, #5784fd);
     opacity: 30%;
     transition: transform 100ms ease-in-out;
-  }
-  .thumb-content.active::before {
-    transform: translate(-25%, -25%) scale(1);
   }
 </style>
