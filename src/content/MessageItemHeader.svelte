@@ -1,5 +1,6 @@
 <script lang="ts">
   import { CMState } from "contextmenu/ContextMenuState";
+  import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
   import { Theme } from "Theme";
@@ -33,13 +34,7 @@
     {MessageDetails(message).name}
   </div>
   {#if message.author?.bot}
-    <div
-      class="rounded px-1 py-0.5 flex items-center justify-center"
-      style:background-color={$Theme["accent"]}
-      style:font-size="0.65rem"
-    >
-      {message.masquerade ? "BRIDGE" : "BOT"}
-    </div>
+    <UserTag text={message.masquerade ? "BRIDGE" : "BOT"} />
   {/if}
   <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
     {MessageDetails(message).time}

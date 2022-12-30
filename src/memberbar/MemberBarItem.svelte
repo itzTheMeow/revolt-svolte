@@ -1,6 +1,7 @@
 <script lang="ts">
   import { CMState } from "contextmenu/ContextMenuState";
   import Indicator from "extra/Indicator.svelte";
+  import UserTag from "extra/UserTag.svelte";
   import { Member, type API } from "revolt.js";
   import { AppWidth } from "State";
   import { Crown } from "tabler-icons-svelte";
@@ -71,13 +72,7 @@
             {MemberDetails(item).name}
           </div>
           {#if item.user?.bot}
-            <div
-              class="rounded px-1 py-0.5 flex items-center justify-center"
-              style:background-color={$Theme["accent"]}
-              style:font-size="0.65rem"
-            >
-              BOT
-            </div>
+            <UserTag text="BOT" />
           {/if}
           {#if item._id.user == item.server?.owner}
             <div>
