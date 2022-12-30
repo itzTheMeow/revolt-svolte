@@ -194,6 +194,7 @@
             startedDragging[0] - curPos[0] >= 20))
       )
         isSliding = true;
+      if (curPos[1] - 5 > startedDragging[1]) selectBottom(true);
       if (isSliding) {
         const membar = -(document.getElementById("MemberBar")?.offsetWidth || 0);
         let left = startedDragging[2] + (curPos[0] - startedDragging[0]);

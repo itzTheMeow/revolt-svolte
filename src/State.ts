@@ -164,6 +164,8 @@ export function updatePaneState(state: PaneStates) {
 }
 
 export const selectInput = writable<HTMLInputElement | null>(null);
-export function selectBottom() {
-  selectInput.set(document.getElementById("Textbox") as HTMLInputElement);
+export function selectBottom(blur = false) {
+  const box = document.getElementById("Textbox") as HTMLInputElement;
+  if (blur) box.blur();
+  else selectInput.set(box);
 }
