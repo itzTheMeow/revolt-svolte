@@ -1,5 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
+  import Video from "media/Video.svelte";
   import type { Message } from "revolt.js";
   import { proxyURL } from "utils";
   import { imagePreview } from "../modals/ImagePreview";
@@ -20,13 +21,10 @@
         on:click={() => imagePreview.set(attachment)}
       />
     {:else if attachment.metadata.type == "Video"}
-      <!-- svelte-ignore a11y-media-has-caption -->
-      <video
-        class="block rounded"
+      <Video
+        src={attachment}
         style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
           .width} / {attachment.metadata.height};"
-        src={proxyURL(client.generateFileURL(attachment), "any")}
-        controls
       />
     {:else if attachment.metadata.type == "Audio"}
       <audio class="block" src={proxyURL(client.generateFileURL(attachment), "any")} controls />
