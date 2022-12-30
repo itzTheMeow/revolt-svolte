@@ -7,13 +7,20 @@
   import { proxyURL } from "utils";
   import { imagePreview } from "./ImagePreview";
 
+  const zoomSettings = {
+    default: 2.5,
+    max: 7,
+    min: 1.5,
+    step: 0.5,
+  };
+
   let preview: HTMLDivElement, image: HTMLImageElement, glass: HTMLDivElement;
 
   let imageURL: string,
     mouseDown = false,
     isMagnifying = false,
     magPos = { x: 0, y: 0 },
-    zoom = 3,
+    zoom = zoomSettings.default,
     glassW = 0,
     glassH = 0;
   $: {
@@ -22,6 +29,7 @@
       glassW = glass?.offsetWidth / 2;
       glassH = glass?.offsetHeight / 2;
     }
+    if (!mouseDown) zoom = zoomSettings.default;
   }
 
   function calculatePos(e: MouseEvent) {
@@ -58,17 +66,25 @@
           on:mouseenter={(e) => !$MobileLayout && (isMagnifying = mouseDown) && calculatePos(e)}
           on:mouseleave={() => !$MobileLayout && (isMagnifying = false)}
           on:mousemove={calculatePos}
+          on:wheel={(e) => {
+            if (isMagnifying) {
+              zoom = Math.max(
+                zoomSettings.min,
+                Math.min(zoomSettings.max, zoom + (e.deltaY < 0 ? 1 : -1) * zoomSettings.step)
+              );
+            }
+          }}
         />
         {#if isMagnifying}
           <div
-            class="absolute w-24 h-24 rounded-full pointer-events-none bg-no-repeat"
+            class="absolute w-28 h-28 rounded-full pointer-events-none bg-no-repeat"
             style:border="2px solid {$Theme["accent"]}"
             style:left={magPos.x - glassW + "px"}
             style:top={magPos.y - glassH + "px"}
             style:background-image="url({imageURL})"
-            style:background-position="-{magPos.x * zoom - glassW + 0}px -{magPos.y * zoom -
+            style:background-position="-{magPos.x * zoom - glassW + zoom}px -{magPos.y * zoom -
               glassH +
-              0}px"
+              zoom}px"
             style:background-size="{image.width * zoom}px {image.height * zoom}px"
             bind:this={glass}
           />
