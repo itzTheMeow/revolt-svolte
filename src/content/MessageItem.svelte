@@ -31,6 +31,13 @@
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
     isHovered = $HoveredMessage == message._id;
   }
+
+  function handleClick(e: Event) {
+    const target = e.target as HTMLElement;
+    if (!$MobileLayout) return;
+    if (target.tagName == "A" || target.hasAttribute("data-clickable")) return;
+    HoveredMessage.set(message._id);
+  }
 </script>
 
 {#if $SelectedChannel}
@@ -44,10 +51,7 @@
     on:mousemove={() => HoveredMessage.set(message._id)}
     on:mouseleave={() => HoveredMessage.set(null)}
     on:wheel={() => HoveredMessage.set(message._id)}
-    on:click={(e) => {
-      if (!$MobileLayout) return;
-      HoveredMessage.set(message._id);
-    }}
+    on:click={handleClick}
   >
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
       {#if shouldSeparate}
@@ -55,6 +59,7 @@
           class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
           src={MessageDetails(message).avatar}
           alt=""
+          data-clickable
           on:click={(e) => {
             if (message.member)
               CMState.set({

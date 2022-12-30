@@ -12,6 +12,7 @@
   <div
     class="font-semibold cursor-pointer hover:underline"
     style={UserColor(MessageDetails(message).color || "inherit")}
+    data-clickable
     on:click={(e) => {
       if (message.member)
         CMState.set({
@@ -24,7 +25,6 @@
           target: e.target,
         });
       else ModalStack.push({ type: "user", id: message.author_id });
-      e.stopPropagation();
     }}
   >
     {MessageDetails(message).name}
