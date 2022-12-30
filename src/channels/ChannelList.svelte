@@ -9,6 +9,7 @@
   let scrolledTop = true,
     scroller: HTMLDivElement;
   function handleScroll() {
+    if(!scroller) return;
     scrolledTop =
       scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
