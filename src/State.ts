@@ -24,17 +24,15 @@ SelectedServer.subscribe((s) => {
   if (went) went--;
   if (!went) {
     SelectionState.server = s?._id || null;
-    if (!s) SelectedChannel.set(null);
-    else {
-      const channel = client.channels.get(SelectionState.map[s._id]);
-      if (channel) SelectedChannel.set(channel);
-      else
-        SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
+    const channel = client.channels.get(SelectionState.map[s?._id || "0"]);
+    if (channel) SelectedChannel.set(channel);
+    else if(s) SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
+    else SelectedChannel.set(null);
     }
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
-  serverID = s?._id || "";
+  serverID = s?._id || "0";
   if (!s || fetchedMembers.has(s._id)) return;
   fetchedMembers.add(s._id);
   // again shouldnt be hardcoded
