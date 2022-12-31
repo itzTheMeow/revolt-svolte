@@ -151,9 +151,13 @@
           <div class="text-xs">
             {byteSize(src.size).toString().toUpperCase()}
           </div>
-          <div class="cursor-pointer hover:brightness-125">
+          <a
+            class="cursor-pointer hover:brightness-150"
+            href={client.generateFileURL(src)?.replace("attachments", "attachments/download")}
+            target="_blank"
+          >
             <Download size={20} />
-          </div>
+          </a>
         </div>
       </div>
       <div
