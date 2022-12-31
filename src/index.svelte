@@ -187,10 +187,11 @@
     let isSliding = false;
     Container.addEventListener("touchstart", async (e) => {
       isSliding = false;
+      const target = e.changedTouches[0].target as HTMLElement;
       if (
-        (document.activeElement?.tagName == "INPUT" &&
-          (e.changedTouches[0].target as HTMLElement).tagName == "INPUT") ||
+        (document.activeElement?.tagName == "INPUT" && target.tagName == "INPUT") ||
         $imagePreview ||
+        [...document.querySelectorAll("[data-slider]")].find((s) => s.contains(target)) ||
         (await ModalStack.getStack()).length
       )
         return;

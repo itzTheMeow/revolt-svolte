@@ -23,6 +23,7 @@
 <div
   class="relative h-1.5 rounded-full cursor-pointer mx-1.5 my-1 {className}"
   style:background={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
+  data-slider
   use:handle={{
     drag(v) {
       value = stepRound(v);
