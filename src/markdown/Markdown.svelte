@@ -109,8 +109,9 @@
                   properties: {
                     src: proxyURL(emojiURL, "image"),
                     class: `inline object-contain ${
-                      text?.trim() == `:${match}:` ? "h-12 w-12" : "h-5 w-5"
-                    } align-middle`,
+                      text?.trim() == `:${match}:` ? "h-[3em] w-[3em]" : "h-[1.25em] w-[1.25em]"
+                    }`,
+                    style: "margin: 0px 0.05em 0px 0.1em;vertical-align:-0.2em;",
                   },
                 });
                 break;
@@ -182,7 +183,7 @@
 {#if false}
   <alink class="hover:brightness-75" />
   <blockquote class="rounded-lg my-1 px-2 py-0.5" />
-  <emoji class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} align-middle" />
+  <emoji class="inline object-contain {false ? 'h-[3em] w-[3em]' : 'h-[1.25em] w-[1.25em]'}" />
   <mention
     class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative pointer-events-none"
   />
