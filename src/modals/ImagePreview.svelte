@@ -45,9 +45,9 @@
   }
 </script>
 
-{#if $imagePreview}
+{#if $imagePreview && $imagePreview.metadata.type == "Image"}
   <div
-    class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center"
+    class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center"
     on:mouseup={(e) => {
       //@ts-ignore
       !preview.contains(e.target) && !mouseDown && imagePreview.set(null);
@@ -91,6 +91,28 @@
             bind:this={glass}
           />
         {/if}
+      </div>
+      <div
+        class="text-xs font-semibold flex items-center gap-1 mt-0.5"
+        style:color={$Theme["tertiary-foreground"]}
+      >
+        <div>{$imagePreview.filename}</div>
+        &bull;
+        <div>{$imagePreview.metadata.width}x{$imagePreview.metadata.height}</div>
+        &bull;
+        <a class="hover:underline" href={client.generateFileURL($imagePreview)} target="_blank">
+          Open Original
+        </a>
+        &bull;
+        <a
+          class="hover:underline"
+          href={client
+            .generateFileURL($imagePreview)
+            ?.replace("attachments", "attachments/download")}
+          target="_blank"
+        >
+          Download
+        </a>
       </div>
     </div>
   </div>

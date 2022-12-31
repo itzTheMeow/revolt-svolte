@@ -76,9 +76,7 @@
         />
       {:else}
         <div
-          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap {!$MobileLayout
-            ? 'select-text'
-            : ''}"
+          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
           style:font-size="0.65rem"
           style:color={$Theme["tertiary-foreground"]}
         >
