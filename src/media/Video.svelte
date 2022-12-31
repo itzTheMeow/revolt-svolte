@@ -1,10 +1,12 @@
 <script lang="ts">
+  import byteSize from "byte-size";
   import { client } from "Client";
   import type { File } from "revolt-api";
   import { fullscreenElement, MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { slide } from "svelte/transition";
   import {
+    Download,
     Maximize,
     Minimize,
     PlayerPause,
@@ -101,7 +103,7 @@
 </script>
 
 <div
-  class="block rounded overflow-hidden relative"
+  class="block rounded overflow-hidden relative select-none"
   {style}
   bind:this={player}
   on:click={() => (hasFocus = true)}
@@ -133,7 +135,22 @@
   {#if !$MobileLayout}
     {#if showBar}
       <div
-        class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-1 px-1.5"
+        class="absolute top-0 left-0 w-full flex items-center gap-1.5 font-semibold px-2 pt-2 pb-6"
+        style:background="linear-gradient(0deg, transparent, rgba(0,0,0,0.9))"
+        transition:slide|local={{ duration: 150 }}
+      >
+        <div>{src.filename}</div>
+        <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
+          <div class="text-xs">
+            {byteSize(src.size).toString().toUpperCase()}
+          </div>
+          <div class="cursor-pointer hover:brightness-125">
+            <Download size={20} />
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-90 gap-1 px-1.5"
         transition:slide|local={{ duration: 150 }}
       >
         <div class="cursor-pointer hover:brightness-75" on:click={playClick}>

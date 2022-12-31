@@ -1,6 +1,7 @@
 <script lang="ts">
   /* Shamelessly 'inspired' from https://www.w3schools.com/howto/howto_js_image_magnifier_glass.asp */
 
+  import byteSize from "byte-size";
   import { client } from "Client";
   import { MobileLayout } from "State";
   import { Theme } from "Theme";
@@ -99,6 +100,8 @@
         <div>{$imagePreview.filename}</div>
         &bull;
         <div>{$imagePreview.metadata.width}x{$imagePreview.metadata.height}</div>
+        &bull;
+        <div>{byteSize($imagePreview.size).toString().toUpperCase()}</div>
         &bull;
         <a class="hover:underline" href={client.generateFileURL($imagePreview)} target="_blank">
           Open Original
