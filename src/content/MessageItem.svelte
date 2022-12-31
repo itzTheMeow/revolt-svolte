@@ -40,7 +40,7 @@
         e.preventDefault();
         target.click();
       }
-      return 
+      return;
     }
     HoveredMessage.set(message._id);
   }
@@ -58,6 +58,7 @@
     on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
     on:wheel={() => !$MobileLayout && HoveredMessage.set(message._id)}
     on:click={handleClick}
+    on:touchend={handleClick}
   >
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
       {#if shouldSeparate}
