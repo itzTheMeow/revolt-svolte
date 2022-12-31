@@ -2,7 +2,6 @@
   import byteSize from "byte-size";
   import { client } from "Client";
   import type { File } from "revolt-api";
-  import { fullscreenElement } from "State";
   import { onDestroy, onMount } from "svelte";
   import {
     Download,
@@ -56,7 +55,6 @@
     switch (e.code) {
       case "Escape":
         hasFocus = false;
-        if ($fullscreenElement) document.exitFullscreen();
         break;
       case "Space":
       case "KeyK":
@@ -73,10 +71,6 @@
         break;
       case "ArrowRight":
         seekTime = Math.min(duration, seekTime + (e.shiftKey ? 5 : 1));
-        break;
-      case "KeyF":
-        if ($fullscreenElement) document.exitFullscreen();
-        else player.requestFullscreen();
         break;
       default:
         didKey = false;
