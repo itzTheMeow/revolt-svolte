@@ -195,7 +195,7 @@
     </div>
   {:else}
     <div
-      class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center"
+      class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center [transform:translateZ(1px)]"
       on:click={() => {
         video.click();
       }}
