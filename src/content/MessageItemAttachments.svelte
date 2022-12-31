@@ -31,7 +31,7 @@
       <Audio src={attachment} />
     {:else}
       <a href={client.generateFileURL(attachment)} target="_blank">
-        Download {attachment.filename}
+        [Download {attachment.filename}]
       </a>
     {/if}
   </div>
