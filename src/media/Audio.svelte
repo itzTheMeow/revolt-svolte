@@ -14,6 +14,7 @@
     Volume3,
   } from "tabler-icons-svelte";
   import { Theme } from "Theme";
+  import { MobileLayout } from "State";
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
 
