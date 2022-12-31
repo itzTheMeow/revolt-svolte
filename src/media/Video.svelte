@@ -112,11 +112,18 @@
     if (paneTimeout) clearTimeout(paneTimeout);
     paneHover = true;
   }}
+  on:mousemove={() => {
+    paneHover = true;
+    if (paneTimeout) clearTimeout(paneTimeout);
+    paneTimeout = setTimeout(() => {
+      paneHover = false;
+    }, 400);
+  }}
   on:mouseleave={() => {
     if (paneTimeout) clearTimeout(paneTimeout);
     paneTimeout = setTimeout(() => {
       paneHover = false;
-    }, 200);
+    }, 150);
   }}
 >
   <!-- svelte-ignore a11y-media-has-caption -->
