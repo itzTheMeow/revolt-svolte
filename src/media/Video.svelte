@@ -254,6 +254,7 @@
         video.click();
         videoClicked = true;
       }}
+      data-clickable
     >
       <div class="bg-black bg-opacity-70 p-2 rounded-full w-fit h-fit"><PlayerPlay /></div>
     </div>

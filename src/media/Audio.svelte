@@ -122,13 +122,14 @@
         class="cursor-pointer hover:brightness-150"
         href={client.generateFileURL(src)?.replace("attachments", "attachments/download")}
         target="_blank"
+        data-clickable
       >
         <Download size={20} />
       </a>
     </div>
   </div>
   <div class="flex items-center gap-1">
-    <div class="cursor-pointer hover:brightness-75" on:click={playClick}>
+    <div class="cursor-pointer hover:brightness-75" on:click={playClick} data-clickable>
       {#if didEnd}
         <Rotate size={20} />
         <!-- TODO: change to reload when @tabler/icons-svelte is released -->
@@ -146,6 +147,7 @@
       <div
         class="text-xs brightness-75 font-mono cursor-pointer hover:brightness-50"
         on:click={() => (speed = 1)}
+        data-clickable
       >
         {speed.toFixed(1)}x
       </div>
@@ -191,6 +193,7 @@
             isMuted = true;
           }
         }}
+        data-clickable  
       >
         {#if volume > 0.5}
           <Volume size={20} />
