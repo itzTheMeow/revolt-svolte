@@ -18,7 +18,7 @@ export const fetchedMembers = new Set<string>();
 // super hacky but whatever
 let went = 3;
 export const ServerOrder = writable<string[]>([]);
-export const SelectedServer = writable<Server | 0 | null>(0);
+export const SelectedServer = writable<Server | null>(0 as any);
 let serverID = "";
 SelectedServer.subscribe((s) => {
   if (went) went--;
@@ -27,7 +27,8 @@ SelectedServer.subscribe((s) => {
     SelectionState.server = s?._id || null;
     const channel = client.channels.get(SelectionState.map[s?._id || "0"]);
     if (channel) SelectedChannel.set(channel);
-    else if(s) SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
+    else if (s)
+      SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
     else SelectedChannel.set(null);
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
