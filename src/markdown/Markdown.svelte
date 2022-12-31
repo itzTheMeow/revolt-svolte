@@ -69,7 +69,7 @@
               }
               return void 0;
             } else if (node.tagName == "blockquote") {
-              node.properties.class = "rounded";
+              node.properties.class = "rounded-lg";
               node.properties.style = `margin: 2px 0px;padding: 2px 8px;border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
             }
             if (!node.properties.type || !node.properties.match) return void 0;
@@ -160,7 +160,9 @@
   }
 </script>
 
-<div class={keepSpace && content ? "min-h-[1rem]" : ""}>
+<div
+  class="[line-height:normal] [word-wrap:break-word] {keepSpace && content ? 'min-h-[1rem]' : ''}"
+>
   {#if content !== null}
     {@html content}
   {:else}
@@ -170,15 +172,27 @@
 
 <!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
 {#if false}
-  <!-- a -->
-  <div class="hover:brightness-75" />
-  <!-- emoji -->
-  <div class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} mt-1 align-middle" />
-  <!-- mention -->
-  <div
+  <alink class="hover:brightness-75" />
+  <blockquote class="rounded-lg" />
+  <emoji class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} align-middle" />
+  <mention
     class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative pointer-events-none"
   />
-  <div
+  <mention
     class="absolute top-0 left-0 w-full h-full rounded-[inherit] opacity-10 hover:opacity-25 cursor-pointer"
   />
 {/if}
+
+<style lang="scss">
+  // Tailwind removes "default" browser styles.
+  // So they have to be added back since Revite uses them.
+
+  :global(h1, h2, h3, h4, h5, h6) {
+    font-size: revert !important;
+    font-weight: revert !important;
+  }
+  :global(ul, ol) {
+    list-style: inside !important;
+    padding-left: 10px !important;
+  }
+</style>
