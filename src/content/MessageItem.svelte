@@ -35,7 +35,13 @@
   function handleClick(e: Event) {
     const target = e.target as HTMLElement;
     if (!$MobileLayout) return;
-    if (target.tagName == "A" || target.hasAttribute("data-clickable")) return;
+    if (target.tagName == "A" || target.hasAttribute("data-clickable")) {
+      if(document.activeElement?.tagName == "INPUT" && $MobileLayout) {
+        e.preventDefault();
+        target.click();
+      }
+      return 
+    }
     HoveredMessage.set(message._id);
   }
 </script>
