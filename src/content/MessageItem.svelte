@@ -45,7 +45,7 @@
     <MessageItemReplies {message} />
   {/if}
   <div
-    class="relative {shouldSeparate ? 'mt-3' : ''}"
+    class="relative px-1 [line-height:normal] {shouldSeparate ? 'mt-3' : ''}"
     style={isHovered ? `background-color:${$Theme["secondary-background"]};` : ""}
     on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message._id)}
     on:mousemove={() => !$MobileLayout && HoveredMessage.set(message._id)}
