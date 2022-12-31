@@ -69,8 +69,8 @@
               }
               return void 0;
             } else if (node.tagName == "blockquote") {
-              node.properties.class = "rounded-lg";
-              node.properties.style = `margin: 2px 0px;padding: 2px 8px;border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
+              node.properties.class = "rounded-lg my-1 px-2 py-0.5";
+              node.properties.style = `border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -173,7 +173,7 @@
 <!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
 {#if false}
   <alink class="hover:brightness-75" />
-  <blockquote class="rounded-lg" />
+  <blockquote class="rounded-lg my-1 px-2 py-0.5" />
   <emoji class="inline object-contain {false ? 'h-12 w-12' : 'h-5 w-5'} align-middle" />
   <mention
     class="inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative pointer-events-none"
