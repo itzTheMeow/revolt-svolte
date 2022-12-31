@@ -54,13 +54,15 @@
       mouseDown = isMagnifying = false;
     }}
   >
-    <div class="max-w-[90%] max-h-[90%]" bind:this={preview}>
-      <div class="w-fit h-fit relative">
+    <div class="h-fit w-fit" bind:this={preview}>
+      <div class="w-fit h-fit relative overflow-hidden">
         <img
           bind:this={image}
           src={imageURL}
           alt={$imagePreview.filename}
-          class={isMagnifying ? "brightness-75 cursor-none" : "cursor-zoom-in"}
+          class="max-w-[90vw] max-h-[85vh] {isMagnifying
+            ? 'brightness-75 cursor-none'
+            : 'cursor-zoom-in'}"
           on:mousedown={(e) =>
             e.button == 0 && !$MobileLayout && (mouseDown = isMagnifying = true) && calculatePos(e)}
           on:mouseenter={(e) => !$MobileLayout && (isMagnifying = mouseDown) && calculatePos(e)}
