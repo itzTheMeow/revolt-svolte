@@ -143,14 +143,17 @@
       on:mouseenter={() => (speedHover = true)}
       on:mouseleave={() => (speedHover = false)}
     >
-      <div class="text-xs brightness-75 font-mono">
+      <div
+        class="text-xs brightness-75 font-mono cursor-pointer hover:brightness-50"
+        on:click={() => (speed = 1)}
+      >
         {speed.toFixed(1)}x
       </div>
       {#if speedHover || speedDrag}
         <Slider
           max={1.5}
           step={0.1}
-          value={0.5}
+          value={speed - 0.5}
           className="w-20"
           on:dragstart={() => (speedDrag = true)}
           on:dragend={() => (speedDrag = false)}
