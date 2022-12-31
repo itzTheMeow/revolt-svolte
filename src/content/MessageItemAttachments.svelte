@@ -1,5 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
+  import Audio from "media/Audio.svelte";
   import Video from "media/Video.svelte";
   import type { Message } from "revolt.js";
   import { proxyURL } from "utils";
@@ -27,7 +28,7 @@
           .width} / {attachment.metadata.height};"
       />
     {:else if attachment.metadata.type == "Audio"}
-      <audio class="block" src={proxyURL(client.generateFileURL(attachment), "any")} controls />
+      <Audio src={attachment} />
     {:else}
       <a href={client.generateFileURL(attachment)} target="_blank">
         Download {attachment.filename}
