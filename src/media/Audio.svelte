@@ -203,7 +203,9 @@
           <Volume3 size={20} />
         {/if}
       </div>
-      <Slider max={1} step={0.1} bind:value={volume} className="w-16" />
+      {#if !$MobileLayout}
+        <Slider max={1} step={0.1} bind:value={volume} className="w-16" />
+      {/if} 
     </div>
   </div>
 </div>
