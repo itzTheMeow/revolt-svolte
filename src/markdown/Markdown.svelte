@@ -74,6 +74,8 @@
               node.properties.style = `border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
             } else if (node.tagName == "table") {
               node.properties.style = `--bdr:${$Theme["tertiary-foreground"]}`;
+            } else if (node.tagName == "code") {
+              node.properties.style = `--bg:${$Theme["block"]}`;
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -211,5 +213,12 @@
   :global(th, td) {
     padding: 6px;
     border: 1px solid var(--bdr);
+  }
+  :global(code) {
+    font-size: 0.9em;
+    background: var(--bg);
+    border-radius: 4px;
+    box-decoration-break: clone;
+    padding: 1px 4px;
   }
 </style>
