@@ -160,7 +160,7 @@
     </div>
     {#if !speedHover && !speedDrag}
       <div
-        class="text-xs font-mono w-[5.5rem] text-center"
+        class="text-xs font-mono w-[5.625rem] text-center"
         style:color={$Theme["tertiary-foreground"]}
       >
         {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
