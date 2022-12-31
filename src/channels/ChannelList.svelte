@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { client } from "Client";
   import { CollapsedCategories, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { ChevronDown, ChevronRight } from "tabler-icons-svelte";
@@ -9,7 +10,7 @@
   let scrolledTop = true,
     scroller: HTMLDivElement;
   function handleScroll() {
-    if(!scroller) return;
+    if (!scroller) return;
     scrolledTop =
       scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
@@ -78,6 +79,12 @@
       {/each}
     </div>
   {:else}
-    <div class="text-sm ml-1.5">No channels.</div>
+    <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
+      {#each [...client.channels.values()]
+        .filter((c) => c.channel_type == "DirectMessage" || c.channel_type == "Group")
+        .sort( (c1, c2) => ((c1.last_message_id || "") < (c2.last_message_id || "") ? 1 : -1) ) as channel}
+        <ChannelItem {channel} />
+      {/each}
+    </div>
   {/if}
 </div>

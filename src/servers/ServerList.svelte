@@ -1,17 +1,21 @@
 <script>
   import { client } from "Client";
-  import { ServerOrder } from "State";
+  import Indicator from "extra/Indicator.svelte";
+  import { SelectedServer, ServerOrder } from "State";
   import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
+  import { proxyURL, StatusColor } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
   import ServerIcon from "./ServerIcon.svelte";
 
-  let orderedServers = [...client.servers.values()];
+  let orderedServers = [...client.servers.values()],
+    selectedDMs = false;
   $: {
     orderedServers = [
       ...$ServerOrder.map((s) => client.servers.get(s)),
       ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s._id)),
     ].filter((o) => o);
+    selectedDMs = !$SelectedServer;
   }
 </script>
 
@@ -20,6 +24,29 @@
   style="background-color:{$Theme['background']};scrollbar-width:none;--scroll-width:0px;"
   id="ServerList"
 >
+  <ServerEntry placeholder onclick={() => SelectedServer.set(null)}>
+    <div class="w-12 h-12 rounded-full">
+      <img
+        src={proxyURL(client.user.generateAvatarURL({ max_side: 64 }), "image")}
+        alt=""
+        class="before:text-sm before:font-bold before:align-text-top before:flex before:justify-center"
+      />
+    </div>
+    <div
+      class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20 !overflow-visible"
+      style={selectedDMs ? `border: 2px solid ${$Theme["accent"]};` : ""}
+    >
+      <Indicator
+        pos="bottomRight"
+        color={$Theme[StatusColor(client.user)]}
+        bg={$Theme["background"]}
+        isSelected={selectedDMs}
+      />
+    </div>
+  </ServerEntry>
+
+  <div class="w-2/3 min-h-[3px] bg-white bg-opacity-30 rounded-full my-0.5" />
+
   {#each orderedServers as server}
     <ServerIcon {server} />
   {/each}

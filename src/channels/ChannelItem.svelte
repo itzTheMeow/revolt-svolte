@@ -13,9 +13,9 @@
     selectBottom,
     SelectedChannel,
   } from "State";
-  import { Copy, Hash, Volume } from "tabler-icons-svelte";
+  import { Copy, Hash, Users, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { copyText, proxyURL, testMuted } from "utils";
+  import { copyText, proxyURL, testMuted, UserDetails } from "utils";
 
   export let channel: Channel;
   let isSelected = false;
@@ -58,20 +58,36 @@
   on:click={switchTo}
   on:contextmenu={contextmenu}
 >
-  {#if channel.icon}
+  {#if channel.icon || channel.channel_type == "DirectMessage"}
     <img
-      src={proxyURL(channel.generateIconURL({ max_side: 64 }), "image")}
+      src={proxyURL(
+        channel.channel_type == "DirectMessage"
+          ? channel.recipient?.generateAvatarURL({
+              max_side: 64,
+            })
+          : channel.generateIconURL({
+              max_side: 64,
+            }),
+        "image"
+      )}
       width="20"
       height="20"
-      class="object-cover aspect-square"
+      class="object-cover aspect-square {channel.channel_type == 'Group' ||
+      channel.channel_type == 'DirectMessage'
+        ? 'rounded-full'
+        : ''}"
       alt=""
     />
+  {:else if channel.channel_type == "Group"}
+    <Users size={20} />
   {:else if channel.channel_type == "TextChannel"}
     <Hash size={20} />
   {:else if channel.channel_type == "VoiceChannel"}
     <Volume size={20} />
   {/if}
-  <span class="ml-1">{channel.name}</span>
+  <span class="ml-1">
+    {channel.channel_type == "DirectMessage" ? UserDetails(channel.recipient).name : channel.name}
+  </span>
   <div
     class="absolute top-0 left-0 w-full h-full rounded"
     style={isSelected ? `border: 2px solid ${$Theme["accent"]};` : ""}
