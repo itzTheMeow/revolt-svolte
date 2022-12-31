@@ -23,7 +23,7 @@
   let hasFocus = false,
     isPlaying = false,
     didEnd = false,
-    seekTime = 0.01,
+    seekTime = 0,
     duration = 0,
     shouldReplay = false,
     isMuted = false,
@@ -87,6 +87,7 @@
   }
   onMount(() => {
     window.addEventListener("keydown", handleKey);
+    seekTime = 0.01;
   });
   onDestroy(() => {
     window.removeEventListener("keydown", handleKey);
