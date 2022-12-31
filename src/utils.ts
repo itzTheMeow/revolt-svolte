@@ -34,12 +34,17 @@ export function getServerMember(server: Server | null, id: string) {
 }
 
 export function MemberOrUserDetails(user?: User, member?: Member) {
-  return { name: member ? MemberDetails(member).name : UserDetails(user).name };
+  return {
+    name: member ? MemberDetails(member).name : UserDetails(user).name,
+    avatar: member ? MemberDetails(member).avatar : UserDetails(user).avatar,
+    color: member ? MemberDetails(member).color : "",
+  };
 }
 export function UserDetails(user: User | undefined) {
   return {
     online: user?.online && user?.status?.presence && user.status.presence !== "Invisible",
     name: user?.username || "Unknown User",
+    avatar: proxyURL(user?.generateAvatarURL({ max_side: 256 }), "image"),
   };
 }
 export function MemberDetails(member: Member | undefined) {
@@ -64,9 +69,9 @@ export function MessageDetails(message: Message) {
   return {
     avatar: message.masquerade?.avatar
       ? proxyURL(message.generateMasqAvatarURL(), "image")
-      : MemberDetails(message.member).avatar,
-    name: message.masquerade?.name || MemberDetails(message.member).name,
-    color: message.masquerade?.colour || MemberDetails(message.member).color,
+      : MemberOrUserDetails(message.author, message.member).avatar,
+    name: message.masquerade?.name || MemberOrUserDetails(message.author, message.member).name,
+    color: message.masquerade?.colour || MemberOrUserDetails(message.author, message.member).color,
     time:
       dstr(time) == dstr(DateTime.now())
         ? time.toFormat("t")

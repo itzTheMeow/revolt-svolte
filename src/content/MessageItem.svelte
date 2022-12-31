@@ -3,7 +3,7 @@
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt.js";
-  import { HoveredMessage, MessageCache, MobileLayout, SelectedChannel } from "State";
+  import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
   import MessageItemAttachments from "./MessageItemAttachments.svelte";
