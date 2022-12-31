@@ -30,7 +30,8 @@
     originalVolume = 1,
     volume = 1,
     volumeHover = false,
-    volumeDrag = false;
+    volumeDrag = false,
+    videoClicked = false;
 
   let video: HTMLVideoElement, player: HTMLDivElement;
 
@@ -193,11 +194,12 @@
         {/if}
       </div>
     </div>
-  {:else}
+  {:else if !videoClicked}
     <div
       class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center [transform:translateZ(1px)]"
       on:click={() => {
         video.click();
+        videoClicked = true;
       }}
     >
       <div class="bg-black bg-opacity-70 p-2 rounded-full w-fit h-fit"><PlayerPlay /></div>
