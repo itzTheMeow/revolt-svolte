@@ -221,4 +221,7 @@
     box-decoration-break: clone;
     padding: 1px 4px;
   }
+  :global(pre) {
+    white-space: pre-wrap;
+  }
 </style>
