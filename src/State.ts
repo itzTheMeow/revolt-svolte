@@ -26,7 +26,7 @@ SelectedServer.subscribe((s) => {
   if (!went) {
     SelectionState.server = s?._id || null;
     const channel = client.channels.get(SelectionState.map[s?._id || "0"]);
-    console.log(channel);
+    alert(channel);
     if (channel) SelectedChannel.set(channel);
     else if(s) SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
     else SelectedChannel.set(null);
