@@ -28,7 +28,6 @@ SelectedServer.subscribe((s) => {
     if (channel) SelectedChannel.set(channel);
     else if(s) SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
     else SelectedChannel.set(null);
-    }
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
