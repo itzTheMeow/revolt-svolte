@@ -2,6 +2,7 @@
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { parseAutocomplete, uploadAttachment, type AutocompleteTabResult } from "revolt-toolset";
+  import { Emoji } from "revolt.js";
   import {
     autocomplete,
     MessageInputSelected,
@@ -168,7 +169,7 @@
     {/each}
     {#each $autocomplete.emojis.slice(0, 15) as e}
       <AutocompleteItem
-        icon={proxyURL(e.imageURL, "image")}
+        icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
         name={e.name || ""}
         detail={e.parent.type == "Server" ? client.servers.get(e.parent.id)?.name || "" : ""}
         onclick={() => handleAutocompleteTab($autocomplete?.tab(e))}

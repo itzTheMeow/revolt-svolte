@@ -50,7 +50,7 @@
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "revolt-toolset": "^0.0.25",
+    "revolt-toolset": "^0.0.27",
     "revolt.js": "^6.0.18",
     "rimraf": "^3.0.2",
     "sharp": "^0.31.1",
