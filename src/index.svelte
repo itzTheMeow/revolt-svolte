@@ -102,7 +102,7 @@
   window.addEventListener("contextmenu", (e) => {
     const target = <HTMLElement>e.target,
       tag = target.tagName;
-    if (tag == "INPUT" || (tag == "A" && target.getAttribute("type") == "link")) return;
+    if (tag == "INPUT" || tag == "TEXTAREA" || (tag == "A" && target.getAttribute("type") == "link")) return;
     e.preventDefault();
   });
   window.addEventListener("dragstart", (e) => {
