@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { DENY_TAGS, MarkdownRenderer } from "./renderer";
+  import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
 
   import { client } from "Client";
+  import { RevoltEmojiDictionary, unicodeEmojiURL } from "revolt-toolset/dist/es6/emojis";
   import { SelectedServer } from "State";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
@@ -94,21 +95,26 @@
                   ],
                 });
                 break;
-              case "emoji":
+              case "emoji": {
+                const { match } = node.properties,
+                  emojiURL = CUSTOM_EMOJI_REGEX.test(match)
+                    ? `https://autumn.revolt.chat/emojis/${node.properties.match}`
+                    : unicodeEmojiURL(
+                        match in RevoltEmojiDictionary ? RevoltEmojiDictionary[match] : match,
+                        "twemoji"
+                      );
                 node.children.push({
                   type: "element",
                   tagName: "img",
                   properties: {
-                    src: proxyURL(
-                      `https://autumn.revolt.chat/emojis/${node.properties.match}`,
-                      "image"
-                    ),
+                    src: proxyURL(emojiURL, "image"),
                     class: `inline object-contain ${
-                      text?.trim() == `:${node.properties.match}:` ? "h-12 w-12" : "h-5 w-5"
+                      text?.trim() == `:${match}:` ? "h-12 w-12" : "h-5 w-5"
                     } align-middle`,
                   },
                 });
                 break;
+              }
               case "mention":
                 const member = getServerMember($SelectedServer, node.properties.match),
                   details = MemberDetails(member);

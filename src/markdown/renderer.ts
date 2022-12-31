@@ -27,6 +27,7 @@ export const DENY_TAGS = [
   "style",
 ];
 
+export const CUSTOM_EMOJI_REGEX = /^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/;
 export const MarkdownRenderer = (plugin?: Plugin) => {
   const ren = unified()
     .use(remarkParse)
@@ -40,8 +41,7 @@ export const MarkdownRenderer = (plugin?: Plugin) => {
       createComponent(
         "emoji",
         /:([a-zA-Z0-9_+]+):/g,
-        (match) =>
-          match in RevoltEmojiDictionary || /^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/.test(match)
+        (match) => match in RevoltEmojiDictionary || CUSTOM_EMOJI_REGEX.test(match)
       )
     )
     .use(createComponent("mention", RE_MENTIONS, (match) => client.users.has(match)))
