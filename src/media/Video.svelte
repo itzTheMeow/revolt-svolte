@@ -76,10 +76,16 @@
         volume = Math.max(0, volume - 0.1);
         break;
       case "ArrowLeft":
-        seekTime = Math.max(0, seekTime - (e.shiftKey ? 5 : 1));
+        seekTime = Math.max(0, seekTime - (e.ctrlKey ? 1 / 60 : e.shiftKey ? 5 : 1));
         break;
       case "ArrowRight":
-        seekTime = Math.min(duration, seekTime + (e.shiftKey ? 5 : 1));
+        seekTime = Math.min(duration, seekTime + (e.ctrlKey ? 1 / 60 : e.shiftKey ? 5 : 1));
+        break;
+      case "Comma":
+        seekTime = Math.max(0, seekTime - 1 / 60);
+        break;
+      case "Period":
+        seekTime = Math.min(duration, seekTime + 1 / 60);
         break;
       case "KeyF":
         if ($fullscreenElement) document.exitFullscreen();
