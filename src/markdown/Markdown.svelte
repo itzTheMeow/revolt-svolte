@@ -68,6 +68,9 @@
                 node.properties.target = "_blank";
               }
               return void 0;
+            } else if (node.tagName == "blockquote") {
+              node.properties.class = "rounded";
+              node.properties.style = `margin: 2px 0px;padding: 2px 8px;border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -100,7 +103,7 @@
                     ),
                     class: `inline object-contain ${
                       text?.trim() == `:${node.properties.match}:` ? "h-12 w-12" : "h-5 w-5"
-                    } mt-1 align-middle`,
+                    } align-middle`,
                   },
                 });
                 break;
@@ -157,7 +160,7 @@
   }
 </script>
 
-<div class="whitespace-pre-wrap {keepSpace && content ? 'min-h-[1rem]' : ''}">
+<div class={keepSpace && content ? "min-h-[1rem]" : ""}>
   {#if content !== null}
     {@html content}
   {:else}
