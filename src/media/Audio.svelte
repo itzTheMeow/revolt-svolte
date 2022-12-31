@@ -29,8 +29,9 @@
     isMuted = false,
     originalVolume = 1,
     volume = 1,
-    volumeHover = false,
-    volumeDrag = false;
+    speed = 1,
+    speedHover = false,
+    speedDrag = false;
 
   let audio: HTMLAudioElement, player: HTMLDivElement;
 
@@ -39,6 +40,7 @@
     seekTime = Math.round(seekTime * 100) / 100;
     didEnd = seekTime == duration;
     volume = Math.round(volume * 10) / 10;
+    speed = Math.round(speed * 10) / 10;
   }
 
   function playClick() {
@@ -89,7 +91,7 @@
 </script>
 
 <div
-  class="rounded-2xl overflow-hidden flex flex-col select-none max-w-[18rem] px-3 py-2 gap-2"
+  class="rounded-2xl overflow-hidden flex flex-col select-none max-w-[25rem] px-3 py-2 gap-2"
   {style}
   bind:this={player}
   on:click={() => (hasFocus = true)}
@@ -107,6 +109,7 @@
     bind:currentTime={seekTime}
     bind:duration
     bind:volume
+    bind:playbackRate={speed}
   />
   <div class="flex items-center gap-1.5 font-semibold">
     <div class="-mr-0.5"><FileMusic size={18} /></div>
@@ -136,10 +139,43 @@
       {/if}
     </div>
     <div
-      class="flex items-center"
-      on:mouseenter={() => (volumeHover = true)}
-      on:mouseleave={() => (volumeHover = false)}
+      class="flex items-center gap-0.5"
+      on:mouseenter={() => (speedHover = true)}
+      on:mouseleave={() => (speedHover = false)}
     >
+      <div class="text-xs brightness-75 font-mono">
+        {speed.toFixed(1)}x
+      </div>
+      {#if speedHover || speedDrag}
+        <Slider
+          max={1.5}
+          step={0.1}
+          value={0.5}
+          className="w-20"
+          on:dragstart={() => (speedDrag = true)}
+          on:dragend={() => (speedDrag = false)}
+          on:change={({ detail: v }) => (speed = v + 0.5)}
+        />
+      {/if}
+    </div>
+    {#if !speedHover && !speedDrag}
+      <div
+        class="text-xs font-mono w-[5.5rem] text-center"
+        style:color={$Theme["tertiary-foreground"]}
+      >
+        {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
+      </div>
+    {/if}
+    <div class="flex-1">
+      <Slider
+        max={duration}
+        bind:value={seekTime}
+        step={0.01}
+        on:dragstart={() => ((shouldReplay = isPlaying), audio.pause())}
+        on:dragend={() => shouldReplay && audio.play()}
+      />
+    </div>
+    <div class="flex items-center gap-0.5">
       <div
         class="cursor-pointer hover:brightness-75"
         on:click={() => {
@@ -161,33 +197,7 @@
           <Volume3 size={20} />
         {/if}
       </div>
-      {#if volumeHover || volumeDrag}
-        <Slider
-          max={1}
-          step={0.1}
-          bind:value={volume}
-          className="w-20"
-          on:dragstart={() => (volumeDrag = true)}
-          on:dragend={() => (volumeDrag = false)}
-        />
-      {/if}
-    </div>
-    {#if !volumeHover && !volumeDrag}
-      <div
-        class="text-xs font-mono w-[5.5rem] text-center"
-        style:color={$Theme["tertiary-foreground"]}
-      >
-        {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
-      </div>
-    {/if}
-    <div class="flex-1">
-      <Slider
-        max={duration}
-        bind:value={seekTime}
-        step={0.01}
-        on:dragstart={() => ((shouldReplay = isPlaying), audio.pause())}
-        on:dragend={() => shouldReplay && audio.play()}
-      />
+      <Slider max={1} step={0.1} bind:value={volume} className="w-16" />
     </div>
   </div>
 </div>
