@@ -39,6 +39,7 @@
       if(document.activeElement?.id == "Textbox") {
         e.preventDefault();
         target.click();
+        selectBottom(true);
       }
       return;
     }
