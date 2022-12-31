@@ -35,7 +35,7 @@
   function handleClick(e: Event) {
     const target = e.target as HTMLElement;
     if (!$MobileLayout || !e.isTrusted) return;
-    if (target.tagName == "A" || target.hasAttribute("data-clickable")) {
+    if (target.tagName == "A" || [...document.querySelectorAll("[data-clickable]")].find(c=>c.contains(target))) {
       if(document.activeElement?.id == "Textbox") {
         e.preventDefault();
         target.click();
