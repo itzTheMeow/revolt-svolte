@@ -23,7 +23,7 @@
   let hasFocus = false,
     isPlaying = false,
     didEnd = false,
-    seekTime = 0,
+    seekTime = 0.01,
     duration = 0,
     shouldReplay = false,
     isMuted = false,
