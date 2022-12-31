@@ -33,7 +33,7 @@
     SelectedServer,
     selectInput,
     spliceMessages,
-    updatePaneState
+    updatePaneState,
   } from "State";
   import { afterUpdate, beforeUpdate, onMount } from "svelte";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
@@ -185,11 +185,13 @@
     let startedDragging: [number, number, number] | null = null;
     let curPos: [number, number] | null = null;
     let isSliding = false;
-    Container.addEventListener("touchstart", (e) => {
+    Container.addEventListener("touchstart", async (e) => {
       isSliding = false;
       if (
-        document.activeElement?.tagName == "INPUT" &&
-        (e.changedTouches[0].target as HTMLElement).tagName == "INPUT"
+        (document.activeElement?.tagName == "INPUT" &&
+          (e.changedTouches[0].target as HTMLElement).tagName == "INPUT") ||
+        $imagePreview ||
+        (await ModalStack.getStack()).length
       )
         return;
       startedDragging = [e.changedTouches[0].pageX, e.changedTouches[0].pageY, Number($PaneLeft)];
