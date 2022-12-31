@@ -71,6 +71,8 @@
             } else if (node.tagName == "blockquote") {
               node.properties.class = "rounded-lg my-1 px-2 py-0.5";
               node.properties.style = `border-inline-start: 4px solid ${$Theme["tertiary-background"]};background:${$Theme["hover"]};`;
+            } else if (node.tagName == "table") {
+              node.properties.style = `--bdr:${$Theme["tertiary-foreground"]}`;
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -194,5 +196,13 @@
   :global(ul, ol) {
     list-style: inside !important;
     padding-left: 10px !important;
+  }
+  :global(table) {
+    border-collapse: collapse;
+    margin: 4px 0px;
+  }
+  :global(th, td) {
+    padding: 6px;
+    border: 1px solid var(--bdr);
   }
 </style>
