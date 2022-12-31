@@ -36,7 +36,7 @@
     const target = e.target as HTMLElement;
     if (!$MobileLayout) return;
     if (target.tagName == "A" || target.hasAttribute("data-clickable")) {
-      if(document.activeElement?.tagName == "TEXTAREA") {
+      if(document.activeElement?.id == "Textbox") {
         e.preventDefault();
         target.click();
       }
