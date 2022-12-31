@@ -22,6 +22,7 @@ export const SelectedServer = writable<Server | null>(null);
 let serverID = "";
 SelectedServer.subscribe((s) => {
   if (went) went--;
+  serverID = s?._id || "0";
   if (!went) {
     SelectionState.server = s?._id || null;
     const channel = client.channels.get(SelectionState.map[s?._id || "0"]);
@@ -31,7 +32,6 @@ SelectedServer.subscribe((s) => {
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
-  serverID = s?._id || "0";
   if (!s || fetchedMembers.has(s._id)) return;
   fetchedMembers.add(s._id);
   // again shouldnt be hardcoded
