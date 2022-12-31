@@ -4,6 +4,7 @@
   import byteSize from "byte-size";
   import { client } from "Client";
   import { MobileLayout } from "State";
+  import { scale } from "svelte/transition";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import { imagePreview } from "./ImagePreview";
@@ -54,8 +55,9 @@
       !preview.contains(e.target) && !mouseDown && imagePreview.set(null);
       mouseDown = isMagnifying = false;
     }}
+    out:scale|local={{ duration: 100 }}
   >
-    <div class="h-fit w-fit" bind:this={preview}>
+    <div class="h-fit w-fit" bind:this={preview} in:scale|local={{ duration: 300, start: 0.4 }}>
       <div class="w-fit h-fit relative overflow-hidden">
         <img
           bind:this={image}
