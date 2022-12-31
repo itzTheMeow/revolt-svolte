@@ -3,6 +3,7 @@
   import type { File } from "revolt-api";
   import { fullscreenElement, MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
+  import { slide } from "svelte/transition";
   import {
     Maximize,
     Minimize,
@@ -31,7 +32,10 @@
     volume = 1,
     volumeHover = false,
     volumeDrag = false,
-    videoClicked = false;
+    videoClicked = false,
+    showBar = true,
+    paneHover = false,
+    paneTimeout: NodeJS.Timeout;
 
   let video: HTMLVideoElement, player: HTMLDivElement;
 
@@ -40,6 +44,7 @@
     seekTime = Math.round(seekTime * 100) / 100;
     didEnd = seekTime == duration;
     volume = Math.round(volume * 10) / 10;
+    showBar = didEnd || !isPlaying || paneHover;
   }
 
   function playClick() {
@@ -101,6 +106,16 @@
   bind:this={player}
   on:click={() => (hasFocus = true)}
   use:clickoutside={() => (hasFocus = false)}
+  on:mouseenter={() => {
+    if (paneTimeout) clearTimeout(paneTimeout);
+    paneHover = true;
+  }}
+  on:mouseleave={() => {
+    if (paneTimeout) clearTimeout(paneTimeout);
+    paneTimeout = setTimeout(() => {
+      paneHover = false;
+    }, 200);
+  }}
 >
   <!-- svelte-ignore a11y-media-has-caption -->
   <video
@@ -116,84 +131,88 @@
     preload="metadata"
   />
   {#if !$MobileLayout}
-    <div
-      class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-1 px-1.5"
-    >
-      <div class="cursor-pointer hover:brightness-75" on:click={playClick}>
-        {#if didEnd}
-          <Rotate size={20} /> <!-- TODO: change to reload when @tabler/icons-svelte is released -->
-        {:else if isPlaying}
-          <PlayerPause size={20} />
-        {:else}
-          <PlayerPlay size={20} />
-        {/if}
-      </div>
+    {#if showBar}
       <div
-        class="flex items-center"
-        on:mouseenter={() => (volumeHover = true)}
-        on:mouseleave={() => (volumeHover = false)}
+        class="absolute bottom-0 left-0 h-6 w-full flex items-center bg-black bg-opacity-80 gap-1 px-1.5"
+        transition:slide|local={{ duration: 150 }}
       >
-        <div
-          class="cursor-pointer hover:brightness-75"
-          on:click={() => {
-            if (isMuted || !originalVolume || !volume) {
-              volume = originalVolume || 1;
-              isMuted = false;
-            } else {
-              originalVolume = volume;
-              volume = 0;
-              isMuted = true;
-            }
-          }}
-        >
-          {#if volume > 0.5}
-            <Volume size={20} />
-          {:else if volume > 0}
-            <Volume2 size={20} />
+        <div class="cursor-pointer hover:brightness-75" on:click={playClick}>
+          {#if didEnd}
+            <Rotate size={20} />
+            <!-- TODO: change to reload when @tabler/icons-svelte is released -->
+          {:else if isPlaying}
+            <PlayerPause size={20} />
           {:else}
-            <Volume3 size={20} />
+            <PlayerPlay size={20} />
           {/if}
         </div>
-        {#if volumeHover || volumeDrag}
-          <Slider
-            max={1}
-            step={0.1}
-            bind:value={volume}
-            className="w-20"
-            on:dragstart={() => (volumeDrag = true)}
-            on:dragend={() => (volumeDrag = false)}
-          />
-        {/if}
-      </div>
-      {#if !volumeHover && !volumeDrag}
         <div
-          class="text-xs font-mono w-[5.5rem] text-center"
-          style:color={$Theme["tertiary-foreground"]}
+          class="flex items-center"
+          on:mouseenter={() => (volumeHover = true)}
+          on:mouseleave={() => (volumeHover = false)}
         >
-          {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
+          <div
+            class="cursor-pointer hover:brightness-75"
+            on:click={() => {
+              if (isMuted || !originalVolume || !volume) {
+                volume = originalVolume || 1;
+                isMuted = false;
+              } else {
+                originalVolume = volume;
+                volume = 0;
+                isMuted = true;
+              }
+            }}
+          >
+            {#if volume > 0.5}
+              <Volume size={20} />
+            {:else if volume > 0}
+              <Volume2 size={20} />
+            {:else}
+              <Volume3 size={20} />
+            {/if}
+          </div>
+          {#if volumeHover || volumeDrag}
+            <Slider
+              max={1}
+              step={0.1}
+              bind:value={volume}
+              className="w-20"
+              on:dragstart={() => (volumeDrag = true)}
+              on:dragend={() => (volumeDrag = false)}
+            />
+          {/if}
         </div>
-      {/if}
-      <div class="flex-1">
-        <Slider
-          max={duration}
-          bind:value={seekTime}
-          step={0.01}
-          on:dragstart={() => ((shouldReplay = isPlaying), video.pause())}
-          on:dragend={() => shouldReplay && video.play()}
-        />
-      </div>
-      <div
-        class="cursor-pointer hover:brightness-75"
-        on:click={() =>
-          $fullscreenElement ? document.exitFullscreen() : player.requestFullscreen()}
-      >
-        {#if $fullscreenElement}
-          <Minimize size={18} />
-        {:else}
-          <Maximize size={18} />
+        {#if !volumeHover && !volumeDrag}
+          <div
+            class="text-xs font-mono w-[5.5rem] text-center"
+            style:color={$Theme["tertiary-foreground"]}
+          >
+            {formatDuration(seekTime)}<span class="mx-[1px]">/</span>{formatDuration(duration)}
+          </div>
         {/if}
+        <div class="flex-1">
+          <Slider
+            max={duration}
+            bind:value={seekTime}
+            step={0.01}
+            on:dragstart={() => ((shouldReplay = isPlaying), video.pause())}
+            on:dragend={() => shouldReplay && video.play()}
+          />
+        </div>
+        <div
+          class="cursor-pointer hover:brightness-75"
+          on:click={() =>
+            $fullscreenElement ? document.exitFullscreen() : player.requestFullscreen()}
+        >
+          {#if $fullscreenElement}
+            <Minimize size={18} />
+          {:else}
+            <Maximize size={18} />
+          {/if}
+        </div>
       </div>
-    </div>
+    {/if}
   {:else if !videoClicked}
     <div
       class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center [transform:translateZ(1px)]"
