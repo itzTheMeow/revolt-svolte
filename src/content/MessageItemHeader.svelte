@@ -37,8 +37,7 @@
     <UserTag
       text={message.author?.bot ? "BRIDGE" : `MASKED @${message.author?.username || "MASKED"}`}
     />
-  {/if}
-  {#if message.author?.bot}
+  {:else if message.author?.bot}
     <UserTag text="BOT" />
   {/if}
   <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
