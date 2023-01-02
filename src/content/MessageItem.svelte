@@ -52,8 +52,9 @@
       startScroll = null;
       return;
     }
-    const list = document.getElementById("MessageList");
-    if (startScroll === null || startScroll === list?.scrollTop) HoveredMessage.set(message._id);
+    const list = document.getElementById("MessageList")!;
+    if (startScroll === null || Math.abs(startScroll - list.scrollTop) <= 1)
+      HoveredMessage.set(message._id);
     startScroll = null;
   }
 </script>
