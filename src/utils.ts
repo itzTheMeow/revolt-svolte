@@ -14,6 +14,7 @@ export function escapeRegex(r: RegExp) {
   return new RegExp(escapeHTML(r.source), r.flags);
 }
 export function proxyURL(url: string = "", type: "any" | "image") {
+  return url;
   return `/proxy?url=${encodeURIComponent(url)}&t=${type}`;
 }
 
