@@ -32,18 +32,29 @@
     isHovered = $HoveredMessage == message._id;
   }
 
-  function handleClick(e: Event) {
+  let startScroll: number | null = null;
+  function handleClickDown(e: TouchEvent) {
+    const list = document.getElementById("MessageList");
+    startScroll = list?.scrollTop ?? null;
+  }
+  function handleClick(e: TouchEvent | MouseEvent) {
     const target = e.target as HTMLElement;
-    if (!$MobileLayout || !e.isTrusted) return;
-    if (target.tagName == "A" || [...document.querySelectorAll("[data-clickable]")].find(c=>c.contains(target))) {
-      if(document.activeElement?.id == "Textbox") {
+    if (!$MobileLayout || !e.isTrusted) return (startScroll = null);
+    if (
+      target.tagName == "A" ||
+      [...document.querySelectorAll("[data-clickable]")].find((c) => c.contains(target))
+    ) {
+      if (document.activeElement?.id == "Textbox") {
         e.preventDefault();
         target.click();
         selectBottom(true);
       }
+      startScroll = null;
       return;
     }
-    HoveredMessage.set(message._id);
+    const list = document.getElementById("MessageList");
+    if (startScroll === null || startScroll === list?.scrollTop) HoveredMessage.set(message._id);
+    startScroll = null;
   }
 </script>
 
@@ -58,7 +69,7 @@
     on:mousemove={() => !$MobileLayout && HoveredMessage.set(message._id)}
     on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
     on:wheel={() => !$MobileLayout && HoveredMessage.set(message._id)}
-    on:click={handleClick}
+    on:touchstart={handleClickDown}
     on:touchend={handleClick}
   >
     <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
