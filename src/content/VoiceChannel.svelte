@@ -57,6 +57,8 @@
       <div>Connecting...</div>
     {:else if voiceState.status == VoiceStatus.RTC_CONNECTING}
       <div>RTC Connecting...</div>
+    {:else if voiceState.status == VoiceStatus.UNAVAILABLE}
+      <div>Voice Unavailable.</div>
     {/if}
     <div class="mt-auto mb-4 flex items-center">
       {#if isConnectedHere}

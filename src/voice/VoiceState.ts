@@ -72,6 +72,7 @@ class VoiceStateReference {
 
   // This imports and constructs the voice client.
   @action async loadVoice() {
+    if (this.status == VoiceStatus.UNAVAILABLE) this._status = VoiceStatus.UNLOADED;
     if (this.status !== VoiceStatus.UNLOADED) return;
     this.status = VoiceStatus.LOADING;
 
