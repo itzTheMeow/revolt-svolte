@@ -11,7 +11,7 @@
     selectBottom,
     SelectedChannel,
   } from "State";
-  import { Copy, Hash, Users, Volume } from "tabler-icons-svelte";
+  import { Copy, Hash, Notebook, Users, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { copyText, proxyURL, testMuted, UserDetails } from "utils";
 
@@ -22,7 +22,7 @@
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
     PaneState.set(PaneStates.MIDDLE);
-    if(channel.isTextBased()) {
+    if (channel.isTextBased()) {
       if (channel.checkUnread(testMuted($NotifSettings))) channel.ack();
     }
   }
@@ -75,6 +75,8 @@
     <Hash size={20} />
   {:else if channel.isVoice()}
     <Volume size={20} />
+  {:else if channel.isSavedMessages()}
+    <Notebook size={20} />
   {/if}
   <span class="ml-1">
     {channel.isDM() ? UserDetails(channel.recipient).name : channel.name}

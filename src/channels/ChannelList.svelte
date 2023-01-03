@@ -80,8 +80,8 @@
     </div>
   {:else}
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
+      <ChannelItem channel={client.channels.find((c) => c.isSavedMessages())} />
       {#each client.channels
-        .items()
         .filter((c) => c.isDMBased())
         .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel}
         <ChannelItem {channel} />
