@@ -22,11 +22,11 @@
       $MessageCache[$SelectedChannel!.id]?.[
         $MessageCache[$SelectedChannel!.id]?.indexOf(message) - 1
       ];
-    isReply = !!message.reply_ids?.length;
+    isReply = !!message.replyIDs?.length;
     shouldSeparate =
       isReply ||
       !previousMessage ||
-      previousMessage.author_id !== message.author_id ||
+      previousMessage.authorID !== message.authorID ||
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
     isHovered = $HoveredMessage == message.id;
@@ -91,7 +91,7 @@
                 },
                 target: e.target,
               });
-            else ModalStack.push({ type: "user", id: message.author_id });
+            else ModalStack.push({ type: "user", id: message.authorID });
           }}
         />
       {:else}

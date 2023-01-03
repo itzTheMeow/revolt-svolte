@@ -25,7 +25,7 @@
           },
           target: e.target,
         });
-      else ModalStack.push({ type: "user", id: message.author_id });
+      else ModalStack.push({ type: "user", id: message.authorID });
       e.preventDefault();
       e.stopPropagation();
       return false;

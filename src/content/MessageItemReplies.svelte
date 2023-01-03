@@ -9,8 +9,8 @@
 
   let replies = writable<(Message | undefined)[]>([]);
   $: replies.set(
-    message.reply_ids?.map((i, ii) => {
-      const cached = $MessageCache[message.channel_id].find((m) => m.id == i);
+    message.replyIDs?.map((i, ii) => {
+      const cached = $MessageCache[message.channelID].find((m) => m.id == i);
       if (!cached) {
         message.channel?.fetchMessage(i).then((m) => {
           replies.update((repl) => {
@@ -34,7 +34,7 @@
           ? MessageDetails(reply).avatar
           : proxyURL(
               `https://api.revolt.chat/users/${
-                message.reply_ids?.[$replies.indexOf(reply)]
+                message.replyIDs?.[$replies.indexOf(reply)]
               }/default_avatar`,
               "image"
             )}

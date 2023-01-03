@@ -51,23 +51,23 @@
     SelectedServer.update((s) => s);
   });
   client.on("message", async (message) => {
-    if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
+    if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
     if (
-      message.author_id == client.user?.id ||
-      (document.hasFocus() && $SelectedChannel?.id == message.channel_id)
+      message.authorID == client.user?.id ||
+      (document.hasFocus() && $SelectedChannel?.id == message.channelID)
     ) {
-      client.unreads?.markRead(message.channel_id, message.id);
+      client.unreads?.markRead(message.channelID, message.id);
       const unreads = new Unreads(client);
       await unreads.sync();
-      if ((unreads.getUnread(message.channel_id)?.last_id ?? "0").localeCompare(message.id) === -1)
+      if ((unreads.getUnread(message.channelID)?.lastID ?? "0").localeCompare(message.id) === -1)
         message.channel?.ack(message, true);
     }
   });
   client.on("message/update", async (message) => {
-    if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
+    if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
   });
   client.on("message/delete", (_, message) => {
-    if (message && $MessageCache[message.channel_id]) spliceMessages(message.channel!, [message]);
+    if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
   });
   const fetching = new Set();
   SelectedChannel.subscribe((c) => {

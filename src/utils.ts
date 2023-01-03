@@ -119,7 +119,7 @@ export function testMuted(notifs: NotificationSettings) {
         : target instanceof Channel
         ? notifs.channel?.[target.id]
           ? notifs.channel?.[target.id] == "muted"
-          : notifs.server?.[target.server_id || ""] == "muted"
+          : notifs.server?.[target.serverID || ""] == "muted"
         : false;
     },
   };

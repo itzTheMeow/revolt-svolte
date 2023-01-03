@@ -82,7 +82,7 @@
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
       {#each [...client.channels.values()]
         .filter((c) => c.channel_type == "DirectMessage" || c.channel_type == "Group")
-        .sort( (c1, c2) => ((c1.last_message_id || "") < (c2.last_message_id || "") ? 1 : -1) ) as channel}
+        .sort( (c1, c2) => ((c1.last_messageID || "") < (c2.last_messageID || "") ? 1 : -1) ) as channel}
         <ChannelItem {channel} />
       {/each}
     </div>
