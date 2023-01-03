@@ -7,6 +7,7 @@
   import { proxyURL, StatusColor } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
   import ServerIcon from "./ServerIcon.svelte";
+  import ServerSeparator from "./ServerSeparator.svelte";
 
   let orderedServers = [...client.servers.values()],
     selectedDMs = false;
@@ -45,11 +46,13 @@
     </div>
   </ServerEntry>
 
-  <div class="w-2/3 min-h-[3px] bg-white bg-opacity-30 rounded-full my-0.5" />
+  <ServerSeparator />
 
   {#each orderedServers as server}
     <ServerIcon {server} />
   {/each}
+
+  <ServerSeparator />
 
   <ServerEntry placeholder onclick={() => window.location.reload()}>
     <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
