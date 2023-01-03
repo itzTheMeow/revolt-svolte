@@ -1,6 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
+  import type { Channel } from "revolt-toolset";
   import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
@@ -16,9 +17,11 @@
     scrolledTop =
       scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
-  let useBanner = true;
+  let useBanner = true,
+    savedMessages: Channel;
   $: {
     useBanner = !!$SelectedServer?.banner && scrolledTop;
+    savedMessages = client.channels.find((c) => c.isSavedMessages());
   }
 
   let si: NodeJS.Timer;
@@ -115,7 +118,9 @@
     </div>
     <div class="pt-0.5 pb-1 overflow-y-auto flex-1" bind:this={scroller}>
       <ChannelItem channel={HomeChannel} />
-      <ChannelItem channel={client.channels.find((c) => c.isSavedMessages())} />
+      {#if savedMessages}
+        <ChannelItem channel={savedMessages} />
+      {/if}
       {#each client.channels
         .filter((c) => c.isDMBased())
         .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel}
