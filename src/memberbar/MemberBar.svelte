@@ -2,14 +2,12 @@
   import { client } from "Client";
   import { Permissions, Role, type Member } from "revolt-toolset";
   import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
-  import { writable } from "svelte/store";
   import { Theme } from "Theme";
   import { MemberDetails, UserDetails } from "utils";
   import MemberBarItem from "./MemberBarItem.svelte";
   import VirtualList from "./VirtualList.svelte";
 
   let membar: HTMLDivElement;
-  const memstate = writable(false);
 
   let memberList: [Role, Member[]][] = [];
   $: {
@@ -43,10 +41,6 @@
         )
       );
       memberList = l;
-      if (!$memstate)
-        $SelectedServer.members // *really* shouldnt be hardcoding this but revite does and theres no way to tell if a server is 'large'
-          .fetchAll($SelectedServer.id == "01F7ZSBSFHQ8TA81725KQCSDDP")
-          .then(() => memstate.set(true));
     } else memberList = [];
   }
 </script>
