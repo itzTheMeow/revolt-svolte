@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { tippy } from "svelte-tippy";
+
   export let placeholder = false;
   export let onclick: () => any;
+  export let tooltip: string;
 </script>
 
 <div
@@ -8,6 +11,10 @@
     ? 'placeholder'
     : ''} cursor-pointer box-border rounded-full w-12 h-12 relative"
   on:click={onclick}
+  use:tippy={{
+    placement: "right",
+    content: tooltip,
+  }}
 >
   <slot />
 </div>

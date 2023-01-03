@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
   import { client } from "Client";
   import Indicator from "extra/Indicator.svelte";
+  import type { Server } from "revolt-toolset";
   import { SelectedServer, ServerOrder } from "State";
   import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
@@ -12,10 +13,12 @@
   let orderedServers = [...client.servers.values()],
     selectedDMs = false;
   $: {
-    orderedServers = [
-      ...$ServerOrder.map((s) => client.servers.get(s)),
-      ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s.id)),
-    ].filter((o) => o);
+    orderedServers = <Server[]>(
+      [
+        ...$ServerOrder.map((s) => client.servers.get(s)),
+        ...client.servers.filter((s) => !$ServerOrder.includes(s.id)),
+      ].filter((o) => o)
+    );
     selectedDMs = !$SelectedServer;
   }
 </script>
@@ -25,7 +28,7 @@
   style="background-color:{$Theme['background']};scrollbar-width:none;--scroll-width:0px;"
   id="ServerList"
 >
-  <ServerEntry placeholder onclick={() => SelectedServer.set(null)}>
+  <ServerEntry placeholder onclick={() => SelectedServer.set(null)} tooltip="Profile">
     <div class="w-12 h-12 rounded-full">
       <img
         src={proxyURL(client.user.generateAvatarURL({ max_side: 64 }), "image")}
@@ -54,7 +57,7 @@
 
   <ServerSeparator />
 
-  <ServerEntry placeholder onclick={() => window.location.reload()}>
+  <ServerEntry placeholder onclick={() => window.location.reload()} tooltip="Reload">
     <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
       <Refresh />
     </div>

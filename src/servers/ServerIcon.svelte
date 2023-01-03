@@ -19,7 +19,11 @@
   }
 </script>
 
-<ServerEntry placeholder={!server.icon} onclick={() => SelectedServer.set(server)}>
+<ServerEntry
+  placeholder={!server.icon}
+  onclick={() => SelectedServer.set(server)}
+  tooltip={server.name}
+>
   {#if server.icon}
     <div class="w-12 h-12 rounded-full">
       <img
