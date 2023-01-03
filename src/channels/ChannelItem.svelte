@@ -22,6 +22,9 @@
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
     PaneState.set(PaneStates.MIDDLE);
+    if(channel.isTextBased()) {
+      if (channel.checkUnread(testMuted($NotifSettings))) channel.ack();
+    }
   }
 
   let isUnread = false;
