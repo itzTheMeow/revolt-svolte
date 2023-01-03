@@ -26,7 +26,7 @@
       ].filter((o) => o)
     );
     selectedDMs = !$SelectedServer;
-    hasTop = $scrollTop == 0;
+    hasTop = $scrollTop <= 0;
   }
   let int: NodeJS.Timer;
   onMount(() => {
