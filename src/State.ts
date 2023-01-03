@@ -35,9 +35,9 @@ SelectedServer.subscribe((s) => {
   if (!s || fetchedMembers.has(s.id)) return;
   fetchedMembers.add(s.id);
   // again shouldnt be hardcoded
-  s.syncMembers(serverID == "01F7ZSBSFHQ8TA81725KQCSDDP").then(
-    () => s.id == serverID && SelectedServer.set(s)
-  );
+  s.members
+    .fetchAll(serverID == "01F7ZSBSFHQ8TA81725KQCSDDP")
+    .then(() => s.id == serverID && SelectedServer.set(s));
 });
 export const SelectedChannel = writable<Channel | null>(null);
 SelectedChannel.subscribe((c) => {

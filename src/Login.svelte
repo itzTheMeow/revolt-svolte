@@ -20,7 +20,7 @@
       window.location.reload();
     });
     try {
-      await client.login({ email, password, friendly_name: "AncientRev" });
+      await client.authenticate({ email, password, friendly_name: "Svolte" });
     } catch (err) {
       errtxt.innerText = `Failed to log in: ${err}`;
       signinBtn.classList.remove("loading");

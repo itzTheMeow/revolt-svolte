@@ -197,9 +197,9 @@ export default class VoiceClient extends EventEmitter<VoiceEvents> {
     this.sendTransport.on("produce", (parameters, callback, errback) => {
       const type = parameters.appData.type;
       if (parameters.kind === "audio" && type !== "audio" && type !== "saudio")
-        return errback(new Error("err"));
+        return errback?.(new Error("err"));
       if (parameters.kind === "video" && type !== "video" && type !== "svideo")
-        return errback(new Error("err"));
+        return errback?.(new Error("err"));
       this.signaling
         .startProduce(type as any, parameters.rtpParameters)
         .then((id) => callback({ id }))

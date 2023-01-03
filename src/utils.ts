@@ -1,4 +1,3 @@
-import { client } from "Client";
 import { DateTime, Duration } from "luxon";
 import type { ThemeSettings } from "revolt-toolset";
 import { Channel, Member, Server, User, type Message } from "revolt-toolset";
@@ -24,15 +23,6 @@ export const Matches = {
   emojiDefault: /:([A-z0-9_]+?):/g,
 };
 
-export function getServerMember(server: Server | null, id: string) {
-  if (!server) return undefined;
-  let mem: Member | undefined;
-  client.members.forEach((m) => {
-    if (m.id.user == id && m.id.server == server.id) mem = m;
-  });
-  return mem;
-}
-
 export function MemberOrUserDetails(user?: User, member?: Member) {
   return {
     name: member ? MemberDetails(member).name : UserDetails(user).name,
@@ -42,7 +32,7 @@ export function MemberOrUserDetails(user?: User, member?: Member) {
 }
 export function UserDetails(user: User | undefined) {
   return {
-    online: user?.online && user?.status?.presence && user.status.presence !== "Invisible",
+    online: user?.online && (!user?.presence || user.presence !== "Invisible"),
     name: user?.username || "Unknown User",
     avatar: proxyURL(user?.generateAvatarURL({ max_side: 256 }), "image"),
   };
@@ -55,11 +45,7 @@ export function MemberDetails(member: Member | undefined) {
         : member?.user?.generateAvatarURL({ max_side: 256 }),
       "image"
     ),
-    color:
-      member?.orderedRoles
-        .map((r) => r[1])
-        .reverse()
-        .find((r) => r.colour)?.colour || "",
+    color: member?.colorRole?.color || "",
     name: member?.nickname || UserDetails(member?.user).name,
   };
 }
@@ -91,7 +77,7 @@ export function UserColor(color: string) {
 }
 export function StatusColor(user: User | undefined): keyof Omit<ThemeSettings, "light"> {
   if (!UserDetails(user).online) return "status-invisible";
-  switch (user?.status?.presence) {
+  switch (user?.presence) {
     case "Busy":
       return "status-busy";
     case "Focus":
@@ -112,16 +98,14 @@ export interface NotificationSettings {
 }
 
 export function testMuted(notifs: NotificationSettings) {
-  return {
-    isMuted(target: Server | Channel | undefined) {
-      return target instanceof Server
-        ? notifs.server?.[target.id] == "muted"
-        : target instanceof Channel
-        ? notifs.channel?.[target.id]
-          ? notifs.channel?.[target.id] == "muted"
-          : notifs.server?.[target.serverID || ""] == "muted"
-        : false;
-    },
+  return (target: Server | Channel | undefined) => {
+    return target instanceof Server
+      ? notifs.server?.[target.id] == "muted"
+      : target instanceof Channel
+      ? notifs.channel?.[target.id]
+        ? notifs.channel?.[target.id] == "muted"
+        : notifs.server?.[target.isServerBased() ? target.serverID || "" : ""] == "muted"
+      : false;
   };
 }
 

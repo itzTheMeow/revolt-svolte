@@ -53,32 +53,29 @@
   client.on("message", async (message) => {
     if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
     if (
-      message.authorID == client.user?.id ||
+      (message.isUser() && message.authorID == client.user.id) ||
       (document.hasFocus() && $SelectedChannel?.id == message.channelID)
-    ) {
-      client.unreads?.markRead(message.channelID, message.id);
-      const unreads = new Unreads(client);
-      await unreads.sync();
-      if ((unreads.getUnread(message.channelID)?.lastID ?? "0").localeCompare(message.id) === -1)
-        message.channel?.ack(message, true);
-    }
+    )
+      message.channel.markRead(true);
   });
-  client.on("message/update", async (message) => {
+  client.on("messageUpdate", async (message) => {
     if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
   });
-  client.on("message/delete", (_, message) => {
+  client.on("messageDelete", (_, message) => {
     if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
   });
   const fetching = new Set();
   SelectedChannel.subscribe((c) => {
     if (c && !$MessageCache[c.id] && !fetching.has(c.id)) {
       fetching.add(c.id);
-      c.fetchMessages({
-        limit: 100,
-      }).then((m) => {
-        pushMessages(c, m);
-        fetching.delete(c);
-      });
+      c.messages
+        .fetchMultiple({
+          limit: 100,
+        })
+        .then((m) => {
+          pushMessages(c, m);
+          fetching.delete(c);
+        });
     }
   });
   window.addEventListener("touchstart", (e) => {
@@ -117,10 +114,7 @@
     const uid = target.getAttribute("data-userpopup");
     if (uid) {
       try {
-        const member =
-          [...client.members.values()].find(
-            (m) => m.id.server == $SelectedServer?.id && m.id.user == uid
-          ) || (await $SelectedServer?.fetchMember(uid));
+        const member = await $SelectedServer?.members.fetch(uid);
         if (member)
           return CMState.set({
             type: "member",

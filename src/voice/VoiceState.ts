@@ -6,7 +6,7 @@
 
 import EventEmitter from "eventemitter3";
 import { action, makeAutoObservable, runInAction } from "mobx";
-import { Channel, toNullable, type Nullable } from "revolt-toolset";
+import type { VoiceChannel } from "revolt-toolset";
 import type { ProduceType, VoiceUser } from "./Types";
 import type VoiceClient from "./VoiceClient";
 
@@ -22,6 +22,8 @@ export enum VoiceStatus {
   CONNECTED,
   // RECONNECTING
 }
+
+type Nullable<T> = T | null;
 
 // This is an example of how to implement MobX state.
 // * Note for better implementation:
@@ -62,7 +64,7 @@ class VoiceStateReference {
   // client and applies it to the state here.
   @action syncState() {
     if (!this.client) return;
-    this.roomId = toNullable(this.client.roomId);
+    this.roomId = this.client.roomId ?? null;
     this.participants.clear();
     this.client.participants.forEach((v, k) => this.participants.set(k, v));
     this.events.emit("stateChange");
@@ -102,7 +104,7 @@ class VoiceStateReference {
   }
 
   // Connect to a voice channel.
-  @action async connect(channel: Channel) {
+  @action async connect(channel: VoiceChannel) {
     if (!this.client?.supported()) throw new Error("RTC is unavailable");
 
     this.connecting = true;
@@ -111,13 +113,13 @@ class VoiceStateReference {
     try {
       const call = await channel.joinCall();
 
-      await this.client.connect(channel.client.configuration!.features.voso.ws, channel.id);
+      await this.client.connect(channel.client.config!.features.voso.ws, channel.id);
 
       runInAction(() => {
         this.status = VoiceStatus.AUTHENTICATING;
       });
 
-      await this.client.authenticate(call.token);
+      await this.client.authenticate(call);
       this.syncState();
 
       runInAction(() => {
