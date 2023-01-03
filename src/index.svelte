@@ -38,6 +38,7 @@
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { BRAND_NAME, handleUpdates } from "utils";
+  import { showMemberContext } from "./contextmenu/ContextMenus";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -116,16 +117,7 @@
     if (uid) {
       try {
         const member = await $SelectedServer?.members.fetch(uid);
-        if (member)
-          return CMState.set({
-            type: "member",
-            pos: {
-              top: e.clientY,
-              left: e.clientX,
-            },
-            member,
-            target,
-          });
+        if (member) return showMemberContext(member, e.clientX, e.clientY, target);
       } catch {}
       ModalStack.push({
         type: "user",

@@ -3,7 +3,7 @@
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
   import { Member, Role } from "revolt-toolset";
-  import { AppWidth } from "State";
+  import { AppHeight, AppWidth } from "State";
   import { tippy } from "svelte-tippy";
   import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";
@@ -14,11 +14,13 @@
 
   function handleClick(e: MouseEvent) {
     if (!(item instanceof Member)) return;
+    const rect = BarItem.getBoundingClientRect(),
+      isTop = rect.top + rect.height / 2 <= $AppHeight / 2;
     CMState.set({
       type: "member",
       member: item,
       pos: {
-        top: BarItem.getBoundingClientRect().top + 2,
+        [isTop ? "top" : "bottom"]: isTop ? rect.top + 2 : $AppHeight - rect.bottom + 2,
         right: $AppWidth - BarItem.getBoundingClientRect().left + 6,
       },
       target: e.target,

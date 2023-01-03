@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import { CMState } from "contextmenu/ContextMenuState";
+  import { showMemberContext } from "contextmenu/ContextMenus";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage } from "revolt-toolset";
@@ -92,16 +92,7 @@
             data-clickable
             on:click={(e) => {
               if (!message.isUser()) return;
-              if (message.member)
-                CMState.set({
-                  type: "member",
-                  member: message.member,
-                  pos: {
-                    top: e.clientY,
-                    left: e.clientX,
-                  },
-                  target: e.target,
-                });
+              if (message.member) showMemberContext(message.member, e.clientX, e.clientY, e.target);
               else ModalStack.push({ type: "user", id: message.authorID });
             }}
           />
