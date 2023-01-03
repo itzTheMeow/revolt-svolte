@@ -3,6 +3,9 @@
   import Indicator from "extra/Indicator.svelte";
   import type { Server } from "revolt-toolset";
   import { SelectedServer, ServerOrder } from "State";
+  import { onDestroy, onMount } from "svelte";
+  import { writable } from "svelte/store";
+  import { slide } from "svelte/transition";
   import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { proxyURL, StatusColor } from "utils";
@@ -10,8 +13,11 @@
   import ServerIcon from "./ServerIcon.svelte";
   import ServerSeparator from "./ServerSeparator.svelte";
 
-  let orderedServers = [...client.servers.values()],
-    selectedDMs = false;
+  let orderedServers = client.servers.items(),
+    selectedDMs = false,
+    list: HTMLDivElement,
+    hasTop = true;
+  const scrollTop = writable(0);
   $: {
     orderedServers = <Server[]>(
       [
@@ -20,15 +26,25 @@
       ].filter((o) => o)
     );
     selectedDMs = !$SelectedServer;
+    hasTop = $scrollTop == 0;
   }
+  let int: NodeJS.Timer;
+  onMount(() => {
+    int = setInterval(() => {
+      $scrollTop = list?.scrollTop || 0;
+    }, 10);
+  });
+  onDestroy(() => {
+    clearInterval(int);
+  });
 </script>
 
 <div
-  class="flex items-center flex-col gap-2.5 p-1.5 overflow-y-auto h-full"
-  style="background-color:{$Theme['background']};scrollbar-width:none;--scroll-width:0px;"
+  class="flex items-center flex-col pt-2 px-2 h-full"
+  style="background-color:{$Theme['background']};"
   id="ServerList"
 >
-  <ServerEntry onclick={() => SelectedServer.set(null)}>
+  <ServerEntry onclick={() => SelectedServer.set(null)} className="mb-1.5">
     <div class="w-12 h-12 rounded-full">
       <img
         src={proxyURL(client.user.generateAvatarURL({ max_side: 64 }), "image")}
@@ -48,18 +64,28 @@
       />
     </div>
   </ServerEntry>
-
-  <ServerSeparator />
-
-  {#each orderedServers as server}
-    <ServerIcon {server} />
-  {/each}
-
-  <ServerSeparator />
-
-  <ServerEntry placeholder onclick={() => window.location.reload()} tooltip="Reload">
-    <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
-      <Refresh />
+  {#if hasTop}
+    <div transition:slide|local={{ duration: 200 }} class="flex justify-center w-full">
+      <ServerSeparator className="my-0.5" />
     </div>
-  </ServerEntry>
+  {/if}
+
+  <div
+    class="flex items-center flex-1 flex-col overflow-y-auto pt-1 pb-2 gap-2.5"
+    style:scrollbar-width="none"
+    style:--scroll-width="0px"
+    bind:this={list}
+  >
+    {#each orderedServers as server}
+      <ServerIcon {server} />
+    {/each}
+
+    <ServerSeparator />
+
+    <ServerEntry placeholder onclick={() => window.location.reload()} tooltip="Reload">
+      <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
+        <Refresh />
+      </div>
+    </ServerEntry>
+  </div>
 </div>
