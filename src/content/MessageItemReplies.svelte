@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { MessageCache } from "State";
   import { writable } from "svelte/store";
   import { CornerLeftDown } from "tabler-icons-svelte";

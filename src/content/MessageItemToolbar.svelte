@@ -1,7 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
   import { CornerUpLeft, Trash } from "tabler-icons-svelte";
   import { Theme } from "Theme";

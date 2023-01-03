@@ -1,7 +1,7 @@
 import { client } from "Client";
 import { DateTime, Duration } from "luxon";
 import type { ThemeSettings } from "revolt-toolset";
-import { Channel, Member, Server, User, type Message } from "revolt.js";
+import { Channel, Member, Server, User, type Message } from "revolt-toolset";
 
 export function escapeHTML(txt: string) {
   return txt

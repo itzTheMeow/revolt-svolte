@@ -2,7 +2,7 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { Theme } from "Theme";
   import { MessageDetails, UserColor } from "utils";
 

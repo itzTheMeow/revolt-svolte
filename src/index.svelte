@@ -13,7 +13,6 @@
   import ModalRenderer from "modals/ModalRenderer.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { ElectronFullscreen, Native } from "Native";
-  import Unreads from "revolt.js/dist/util/Unreads";
   import ServerList from "servers/ServerList.svelte";
   import {
     AppHeight,
@@ -44,10 +43,10 @@
     requestAnimationFrame(animate);
     TWEEN.update(time);
   });
-  client.users.observe_(() => {
+  client.users.onUpdate(() => {
     MessageCache.update((c) => c);
   });
-  client.members.observe_(() => {
+  client.servers.onUpdate(() => {
     MessageCache.update((c) => c);
     SelectedServer.update((s) => s);
   });
@@ -102,7 +101,12 @@
   window.addEventListener("contextmenu", (e) => {
     const target = <HTMLElement>e.target,
       tag = target.tagName;
-    if (tag == "INPUT" || tag == "TEXTAREA" || (tag == "A" && target.getAttribute("type") == "link")) return;
+    if (
+      tag == "INPUT" ||
+      tag == "TEXTAREA" ||
+      (tag == "A" && target.getAttribute("type") == "link")
+    )
+      return;
     e.preventDefault();
   });
   window.addEventListener("dragstart", (e) => {

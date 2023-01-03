@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Channel } from "revolt.js";
+  import type { Channel } from "revolt-toolset";
   import { MessageCache } from "State";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";

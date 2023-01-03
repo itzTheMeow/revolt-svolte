@@ -2,7 +2,7 @@
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { parseAutocomplete, uploadAttachment, type AutocompleteTabResult } from "revolt-toolset";
-  import { Emoji } from "revolt.js";
+  import { Emoji } from "revolt-toolset";
   import {
     autocomplete,
     MessageInputSelected,

@@ -2,7 +2,7 @@
   import { UnreadState } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import Indicator from "extra/Indicator.svelte";
-  import type { Channel } from "revolt.js";
+  import type { Channel } from "revolt-toolset";
   import {
     MessageCache,
     MobileLayout,

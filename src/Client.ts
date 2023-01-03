@@ -1,16 +1,11 @@
-import { observe } from "mobx";
-import { DEFAULT_THEME } from "revolt-toolset";
-import { Client } from "revolt.js";
+import { Client, DEFAULT_THEME } from "revolt-toolset";
 import { CollapsedCategories, SelectedServer, SelectionState, ServerOrder } from "State";
 import { writable } from "svelte/store";
 import { Theme } from "Theme";
 import { NotifSettings } from "./State";
 
 export const ClientReady = writable(false);
-export const client = new Client({
-  unreads: true,
-  ackRateLimiter: false,
-});
+export const client = new Client();
 export const UnreadState = writable(Date.now());
 client.once("ready", async () => {
   try {
@@ -31,8 +26,8 @@ client.once("ready", async () => {
 });
 
 if (client.unreads) {
-  observe((<any>client.unreads).channels, () => {
+  client.unreads.onUpdate(() => {
     UnreadState.set(Date.now() * Math.random());
   });
-  setInterval(() => client.unreads?.sync(), 60000);
+  setInterval(() => client.unreads.sync(), 60000);
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { updateReplies } from "State";
   import { CircleX, CornerUpLeft } from "tabler-icons-svelte";
   import { Theme } from "Theme";

@@ -2,7 +2,7 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
-  import { Member, type API } from "revolt.js";
+  import { Member, type API } from "revolt-toolset";
   import { AppWidth } from "State";
   import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";

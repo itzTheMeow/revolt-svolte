@@ -6,7 +6,7 @@
 
 import EventEmitter from "eventemitter3";
 import { action, makeAutoObservable, runInAction } from "mobx";
-import { Channel, toNullable, type Nullable } from "revolt.js";
+import { Channel, toNullable, type Nullable } from "revolt-toolset";
 import type { ProduceType, VoiceUser } from "./Types";
 import type VoiceClient from "./VoiceClient";
 

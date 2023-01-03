@@ -2,7 +2,7 @@
   import { client } from "Client";
   import Audio from "media/Audio.svelte";
   import Video from "media/Video.svelte";
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { proxyURL } from "utils";
   import { imagePreview } from "../modals/ImagePreview";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import type { API, Member } from "revolt.js";
+  import type { API, Member } from "revolt-toolset";
   import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
   import { writable } from "svelte/store";
   import { Theme } from "Theme";

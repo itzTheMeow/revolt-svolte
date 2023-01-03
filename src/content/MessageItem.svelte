@@ -2,7 +2,7 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt.js";
+  import type { Message } from "revolt-toolset";
   import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";

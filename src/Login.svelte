@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Client } from "revolt.js";
+  import { Client } from "revolt-toolset";
 
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;

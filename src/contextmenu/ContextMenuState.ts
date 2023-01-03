@@ -1,4 +1,4 @@
-import type { Member } from "revolt.js";
+import type { Member } from "revolt-toolset";
 import { writable } from "svelte/store";
 
 export interface ContextMenuStateOption {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import type { Channel } from "revolt.js";
+  import type { Channel } from "revolt-toolset";
   import {
     Headphones,
     HeadphonesOff,
