@@ -10,7 +10,7 @@
   let replies = writable<(Message | undefined)[]>([]);
   $: replies.set(
     message.reply_ids?.map((i, ii) => {
-      const cached = $MessageCache[message.channel_id].find((m) => m._id == i);
+      const cached = $MessageCache[message.channel_id].find((m) => m.id == i);
       if (!cached) {
         message.channel?.fetchMessage(i).then((m) => {
           replies.update((repl) => {

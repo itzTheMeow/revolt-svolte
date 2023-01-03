@@ -18,7 +18,7 @@
 
   let isConnectedHere = false;
   $: isConnectedHere =
-    voiceState.status == VoiceStatus.CONNECTED && voiceState.roomId == channel._id;
+    voiceState.status == VoiceStatus.CONNECTED && voiceState.roomId == channel.id;
 
   export let channel: Channel;
 </script>
@@ -37,9 +37,9 @@
               alt={client.users.get(uid)?.username}
               class="rounded-full w-full h-full"
             />
-            {#if (client.user?._id === uid && voiceState.isDeaf()) || !voiceState.participants.get(uid)?.audio}
+            {#if (client.user?.id === uid && voiceState.isDeaf()) || !voiceState.participants.get(uid)?.audio}
               <div class="absolute right-0 bottom-0 p-1 bg-error rounded-full">
-                {#if client.user?._id === uid && voiceState.isDeaf()}
+                {#if client.user?.id === uid && voiceState.isDeaf()}
                   <HeadphonesOff size={14} />
                 {:else if !voiceState.participants.get(uid)?.audio}
                   <MicrophoneOff size={14} />

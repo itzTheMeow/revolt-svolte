@@ -12,7 +12,7 @@
     ...
   {:then user}
     <div class="flex">
-      uuid {user._id}
+      uuid {user.id}
     </div>
   {:catch err}
     Failed to fetch user. {err}

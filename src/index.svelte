@@ -53,13 +53,13 @@
   client.on("message", async (message) => {
     if ($MessageCache[message.channel_id]) pushMessages(message.channel!, [message]);
     if (
-      message.author_id == client.user?._id ||
-      (document.hasFocus() && $SelectedChannel?._id == message.channel_id)
+      message.author_id == client.user?.id ||
+      (document.hasFocus() && $SelectedChannel?.id == message.channel_id)
     ) {
-      client.unreads?.markRead(message.channel_id, message._id);
+      client.unreads?.markRead(message.channel_id, message.id);
       const unreads = new Unreads(client);
       await unreads.sync();
-      if ((unreads.getUnread(message.channel_id)?.last_id ?? "0").localeCompare(message._id) === -1)
+      if ((unreads.getUnread(message.channel_id)?.last_id ?? "0").localeCompare(message.id) === -1)
         message.channel?.ack(message, true);
     }
   });
@@ -71,8 +71,8 @@
   });
   const fetching = new Set();
   SelectedChannel.subscribe((c) => {
-    if (c && !$MessageCache[c._id] && !fetching.has(c._id)) {
-      fetching.add(c._id);
+    if (c && !$MessageCache[c.id] && !fetching.has(c.id)) {
+      fetching.add(c.id);
       c.fetchMessages({
         limit: 100,
       }).then((m) => {
@@ -119,7 +119,7 @@
       try {
         const member =
           [...client.members.values()].find(
-            (m) => m._id.server == $SelectedServer?._id && m._id.user == uid
+            (m) => m.id.server == $SelectedServer?.id && m.id.user == uid
           ) || (await $SelectedServer?.fetchMember(uid));
         if (member)
           return CMState.set({

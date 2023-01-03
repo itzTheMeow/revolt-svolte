@@ -19,8 +19,8 @@
     isHovered = false;
   $: {
     const previousMessage =
-      $MessageCache[$SelectedChannel!._id]?.[
-        $MessageCache[$SelectedChannel!._id]?.indexOf(message) - 1
+      $MessageCache[$SelectedChannel!.id]?.[
+        $MessageCache[$SelectedChannel!.id]?.indexOf(message) - 1
       ];
     isReply = !!message.reply_ids?.length;
     shouldSeparate =
@@ -29,7 +29,7 @@
       previousMessage.author_id !== message.author_id ||
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
-    isHovered = $HoveredMessage == message._id;
+    isHovered = $HoveredMessage == message.id;
   }
 
   let startScroll: number | null = null;
@@ -54,7 +54,7 @@
     }
     const list = document.getElementById("MessageList")!;
     if (startScroll === null || Math.abs(startScroll - list.scrollTop) <= 1)
-      HoveredMessage.set(message._id);
+      HoveredMessage.set(message.id);
     startScroll = null;
   }
 </script>
@@ -66,10 +66,10 @@
   <div
     class="relative px-1 [line-height:normal] {shouldSeparate ? 'mt-3' : ''}"
     style={isHovered ? `background-color:${$Theme["secondary-background"]};` : ""}
-    on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message._id)}
-    on:mousemove={() => !$MobileLayout && HoveredMessage.set(message._id)}
+    on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message.id)}
+    on:mousemove={() => !$MobileLayout && HoveredMessage.set(message.id)}
     on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
-    on:wheel={() => !$MobileLayout && HoveredMessage.set(message._id)}
+    on:wheel={() => !$MobileLayout && HoveredMessage.set(message.id)}
     on:touchstart={handleClickDown}
     on:touchend={handleClick}
   >

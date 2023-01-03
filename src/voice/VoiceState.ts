@@ -111,7 +111,7 @@ class VoiceStateReference {
     try {
       const call = await channel.joinCall();
 
-      await this.client.connect(channel.client.configuration!.features.voso.ws, channel._id);
+      await this.client.connect(channel.client.configuration!.features.voso.ws, channel.id);
 
       runInAction(() => {
         this.status = VoiceStatus.AUTHENTICATING;

@@ -90,7 +90,7 @@
                     {
                       type: "text",
                       value: `#${
-                        $SelectedServer?.channels.find((c) => c?._id == node.properties.match)
+                        $SelectedServer?.channels.find((c) => c?.id == node.properties.match)
                           ?.name || "unknown-channel"
                       }`,
                     },

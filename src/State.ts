@@ -21,10 +21,10 @@ export const SelectedServer = writable<Server | null>(0 as any);
 let serverID = "";
 SelectedServer.subscribe((s) => {
   if (went) went--;
-  serverID = s?._id || "0";
+  serverID = s?.id || "0";
   if (!went) {
-    SelectionState.server = s?._id || null;
-    const channel = client.channels.get(SelectionState.map[s?._id || "0"]);
+    SelectionState.server = s?.id || null;
+    const channel = client.channels.get(SelectionState.map[s?.id || "0"]);
     if (channel) SelectedChannel.set(channel);
     else if (s)
       SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
@@ -32,18 +32,18 @@ SelectedServer.subscribe((s) => {
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
-  if (!s || fetchedMembers.has(s._id)) return;
-  fetchedMembers.add(s._id);
+  if (!s || fetchedMembers.has(s.id)) return;
+  fetchedMembers.add(s.id);
   // again shouldnt be hardcoded
   s.syncMembers(serverID == "01F7ZSBSFHQ8TA81725KQCSDDP").then(
-    () => s._id == serverID && SelectedServer.set(s)
+    () => s.id == serverID && SelectedServer.set(s)
   );
 });
 export const SelectedChannel = writable<Channel | null>(null);
 SelectedChannel.subscribe((c) => {
   if (went) went--;
   if (!went) {
-    if (c) SelectionState.map[serverID] = c._id;
+    if (c) SelectionState.map[serverID] = c.id;
     else delete SelectionState.map[serverID];
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
@@ -53,20 +53,16 @@ export const NotifSettings = writable<NotificationSettings>({ server: {}, channe
 export const MessageCache = writable<{ [key: string]: Message[] }>({});
 export function pushMessages(channel: Channel, msgs: Message[]) {
   MessageCache.update((cache) => {
-    cache[channel._id] = (cache[channel._id] || []).filter(
-      (c) => !msgs.find((m) => m._id == c._id)
-    );
-    cache[channel._id].push(...msgs);
-    cache[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
+    cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
+    cache[channel.id].push(...msgs);
+    cache[channel.id].sort((m1, m2) => m1.createdAt - m2.createdAt);
     return cache;
   });
 }
 export function spliceMessages(channel: Channel, msgs: Message[]) {
   MessageCache.update((cache) => {
-    cache[channel._id] = (cache[channel._id] || []).filter(
-      (c) => !msgs.find((m) => m._id == c._id)
-    );
-    cache[channel._id].sort((m1, m2) => m1.createdAt - m2.createdAt);
+    cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
+    cache[channel.id].sort((m1, m2) => m1.createdAt - m2.createdAt);
     return cache;
   });
 }
@@ -90,7 +86,7 @@ export function pushFile(file: File) {
 export const replyingTo = writable<Message[]>([]);
 export function updateReplies(reply: Message, shift = false) {
   replyingTo.update((replies) => {
-    const i = replies.findIndex((r) => r._id == reply._id);
+    const i = replies.findIndex((r) => r.id == reply.id);
     if (shift && i >= 0) replies.splice(i, 1);
     if (!shift && replies.length < 5 && i == -1) replies.push(reply);
     return replies;

@@ -22,7 +22,7 @@
       selectBottom();
     }}
   />
-  {#if message.channel?.havePermission("ManageMessages") || message.author_id == client.user?._id}
+  {#if message.channel?.havePermission("ManageMessages") || message.author_id == client.user?.id}
     <MessageItemToolbarItem
       icon={Trash}
       on:click={() => {

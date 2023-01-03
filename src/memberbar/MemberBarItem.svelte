@@ -36,7 +36,7 @@
       class="absolute top-0 left-0 w-full h-full opacity-20"
       style:background={MemberDetails(item).color || "currentColor"}
       style:display={$CMState?.type == "member" &&
-      $CMState.member._id.user == item.user?._id &&
+      $CMState.member.id.user == item.user?.id &&
       $CMState.bar
         ? "block"
         : "var(--d)"}
@@ -74,7 +74,7 @@
           {#if item.user?.bot}
             <UserTag text="BOT" />
           {/if}
-          {#if item._id.user == item.server?.owner}
+          {#if item.id.user == item.server?.owner}
             <div>
               <Crown size={16} color="gold" />
             </div>

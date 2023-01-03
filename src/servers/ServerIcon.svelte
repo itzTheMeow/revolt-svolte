@@ -14,7 +14,7 @@
   let numUnreads = 0;
   $: {
     $UnreadState;
-    isSelected = $SelectedServer?._id == server._id;
+    isSelected = $SelectedServer?.id == server.id;
     isUnread = !!server.isUnread(testMuted($NotifSettings));
   }
 </script>

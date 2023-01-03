@@ -76,7 +76,7 @@
     const toUpload = [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
-    const replies = $replyingTo.map((r) => ({ id: r._id, mention: false }));
+    const replies = $replyingTo.map((r) => ({ id: r.id, mention: false }));
     replyingTo.set([]);
     const attachments: string[] = [];
     for (const attachment of toUpload) {

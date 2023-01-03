@@ -17,7 +17,7 @@
       const l: typeof memberList = [];
       const members = [...client.members.values()].filter(
         (m) =>
-          m.server?._id == $SelectedServer?._id &&
+          m.server?.id == $SelectedServer?.id &&
           (!$SelectedChannel || m.hasPermission($SelectedChannel, "ViewChannel"))
       );
       const offline = members.filter((m) => !UserDetails(m.user).online);
@@ -46,7 +46,7 @@
       if (!$memstate)
         $SelectedServer
           // *really* shouldnt be hardcoding this but revite does and theres no way to tell if a server is 'large'
-          .syncMembers($SelectedServer._id == "01F7ZSBSFHQ8TA81725KQCSDDP")
+          .syncMembers($SelectedServer.id == "01F7ZSBSFHQ8TA81725KQCSDDP")
           .then(() => memstate.set(true));
     } else memberList = [];
   }

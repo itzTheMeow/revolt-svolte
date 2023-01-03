@@ -14,7 +14,7 @@
   $: {
     orderedServers = [
       ...$ServerOrder.map((s) => client.servers.get(s)),
-      ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s._id)),
+      ...[...client.servers.values()].filter((s) => !$ServerOrder.includes(s.id)),
     ].filter((o) => o);
     selectedDMs = !$SelectedServer;
   }

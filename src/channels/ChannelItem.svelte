@@ -24,7 +24,7 @@
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
     PaneState.set(PaneStates.MIDDLE);
-    if (!$MessageCache[$SelectedChannel._id]?.length) {
+    if (!$MessageCache[$SelectedChannel.id]?.length) {
       const m = await channel.fetchMessages({
         limit: 100,
       });
@@ -37,7 +37,7 @@
   let numUnreads = 0;
   $: {
     $UnreadState;
-    isSelected = $SelectedChannel?._id == channel._id;
+    isSelected = $SelectedChannel?.id == channel.id;
     isUnread = !!channel.isUnread(testMuted($NotifSettings));
   }
 
@@ -48,7 +48,7 @@
         top: e.clientY,
         left: e.clientX,
       },
-      options: [{ name: "Copy ID", clicked: () => copyText(channel._id), icon: Copy }],
+      options: [{ name: "Copy ID", clicked: () => copyText(channel.id), icon: Copy }],
     });
   }
 </script>

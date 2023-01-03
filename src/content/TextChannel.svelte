@@ -8,9 +8,9 @@
 </script>
 
 <div class="overflow-y-auto flex-1 flex flex-col p-1.5" id="MessageList">
-  {#if $MessageCache[channel._id]?.length}
+  {#if $MessageCache[channel.id]?.length}
     <div class="mt-auto" />
-    {#each $MessageCache[channel._id].slice(-75) as message}
+    {#each $MessageCache[channel.id].slice(-75) as message}
       <MessageItem {message} />
     {/each}
   {:else}

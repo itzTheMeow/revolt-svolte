@@ -28,7 +28,7 @@ export function getServerMember(server: Server | null, id: string) {
   if (!server) return undefined;
   let mem: Member | undefined;
   client.members.forEach((m) => {
-    if (m._id.user == id && m._id.server == server._id) mem = m;
+    if (m.id.user == id && m.id.server == server.id) mem = m;
   });
   return mem;
 }
@@ -115,10 +115,10 @@ export function testMuted(notifs: NotificationSettings) {
   return {
     isMuted(target: Server | Channel | undefined) {
       return target instanceof Server
-        ? notifs.server?.[target._id] == "muted"
+        ? notifs.server?.[target.id] == "muted"
         : target instanceof Channel
-        ? notifs.channel?.[target._id]
-          ? notifs.channel?.[target._id] == "muted"
+        ? notifs.channel?.[target.id]
+          ? notifs.channel?.[target.id] == "muted"
           : notifs.server?.[target.server_id || ""] == "muted"
         : false;
     },
