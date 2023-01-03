@@ -66,7 +66,7 @@
   });
   const fetching = new Set();
   SelectedChannel.subscribe((c) => {
-    if (c && !$MessageCache[c.id] && !fetching.has(c.id)) {
+    if (c?.isTextBased() && !$MessageCache[c.id] && !fetching.has(c.id)) {
       fetching.add(c.id);
       c.messages
         .fetchMultiple({

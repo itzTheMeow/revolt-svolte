@@ -4,12 +4,10 @@
   import Indicator from "extra/Indicator.svelte";
   import type { Channel } from "revolt-toolset";
   import {
-    MessageCache,
     MobileLayout,
     NotifSettings,
     PaneState,
     PaneStates,
-    pushMessages,
     selectBottom,
     SelectedChannel,
   } from "State";
@@ -24,15 +22,6 @@
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
     PaneState.set(PaneStates.MIDDLE);
-    if (channel.isTextBased()) {
-      if (!$MessageCache[$SelectedChannel.id]?.length) {
-        const m = await channel.messages.fetchMultiple({
-          limit: 100,
-        });
-        pushMessages($SelectedChannel, m);
-      }
-      if (channel.checkUnread(testMuted($NotifSettings))) channel.ack();
-    }
   }
 
   let isUnread = false;
