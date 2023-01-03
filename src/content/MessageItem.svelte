@@ -2,7 +2,7 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt-toolset";
+  import type { BaseMessage } from "revolt-toolset";
   import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
@@ -12,7 +12,7 @@
   import MessageItemReplies from "./MessageItemReplies.svelte";
   import MessageItemToolbar from "./MessageItemToolbar.svelte";
 
-  export let message: Message;
+  export let message: BaseMessage;
 
   let isReply = false,
     shouldSeparate = true,
@@ -22,8 +22,10 @@
       $MessageCache[$SelectedChannel!.id]?.[
         $MessageCache[$SelectedChannel!.id]?.indexOf(message) - 1
       ];
-    isReply = !!message.replyIDs?.length;
+    isReply = message.isUser() && !!message.replyIDs?.length;
     shouldSeparate =
+      !message.isUser() ||
+      !previousMessage.isUser() ||
       isReply ||
       !previousMessage ||
       previousMessage.authorID !== message.authorID ||
@@ -73,46 +75,49 @@
     on:touchstart={handleClickDown}
     on:touchend={handleClick}
   >
-    <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
-      {#if shouldSeparate}
-        <img
-          class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
-          src={MessageDetails(message).avatar}
-          alt=""
-          data-clickable
-          on:click={(e) => {
-            if (message.member)
-              CMState.set({
-                type: "member",
-                member: message.member,
-                pos: {
-                  top: e.clientY,
-                  left: e.clientX,
-                },
-                target: e.target,
-              });
-            else ModalStack.push({ type: "user", id: message.authorID });
-          }}
-        />
-      {:else}
-        <div
-          class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
-          style:font-size="0.65rem"
-          style:color={$Theme["tertiary-foreground"]}
-        >
-          {#if isHovered}
-            {DateTime.fromMillis(message.createdAt).toFormat("t")}
-          {/if}
-        </div>
-      {/if}
-      <div class="flex flex-col flex-1 {!$MobileLayout ? 'select-text' : ''}">
+    {#if message.isUser()}
+      <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
         {#if shouldSeparate}
-          <MessageItemHeader {message} />
+          <img
+            class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
+            src={MessageDetails(message).avatar}
+            alt=""
+            data-clickable
+            on:click={(e) => {
+              if (!message.isUser()) return;
+              if (message.member)
+                CMState.set({
+                  type: "member",
+                  member: message.member,
+                  pos: {
+                    top: e.clientY,
+                    left: e.clientX,
+                  },
+                  target: e.target,
+                });
+              else ModalStack.push({ type: "user", id: message.authorID });
+            }}
+          />
+        {:else}
+          <div
+            class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
+            style:font-size="0.65rem"
+            style:color={$Theme["tertiary-foreground"]}
+          >
+            {#if isHovered}
+              {DateTime.fromMillis(message.createdAt).toFormat("t")}
+            {/if}
+          </div>
         {/if}
-        <MessageItemContent {message} />
-        <MessageItemAttachments {message} />
+        <div class="flex flex-col flex-1 {!$MobileLayout ? 'select-text' : ''}">
+          {#if shouldSeparate}
+            <MessageItemHeader {message} />
+          {/if}
+          <MessageItemContent {message} />
+          <MessageItemAttachments {message} />
+        </div>
       </div>
-    </div>
+    {/if}
     {#if isHovered}
       <MessageItemToolbar {message} />
     {/if}

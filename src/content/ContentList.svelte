@@ -32,7 +32,7 @@
   }}
 >
   {#if $SelectedChannel}
-    {#if $SelectedChannel.channel_type !== "VoiceChannel"}
+    {#if $SelectedChannel.isTextBased()}
       <TextChannel channel={$SelectedChannel} />
     {:else}
       <VoiceChannel channel={$SelectedChannel} />

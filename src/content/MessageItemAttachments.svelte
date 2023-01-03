@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { client } from "Client";
   import Audio from "media/Audio.svelte";
   import Video from "media/Video.svelte";
   import type { Message } from "revolt-toolset";
@@ -16,8 +15,8 @@
         class="block rounded cursor-pointer"
         style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
           .width} / {attachment.metadata.height};"
-        src={proxyURL(client.generateFileURL(attachment), "image")}
-        alt={attachment.filename}
+        src={proxyURL(attachment.generateURL(), "image")}
+        alt={attachment.name}
         data-clickable
         on:click={() => imagePreview.set(attachment)}
       />
@@ -30,8 +29,8 @@
     {:else if attachment.metadata.type == "Audio"}
       <Audio src={attachment} />
     {:else}
-      <a href={client.generateFileURL(attachment)} target="_blank">
-        [Download {attachment.filename}]
+      <a href={attachment.generateDownloadURL()} target="_blank">
+        [Download {attachment.name}]
       </a>
     {/if}
   </div>

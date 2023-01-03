@@ -1,13 +1,13 @@
 <script lang="ts">
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt-toolset";
+  import { BaseMessage, Permissions } from "revolt-toolset";
   import { MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
   import { CornerUpLeft, Trash } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
-  export let message: Message;
+  export let message: BaseMessage;
 </script>
 
 <div
@@ -22,7 +22,7 @@
       selectBottom();
     }}
   />
-  {#if message.channel?.havePermission("ManageMessages") || message.authorID == client.user?.id}
+  {#if message.channel?.permissions.has(Permissions.ManageMessages) || (message.isUser() && message.authorID == client.user?.id)}
     <MessageItemToolbarItem
       icon={Trash}
       on:click={() => {
