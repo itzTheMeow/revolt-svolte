@@ -27,6 +27,7 @@
     style:background-image={profile?.background
       ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
       : ""}
+    style:background-color={MemberDetails(member).color || $Theme["secondary-background"]}
   >
     <div
       class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6"
