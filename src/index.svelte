@@ -71,6 +71,7 @@
       c.messages
         .fetchMultiple({
           limit: 100,
+          include_users: true,
         })
         .then((m) => {
           pushMessages(c, m);
