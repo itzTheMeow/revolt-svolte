@@ -28,7 +28,7 @@
   style="background-color:{$Theme['background']};scrollbar-width:none;--scroll-width:0px;"
   id="ServerList"
 >
-  <ServerEntry placeholder onclick={() => SelectedServer.set(null)} tooltip="Profile">
+  <ServerEntry onclick={() => SelectedServer.set(null)}>
     <div class="w-12 h-12 rounded-full">
       <img
         src={proxyURL(client.user.generateAvatarURL({ max_side: 64 }), "image")}

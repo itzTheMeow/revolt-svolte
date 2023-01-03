@@ -3,7 +3,7 @@
 
   export let placeholder = false;
   export let onclick: () => any;
-  export let tooltip: string;
+  export let tooltip: string = "";
 </script>
 
 <div
@@ -14,6 +14,9 @@
   use:tippy={{
     placement: "right",
     content: tooltip,
+    onShow() {
+      if (!tooltip) return false;
+    },
   }}
 >
   <slot />
