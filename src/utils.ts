@@ -87,7 +87,7 @@ export function StatusColor(user: User | undefined): keyof Omit<ThemeSettings, "
     case "Online":
       return "status-online";
     default:
-      return "status-invisible";
+      return user?.online ? "status-online" : "status-invisible";
   }
 }
 
