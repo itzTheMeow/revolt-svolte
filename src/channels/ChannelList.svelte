@@ -95,9 +95,9 @@
           }}
         >
           {#if window.location.protocol == "https:"}
-            <Lock size="18" color={$Theme["status-online"]} />
+            <Lock size="18" color={$Theme["success"]} />
           {:else}
-            <LockOpen size="18" color={$Theme["status-away"]} />
+            <LockOpen size="18" color={$Theme["warning"]} />
           {/if}
         </div>
         <a

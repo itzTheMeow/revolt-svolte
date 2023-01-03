@@ -1,27 +1,91 @@
 <script lang="ts">
+  import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
-  import type { Member } from "revolt-toolset";
+  import { Permissions, type Member, type UserProfile } from "revolt-toolset";
+  import { tippy } from "svelte-tippy";
+  import { X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { MemberDetails, StatusColor, UserColor } from "utils";
+  import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
 
   export let member: Member;
+  let profile: UserProfile,
+    fetched = "",
+    canRoleManage = false;
+
+  $: {
+    if (fetched !== member.id) {
+      fetched = member.id;
+      member.user.fetchProfile().then((p) => (profile = p));
+    }
+    canRoleManage = !!member.server.me?.permissions.has(Permissions.ManageRole);
+  }
 </script>
 
-<div class="p-4">
-  <div class="w-12 h-12 relative">
-    <img
-      class="avatar rounded-full w-full h-full object-cover"
-      src={MemberDetails(member).avatar}
-      alt={MemberDetails(member).name}
-    />
-    <Indicator
-      pos="bottomRight"
-      color={$Theme[StatusColor(member.user)]}
-      bg={$Theme["primary-background"]}
-      isSelected
-    />
+<div class="w-64">
+  <div
+    class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative"
+    style:background-image={profile?.background
+      ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
+      : ""}
+  >
+    <div
+      class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6"
+      style:background-color={$Theme["primary-background"]}
+    >
+      <img
+        class="avatar rounded-full w-full h-full object-cover"
+        src={MemberDetails(member).avatar}
+        alt={MemberDetails(member).name}
+      />
+      <Indicator
+        pos="bottomRight"
+        color={$Theme[StatusColor(member.user)]}
+        bg={$Theme["primary-background"]}
+        className="h-6 w-6 -right-0.5 -bottom-0.5"
+      />
+    </div>
   </div>
-  <div class="font-semibold" style={UserColor(MemberDetails(member).color)}>
-    {MemberDetails(member).name}
+  <div class="pt-6 p-5">
+    <div
+      class="font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+      style={UserColor(MemberDetails(member).color)}
+      use:tippy={{
+        content: "@" + member.user.username,
+      }}
+    >
+      {MemberDetails(member).name}
+    </div>
+    <Header className="mt-2 mb-1">Roles</Header>
+    <div class="flex gap-1 flex-wrap">
+      {#each member.roles.reverse() as role}
+        <div
+          class="rounded overflow-hidden relative w-fit px-1.5 py-0.5 flex items-center gap-1 cursor-pointer [--hov:none] hover:[--hov:flex]"
+          on:click={() => {
+            if (canRoleManage) member.removeRole(role);
+          }}
+          on:contextmenu={() => {
+            //TODO: copy id
+          }}
+        >
+          <div
+            class="w-full h-full absolute top-0 left-0 opacity-20"
+            style:background={role.color || "currentColor"}
+          />
+          <div
+            class="w-2.5 h-2.5 rounded-full flex items-center"
+            style:background={role.color || "currentColor"}
+          />
+          <div class="text-xs relative">{role.name}</div>
+          {#if canRoleManage}
+            <div
+              class="w-full h-full absolute top-0 left-0 items-center justify-center text-xs [display:var(--hov)]"
+              style:background-color={$Theme["error"]}
+            >
+              <X size={14} strokeWidth={3} />
+            </div>
+          {/if}
+        </div>
+      {/each}
+    </div>
   </div>
 </div>
