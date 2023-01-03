@@ -4,7 +4,7 @@
   import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
-  import { ChevronDown, ChevronRight, Lock, LockOpen } from "tabler-icons-svelte";
+  import { BrandGithub, ChevronDown, ChevronRight, Lock, LockOpen } from "tabler-icons-svelte";
   import { BRAND_COLOR, Theme } from "Theme";
   import { BRAND_NAME, COMMIT_HASH, proxyURL } from "utils";
   import ChannelItem from "./ChannelItem.svelte";
@@ -109,7 +109,7 @@
             placement: "bottom",
           }}
         >
-          <UserTag text={COMMIT_HASH} color={BRAND_COLOR} />
+          <UserTag text={COMMIT_HASH} color={BRAND_COLOR} icon={BrandGithub} />
         </a>
       </div>
     </div>

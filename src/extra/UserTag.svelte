@@ -3,6 +3,7 @@
 
   export let text: string;
   export let color = "";
+  export let icon: ConstructorOfATypedSvelteComponent | null = null;
 
   $: {
     color = color || $Theme["accent"] || "inherit";
@@ -14,5 +15,8 @@
   style:background={color}
   style:font-size="0.65rem"
 >
+  {#if icon}
+    <svelte:component this={icon} size={14} />
+  {/if}
   {text}
 </div>
