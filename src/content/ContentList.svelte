@@ -34,7 +34,7 @@
   {#if $SelectedChannel}
     {#if $SelectedChannel.isTextBased()}
       <TextChannel channel={$SelectedChannel} />
-    {:else}
+    {:else if $SelectedChannel.isVoice()}
       <VoiceChannel channel={$SelectedChannel} />
     {/if}
   {:else}

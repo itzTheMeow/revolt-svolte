@@ -18,6 +18,7 @@
       const members = $SelectedServer.members.filter(
         (m) => !$SelectedChannel || $SelectedChannel.permissionsFor(m).has(Permissions.ViewChannel)
       );
+      console.log($SelectedServer.members);
       const offline = members.filter((m) => !UserDetails(m.user).online);
       members
         .filter((m) => m.hoistedRole && !offline.includes(m))

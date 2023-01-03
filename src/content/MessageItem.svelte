@@ -25,9 +25,9 @@
     isReply = message.isUser() && !!message.replyIDs?.length;
     shouldSeparate =
       !message.isUser() ||
-      !previousMessage.isUser() ||
       isReply ||
       !previousMessage ||
+      !previousMessage.isUser() ||
       previousMessage.authorID !== message.authorID ||
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
@@ -62,7 +62,7 @@
 </script>
 
 {#if $SelectedChannel}
-  {#if isReply}
+  {#if isReply && message.isUser()}
     <MessageItemReplies {message} />
   {/if}
   <div
