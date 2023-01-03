@@ -4,6 +4,7 @@
   import UserTag from "extra/UserTag.svelte";
   import { Member, Role } from "revolt-toolset";
   import { AppWidth } from "State";
+  import { tippy } from "svelte-tippy";
   import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
@@ -75,7 +76,12 @@
             <UserTag text="BOT" />
           {/if}
           {#if item.id == item.server?.ownerID}
-            <div>
+            <div
+              use:tippy={{
+                content: "Server Owner",
+                placement: "left",
+              }}
+            >
               <Crown size={16} color="gold" />
             </div>
           {/if}
