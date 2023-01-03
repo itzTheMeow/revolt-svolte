@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
@@ -16,7 +17,8 @@
 
   let isReply = false,
     shouldSeparate = true,
-    isHovered = false;
+    isHovered = false,
+    doHighlight = false;
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!.id]?.[
@@ -32,6 +34,7 @@
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
     isHovered = $HoveredMessage == message.id;
+    doHighlight = message.isUser() && message.mentionIDs.includes(client.user.id);
   }
 
   let startScroll: number | null = null;
@@ -67,7 +70,11 @@
   {/if}
   <div
     class="relative px-1 [line-height:normal] {shouldSeparate ? 'mt-3' : ''}"
-    style={isHovered ? `background-color:${$Theme["secondary-background"]};` : ""}
+    style:background-color={isHovered
+      ? $Theme["secondary-background"]
+      : doHighlight
+      ? $Theme["mention"]
+      : ""}
     on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message.id)}
     on:mousemove={() => !$MobileLayout && HoveredMessage.set(message.id)}
     on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
