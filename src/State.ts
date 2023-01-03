@@ -1,5 +1,5 @@
 import { client } from "Client";
-import type { AutocompleteResult, Channel, Message, Server } from "revolt-toolset";
+import type { AutocompleteResult, BaseMessage, Channel, Server } from "revolt-toolset";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";
 
@@ -50,8 +50,8 @@ SelectedChannel.subscribe((c) => {
 });
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
-export const MessageCache = writable<{ [key: string]: Message[] }>({});
-export function pushMessages(channel: Channel, msgs: Message[]) {
+export const MessageCache = writable<{ [key: string]: BaseMessage[] }>({});
+export function pushMessages(channel: Channel, msgs: BaseMessage[]) {
   MessageCache.update((cache) => {
     cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
     cache[channel.id].push(...msgs);
@@ -59,7 +59,7 @@ export function pushMessages(channel: Channel, msgs: Message[]) {
     return cache;
   });
 }
-export function spliceMessages(channel: Channel, msgs: Message[]) {
+export function spliceMessages(channel: Channel, msgs: BaseMessage[]) {
   MessageCache.update((cache) => {
     cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
     cache[channel.id].sort((m1, m2) => m1.createdAt - m2.createdAt);
@@ -83,8 +83,8 @@ export function pushFile(file: File) {
     return files;
   });
 }
-export const replyingTo = writable<Message[]>([]);
-export function updateReplies(reply: Message, shift = false) {
+export const replyingTo = writable<BaseMessage[]>([]);
+export function updateReplies(reply: BaseMessage, shift = false) {
   replyingTo.update((replies) => {
     const i = replies.findIndex((r) => r.id == reply.id);
     if (shift && i >= 0) replies.splice(i, 1);

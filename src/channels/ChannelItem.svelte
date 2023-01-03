@@ -24,13 +24,15 @@
     $SelectedChannel = channel;
     if (!$MobileLayout) selectBottom();
     PaneState.set(PaneStates.MIDDLE);
-    if (!$MessageCache[$SelectedChannel.id]?.length) {
-      const m = await channel.fetchMessages({
-        limit: 100,
-      });
-      pushMessages($SelectedChannel, m);
+    if (channel.isTextBased()) {
+      if (!$MessageCache[$SelectedChannel.id]?.length) {
+        const m = await channel.messages.fetchMultiple({
+          limit: 100,
+        });
+        pushMessages($SelectedChannel, m);
+      }
+      if (channel.checkUnread(testMuted($NotifSettings))) channel.ack();
     }
-    if (channel.isUnread(testMuted($NotifSettings))) channel.ack(undefined, true);
   }
 
   let isUnread = false;
@@ -38,7 +40,7 @@
   $: {
     $UnreadState;
     isSelected = $SelectedChannel?.id == channel.id;
-    isUnread = !!channel.isUnread(testMuted($NotifSettings));
+    isUnread = channel.isTextBased() && !!channel.checkUnread(testMuted($NotifSettings));
   }
 
   function contextmenu(e: MouseEvent) {
@@ -58,10 +60,10 @@
   on:click={switchTo}
   on:contextmenu={contextmenu}
 >
-  {#if channel.icon || channel.channel_type == "DirectMessage"}
+  {#if channel.icon || channel.isDM()}
     <img
       src={proxyURL(
-        channel.channel_type == "DirectMessage"
+        channel.isDM()
           ? channel.recipient?.generateAvatarURL({
               max_side: 64,
             })
@@ -72,21 +74,18 @@
       )}
       width="20"
       height="20"
-      class="object-cover aspect-square {channel.channel_type == 'Group' ||
-      channel.channel_type == 'DirectMessage'
-        ? 'rounded-full'
-        : ''}"
+      class="object-cover aspect-square {channel.isDMBased() ? 'rounded-full' : ''}"
       alt=""
     />
-  {:else if channel.channel_type == "Group"}
+  {:else if channel.isGroupDM()}
     <Users size={20} />
-  {:else if channel.channel_type == "TextChannel"}
+  {:else if channel.isText()}
     <Hash size={20} />
-  {:else if channel.channel_type == "VoiceChannel"}
+  {:else if channel.isVoice()}
     <Volume size={20} />
   {/if}
   <span class="ml-1">
-    {channel.channel_type == "DirectMessage" ? UserDetails(channel.recipient).name : channel.name}
+    {channel.isDM() ? UserDetails(channel.recipient).name : channel.name}
   </span>
   <div
     class="absolute top-0 left-0 w-full h-full rounded"

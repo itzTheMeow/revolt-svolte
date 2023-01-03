@@ -51,7 +51,7 @@
     </div>
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
       {#each $SelectedServer.orderedChannels as category}
-        {#if $SelectedServer.orderedChannels.indexOf(category) && category.title !== "Default"}
+        {#if $SelectedServer.orderedChannels.indexOf(category) && category.id !== "default"}
           <div
             class="text-base text-primary ml-2 mt-0.5 {$CollapsedCategories.includes(category.id)
               ? 'mb-1'
@@ -68,7 +68,7 @@
             {:else}
               <ChevronDown size={16} />
             {/if}
-            {category.title}
+            {category.name}
           </div>
         {/if}
         {#if !$CollapsedCategories.includes(category.id)}
@@ -80,9 +80,10 @@
     </div>
   {:else}
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
-      {#each [...client.channels.values()]
-        .filter((c) => c.channel_type == "DirectMessage" || c.channel_type == "Group")
-        .sort( (c1, c2) => ((c1.last_messageID || "") < (c2.last_messageID || "") ? 1 : -1) ) as channel}
+      {#each client.channels
+        .items()
+        .filter((c) => c.isDMBased())
+        .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel}
         <ChannelItem {channel} />
       {/each}
     </div>

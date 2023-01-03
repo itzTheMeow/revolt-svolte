@@ -2,11 +2,11 @@
   import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
 
   import { client } from "Client";
-  import { RevoltEmojiDictionary, unicodeEmojiURL } from "revolt-toolset/dist/es6/emojis";
+  import { RevoltEmojiDictionary, unicodeEmojiURL } from "revolt-toolset";
   import { SelectedServer } from "State";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
-  import { getServerMember, MemberDetails, MemberOrUserDetails, proxyURL, UserColor } from "utils";
+  import { MemberDetails, MemberOrUserDetails, proxyURL, UserColor } from "utils";
 
   type Child =
     | {
@@ -119,7 +119,7 @@
                 break;
               }
               case "mention":
-                const member = getServerMember($SelectedServer, node.properties.match),
+                const member = $SelectedServer?.members.get(node.properties.match),
                   details = MemberDetails(member);
                 node.children.push({
                   type: "element",

@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import { RevoltEmojiDictionary, RE_MENTIONS } from "revolt-toolset";
+import { RevoltEmojiDictionary } from "revolt-toolset";
 import { unified, type Plugin } from "unified";
 import { client } from "../Client";
 import createComponent from "./createComponent";
@@ -26,6 +26,7 @@ export const DENY_TAGS = [
   "style",
 ];
 
+export const RE_MENTIONS = /<@([A-z0-9]{26})>/g;
 export const CUSTOM_EMOJI_REGEX = /^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/;
 export const MarkdownRenderer = (plugin?: Plugin) => {
   const ren = unified()
