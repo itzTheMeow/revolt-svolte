@@ -2,7 +2,6 @@
   /* Shamelessly 'inspired' from https://www.w3schools.com/howto/howto_js_image_magnifier_glass.asp */
 
   import byteSize from "byte-size";
-  import { client } from "Client";
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
   import { Theme } from "Theme";
@@ -27,7 +26,7 @@
     glassH = 0;
   $: {
     if ($imagePreview) {
-      imageURL = proxyURL(client.generateFileURL($imagePreview), "image");
+      imageURL = proxyURL($imagePreview.generateURL(), "image");
       glassW = glass?.offsetWidth / 2;
       glassH = glass?.offsetHeight / 2;
     }
@@ -62,7 +61,7 @@
         <img
           bind:this={image}
           src={imageURL}
-          alt={$imagePreview.filename}
+          alt={$imagePreview.name}
           class="max-w-[90vw] max-h-[85vh] {isMagnifying
             ? 'brightness-75 cursor-none'
             : 'cursor-zoom-in'}"
@@ -99,23 +98,17 @@
         class="text-xs font-semibold flex items-center gap-1 mt-0.5"
         style:color={$Theme["tertiary-foreground"]}
       >
-        <div>{$imagePreview.filename}</div>
+        <div>{$imagePreview.name}</div>
         &bull;
         <div>{$imagePreview.metadata.width}x{$imagePreview.metadata.height}</div>
         &bull;
         <div>{byteSize($imagePreview.size).toString().toUpperCase()}</div>
         &bull;
-        <a class="hover:underline" href={client.generateFileURL($imagePreview)} target="_blank">
+        <a class="hover:underline" href={$imagePreview.generateURL()} target="_blank">
           Open Original
         </a>
         &bull;
-        <a
-          class="hover:underline"
-          href={client
-            .generateFileURL($imagePreview)
-            ?.replace("attachments", "attachments/download")}
-          target="_blank"
-        >
+        <a class="hover:underline" href={$imagePreview.generateDownloadURL()} target="_blank">
           Download
         </a>
       </div>

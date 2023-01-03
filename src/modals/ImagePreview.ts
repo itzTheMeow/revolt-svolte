@@ -1,4 +1,4 @@
-import type { File } from "revolt-api";
+import type { Attachment } from "revolt-toolset";
 import { writable } from "svelte/store";
 
-export const imagePreview = writable<File | null>(null);
+export const imagePreview = writable<Attachment | null>(null);

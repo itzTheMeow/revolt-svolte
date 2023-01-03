@@ -1,7 +1,6 @@
 <script lang="ts">
   import byteSize from "byte-size";
-  import { client } from "Client";
-  import type { File } from "revolt-api";
+  import type { Attachment } from "revolt-toolset";
   import { fullscreenElement, MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { slide } from "svelte/transition";
@@ -20,7 +19,7 @@
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
 
-  export let src: File;
+  export let src: Attachment;
   export let style = "";
 
   let hasFocus = false,
@@ -134,7 +133,7 @@
 >
   <!-- svelte-ignore a11y-media-has-caption -->
   <video
-    src={proxyURL(client.generateFileURL(src), "any")}
+    src={proxyURL(src.generateURL(), "any")}
     bind:this={video}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}
@@ -152,14 +151,14 @@
         style:background="linear-gradient(0deg, transparent, rgba(0,0,0,0.9))"
         transition:slide|local={{ duration: 150 }}
       >
-        <div>{src.filename}</div>
+        <div>{src.name}</div>
         <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
           <div class="text-xs">
             {byteSize(src.size).toString().toUpperCase()}
           </div>
           <a
             class="cursor-pointer hover:brightness-150"
-            href={client.generateFileURL(src)?.replace("attachments", "attachments/download")}
+            href={src.generateDownloadURL()}
             target="_blank"
           >
             <Download size={20} />

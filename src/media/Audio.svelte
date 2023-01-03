@@ -1,7 +1,7 @@
 <script lang="ts">
   import byteSize from "byte-size";
-  import { client } from "Client";
-  import type { File } from "revolt-api";
+  import type { Attachment } from "revolt-toolset";
+  import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import {
     Download,
@@ -14,11 +14,10 @@
     Volume3,
   } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { MobileLayout } from "State";
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
 
-  export let src: File;
+  export let src: Attachment;
   export let style = "";
 
   let hasFocus = false,
@@ -101,7 +100,7 @@
 >
   <audio
     class="hidden"
-    src={proxyURL(client.generateFileURL(src), "any")}
+    src={proxyURL(src.generateURL(), "any")}
     bind:this={audio}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}
@@ -114,14 +113,14 @@
   />
   <div class="flex items-center gap-1.5 font-semibold">
     <div class="-mr-0.5"><FileMusic size={18} /></div>
-    <div>{src.filename}</div>
+    <div>{src.name}</div>
     <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
       <div class="text-xs">
         {byteSize(src.size).toString().toUpperCase()}
       </div>
       <a
         class="cursor-pointer hover:brightness-150"
-        href={client.generateFileURL(src)?.replace("attachments", "attachments/download")}
+        href={src.generateDownloadURL()}
         target="_blank"
         data-clickable
       >
@@ -194,7 +193,7 @@
             isMuted = true;
           }
         }}
-        data-clickable  
+        data-clickable
       >
         {#if volume > 0.5}
           <Volume size={20} />
@@ -206,7 +205,7 @@
       </div>
       {#if !$MobileLayout}
         <Slider max={1} step={0.1} bind:value={volume} className="w-16" />
-      {/if} 
+      {/if}
     </div>
   </div>
 </div>

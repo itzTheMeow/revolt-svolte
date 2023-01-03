@@ -2,13 +2,13 @@
   import { CMState } from "contextmenu/ContextMenuState";
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
-  import { Member, type API } from "revolt-toolset";
+  import { Member, Role } from "revolt-toolset";
   import { AppWidth } from "State";
   import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
 
-  export let item: (API.Role & { count: number }) | Member;
+  export let item: [Role, number] | Member;
   let BarItem: HTMLDivElement;
 
   function handleClick(e: MouseEvent) {
@@ -36,7 +36,7 @@
       class="absolute top-0 left-0 w-full h-full opacity-20"
       style:background={MemberDetails(item).color || "currentColor"}
       style:display={$CMState?.type == "member" &&
-      $CMState.member.id.user == item.user?.id &&
+      $CMState.member.id == item.user?.id &&
       $CMState.bar
         ? "block"
         : "var(--d)"}
@@ -74,18 +74,18 @@
           {#if item.user?.bot}
             <UserTag text="BOT" />
           {/if}
-          {#if item.id.user == item.server?.owner}
+          {#if item.id == item.server?.ownerID}
             <div>
               <Crown size={16} color="gold" />
             </div>
           {/if}
         </div>
-        {#if item.user?.status?.text && UserDetails(item.user).online}
+        {#if item.user?.status && UserDetails(item.user).online}
           <div
             class="text-xs w-full overflow-hidden whitespace-nowrap overflow-ellipsis"
             style:color={$Theme["tertiary-foreground"]}
           >
-            {item.user.status.text}
+            {item.user.status}
           </div>
         {/if}
       </div>
@@ -94,8 +94,8 @@
 {:else}
   <div
     class="block mb-0.5 px-1 font-bold overflow-hidden whitespace-nowrap overflow-ellipsis"
-    style={UserColor(item.colour || "inherit")}
+    style={UserColor(item[0].color || "inherit")}
   >
-    {item.name}{item.count > 1 ? ` - ${item.count.toLocaleString()}` : ""}
+    {item[0].name}{item[1] > 1 ? ` - ${item[1].toLocaleString()}` : ""}
   </div>
 {/if}
