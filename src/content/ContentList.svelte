@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     AppWidth,
+    HomeChannel as Home,
     MobileLayout,
     PaneLeft,
     PaneState,
@@ -10,6 +11,7 @@
   } from "State";
   import { onMount } from "svelte";
   import { Theme } from "Theme";
+  import HomeChannel from "./HomeChannel.svelte";
   import TextChannel from "./TextChannel.svelte";
   import VoiceChannel from "./VoiceChannel.svelte";
 
@@ -36,6 +38,8 @@
       <TextChannel channel={$SelectedChannel} />
     {:else if $SelectedChannel.isVoice()}
       <VoiceChannel channel={$SelectedChannel} />
+    {:else if $SelectedChannel.id == Home.id}
+      <HomeChannel />
     {/if}
   {:else}
     Select a channel!

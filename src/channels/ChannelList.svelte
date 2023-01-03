@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import { CollapsedCategories, SelectedServer } from "State";
+  import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { ChevronDown, ChevronRight } from "tabler-icons-svelte";
   import { Theme } from "Theme";
@@ -80,6 +80,7 @@
     </div>
   {:else}
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
+      <ChannelItem channel={HomeChannel} />
       <ChannelItem channel={client.channels.find((c) => c.isSavedMessages())} />
       {#each client.channels
         .filter((c) => c.isDMBased())

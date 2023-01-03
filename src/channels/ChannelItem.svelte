@@ -11,7 +11,7 @@
     selectBottom,
     SelectedChannel,
   } from "State";
-  import { Copy, Hash, Notebook, Users, Volume } from "tabler-icons-svelte";
+  import { Copy, Hash, Home, Notebook, Users, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { copyText, proxyURL, testMuted, UserDetails } from "utils";
 
@@ -77,6 +77,8 @@
     <Volume size={20} />
   {:else if channel.isSavedMessages()}
     <Notebook size={20} />
+  {:else}
+    <Home size={20} />
   {/if}
   <span class="ml-1">
     {channel.isDM() ? UserDetails(channel.recipient).name : channel.name}

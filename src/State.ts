@@ -1,5 +1,5 @@
 import { client } from "Client";
-import type { AutocompleteResult, BaseMessage, Channel, Server } from "revolt-toolset";
+import { Channel, type AutocompleteResult, type BaseMessage, type Server } from "revolt-toolset";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";
 
@@ -13,6 +13,12 @@ export const SelectionState: {
 if (!SelectionState.map) SelectionState.map = {};
 
 export const fetchedMembers = new Set<string>();
+export const HomeChannel = new Channel(client, {
+  _id: "0",
+  channel_type: <any>"Home",
+  name: "Home",
+  server: "",
+});
 
 // super hacky but whatever
 let went = 3;
@@ -28,7 +34,7 @@ SelectedServer.subscribe((s) => {
     if (channel) SelectedChannel.set(channel);
     else if (s)
       SelectedChannel.set(s.orderedChannels.find((c) => c.channels.length)?.channels[0] || null);
-    else SelectedChannel.set(null);
+    else SelectedChannel.set(s ? null : HomeChannel);
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
 
