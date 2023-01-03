@@ -51,7 +51,7 @@
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "revolt-toolset": "^1.0.12",
+    "revolt-toolset": "^1.0.13",
     "rimraf": "^3.0.2",
     "sharp": "^0.31.1",
     "svelte": "^3.49.0",
