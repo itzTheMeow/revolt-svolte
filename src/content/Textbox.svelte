@@ -1,8 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
-  import { parseAutocomplete, uploadAttachment, type AutocompleteTabResult } from "revolt-toolset";
-  import { Emoji } from "revolt-toolset";
+  import { Emoji, parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset";
   import {
     autocomplete,
     MessageInputSelected,
@@ -81,13 +80,13 @@
     const attachments: string[] = [];
     for (const attachment of toUpload) {
       try {
-        const id = await uploadAttachment(attachment.name, attachment.data);
+        const id = await client.uploadAttachment(attachment.name, attachment.data);
         if (id) attachments.push(id);
       } catch (err) {
         console.error("no attachment", err);
       }
     }
-    const message = await channel.sendMessage({
+    const message = await channel.send({
       content,
       attachments: attachments.length ? attachments : null,
       replies,
@@ -160,7 +159,7 @@
       <AutocompleteItem
         icon={c.icon
           ? proxyURL(c.generateIconURL({ max_side: 64 }), "image")
-          : c.channel_type == "VoiceChannel"
+          : c.isVoice()
           ? Volume
           : Hash}
         name={c.name || ""}
@@ -171,7 +170,7 @@
       <AutocompleteItem
         icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
         name={e.name || ""}
-        detail={e.parent.type == "Server" ? client.servers.get(e.parent.id)?.name || "" : ""}
+        detail={e.parent?.name || ""}
         onclick={() => handleAutocompleteTab($autocomplete?.tab(e))}
       />
     {/each}

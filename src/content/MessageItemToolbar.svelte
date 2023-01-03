@@ -32,7 +32,7 @@
           text: "Are you sure you want to delete this message?",
           confirm: "Delete",
           red: true,
-          confirmed: async () => {
+          async confirmed() {
             await message.delete();
           },
         });

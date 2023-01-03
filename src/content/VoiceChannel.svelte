@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import type { Channel } from "revolt-toolset";
+  import type { VoiceChannel } from "revolt-toolset";
   import {
     Headphones,
     HeadphonesOff,
@@ -20,7 +20,7 @@
   $: isConnectedHere =
     voiceState.status == VoiceStatus.CONNECTED && voiceState.roomId == channel.id;
 
-  export let channel: Channel;
+  export let channel: VoiceChannel;
 </script>
 
 <div class="flex flex-col items-center justify-center w-full h-full">
