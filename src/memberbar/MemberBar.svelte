@@ -18,7 +18,6 @@
       const members = $SelectedServer.members.filter(
         (m) => !$SelectedChannel || $SelectedChannel.permissionsFor(m).has(Permissions.ViewChannel)
       );
-      console.log($SelectedServer.members);
       const offline = members.filter((m) => !UserDetails(m.user).online);
       members
         .filter((m) => m.hoistedRole && !offline.includes(m))
@@ -61,7 +60,7 @@
   bind:this={membar}
 >
   {#if $SelectedServer}
-    <VirtualList items={memberList} let:item>
+    <VirtualList items={memberList.map((i) => [[i[0], i[1].length], ...i[1]]).flat(1)} let:item>
       <MemberBarItem {item} />
     </VirtualList>
   {:else}
