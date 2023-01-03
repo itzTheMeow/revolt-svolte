@@ -3,7 +3,7 @@
   import Indicator from "extra/Indicator.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { tippy } from "svelte-tippy";
-  import { X } from "tabler-icons-svelte";
+  import { Crown, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
 
@@ -47,45 +47,54 @@
   </div>
   <div class="pt-6 p-5">
     <div
-      class="font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+      class="font-semibold text-xl flex items-center gap-0.5"
       style={UserColor(MemberDetails(member).color)}
-      use:tippy={{
-        content: "@" + member.user.username,
-      }}
     >
-      {MemberDetails(member).name}
+      {#if member.server.ownerID == member.id}
+        <div use:tippy={{ content: "Server Owner" }}><Crown color="gold" /></div>
+      {/if}
+      <div
+        class="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis"
+        use:tippy={{
+          content: "@" + member.user.username,
+        }}
+      >
+        {MemberDetails(member).name}
+      </div>
     </div>
-    <Header className="mt-2 mb-1">Roles</Header>
-    <div class="flex gap-1 flex-wrap">
-      {#each member.roles.reverse() as role}
-        <div
-          class="rounded overflow-hidden relative w-fit px-1.5 py-0.5 flex items-center gap-1 cursor-pointer [--hov:none] hover:[--hov:flex]"
-          on:click={() => {
-            if (canRoleManage) member.removeRole(role);
-          }}
-          on:contextmenu={() => {
-            //TODO: copy id
-          }}
-        >
+    {#if member.roles.length}
+      <Header className="mt-2 mb-1">Roles</Header>
+      <div class="flex gap-1 flex-wrap">
+        {#each member.roles.reverse() as role}
           <div
-            class="w-full h-full absolute top-0 left-0 opacity-20"
-            style:background={role.color || "currentColor"}
-          />
-          <div
-            class="w-2.5 h-2.5 rounded-full flex items-center"
-            style:background={role.color || "currentColor"}
-          />
-          <div class="text-xs relative">{role.name}</div>
-          {#if canRoleManage}
+            class="rounded overflow-hidden relative w-fit px-1.5 py-0.5 flex items-center gap-1 cursor-pointer [--hov:none] hover:[--hov:flex]"
+            on:click={() => {
+              if (canRoleManage) member.removeRole(role);
+            }}
+            on:contextmenu={() => {
+              //TODO: copy id
+            }}
+          >
             <div
-              class="w-full h-full absolute top-0 left-0 items-center justify-center text-xs [display:var(--hov)]"
-              style:background-color={$Theme["error"]}
-            >
-              <X size={14} strokeWidth={3} />
-            </div>
-          {/if}
-        </div>
-      {/each}
-    </div>
+              class="w-full h-full absolute top-0 left-0 opacity-20"
+              style:background={role.color || "currentColor"}
+            />
+            <div
+              class="w-2.5 h-2.5 rounded-full flex items-center"
+              style:background={role.color || "currentColor"}
+            />
+            <div class="text-xs relative">{role.name}</div>
+            {#if canRoleManage}
+              <div
+                class="w-full h-full absolute top-0 left-0 items-center justify-center text-xs [display:var(--hov)]"
+                style:background-color={$Theme["error"]}
+              >
+                <X size={14} strokeWidth={3} />
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </div>
+    {/if}
   </div>
 </div>
