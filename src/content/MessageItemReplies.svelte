@@ -42,7 +42,9 @@
           alt=""
         />
         <div style="color:{reply ? MessageDetails(reply).color || 'inherit' : 'inherit'};">
-          {reply ? MessageDetails(reply).name : "Unknown User"}
+          {message.mentionIDs.includes(reply.authorID) ? "@" : ""}{reply
+            ? MessageDetails(reply).name
+            : "Unknown User"}
         </div>
         <div class="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
           {#if !reply}
