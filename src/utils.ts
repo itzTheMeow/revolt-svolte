@@ -2,6 +2,11 @@ import { DateTime, Duration } from "luxon";
 import type { ThemeSettings } from "revolt-toolset";
 import { Channel, Member, Server, User, type Message } from "revolt-toolset";
 
+export const BRAND_NAME =
+  document.querySelector<HTMLMetaElement>(`meta[name="brand-name"]`)?.content || "Client";
+export const COMMIT_HASH =
+  document.querySelector<HTMLMetaElement>(`meta[name="git-hash"]`)?.content || "UNKNOWN";
+
 export function escapeHTML(txt: string) {
   return txt
     .replace(/&/g, "&amp;")

@@ -9,3 +9,4 @@ Theme.subscribe((v) => {
   document.body.style.setProperty("--accent", v["accent"] || DEFAULT_THEME.accent!);
   document.body.style.color = v["foreground"] || DEFAULT_THEME.foreground!;
 });
+export const BRAND_COLOR = "#ff4654";

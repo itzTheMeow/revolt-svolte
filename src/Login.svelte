@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Client } from "revolt-toolset";
+  import { BRAND_NAME } from "utils";
 
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;
@@ -20,7 +21,7 @@
       window.location.reload();
     });
     try {
-      await client.authenticate({ email, password, friendly_name: "Svolte" });
+      await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
     } catch (err) {
       errtxt.innerText = `Failed to log in: ${err}`;
       signinBtn.classList.remove("loading");

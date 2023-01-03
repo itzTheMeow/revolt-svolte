@@ -1,10 +1,12 @@
 <script lang="ts">
   import { client } from "Client";
+  import UserTag from "extra/UserTag.svelte";
   import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
-  import { ChevronDown, ChevronRight } from "tabler-icons-svelte";
-  import { Theme } from "Theme";
-  import { proxyURL } from "utils";
+  import { tippy } from "svelte-tippy";
+  import { ChevronDown, ChevronRight, Lock, LockOpen } from "tabler-icons-svelte";
+  import { BRAND_COLOR, Theme } from "Theme";
+  import { BRAND_NAME, COMMIT_HASH, proxyURL } from "utils";
   import ChannelItem from "./ChannelItem.svelte";
 
   let scrolledTop = true,
@@ -79,7 +81,39 @@
       {/each}
     </div>
   {:else}
-    <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
+    <div class="flex gap-1.5 px-2 py-1.5 items-center">
+      <img class="w-8 h-8" src="./logo.png" alt="" />
+      <div class="text-xl font-bold" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
+      <div class="flex items-center gap-0.5 ml-auto self-start">
+        <div
+          use:tippy={{
+            content:
+              window.location.protocol == "https:"
+                ? "Secure (HTTPS)"
+                : "This window is not in a secure HTTPS context!",
+            placement: "bottom",
+          }}
+        >
+          {#if window.location.protocol == "https:"}
+            <Lock size="18" color={$Theme["status-online"]} />
+          {:else}
+            <LockOpen size="18" color={$Theme["status-away"]} />
+          {/if}
+        </div>
+        <a
+          href="https://github.com/itzTheMeow/revolt-svolte/tree/{COMMIT_HASH}"
+          target="_blank"
+          class="brightness-90"
+          use:tippy={{
+            content: "GitHub",
+            placement: "bottom",
+          }}
+        >
+          <UserTag text={COMMIT_HASH} color={BRAND_COLOR} />
+        </a>
+      </div>
+    </div>
+    <div class="pt-0.5 pb-1 overflow-y-auto flex-1" bind:this={scroller}>
       <ChannelItem channel={HomeChannel} />
       <ChannelItem channel={client.channels.find((c) => c.isSavedMessages())} />
       {#each client.channels

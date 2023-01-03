@@ -37,7 +37,7 @@
   import { afterUpdate, beforeUpdate, onMount } from "svelte";
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
-  import { handleUpdates } from "utils";
+  import { BRAND_NAME, handleUpdates } from "utils";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -262,7 +262,7 @@
     style="height:{Native.titlebarHeight}px;border-bottom:1px solid rgba(0,0,0,0.2);"
   >
     <div class="flex-1" style="-webkit-app-region:drag;">
-      <div class="font-semibold">Svolte</div>
+      <div class="font-semibold">{BRAND_NAME}</div>
     </div>
     <div
       class="cursor-pointer hover:brightness-75 bg-inherit active:brightness-50 rounded-none h-full flex items-center justify-center"

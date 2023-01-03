@@ -1,13 +1,16 @@
-import fs from "fs";
-import esbuild from "esbuild";
-import esbuildSvelte from "esbuild-svelte";
-import sveltePreprocess from "svelte-preprocess";
-import postCssPlugin from "esbuild-style-plugin";
-import useTailwind from "tailwindcss";
 import useAutoprefixer from "autoprefixer";
+import { execSync } from "child_process";
+import esbuild from "esbuild";
+import postCssPlugin from "esbuild-style-plugin";
+import esbuildSvelte from "esbuild-svelte";
+import fs from "fs";
+import sveltePreprocess from "svelte-preprocess";
+import useTailwind from "tailwindcss";
+import config from "./config";
 import { init } from "./server";
 
 console.log("Building client...");
+const hash = execSync("git rev-parse --short HEAD").toString().trim();
 esbuild
   .build({
     entryPoints: [`./src/index.ts`],
@@ -35,7 +38,11 @@ esbuild
     loader: { ".png": "file", ".ttf": "file", ".woff": "file", ".woff2": "file" },
   })
   .then(() => {
-    fs.copyFileSync("src/index.html", "dist/index.html");
+    const html = fs.readFileSync("src/index.html").toString();
+    fs.writeFileSync(
+      "dist/index.html",
+      html.replace("%CommitHash%", hash).replace(/%BrandName%/g, config.brandName)
+    );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
     init();
