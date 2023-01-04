@@ -71,7 +71,7 @@
   {/if}
 
   <div
-    class="flex items-center flex-1 flex-col overflow-y-auto pt-1 pb-2 gap-2.5"
+    class="flex items-center flex-1 flex-col overflow-y-auto pt-1 pb-2 gap-2.5 noscr"
     style:scrollbar-width="none"
     style:--scroll-width="0px"
     bind:this={list}
@@ -89,3 +89,9 @@
     </ServerEntry>
   </div>
 </div>
+
+<style>
+  .noscr::-webkit-scrollbar {
+    display: none;
+  }
+</style>
