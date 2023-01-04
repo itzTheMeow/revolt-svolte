@@ -56,7 +56,11 @@
     }}
     out:scale|local={{ duration: 100 }}
   >
-    <div class="h-fit w-fit" bind:this={preview} in:scale|local={{ duration: 300, start: 0.4 }}>
+    <div
+      class="flex flex-col items-center w-fit h-fit"
+      bind:this={preview}
+      in:scale|local={{ duration: 300, start: 0.4 }}
+    >
       <div class="w-fit h-fit relative overflow-hidden">
         <img
           bind:this={image}
