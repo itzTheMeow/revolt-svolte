@@ -6,6 +6,7 @@
   import ContentList from "content/ContentList.svelte";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
   import { CMState } from "contextmenu/ContextMenuState";
+  import MemberContextMenu from "contextmenu/MemberContextMenu.svelte";
   import Loader from "Loader.svelte";
   import MemberBar from "memberbar/MemberBar.svelte";
   import { imagePreview } from "modals/ImagePreview";
@@ -38,7 +39,7 @@
   import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { BRAND_NAME, handleUpdates } from "utils";
-  import { showMemberContext } from "./contextmenu/ContextMenus";
+  import { MemberMenu, showMemberContext } from "./contextmenu/MemberContextMenu";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -128,6 +129,7 @@
   window.addEventListener("keydown", async (e) => {
     if (e.key == "Escape") {
       if ($CMState) CMState.set(null);
+      else if ($MemberMenu) MemberMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
     }
@@ -307,5 +309,6 @@
 
   <ImagePreview />
   <ModalRenderer />
+  <MemberContextMenu />
   <ContextMenu />
 </div>

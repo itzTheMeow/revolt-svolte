@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CMState } from "contextmenu/ContextMenuState";
+  import { MemberMenu } from "contextmenu/MemberContextMenu";
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
   import { Member, Role } from "revolt-toolset";
@@ -16,8 +16,7 @@
     if (!(item instanceof Member)) return;
     const rect = BarItem.getBoundingClientRect(),
       isTop = rect.top + rect.height / 2 <= $AppHeight / 2;
-    CMState.set({
-      type: "member",
+    MemberMenu.set({
       member: item,
       pos: {
         [isTop ? "top" : "bottom"]: isTop ? rect.top + 2 : $AppHeight - rect.bottom + 2,
@@ -38,9 +37,7 @@
     <div
       class="absolute top-0 left-0 w-full h-full opacity-20"
       style:background={MemberDetails(item).color || "currentColor"}
-      style:display={$CMState?.type == "member" &&
-      $CMState.member.id == item.user?.id &&
-      $CMState.bar
+      style:display={$MemberMenu && $MemberMenu.member.id == item.user?.id && $MemberMenu.bar
         ? "block"
         : "var(--d)"}
     />

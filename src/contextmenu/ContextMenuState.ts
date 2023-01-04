@@ -1,4 +1,3 @@
-import type { Member } from "revolt-toolset";
 import { writable } from "svelte/store";
 
 export interface ContextMenuStateOption {
@@ -7,7 +6,7 @@ export interface ContextMenuStateOption {
   icon?: any;
   danger?: boolean;
 }
-export interface BaseContextMenuState {
+export interface ContextMenuState {
   pos: {
     top?: number;
     left?: number;
@@ -16,16 +15,7 @@ export interface BaseContextMenuState {
   };
   time?: number;
   target?: HTMLElement | EventTarget | null;
+  options: ContextMenuStateOption[];
 }
-export type ContextMenuState =
-  | (BaseContextMenuState & {
-      type: "options";
-      options: ContextMenuStateOption[];
-    })
-  | (BaseContextMenuState & {
-      type: "member";
-      member: Member;
-      bar?: true;
-    });
 
 export const CMState = writable<ContextMenuState | null>(null);

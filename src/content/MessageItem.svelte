@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import { showMemberContext } from "contextmenu/ContextMenus";
+  import { showMemberContext } from "contextmenu/MemberContextMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage } from "revolt-toolset";

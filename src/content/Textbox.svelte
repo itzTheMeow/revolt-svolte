@@ -105,7 +105,6 @@
     }
 
     CMState.set({
-      type: "options",
       pos: {
         left: UploaderButton.getBoundingClientRect().left + 4,
         bottom: UploaderButton.getBoundingClientRect().height + 6,
