@@ -9,7 +9,7 @@
   import { imagePreview } from "./ImagePreview";
 
   const zoomSettings = {
-    default: 2.5,
+    default: $MobileLayout ? 3.5 : 2.5,
     max: 7,
     min: 1.5,
     step: 0.5,
@@ -61,7 +61,7 @@
       bind:this={preview}
       in:scale|local={{ duration: 300, start: 0.4 }}
     >
-      <div class="w-fit h-fit relative overflow-hidden">
+      <div class="w-fit h-fit relative">
         <img
           bind:this={image}
           src={imageURL}
