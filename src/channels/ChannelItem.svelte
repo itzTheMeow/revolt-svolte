@@ -28,11 +28,12 @@
   }
 
   let isUnread = false;
-  let numUnreads = 0;
+  let numMentions = 0;
   $: {
     $UnreadState;
     isSelected = $SelectedChannel?.id == channel.id;
-    isUnread = channel.isTextBased() && !!channel.checkUnread(testMuted($NotifSettings));
+    numMentions = channel.getMentions(testMuted($NotifSettings)).length;
+    isUnread = !!channel.checkUnread(testMuted($NotifSettings)) || !!numMentions;
   }
 
   function contextmenu(e: MouseEvent) {
@@ -85,7 +86,9 @@
         {isSelected}
         pos="topLeft"
         bg={$Theme["secondary-background"]}
-        text={numUnreads >= 100 ? "99+" : String(numUnreads || "")}
+        color={numMentions ? $Theme["error"] : undefined}
+        text={numMentions >= 100 ? "99+" : String(numMentions || "")}
+        textColor="inherit"
       />
     {/if}
   </div>

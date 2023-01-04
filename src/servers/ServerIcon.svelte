@@ -11,11 +11,12 @@
   let isSelected = false;
 
   let isUnread = false;
-  let numUnreads = 0;
+  let numMentions = 0;
   $: {
     $UnreadState;
     isSelected = $SelectedServer?.id == server.id;
-    isUnread = !!server.isUnread(testMuted($NotifSettings));
+    numMentions = server.getMentions(testMuted($NotifSettings)).length;
+    isUnread = !!server.isUnread(testMuted($NotifSettings)) || !!numMentions;
   }
 </script>
 
@@ -43,14 +44,16 @@
     </div>
   {/if}
   <div
-    class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20 !overflow-visible"
+    class="absolute top-0 left-0 w-12 h-12 rounded-full hover:bg-black hover:bg-opacity-20 hover:brightness-[.8] !overflow-visible"
     style={isSelected ? `border: 2px solid ${$Theme["accent"]};` : ""}
   >
     {#if isUnread}
       <Indicator
         pos="bottomRight"
         bg={$Theme["background"]}
-        text={numUnreads >= 100 ? "99+" : String(numUnreads || "")}
+        color={numMentions ? $Theme["error"] : undefined}
+        text={numMentions >= 100 ? "99+" : String(numMentions || "")}
+        textColor="inherit"
         {isSelected}
       />
     {/if}

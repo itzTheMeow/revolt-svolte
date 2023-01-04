@@ -6,6 +6,7 @@
   export let bg: string | undefined;
   export let color: string = $Theme["secondary-foreground"] || "";
   export let text = "";
+  export let textColor = "";
 
   export let pos: "topLeft" | "bottomRight";
 </script>
@@ -24,7 +25,7 @@
   })()} flex items-center justify-center text-xs px-1 {!className ? 'h-5' : ''} rounded-full"
   style:background-color={color}
   style:border="3px solid {bg}"
-  style:color={bg}
+  style:color={textColor || bg}
   style:min-width="1.25rem"
 >
   {text || ""}
