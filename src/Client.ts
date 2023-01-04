@@ -25,9 +25,7 @@ client.once("ready", async () => {
   ClientReady.set(true);
 });
 
-if (client.unreads) {
-  client.unreads.onUpdate(() => {
-    UnreadState.set(Date.now() * Math.random());
-  });
-  setInterval(() => client.unreads.sync(), 60000);
-}
+client.unreads.onUpdate(() => {
+  UnreadState.set(Date.now() * Math.random());
+});
+setInterval(() => client.unreads.sync(), 60000);
