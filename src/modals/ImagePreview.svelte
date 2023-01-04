@@ -33,11 +33,11 @@
     if (!mouseDown) zoom = zoomSettings.default;
   }
 
-  function calculatePos(e: MouseEvent) {
+  function calculatePos(e: MouseEvent | TouchEvent) {
     if (!image) return;
     const rect = image.getBoundingClientRect();
-    let x = e.pageX - rect.left,
-      y = e.pageY - rect.top;
+    let x = (e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX) - rect.left,
+      y = (e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY) - rect.top;
     if (x > image.width - glassW / zoom) x = image.width - glassW / zoom;
     if (x < glassW / zoom) x = glassW / zoom;
     if (y > image.height - glassH / zoom) y = image.height - glassH / zoom;
@@ -70,10 +70,13 @@
             ? 'brightness-75 cursor-none'
             : 'cursor-zoom-in'}"
           on:mousedown={(e) =>
-            e.button == 0 && !$MobileLayout && (mouseDown = isMagnifying = true) && calculatePos(e)}
-          on:mouseenter={(e) => !$MobileLayout && (isMagnifying = mouseDown) && calculatePos(e)}
-          on:mouseleave={() => !$MobileLayout && (isMagnifying = false)}
+            e.button == 0 && (mouseDown = isMagnifying = true) && calculatePos(e)}
+          on:mouseenter={(e) => (isMagnifying = mouseDown) && calculatePos(e)}
+          on:mouseleave={() => (isMagnifying = false)}
           on:mousemove={calculatePos}
+          on:touchstart|preventDefault={(e) => (mouseDown = isMagnifying = true) && calculatePos(e)}
+          on:touchend|preventDefault={() => (isMagnifying = false)}
+          on:touchmove|preventDefault={calculatePos}
           on:wheel={(e) => {
             if (isMagnifying) {
               zoom = Math.max(
@@ -85,7 +88,9 @@
         />
         {#if isMagnifying}
           <div
-            class="absolute w-28 h-28 rounded-full pointer-events-none bg-no-repeat"
+            class="absolute {$MobileLayout
+              ? 'w-56 h-56'
+              : 'w-28 h-28'} rounded-full pointer-events-none bg-no-repeat"
             style:border="2px solid {$Theme["accent"]}"
             style:left={magPos.x - glassW + "px"}
             style:top={magPos.y - glassH + "px"}
