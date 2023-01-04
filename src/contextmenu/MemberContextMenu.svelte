@@ -1,28 +1,17 @@
 <script lang="ts">
-  import Header from "extra/Header.svelte";
-  import Indicator from "extra/Indicator.svelte";
-  import { Permissions, type Member, type UserProfile } from "revolt-toolset";
-  import { tippy } from "svelte-tippy";
-  import { Crown, X } from "tabler-icons-svelte";
+  import TWEEN from "@tweenjs/tween.js";
+  import type { Member } from "revolt-toolset";
+  import { MobileLayout } from "State";
+  import { slide } from "svelte/transition";
   import { Theme } from "Theme";
-  import { clickoutside, MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
-  import { copyIDItem, showOptionContext } from "./ContextMenus";
+  import { clickoutside } from "utils";
   import { MemberMenu } from "./MemberContextMenu";
+  import MemberContextMenuInner from "./MemberContextMenuInner.svelte";
 
-  let member: Member,
-    profile: UserProfile,
-    fetched = "",
-    canRoleManage = false;
+  let member: Member, MobileMemberInner: HTMLDivElement;
 
   $: {
     member = $MemberMenu?.member!;
-    if (member) {
-      if (fetched !== member.id) {
-        fetched = member.id;
-        member.user.fetchProfile().then((p) => (profile = p));
-      }
-      canRoleManage = !!member.server.me?.permissions.has(Permissions.ManageRole);
-    }
   }
   function handleClickOut(e: MouseEvent | TouchEvent) {
     if (
@@ -31,93 +20,96 @@
     )
       MemberMenu.set(null);
   }
+
+  let dragging = false,
+    pos = [-1, -1],
+    TotalHeight = 0;
+
+  function setOpacity(o: number) {
+    MobileMemberInner.parentElement!.style.setProperty("--tw-bg-opacity", String(o));
+  }
+  function handleTouchStart(e: TouchEvent) {
+    if (e.composedPath().includes(MobileMemberInner)) return;
+    pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+  }
+  function handleTouchMove(e: TouchEvent) {
+    if (pos[0] == -1 && pos[1] == -1) return;
+    const diff = e.changedTouches[0].clientY - pos[1];
+    if (Math.abs(diff) > 3) dragging = true;
+    if (dragging) {
+      const h = Math.max(0, Math.round(TotalHeight - diff));
+      MobileMemberInner.style.height = `${h}px`;
+      if (MobileMemberInner.offsetHeight == h) setOpacity((1 - diff / TotalHeight) * 0.5);
+    }
+  }
+  let going = false;
+  function handleTouchEnd(e: TouchEvent) {
+    if (e.composedPath().includes(MobileMemberInner)) return (pos = [-1, -1]);
+    e.preventDefault();
+    let isDone = false;
+    if (dragging) {
+      const diff = e.changedTouches[0].clientY - pos[1];
+      dragging = false;
+      setOpacity(0.5);
+      if (diff > TotalHeight / 3) isDone = true;
+    } else isDone = true;
+    new TWEEN.Tween({ h: MobileMemberInner.offsetHeight })
+      .to({ h: isDone ? 0 : TotalHeight }, 250)
+      .onUpdate(({ h }) => {
+        MobileMemberInner.style.height = MobileMemberInner.style.maxHeight = `${h}px`;
+      })
+      .onComplete(() => {
+        if (isDone) MemberMenu.set(null);
+        else MobileMemberInner.style.height = MobileMemberInner.style.maxHeight = "";
+      })
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .start();
+    pos = [-1, -1];
+  }
 </script>
 
 {#if member}
-  <div
-    class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit"
-    style={Object.entries($MemberMenu?.pos || {})
-      .map((e) => `${e[0]}:${e[1]}px`)
-      .join(";") + `;background-color:${$Theme["primary-background"]}`}
-    use:clickoutside={handleClickOut}
-  >
-    <div class="w-64">
-      <div
-        class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative"
-        style:background-image={profile?.background
-          ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
-          : ""}
-        style:background-color={MemberDetails(member).color || $Theme["secondary-background"]}
-      >
-        <div
-          class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6"
-          style:background-color={$Theme["primary-background"]}
-        >
-          <img
-            class="avatar rounded-full w-full h-full object-cover"
-            src={MemberDetails(member).avatar}
-            alt={MemberDetails(member).name}
-          />
-          <Indicator
-            pos="bottomRight"
-            color={$Theme[StatusColor(member.user)]}
-            bg={$Theme["primary-background"]}
-            className="h-6 w-6 -right-0.5 -bottom-0.5"
-          />
-        </div>
-      </div>
-      <div class="pt-6 p-5">
-        <div
-          class="font-semibold text-xl flex items-center gap-0.5"
-          style={UserColor(MemberDetails(member).color)}
-        >
-          {#if member.server.ownerID == member.id}
-            <div use:tippy={{ content: "Server Owner" }}><Crown color="gold" /></div>
-          {/if}
-          <div
-            class="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis"
-            use:tippy={{
-              content: "@" + member.user.username,
-            }}
-          >
-            {MemberDetails(member).name}
-          </div>
-        </div>
-        {#if member.roles.length}
-          <Header className="mt-2 mb-1">Roles</Header>
-          <div class="flex gap-1 flex-wrap">
-            {#each member.roles.reverse() as role}
-              <div
-                class="rounded overflow-hidden relative w-fit px-1.5 py-0.5 flex items-center gap-1 cursor-pointer [--hov:none] hover:[--hov:flex]"
-                on:click={() => {
-                  if (canRoleManage) member.removeRole(role);
-                }}
-                on:contextmenu={(e) => {
-                  showOptionContext(e, [copyIDItem(role)]);
-                }}
-              >
-                <div
-                  class="w-full h-full absolute top-0 left-0 opacity-20"
-                  style:background={role.color || "currentColor"}
-                />
-                <div
-                  class="w-2.5 h-2.5 rounded-full flex items-center"
-                  style:background={role.color || "currentColor"}
-                />
-                <div class="text-xs relative">{role.name}</div>
-                {#if canRoleManage}
-                  <div
-                    class="w-full h-full absolute top-0 left-0 items-center justify-center text-xs [display:var(--hov)]"
-                    style:background-color={$Theme["error"]}
-                  >
-                    <X size={14} strokeWidth={3} />
-                  </div>
-                {/if}
-              </div>
-            {/each}
-          </div>
-        {/if}
+  {#if !$MobileLayout}
+    <div
+      class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit"
+      style={Object.entries($MemberMenu?.pos || {})
+        .map((e) => `${e[0]}:${e[1]}px`)
+        .join(";") + `;background-color:${$Theme["primary-background"]}`}
+      use:clickoutside={handleClickOut}
+    >
+      <div class="w-64">
+        <MemberContextMenuInner {member} />
       </div>
     </div>
-  </div>
+  {:else}
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 flex flex-col"
+      style:transition={!dragging ? "background-color 250ms" : ""}
+      on:touchstart={handleTouchStart}
+      on:touchmove={handleTouchMove}
+      on:touchend={handleTouchEnd}
+    >
+      <div
+        class="mx-auto mt-auto mb-2 w-1/3 min-h-[4px] rounded-full bg-white {dragging
+          ? 'brightness-[.3]'
+          : 'brightness-75'} pointer-events-none"
+      />
+      <div
+        class="rounded-t-xl overflow-hidden shadow-sm shadow-black w-full {dragging
+          ? 'h-full max-h-[80%]'
+          : 'h-fit max-h-[50%]'} overflow-y-auto"
+        style:background-color={$Theme["primary-background"]}
+        bind:this={MobileMemberInner}
+        in:slide={{ duration: 250 }}
+        on:introstart={() => {
+          setOpacity(0.5);
+        }}
+        on:introend={() => {
+          TotalHeight = MobileMemberInner.offsetHeight;
+        }}
+      >
+        <MemberContextMenuInner {member} />
+      </div>
+    </div>
+  {/if}
 {/if}

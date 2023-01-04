@@ -185,6 +185,7 @@
       if (
         (document.activeElement?.tagName == "INPUT" && target.tagName == "INPUT") ||
         $imagePreview ||
+        $MemberMenu ||
         [...document.querySelectorAll("[data-slider]")].find((s) => s.contains(target)) ||
         (await ModalStack.getStack()).length
       )
