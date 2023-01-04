@@ -6,6 +6,7 @@
   import { Crown, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
+  import { copyIDItem, showOptionContext } from "./ContextMenus";
 
   export let member: Member;
   let profile: UserProfile,
@@ -72,8 +73,8 @@
             on:click={() => {
               if (canRoleManage) member.removeRole(role);
             }}
-            on:contextmenu={() => {
-              //TODO: copy id
+            on:contextmenu={(e) => {
+              showOptionContext(e, [copyIDItem(role)]);
             }}
           >
             <div

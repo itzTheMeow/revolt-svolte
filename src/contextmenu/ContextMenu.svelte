@@ -27,7 +27,7 @@
     use:clickoutside={handleClickOut}
   >
     {#if $CMState.type == "options"}
-      <ul class="menu {!$MobileLayout ? 'p-1' : ''}">
+      <ul class="menu {!$MobileLayout ? '!p-1' : ''}">
         {#each $CMState.options as opt}
           <li>
             <div
@@ -36,6 +36,7 @@
                 : ''}"
               on:click={(e) => handleClick(e, opt)}
               on:touchend={(e) => handleClick(e, opt)}
+              style:color={opt.danger ? $Theme["error"] : "inherit"}
             >
               {#if opt.icon}
                 <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />

@@ -5,6 +5,7 @@ export interface ContextMenuStateOption {
   name: string;
   clicked: () => any;
   icon?: any;
+  danger?: boolean;
 }
 export interface BaseContextMenuState {
   pos: {
