@@ -7,6 +7,7 @@ import { NotifSettings } from "./State";
 export const ClientReady = writable(false);
 export const client = new Client();
 export const UnreadState = writable(Date.now());
+export const UseMemberState = writable(Date.now());
 client.once("ready", async () => {
   try {
     const settings = await client.syncFetchSettings([]);
@@ -27,5 +28,8 @@ client.once("ready", async () => {
 
 client.unreads.onUpdate(() => {
   UnreadState.set(Date.now() * Math.random());
+});
+client.servers.onUpdate(() => {
+  UseMemberState.set(Date.now() * Math.random());
 });
 setInterval(() => client.unreads.sync(), 60000);

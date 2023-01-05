@@ -1,5 +1,6 @@
 <script lang="ts">
   import TWEEN from "@tweenjs/tween.js";
+  import { UseMemberState } from "Client";
   import type { Member } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { slide } from "svelte/transition";
@@ -53,7 +54,7 @@
       setOpacity(0.5);
       if (diff > TotalHeight / 3) isDone = true;
     } else isDone = true;
-    if(isDone) setOpacity(0);
+    if (isDone) setOpacity(0);
     new TWEEN.Tween({ h: MobileMemberInner.offsetHeight })
       .to({ h: isDone ? 0 : TotalHeight }, 250)
       .onUpdate(({ h }) => {
@@ -79,7 +80,9 @@
       use:clickoutside={handleClickOut}
     >
       <div class="w-64">
-        <MemberContextMenuInner {member} />
+        {#key $UseMemberState}
+          <MemberContextMenuInner {member} />
+        {/key}
       </div>
     </div>
   {:else}
@@ -109,7 +112,9 @@
           TotalHeight = MobileMemberInner.offsetHeight;
         }}
       >
-        <MemberContextMenuInner {member} />
+        {#key $UseMemberState}
+          <MemberContextMenuInner {member} />
+        {/key}
       </div>
     </div>
   {/if}
