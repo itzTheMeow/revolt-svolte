@@ -29,7 +29,7 @@
 </script>
 
 <div
-  class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative"
+  class="flex fixed items-center justify-center w-full left-0 top-0 -bottom-24 min-h-[6rem] bg-cover bg-center p-4 relative"
   style:background-image={profile?.background
     ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
     : ""}
