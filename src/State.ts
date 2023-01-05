@@ -1,3 +1,4 @@
+import { Tween } from "@tweenjs/tween.js";
 import { client } from "Client";
 import { Channel, type AutocompleteResult, type BaseMessage, type Server } from "revolt-toolset";
 import { writable } from "svelte/store";
@@ -145,20 +146,32 @@ export enum PaneStates {
 export const PaneState = writable<PaneStates>(PaneStates.LEFT),
   PaneLeft = writable<number>(0);
 PaneState.subscribe(updatePaneState);
-export function updatePaneState(state: PaneStates) {
-  switch (state) {
-    case PaneStates.LEFT:
-      PaneLeft.set(
-        document.getElementById("ChannelList")?.getBoundingClientRect().right || window.innerWidth
-      );
-      break;
-    case PaneStates.MIDDLE:
-      PaneLeft.set(0);
-      break;
-    case PaneStates.RIGHT:
-      PaneLeft.set(-(document.getElementById("MemberBar")?.offsetWidth || window.innerWidth));
-      break;
-  }
+export function updatePaneState(state: PaneStates, doAnimation = true) {
+  const pos = (() => {
+    switch (state) {
+      case PaneStates.LEFT:
+        return (
+          document.getElementById("ChannelList")?.getBoundingClientRect().right || window.innerWidth
+        );
+      case PaneStates.MIDDLE:
+        return 0;
+      case PaneStates.RIGHT:
+        return -(document.getElementById("MemberBar")?.offsetWidth || window.innerWidth);
+    }
+  })();
+  PaneLeft.update((left) => {
+    if (doAnimation)
+      new Tween({ left })
+        .to({ left: pos }, 200)
+        .onUpdate((d) => {
+          PaneLeft.set(d.left);
+        })
+        .onComplete(() => {
+          PaneLeft.set(pos);
+        })
+        .start();
+    return doAnimation ? pos : left;
+  });
   return state;
 }
 
