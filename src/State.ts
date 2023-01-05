@@ -170,7 +170,7 @@ export function updatePaneState(state: PaneStates, doAnimation = true) {
           PaneLeft.set(pos);
         })
         .start();
-    return doAnimation ? pos : left;
+    return doAnimation ? left : pos;
   });
   return state;
 }

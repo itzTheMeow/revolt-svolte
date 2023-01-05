@@ -16,7 +16,7 @@
   import VoiceChannel from "./VoiceChannel.svelte";
 
   onMount(() => {
-    updatePaneState($PaneState);
+    updatePaneState($PaneState, false);
   });
 </script>
 

@@ -175,7 +175,7 @@
 
   let Container: HTMLDivElement;
   onMount(() => {
-    updatePaneState($PaneState);
+    updatePaneState($PaneState, false);
     let startedDragging: [number, number, number] | null = null;
     let curPos: [number, number] | null = null;
     let isSliding = false;
