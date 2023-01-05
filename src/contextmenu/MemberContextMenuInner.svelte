@@ -1,6 +1,7 @@
 <script lang="ts">
   import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
+  import Loader from "Loader.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { tippy } from "svelte-tippy";
   import { Crown, Pencil, Plus, Settings, X } from "tabler-icons-svelte";
@@ -14,7 +15,8 @@
     fetched = "",
     canRoleManage = false,
     isRoleManaging = false,
-    roleList = new Set<string>();
+    roleList = new Set<string>(),
+    loading = false;
 
   $: {
     if (fetched !== member.id) {
@@ -114,9 +116,13 @@
           class="rounded overflow-hidden relative {isRoleManaging
             ? 'px-1.5'
             : 'px-[3px]'} py-0.5 flex items-center gap-1 cursor-pointer hover:brightness-75"
-          on:click={() => {
+          on:click={async () => {
             if (!isRoleManaging) roleList = new Set(member.roles.map((r) => r.id));
-            else member.edit({ roles: [...roleList] });
+            else {
+              loading = true;
+              await member.edit({ roles: [...roleList] });
+              loading = false;
+            }
             isRoleManaging = !isRoleManaging;
           }}
         >
@@ -129,7 +135,11 @@
             style:color={isRoleManaging ? $Theme["success"] : "inherit"}
           >
             {#if isRoleManaging}
-              <Pencil size={14} /> Save
+              {#if loading}
+                <Loader size={14} />
+              {:else}
+                <Pencil size={14} />
+              {/if} Save
             {:else}
               <Settings size={14} />
             {/if}

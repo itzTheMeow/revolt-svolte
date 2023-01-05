@@ -293,7 +293,7 @@
     (Native.isNative ? Native.titlebarHeight : 0)}px;width:{$AppWidth}px;"
   bind:this={Container}
 >
-  {#if true || !$ClientReady}
+  {#if !$ClientReady}
     <div class="m-auto">
       <Loader size={22} />
     </div>
