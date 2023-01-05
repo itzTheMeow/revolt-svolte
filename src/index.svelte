@@ -293,9 +293,9 @@
     (Native.isNative ? Native.titlebarHeight : 0)}px;width:{$AppWidth}px;"
   bind:this={Container}
 >
-  {#if !$ClientReady}
+  {#if true || !$ClientReady}
     <div class="m-auto">
-      <Loader />
+      <Loader size={22} />
     </div>
   {:else}
     {#if !$MobileLayout || $PaneState !== PaneStates.RIGHT}
