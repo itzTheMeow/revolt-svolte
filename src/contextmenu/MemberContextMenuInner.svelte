@@ -3,6 +3,7 @@
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
+  import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
   import { Crown, Pencil, Plus, Settings, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
