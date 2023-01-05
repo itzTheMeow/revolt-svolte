@@ -92,7 +92,7 @@
     >
       <div
         class="mx-auto mt-auto mb-2 w-1/3 min-h-[4px] rounded-full bg-white {dragging
-          ? 'brightness-[.3]'
+          ? 'brightness-50'
           : 'brightness-75'} pointer-events-none"
       />
       <div
