@@ -53,6 +53,7 @@
       setOpacity(0.5);
       if (diff > TotalHeight / 3) isDone = true;
     } else isDone = true;
+    if(isDone) setOpacity(0);
     new TWEEN.Tween({ h: MobileMemberInner.offsetHeight })
       .to({ h: isDone ? 0 : TotalHeight }, 250)
       .onUpdate(({ h }) => {
