@@ -113,7 +113,7 @@
         }}
       >
         {#key $UseMemberState}
-          <MemberContextMenuInner {member} />
+          <MemberContextMenuInner {member} {MobileMemberInner} />
         {/key}
       </div>
     </div>

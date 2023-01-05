@@ -5,12 +5,13 @@
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
+  import { writable } from "svelte/store";
   import { Crown, Pencil, Plus, Settings, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
   import { copyIDItem, showOptionContext } from "./ContextMenus";
 
-  export let member: Member;
+  export let member: Member, MobileMemberInner: HTMLDivElement;
 
   let profile: UserProfile,
     fetched = "",
@@ -18,6 +19,7 @@
     isRoleManaging = false,
     roleList = new Set<string>(),
     loading = false;
+  const ListScroll = writable(0);
 
   $: {
     if (fetched !== member.id) {
@@ -26,14 +28,22 @@
     }
     canRoleManage = !!member.server.me?.permissions.has(Permissions.ManageRole);
   }
+  let int: NodeJS.Timeout;
+  onMount(() => {
+    int = setInterval(() => {
+      const p = MobileMemberInner?.parentElement
+      if(p && $ListScroll !== p.scrollTop) $ListScroll = p.scrollTop;
+    }, 2)
+  })
 </script>
 
 <div
-  class="flex fixed items-center justify-center w-full left-0 top-0 -bottom-24 min-h-[6rem] bg-cover bg-center p-4 relative"
+  class="flex absolute items-center justify-center w-full left-0 -bottom-24 min-h-[6rem] bg-cover bg-center p-4"
   style:background-image={profile?.background
     ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
     : ""}
   style:background-color={MemberDetails(member).color || $Theme["secondary-background"]}
+  style:top={Math.max(0, $ListScroll)} 
 >
   <div
     class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6"
@@ -52,7 +62,7 @@
     />
   </div>
 </div>
-<div class="pt-6 p-5">
+<div class="pt-6 p-5 mt-24">
   <div
     class="font-semibold text-xl flex items-center gap-0.5"
     style={UserColor(MemberDetails(member).color)}
