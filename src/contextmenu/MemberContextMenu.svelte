@@ -32,6 +32,7 @@
   function handleTouchStart(e: TouchEvent) {
     if (e.composedPath().includes(MobileMemberInner)) return;
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    TotalHeight = MobileMemberInner.offsetHeight;
   }
   function handleTouchMove(e: TouchEvent) {
     if (pos[0] == -1 && pos[1] == -1) return;
