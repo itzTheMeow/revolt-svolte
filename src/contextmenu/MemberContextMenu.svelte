@@ -87,7 +87,7 @@
     </div>
   {:else}
     <div
-      class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 flex flex-col"
+      class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 flex flex-col pb-4"
       style:transition={!dragging ? "background-color 250ms" : ""}
       on:touchstart={handleTouchStart}
       on:touchmove={handleTouchMove}
