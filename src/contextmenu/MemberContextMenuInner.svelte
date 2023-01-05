@@ -69,7 +69,7 @@
       {MemberDetails(member).name}
     </div>
   </div>
-  {#if member.roles.length}
+  {#if canRoleManage || member.roles.length}
     <Header className="mt-2 mb-1">Roles</Header>
     <div class="flex gap-1 flex-wrap">
       {#each !isRoleManaging ? member.roles.reverse() : member.server.roles.ordered as role}
