@@ -93,19 +93,19 @@
             style:background={role.color || "currentColor"}
           />
           <div
-            class="w-2.5 h-2.5 rounded-full flex items-center"
+            class="{$MobileLayout ? 'w-3 h-3' : 'w-2.5 h-2.5'} rounded-full flex items-center"
             style:background={role.color || "currentColor"}
           />
-          <div class="text-xs relative">{role.name}</div>
+          <div class="{$MobileLayout ? 'text-sm' : 'text-xs'} relative">{role.name}</div>
           {#if isRoleManaging}
             <div
-              class="w-full h-full absolute top-0 left-0 items-center justify-center text-xs [display:var(--hov)]"
+              class="w-full h-full absolute top-0 left-0 items-center justify-center [display:var(--hov)]"
               style:background={roleList.has(role.id) ? $Theme["error"] : $Theme["success"]}
             >
               {#if roleList.has(role.id)}
-                <X size={14} strokeWidth={3} />
+                <X size={$MobileLayout ? 16 : 14} strokeWidth={3} />
               {:else}
-                <Plus size={14} strokeWidth={3} />
+                <Plus size={$MobileLayout ? 16 : 14} strokeWidth={3} />
               {/if}
             </div>
           {/if}
@@ -131,17 +131,17 @@
             style:background={isRoleManaging ? $Theme["success"] : "currentColot"}
           />
           <div
-            class="text-xs relative flex items-center gap-0.5"
+            class="{$MobileLayout ? 'text-sm' : 'text-xs'} relative flex items-center gap-0.5"
             style:color={isRoleManaging ? $Theme["success"] : "inherit"}
           >
             {#if isRoleManaging}
               {#if loading}
-                <Loader size={14} />
+                <Loader size={$MobileLayout ? 16 : 14} />
               {:else}
-                <Pencil size={14} />
+                <Pencil size={$MobileLayout ? 16 : 14} />
               {/if} Save
             {:else}
-              <Settings size={14} />
+              <Settings size={$MobileLayout ? 16 : 14} />
             {/if}
           </div>
         </div>
