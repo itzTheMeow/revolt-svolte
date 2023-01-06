@@ -129,7 +129,7 @@
         >
           <div
             class="w-full h-full absolute top-0 left-0 opacity-20"
-            style:background={isRoleManaging ? $Theme["success"] : "currentColot"}
+            style:background={isRoleManaging ? $Theme["success"] : "currentColor"}
           />
           <div
             class="{$MobileLayout ? 'text-sm' : 'text-xs'} relative flex items-center gap-0.5"
