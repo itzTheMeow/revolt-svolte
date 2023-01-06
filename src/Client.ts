@@ -16,7 +16,7 @@ client.once("ready", async () => {
     const settings = await client.syncFetchSettings([]);
     ServerOrder.set(JSON.parse(settings.ordering?.[1] || "{}").servers || []);
     NotifSettings.set(JSON.parse(settings.notifications?.[1] || "{}") || {});
-    const theme = JSON.parse(settings.theme[1])["appearance:theme:overrides"] || {};
+    const theme = JSON.parse(settings.theme?.[1] || "{}")["appearance:theme:overrides"] || {};
     Theme.set({ ...DEFAULT_THEME, ...theme });
     CollapsedCategories.set(JSON.parse(settings.collapsed?.[1] || "[]"));
     localStorage.setItem("theme", JSON.stringify(theme));
