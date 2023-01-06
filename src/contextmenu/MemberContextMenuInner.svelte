@@ -24,7 +24,7 @@
       fetched = member.id;
       member.user.fetchProfile().then((p) => (profile = p));
     }
-    canRoleManage = !!member.server.me?.permissions.has(Permissions.ManageRole);
+    canRoleManage = !!member.server.me?.permissions.has(Permissions.AssignRoles);
   }
 </script>
 
