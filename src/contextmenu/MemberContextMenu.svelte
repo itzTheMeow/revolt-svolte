@@ -74,13 +74,13 @@
 {#if member}
   {#if !$MobileLayout}
     <div
-      class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit"
+      class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit max-h-[50vh]"
       style={Object.entries($MemberMenu?.pos || {})
         .map((e) => `${e[0]}:${e[1]}px`)
         .join(";") + `;background-color:${$Theme["primary-background"]}`}
       use:clickoutside={handleClickOut}
     >
-      <div class="w-64">
+      <div class="w-64 overflow-y-auto max-h-[inherit]">
         {#key $UseMemberState}
           <MemberContextMenuInner {member} />
         {/key}
