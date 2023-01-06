@@ -6,6 +6,7 @@ export const BRAND_NAME =
   document.querySelector<HTMLMetaElement>(`meta[name="brand-name"]`)?.content || "Client";
 export const COMMIT_HASH =
   document.querySelector<HTMLMetaElement>(`meta[name="git-hash"]`)?.content || "UNKNOWN";
+export const API_URL = "https://api.revolt.chat";
 
 export function escapeHTML(txt: string) {
   return txt

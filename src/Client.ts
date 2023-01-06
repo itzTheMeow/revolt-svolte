@@ -2,10 +2,13 @@ import { Client, DEFAULT_THEME } from "revolt-toolset";
 import { CollapsedCategories, SelectedServer, SelectionState, ServerOrder } from "State";
 import { writable } from "svelte/store";
 import { Theme } from "Theme";
+import { API_URL } from "utils";
 import { NotifSettings } from "./State";
 
 export const ClientReady = writable(false);
-export const client = new Client();
+export const client = new Client({
+  apiURL: API_URL,
+});
 export const UnreadState = writable(Date.now());
 export const UseMemberState = writable(Date.now());
 client.once("ready", async () => {

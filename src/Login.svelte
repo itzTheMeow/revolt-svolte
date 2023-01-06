@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Client } from "revolt-toolset";
-  import { BRAND_NAME } from "utils";
+  import { API_URL, BRAND_NAME } from "utils";
 
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;
@@ -15,7 +15,9 @@
     if (!password) return (errtxt.innerText = "Enter a password!");
 
     signinBtn.classList.add("loading");
-    const client = new Client();
+    const client = new Client({
+      apiURL: API_URL,
+    });
     client.once("ready", () => {
       localStorage.setItem("session", JSON.stringify(client.session));
       window.location.reload();
