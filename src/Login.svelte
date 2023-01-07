@@ -1,6 +1,7 @@
 <script lang="ts">
   import Loader from "Loader.svelte";
   import { Client } from "revolt-toolset";
+  import { BRAND_COLOR } from "Theme";
   import { API_URL, BRAND_NAME } from "utils";
 
   let signinBtn: HTMLDivElement;
@@ -50,12 +51,15 @@
       }, 10);
     }}
   />
-  <div class="w-full h-full flex items-center justify-center relative">
+  <div class="w-full h-full flex items-center flex-col justify-center relative">
     {#if loaded}
+      <div class="flex gap-2 self-start mb-auto w-full bg-black bg-opacity-40 backdrop-blur-md p-3">
+        <img class="w-10 h-10" src="/logo.png" alt="" />
+        <div class="text-4xl" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
+      </div>
       <div
-        class="rounded-xl relative w-1/2 h-1/2 flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
+        class="rounded-xl relative flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 mb-auto"
       >
-        <div class="text-lg mb-3">Log In</div>
         <input
           type="email"
           class="input input-bordered w-72 mb-2"
@@ -71,6 +75,13 @@
         <div class="text-error text-sm" bind:this={errtxt} />
         <div class="btn btn-primary mt-2" bind:this={signinBtn} on:click={signIn}>Sign In</div>
       </div>
+      <a
+        class="self-end mb-2 mr-3 text-sm bg-gradient-to-br px-1.5 rounded-full from-purple-900 via-pink-600 to-orange-500 transition brightness-90 hover:brightness-75"
+        href="https://unsplash.com/photos/e6BDUHBSP3E"
+        target="_blank"
+      >
+        Image by Sid Saxena on Unsplash
+      </a>
     {:else}
       <Loader size={20} />
     {/if}
