@@ -8,14 +8,14 @@
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;
   let passInput: HTMLInputElement;
-  let errtxt: HTMLDivElement;
+  let errtxt = "";
 
   async function signIn() {
-    errtxt.innerHTML = "";
+    errtxt = "";
     const email = userInput.value,
       password = passInput.value;
-    if (!email) return (errtxt.innerText = "Enter an email!");
-    if (!password) return (errtxt.innerText = "Enter a password!");
+    if (!email) return (errtxt = "Enter an email!");
+    if (!password) return (errtxt = "Enter a password!");
 
     signinBtn.classList.add("loading");
     const client = new Client({
@@ -28,7 +28,7 @@
     try {
       await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
     } catch (err) {
-      errtxt.innerText = `Failed to log in: ${err}`;
+      errtxt = String(err);
       signinBtn.classList.remove("loading");
     }
   }
@@ -49,6 +49,7 @@
         e.target.style.setProperty("--tw-blur", "blur(2px)");
         //@ts-ignore
         e.target.style.setProperty("--tw-brightness", "brightness(.85)");
+        userInput.select();
       }, 10);
     }}
   />
@@ -65,22 +66,33 @@
         </a>
       </div>
       <div
-        class="rounded-xl relative flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 mb-auto"
+        class="rounded-xl relative flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm px-6 pt-12 pb-6 max-w-[90%] mb-auto"
       >
         <input
           type="email"
-          class="input input-bordered w-72 mb-2"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="Email"
           bind:this={userInput}
+          on:keydown={(e) => e.key == "Enter" && signIn()}
         />
         <input
           type="password"
-          class="input input-bordered w-72 mb-2"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="Password"
           bind:this={passInput}
+          on:keydown={(e) => e.key == "Enter" && signIn()}
         />
-        <div class="text-error text-sm" bind:this={errtxt} />
-        <div class="btn btn-primary mt-2" bind:this={signinBtn} on:click={signIn}>Sign In</div>
+        {#if errtxt}
+          <div class="text-error text-sm mt-2">{errtxt}</div>
+        {/if}
+        <div
+          class="btn btn-primary {errtxt ? 'mt-2' : 'mt-4'} rounded-full border-none"
+          bind:this={signinBtn}
+          on:click={signIn}
+          style:background-color={BRAND_COLOR}
+        >
+          Sign In
+        </div>
       </div>
       <a
         class="self-end mb-2 mr-3 text-sm bg-gradient-to-br px-1.5 rounded-full from-purple-900 via-pink-600 to-orange-500 transition brightness-90 hover:brightness-75"
@@ -94,3 +106,5 @@
     {/if}
   </div>
 </div>
+
+<div class="hidden loading" />
