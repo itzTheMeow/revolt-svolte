@@ -55,7 +55,7 @@
     {#if loaded}
       <div class="flex gap-2 self-start mb-auto w-full bg-black bg-opacity-40 backdrop-blur-md p-3">
         <img class="w-10 h-10" src="/logo.png" alt="" />
-        <div class="text-4xl" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
+        <div class="text-4xl font-[Nevis]" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
       </div>
       <div
         class="rounded-xl relative flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 mb-auto"
