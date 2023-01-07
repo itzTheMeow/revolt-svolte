@@ -7,7 +7,7 @@
   import { tippy } from "svelte-tippy";
   import { BrandGithub, ChevronDown, ChevronRight, Lock, LockOpen } from "tabler-icons-svelte";
   import { BRAND_COLOR, Theme } from "Theme";
-  import { BRAND_NAME, COMMIT_HASH, proxyURL } from "utils";
+  import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL } from "utils";
   import ChannelItem from "./ChannelItem.svelte";
 
   let scrolledTop = true,
@@ -104,7 +104,7 @@
           {/if}
         </div>
         <a
-          href="https://github.com/itzTheMeow/revolt-svolte/tree/{COMMIT_HASH}"
+          href="{GIT_URL}/tree/{COMMIT_HASH}"
           target="_blank"
           class="brightness-90"
           use:tippy={{

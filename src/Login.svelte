@@ -1,8 +1,9 @@
 <script lang="ts">
   import Loader from "Loader.svelte";
   import { Client } from "revolt-toolset";
+  import { BrandGithub } from "tabler-icons-svelte";
   import { BRAND_COLOR } from "Theme";
-  import { API_URL, BRAND_NAME } from "utils";
+  import { API_URL, BRAND_NAME, GIT_URL } from "utils";
 
   let signinBtn: HTMLDivElement;
   let userInput: HTMLInputElement;
@@ -37,7 +38,7 @@
 
 <div class="w-screen h-screen">
   <img
-    class="absolute top-0 left-0 w-full h-full object-cover blur-0 brightness-100"
+    class="absolute top-0 left-0 w-full h-full object-cover blur-0 brightness-100 select-none"
     style:transition="all 500ms"
     src="https://images.unsplash.com/photo-1565120729227-86872732df92?w={window.innerWidth}"
     alt=""
@@ -53,9 +54,15 @@
   />
   <div class="w-full h-full flex items-center flex-col justify-center relative">
     {#if loaded}
-      <div class="flex gap-2 self-start mb-auto w-full bg-black bg-opacity-40 backdrop-blur-md p-3">
+      <div
+        class="flex gap-2 items-center self-start mb-auto w-full bg-black bg-opacity-40 backdrop-blur-md p-3 pr-5 select-none"
+        style:color={BRAND_COLOR}
+      >
         <img class="w-10 h-10" src="/logo.png" alt="" />
-        <div class="text-4xl font-[Nevis]" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
+        <div class="text-4xl font-[Nevis]">{BRAND_NAME}</div>
+        <a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank">
+          <BrandGithub size={28} />
+        </a>
       </div>
       <div
         class="rounded-xl relative flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 mb-auto"
