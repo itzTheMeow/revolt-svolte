@@ -122,6 +122,7 @@
         class="cursor-pointer hover:brightness-150"
         href={src.generateDownloadURL()}
         target="_blank"
+        rel="noreferrer"
         data-clickable
       >
         <Download size={20} />

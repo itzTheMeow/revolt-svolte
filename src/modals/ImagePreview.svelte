@@ -113,11 +113,21 @@
         &bull;
         <div>{byteSize($imagePreview.size).toString().toUpperCase()}</div>
         &bull;
-        <a class="hover:underline" href={$imagePreview.generateURL()} target="_blank">
+        <a
+          class="hover:underline"
+          href={$imagePreview.generateURL()}
+          target="_blank"
+          rel="noreferrer"
+        >
           Open Original
         </a>
         &bull;
-        <a class="hover:underline" href={$imagePreview.generateDownloadURL()} target="_blank">
+        <a
+          class="hover:underline"
+          href={$imagePreview.generateDownloadURL()}
+          target="_blank"
+          rel="noreferrer"
+        >
           Download
         </a>
       </div>

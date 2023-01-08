@@ -61,7 +61,7 @@
       >
         <img class="w-10 h-10" src="/logo.png" alt="" />
         <div class="text-4xl font-[Nevis]">{BRAND_NAME}</div>
-        <a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank">
+        <a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank" rel="noreferrer">
           <BrandGithub size={28} />
         </a>
       </div>
@@ -98,6 +98,7 @@
         class="self-end mb-2 mr-3 text-sm bg-gradient-to-br px-1.5 rounded-full from-purple-900 via-pink-600 to-orange-500 transition brightness-90 hover:brightness-75"
         href="https://unsplash.com/photos/e6BDUHBSP3E"
         target="_blank"
+        rel="noreferrer"
       >
         Image by Sid Saxena on Unsplash
       </a>

@@ -45,6 +45,7 @@
                 style?: string;
                 class?: string;
                 target?: "_blank";
+                rel?: "noreferrer";
               };
               children: Child[];
             },
@@ -67,6 +68,7 @@
                 node.properties.class = "hover:brightness-75";
                 node.properties.type = "link";
                 node.properties.target = "_blank";
+                node.properties.rel = "noreferrer";
               }
               return void 0;
             } else if (node.tagName == "blockquote") {

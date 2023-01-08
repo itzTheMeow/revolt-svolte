@@ -29,7 +29,7 @@
     {:else if attachment.metadata.type == "Audio"}
       <Audio src={attachment} />
     {:else}
-      <a href={attachment.generateDownloadURL()} target="_blank">
+      <a href={attachment.generateDownloadURL()} target="_blank" rel="noreferrer">
         [Download {attachment.name}]
       </a>
     {/if}

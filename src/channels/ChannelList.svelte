@@ -106,6 +106,7 @@
         <a
           href="{GIT_URL}/tree/{COMMIT_HASH}"
           target="_blank"
+          rel="noreferrer"
           class="brightness-90"
           use:tippy={{
             content: "GitHub",
