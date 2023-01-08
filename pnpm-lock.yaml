@@ -45,6 +45,7 @@ specifiers:
   tinycolor2: ^1.5.1
   typescript: ^4.7.4
   unified: ^10.1.2
+  unist-util-visit: ^4.1.1
 
 dependencies:
   '@tsconfig/svelte': 3.0.0
@@ -91,6 +92,7 @@ dependencies:
   tinycolor2: 1.5.2
   typescript: 4.9.4
   unified: 10.1.2
+  unist-util-visit: 4.1.1
 
 packages:
 

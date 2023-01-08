@@ -49,7 +49,7 @@
               };
               children: Child[];
             },
-            _,
+            _: any,
             parent: { children: Child[]; properties: Record<string, string> }
           ) => {
             if (
