@@ -1,3 +1,3 @@
 git pull
-npm i
-npm start
+pnpm i
+pnpm start
