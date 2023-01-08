@@ -4,6 +4,7 @@ import esbuild from "esbuild";
 import postCssPlugin from "esbuild-style-plugin";
 import esbuildSvelte from "esbuild-svelte";
 import fs from "fs";
+import sveltePreprocess from "svelte-preprocess";
 import useTailwind from "tailwindcss";
 import config from "./config";
 import { init } from "./server";
@@ -25,6 +26,7 @@ esbuild
     plugins: [
       esbuildSvelte({
         filterWarnings: (w) => !w.code.startsWith("a11y"),
+        preprocess: sveltePreprocess(),
       }),
       postCssPlugin({
         postcss: {
