@@ -25,7 +25,8 @@ esbuild
     watch: process.argv.includes(`--watch`),
     plugins: [
       esbuildSvelte({
-        filterWarnings: (w) => !w.code.startsWith("a11y"),
+        //@ts-ignore
+        filterWarnings: (w) => !w.code.startsWith("a11y-"),
         preprocess: sveltePreprocess(),
       }),
       postCssPlugin({

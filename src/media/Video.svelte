@@ -131,7 +131,6 @@
     }, 150);
   }}
 >
-  <!-- svelte-ignore a11y-media-has-caption -->
   <video
     src={proxyURL(src.generateURL(), "any")}
     bind:this={video}
@@ -160,6 +159,7 @@
             class="cursor-pointer hover:brightness-150"
             href={src.generateDownloadURL()}
             target="_blank"
+            rel="noreferrer"
           >
             <Download size={20} />
           </a>

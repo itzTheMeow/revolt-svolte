@@ -213,7 +213,6 @@
       if (takeBottom) selectBottom();
     }}
   />
-  <!-- svelte-ignore missing-declaration -->
   <div
     class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
     style="background-color:{$Theme['primary-header']};"
