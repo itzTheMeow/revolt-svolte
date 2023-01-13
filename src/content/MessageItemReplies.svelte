@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { IconCornerLeftDown } from "@tabler/icons-svelte";
   import type { BaseMessage, Message } from "revolt-toolset";
   import { MessageCache } from "State";
   import { writable } from "svelte/store";
-  import { CornerLeftDown } from "tabler-icons-svelte";
   import { MessageDetails, proxyURL } from "utils";
 
   export let message: Message;
@@ -28,7 +28,7 @@
   {#each $replies.sort((r1, r2) => (r1?.createdAt || 0) - (r2?.createdAt || 0)) as reply}
     {#if reply?.isUser()}
       <div class="flex gap-2 items-center">
-        <CornerLeftDown size={18} />
+        <IconCornerLeftDown size={18} />
         <img
           class="w-4 h-4 rounded-full -ml-1"
           src={reply

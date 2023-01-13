@@ -1,11 +1,17 @@
 <script lang="ts">
+  import {
+    IconBrandGithub,
+    IconChevronDown,
+    IconChevronRight,
+    IconLock,
+    IconLockOpen,
+  } from "@tabler/icons-svelte";
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
   import type { Channel } from "revolt-toolset";
   import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
-  import { BrandGithub, ChevronDown, ChevronRight, Lock, LockOpen } from "tabler-icons-svelte";
   import { BRAND_COLOR, Theme } from "Theme";
   import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL } from "utils";
   import ChannelItem from "./ChannelItem.svelte";
@@ -69,9 +75,9 @@
             }}
           >
             {#if $CollapsedCategories.includes(category.id)}
-              <ChevronRight size={16} />
+              <IconChevronRight size={16} />
             {:else}
-              <ChevronDown size={16} />
+              <IconChevronDown size={16} />
             {/if}
             {category.name}
           </div>
@@ -98,9 +104,9 @@
           }}
         >
           {#if window.location.protocol == "https:"}
-            <Lock size="18" color={$Theme["success"]} />
+            <IconLock size={18} color={$Theme["success"]} />
           {:else}
-            <LockOpen size="18" color={$Theme["warning"]} />
+            <IconLockOpen size={18} color={$Theme["warning"]} />
           {/if}
         </div>
         <a
@@ -113,7 +119,7 @@
             placement: "bottom",
           }}
         >
-          <UserTag text={COMMIT_HASH} color={BRAND_COLOR} icon={BrandGithub} />
+          <UserTag text={COMMIT_HASH} color={BRAND_COLOR} icon={IconBrandGithub} />
         </a>
       </div>
     </div>

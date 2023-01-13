@@ -1,20 +1,20 @@
 <script lang="ts">
+  import {
+    IconDownload,
+    IconMaximize,
+    IconMinimize,
+    IconPlayerPause,
+    IconPlayerPlay,
+    IconRotate,
+    IconVolume,
+    IconVolume2,
+    IconVolume3,
+  } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
   import type { Attachment } from "revolt-toolset";
   import { fullscreenElement, MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { slide } from "svelte/transition";
-  import {
-    Download,
-    Maximize,
-    Minimize,
-    PlayerPause,
-    PlayerPlay,
-    Rotate,
-    Volume,
-    Volume2,
-    Volume3,
-  } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
@@ -161,7 +161,7 @@
             target="_blank"
             rel="noreferrer"
           >
-            <Download size={20} />
+            <IconDownload size={20} />
           </a>
         </div>
       </div>
@@ -171,12 +171,12 @@
       >
         <div class="cursor-pointer hover:brightness-75" on:click={playClick}>
           {#if didEnd}
-            <Rotate size={20} />
+            <IconRotate size={20} />
             <!-- TODO: change to reload when @tabler/icons-svelte is released -->
           {:else if isPlaying}
-            <PlayerPause size={20} />
+            <IconPlayerPause size={20} />
           {:else}
-            <PlayerPlay size={20} />
+            <IconPlayerPlay size={20} />
           {/if}
         </div>
         <div
@@ -198,11 +198,11 @@
             }}
           >
             {#if volume > 0.5}
-              <Volume size={20} />
+              <IconVolume size={20} />
             {:else if volume > 0}
-              <Volume2 size={20} />
+              <IconVolume2 size={20} />
             {:else}
-              <Volume3 size={20} />
+              <IconVolume3 size={20} />
             {/if}
           </div>
           {#if volumeHover || volumeDrag}
@@ -239,9 +239,9 @@
             $fullscreenElement ? document.exitFullscreen() : player.requestFullscreen()}
         >
           {#if $fullscreenElement}
-            <Minimize size={18} />
+            <IconMinimize size={18} />
           {:else}
-            <Maximize size={18} />
+            <IconMaximize size={18} />
           {/if}
         </div>
       </div>
@@ -255,7 +255,7 @@
       }}
       data-clickable
     >
-      <div class="bg-black bg-opacity-70 p-2 rounded-full w-fit h-fit"><PlayerPlay /></div>
+      <div class="bg-black bg-opacity-70 p-2 rounded-full w-fit h-fit"><IconPlayerPlay /></div>
     </div>
   {/if}
 </div>

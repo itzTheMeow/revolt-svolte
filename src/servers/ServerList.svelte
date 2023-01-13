@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { IconRefresh } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Indicator from "extra/Indicator.svelte";
   import type { Server } from "revolt-toolset";
@@ -6,7 +7,6 @@
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
-  import { Refresh } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { proxyURL, StatusColor } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
@@ -84,7 +84,7 @@
 
     <ServerEntry placeholder onclick={() => window.location.reload()} tooltip="Reload">
       <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
-        <Refresh />
+        <IconRefresh />
       </div>
     </ServerEntry>
   </div>

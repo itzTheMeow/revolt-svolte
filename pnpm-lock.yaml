@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@tabler/icons-svelte': ^2.0.0-alpha2
   '@tsconfig/svelte': ^3.0.0
   '@tweenjs/tween.js': ^18.6.4
   '@types/body-scroll-lock': ^3.1.0
@@ -40,7 +41,6 @@ specifiers:
   svelte: ^3.49.0
   svelte-preprocess: ^4.10.7
   svelte-tippy: ^1.3.2
-  tabler-icons-svelte: ^1.8.0
   tailwindcss: ^3.1.8
   tinycolor2: ^1.5.1
   typescript: ^4.7.4
@@ -48,6 +48,7 @@ specifiers:
   unist-util-visit: ^4.1.1
 
 dependencies:
+  '@tabler/icons-svelte': 2.0.0-alpha2_svelte@3.55.0
   '@tsconfig/svelte': 3.0.0
   '@tweenjs/tween.js': 18.6.4
   '@types/body-scroll-lock': 3.1.0
@@ -87,7 +88,6 @@ dependencies:
   svelte: 3.55.0
   svelte-preprocess: 4.10.7_d234st6gzj3vy6xs53hyho7taa
   svelte-tippy: 1.3.2
-  tabler-icons-svelte: 1.8.0_svelte@3.55.0
   tailwindcss: 3.2.4_postcss@8.4.21
   tinycolor2: 1.5.2
   typescript: 4.9.4
@@ -150,6 +150,20 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
+
+  /@tabler/icons-svelte/2.0.0-alpha2_svelte@3.55.0:
+    resolution: {integrity: sha512-IFW6opSFKXll2tj52Ww+P0P/X7DAA8R/vaqMC69A8/Mfr/q76Z8MuNWglBb+SZNU7DCkA99JEbOFnQhrOqqxqQ==}
+    peerDependencies:
+      svelte: ^3.49.0
+      svelte2tsx: ^0.4.12
+    dependencies:
+      '@tabler/icons': 2.0.0-alpha2
+      svelte: 3.55.0
+    dev: false
+
+  /@tabler/icons/2.0.0-alpha2:
+    resolution: {integrity: sha512-oHY1XnZZhRWP1gDrKUXv30GjHuV51cVWseauwaj6dzLUyHlczbHb88je9yEew6CFlycu0AzUB3dBOY4pA80M5A==}
     dev: false
 
   /@tsconfig/svelte/3.0.0:
@@ -2835,14 +2849,6 @@ packages:
   /svelte/3.55.0:
     resolution: {integrity: sha512-uGu2FVMlOuey4JoKHKrpZFkoYyj0VLjJdz47zX5+gVK5odxHM40RVhar9/iK2YFRVxvfg9FkhfVlR0sjeIrOiA==}
     engines: {node: '>= 8'}
-    dev: false
-
-  /tabler-icons-svelte/1.8.0_svelte@3.55.0:
-    resolution: {integrity: sha512-j8VrSMsj8dwOTGNb4LldR0S+Dh+26D0tf5vJLPJ4v23V4xiL+SUIiyQyhzf7Pclx8Vd/x7WHsi9XsMVvteTNtg==}
-    peerDependencies:
-      svelte: '>=3.31.0 <=4'
-    dependencies:
-      svelte: 3.55.0
     dev: false
 
   /tailwindcss/3.2.4_postcss@8.4.21:

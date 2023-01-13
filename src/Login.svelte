@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { IconBrandGithub } from "@tabler/icons-svelte";
   import Loader from "Loader.svelte";
   import { Client } from "revolt-toolset";
-  import { BrandGithub } from "tabler-icons-svelte";
   import { BRAND_COLOR } from "Theme";
   import { API_URL, BRAND_NAME, GIT_URL } from "utils";
 
@@ -62,7 +62,7 @@
         <img class="w-10 h-10" src="/logo.png" alt="" />
         <div class="text-4xl font-[Nevis]">{BRAND_NAME}</div>
         <a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank" rel="noreferrer">
-          <BrandGithub size={28} />
+          <IconBrandGithub size={28} />
         </a>
       </div>
       <div

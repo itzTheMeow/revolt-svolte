@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { IconCircleX, IconCornerUpLeft } from "@tabler/icons-svelte";
   import type { BaseMessage } from "revolt-toolset";
   import { updateReplies } from "State";
-  import { CircleX, CornerUpLeft } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
 
@@ -19,7 +19,7 @@
   style="background-color:{$Theme['primary-header']};"
   bind:this={ReplyBox}
 >
-  <CornerUpLeft size={18} />
+  <IconCornerUpLeft size={18} />
   {#if message.isUser()}
     <img class="rounded-full w-5 h-5" src={MessageDetails(message).avatar} alt="" />
     <div class="-ml-0.5" style="color:{MessageDetails(message).color || 'unset'};">
@@ -38,6 +38,6 @@
     on:click={delReply}
     on:touchend={delReply}
   >
-    <CircleX size={18} />
+    <IconCircleX size={18} />
   </div>
 </div>

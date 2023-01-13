@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { IconCornerUpLeft, IconTrash } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
   import { BaseMessage, Permissions } from "revolt-toolset";
   import { MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
-  import { CornerUpLeft, Trash } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
@@ -16,7 +16,7 @@
   style="background-color:{$Theme['primary-header']};"
 >
   <MessageItemToolbarItem
-    icon={CornerUpLeft}
+    icon={IconCornerUpLeft}
     on:click={() => {
       updateReplies(message);
       selectBottom();
@@ -24,7 +24,7 @@
   />
   {#if message.channel?.permissions.has(Permissions.ManageMessages) || (message.isUser() && message.authorID == client.user?.id)}
     <MessageItemToolbarItem
-      icon={Trash}
+      icon={IconTrash}
       on:click={() => {
         ModalStack.push({
           type: "confirm",

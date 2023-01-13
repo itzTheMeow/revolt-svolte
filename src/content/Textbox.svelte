@@ -1,4 +1,11 @@
 <script lang="ts">
+  import {
+    IconArrowBigRightLine,
+    IconFileUpload,
+    IconHash,
+    IconPaperclip,
+    IconVolume,
+  } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { Emoji, parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset";
@@ -15,14 +22,6 @@
     uploadedFiles,
   } from "State";
   import { afterUpdate, beforeUpdate } from "svelte";
-  import {
-    ArrowBigRightLine,
-    Clipboard,
-    FileUpload,
-    Hash,
-    Paperclip,
-    Volume,
-  } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { handleUpdates, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
@@ -134,7 +133,7 @@
           clicked() {
             FileInput.click();
           },
-          icon: FileUpload,
+          icon: IconFileUpload,
         },
       ],
       target: UploaderButton,
@@ -159,8 +158,8 @@
         icon={c.icon
           ? proxyURL(c.generateIconURL({ max_side: 64 }), "image")
           : c.isVoice()
-          ? Volume
-          : Hash}
+          ? IconVolume
+          : IconHash}
         name={c.name || ""}
         onclick={() => handleAutocompleteTab($autocomplete?.tab(c))}
       />
@@ -220,7 +219,7 @@
     on:click={handleUpload}
     on:touchend={handleUpload}
   >
-    <Paperclip />
+    <IconPaperclip />
   </div>
   <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
     <textarea
@@ -270,6 +269,6 @@
     }}
     on:click={() => sendMessage()}
   >
-    <ArrowBigRightLine />
+    <IconArrowBigRightLine />
   </div>
 </div>
