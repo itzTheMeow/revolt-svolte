@@ -46,6 +46,7 @@
                 class?: string;
                 target?: "_blank";
                 rel?: "noreferrer";
+                "data-clickable"?: "";
               };
               children: Child[];
             },
@@ -130,6 +131,7 @@
                     class:
                       "inline-flex gap-0.5 items-center rounded-full px-1.5 font-semibold text-sm relative",
                     style: `color:${$Theme["accent"]};`,
+                    "data-clickable": "",
                   },
                   children: [
                     {
