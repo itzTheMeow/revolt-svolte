@@ -122,10 +122,6 @@
       const d = actual_height - expected_height;
       viewport.scrollTo(0, scrollTop + d);
     }
-
-    // TODO if we overestimated the space these
-    // rows would occupy we may need to add some
-    // more. maybe we can just call handle_scroll again?
   }
 
   // trigger initial refresh

@@ -5,7 +5,7 @@
     IconMinimize,
     IconPlayerPause,
     IconPlayerPlay,
-    IconRotate,
+    IconReload,
     IconVolume,
     IconVolume2,
     IconVolume3,
@@ -171,8 +171,7 @@
       >
         <div class="cursor-pointer hover:brightness-75" on:click={playClick}>
           {#if didEnd}
-            <IconRotate size={20} />
-            <!-- TODO: change to reload when @tabler/icons-svelte is released -->
+            <IconReload size={20} />
           {:else if isPlaying}
             <IconPlayerPause size={20} />
           {:else}

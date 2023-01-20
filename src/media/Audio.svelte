@@ -4,7 +4,7 @@
     IconFileMusic,
     IconPlayerPause,
     IconPlayerPlay,
-    IconRotate,
+    IconReload,
     IconVolume,
     IconVolume2,
     IconVolume3,
@@ -132,8 +132,7 @@
   <div class="flex items-center gap-1">
     <div class="cursor-pointer hover:brightness-75" on:click={playClick} data-clickable>
       {#if didEnd}
-        <IconRotate size={20} />
-        <!-- TODO: change to reload when @tabler/icons-svelte is released -->
+        <IconReload size={20} />
       {:else if isPlaying}
         <IconPlayerPause size={20} />
       {:else}
