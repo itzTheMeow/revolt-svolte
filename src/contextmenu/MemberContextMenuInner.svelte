@@ -58,7 +58,9 @@
     style={UserColor(MemberDetails(member).color)}
   >
     {#if member.server.ownerID == member.id}
-      <div use:tippy={{ content: "Server Owner" }}><IconCrown color="gold" /></div>
+      <div use:tippy={{ content: "Server Owner" }}>
+        <IconCrown color="gold" fill="gold" />
+      </div>
     {/if}
     <div
       class="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis"
