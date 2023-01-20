@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { IconCrown, IconPencil, IconPlus, IconSettings, IconX } from "@tabler/icons-svelte";
   import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
-  import { Crown, Pencil, Plus, Settings, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
   import { copyIDItem, showOptionContext } from "./ContextMenus";
@@ -58,7 +58,7 @@
     style={UserColor(MemberDetails(member).color)}
   >
     {#if member.server.ownerID == member.id}
-      <div use:tippy={{ content: "Server Owner" }}><Crown color="gold" /></div>
+      <div use:tippy={{ content: "Server Owner" }}><IconCrown color="gold" /></div>
     {/if}
     <div
       class="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis"
@@ -104,9 +104,9 @@
               style:background={roleList.has(role.id) ? $Theme["error"] : $Theme["success"]}
             >
               {#if roleList.has(role.id)}
-                <X size={$MobileLayout ? 16 : 14} strokeWidth={3} />
+                <IconX size={$MobileLayout ? 16 : 14} strokeWidth={3} />
               {:else}
-                <Plus size={$MobileLayout ? 16 : 14} strokeWidth={3} />
+                <IconPlus size={$MobileLayout ? 16 : 14} strokeWidth={3} />
               {/if}
             </div>
           {/if}
@@ -139,10 +139,10 @@
               {#if loading}
                 <Loader size={$MobileLayout ? 16 : 14} />
               {:else}
-                <Pencil size={$MobileLayout ? 16 : 14} />
+                <IconPencil size={$MobileLayout ? 16 : 14} />
               {/if} Save
             {:else}
-              <Settings size={$MobileLayout ? 16 : 14} />
+              <IconSettings size={$MobileLayout ? 16 : 14} />
             {/if}
           </div>
         </div>

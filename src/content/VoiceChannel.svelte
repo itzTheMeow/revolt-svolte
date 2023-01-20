@@ -1,14 +1,14 @@
 <script lang="ts">
+  import {
+    IconHeadphones,
+    IconHeadphonesOff,
+    IconMicrophone,
+    IconMicrophoneOff,
+    IconPhoneCall,
+    IconPhoneOff,
+  } from "@tabler/icons-svelte";
   import { client } from "Client";
   import type { VoiceChannel } from "revolt-toolset";
-  import {
-    Headphones,
-    HeadphonesOff,
-    Microphone,
-    MicrophoneOff,
-    PhoneCall,
-    PhoneOff,
-  } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import { voiceState as VOICE_STATE, VoiceStatus } from "../voice/VoiceState";
@@ -40,9 +40,9 @@
             {#if (client.user?.id === uid && voiceState.isDeaf()) || !voiceState.participants.get(uid)?.audio}
               <div class="absolute right-0 bottom-0 p-1 bg-error rounded-full">
                 {#if client.user?.id === uid && voiceState.isDeaf()}
-                  <HeadphonesOff size={14} />
+                  <IconHeadphonesOff size={14} />
                 {:else if !voiceState.participants.get(uid)?.audio}
-                  <MicrophoneOff size={14} />
+                  <IconMicrophoneOff size={14} />
                 {/if}
               </div>
             {/if}
@@ -71,7 +71,7 @@
               voiceState = voiceState;
             }}
           >
-            <Microphone size={20} />
+            <IconMicrophone size={20} />
           </div>
         {:else}
           <div
@@ -82,7 +82,7 @@
               voiceState = voiceState;
             }}
           >
-            <MicrophoneOff size={20} />
+            <IconMicrophoneOff size={20} />
           </div>
         {/if}
         {#if voiceState.isDeaf()}
@@ -94,7 +94,7 @@
               voiceState = voiceState;
             }}
           >
-            <HeadphonesOff size={20} />
+            <IconHeadphonesOff size={20} />
           </div>
         {:else}
           <div
@@ -105,7 +105,7 @@
               voiceState = voiceState;
             }}
           >
-            <Headphones size={20} />
+            <IconHeadphones size={20} />
           </div>
         {/if}
         <div
@@ -115,7 +115,7 @@
             voiceState = voiceState;
           }}
         >
-          <PhoneOff size={20} />
+          <IconPhoneOff size={20} />
         </div>
       {:else if voiceState.status == VoiceStatus.READY || voiceState.status == VoiceStatus.CONNECTED}
         <div
@@ -128,7 +128,7 @@
             }
           }}
         >
-          <PhoneCall size={20} />
+          <IconPhoneCall size={20} />
         </div>
       {/if}
     </div>

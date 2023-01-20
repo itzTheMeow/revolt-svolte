@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { IconHash, IconHome, IconNotebook, IconUsers, IconVolume } from "@tabler/icons-svelte";
   import { UnreadState } from "Client";
   import { copyIDItem, showOptionContext } from "contextmenu/ContextMenus";
   import Indicator from "extra/Indicator.svelte";
@@ -11,7 +12,6 @@
     selectBottom,
     SelectedChannel,
   } from "State";
-  import { Hash, Home, Notebook, Users, Volume } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { proxyURL, testMuted, UserDetails } from "utils";
 
@@ -64,15 +64,15 @@
       alt=""
     />
   {:else if channel.isGroupDM()}
-    <Users size={20} />
+    <IconUsers size={20} />
   {:else if channel.isText()}
-    <Hash size={20} />
+    <IconHash size={20} />
   {:else if channel.isVoice()}
-    <Volume size={20} />
+    <IconVolume size={20} />
   {:else if channel.isSavedMessages()}
-    <Notebook size={20} />
+    <IconNotebook size={20} />
   {:else}
-    <Home size={20} />
+    <IconHome size={20} />
   {/if}
   <span class="ml-1">
     {channel.isDM() ? UserDetails(channel.recipient).name : channel.name}

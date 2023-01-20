@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { IconCrown } from "@tabler/icons-svelte";
   import { MemberMenu } from "contextmenu/MemberContextMenu";
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
   import { Member, Role } from "revolt-toolset";
   import { AppHeight, AppWidth } from "State";
   import { tippy } from "svelte-tippy";
-  import { Crown } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
 
@@ -81,7 +81,7 @@
                 placement: "left",
               }}
             >
-              <Crown size={16} color="gold" />
+              <IconCrown size={16} color="gold" />
             </div>
           {/if}
         </div>

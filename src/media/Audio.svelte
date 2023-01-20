@@ -1,18 +1,18 @@
 <script lang="ts">
+  import {
+    IconDownload,
+    IconFileMusic,
+    IconPlayerPause,
+    IconPlayerPlay,
+    IconRotate,
+    IconVolume,
+    IconVolume2,
+    IconVolume3,
+  } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
   import type { Attachment } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
-  import {
-    Download,
-    FileMusic,
-    PlayerPause,
-    PlayerPlay,
-    Rotate,
-    Volume,
-    Volume2,
-    Volume3,
-  } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
@@ -112,7 +112,7 @@
     bind:playbackRate={speed}
   />
   <div class="flex items-center gap-1.5 font-semibold">
-    <div class="-mr-0.5"><FileMusic size={18} /></div>
+    <div class="-mr-0.5"><IconFileMusic size={18} /></div>
     <div>{src.name}</div>
     <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
       <div class="text-xs">
@@ -125,19 +125,19 @@
         rel="noreferrer"
         data-clickable
       >
-        <Download size={20} />
+        <IconDownload size={20} />
       </a>
     </div>
   </div>
   <div class="flex items-center gap-1">
     <div class="cursor-pointer hover:brightness-75" on:click={playClick} data-clickable>
       {#if didEnd}
-        <Rotate size={20} />
+        <IconRotate size={20} />
         <!-- TODO: change to reload when @tabler/icons-svelte is released -->
       {:else if isPlaying}
-        <PlayerPause size={20} />
+        <IconPlayerPause size={20} />
       {:else}
-        <PlayerPlay size={20} />
+        <IconPlayerPlay size={20} />
       {/if}
     </div>
     <div
@@ -197,11 +197,11 @@
         data-clickable
       >
         {#if volume > 0.5}
-          <Volume size={20} />
+          <IconVolume size={20} />
         {:else if volume > 0}
-          <Volume2 size={20} />
+          <IconVolume2 size={20} />
         {:else}
-          <Volume3 size={20} />
+          <IconVolume3 size={20} />
         {/if}
       </div>
       {#if !$MobileLayout}

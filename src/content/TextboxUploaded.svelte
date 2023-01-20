@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { IconCircleX } from "@tabler/icons-svelte";
   import { uploadedFiles } from "State";
-  import { CircleX } from "tabler-icons-svelte";
   import { Theme } from "Theme";
 </script>
 
@@ -27,7 +27,7 @@
         <div
           class="rounded absolute top-0 left-0 h-full w-full bg-black bg-opacity-25 flex items-center justify-center text-error"
         >
-          <CircleX />
+          <IconCircleX />
         </div>
       </div>
     {/each}

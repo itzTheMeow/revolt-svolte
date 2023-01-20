@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { IconMaximize, IconMinimize, IconMinus, IconX } from "@tabler/icons-svelte";
   import { ElectronFullscreen, Native } from "Native";
-  import { Maximize, Minimize, Minus, X } from "tabler-icons-svelte";
   import { Theme } from "Theme";
   import { BRAND_NAME } from "utils";
 </script>
@@ -18,7 +18,7 @@
     style="width:{Native.titlebarHeight * 1.5}px;"
     on:click={Native.min}
   >
-    <Minus size={Native.titlebarHeight - 10} />
+    <IconMinus size={Native.titlebarHeight - 10} />
   </div>
   <div
     class="cursor-pointer hover:brightness-75 bg-inherit active:brightness-50 rounded-none h-full flex items-center justify-center"
@@ -26,9 +26,9 @@
     on:click={Native.max}
   >
     {#if $ElectronFullscreen}
-      <Minimize size={Native.titlebarHeight - 10} />
+      <IconMinimize size={Native.titlebarHeight - 10} />
     {:else}
-      <Maximize size={Native.titlebarHeight - 12} />
+      <IconMaximize size={Native.titlebarHeight - 12} />
     {/if}
   </div>
   <div
@@ -36,6 +36,6 @@
     style="width:{Native.titlebarHeight * 1.5}px;--err:{$Theme['error']}"
     on:click={Native.close}
   >
-    <X size={Native.titlebarHeight - 8} />
+    <IconX size={Native.titlebarHeight - 8} />
   </div>
 </div>
