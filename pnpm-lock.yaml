@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@tabler/icons-svelte': ^2.0.0-alpha2
+  '@tabler/icons-svelte': 2.0.0-beta
   '@tsconfig/svelte': ^3.0.0
   '@tweenjs/tween.js': ^18.6.4
   '@types/body-scroll-lock': ^3.1.0
@@ -48,7 +48,7 @@ specifiers:
   unist-util-visit: ^4.1.1
 
 dependencies:
-  '@tabler/icons-svelte': 2.0.0-alpha2_svelte@3.55.0
+  '@tabler/icons-svelte': 2.0.0-beta_svelte@3.55.0
   '@tsconfig/svelte': 3.0.0
   '@tweenjs/tween.js': 18.6.4
   '@types/body-scroll-lock': 3.1.0
@@ -152,18 +152,17 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@tabler/icons-svelte/2.0.0-alpha2_svelte@3.55.0:
-    resolution: {integrity: sha512-IFW6opSFKXll2tj52Ww+P0P/X7DAA8R/vaqMC69A8/Mfr/q76Z8MuNWglBb+SZNU7DCkA99JEbOFnQhrOqqxqQ==}
+  /@tabler/icons-svelte/2.0.0-beta_svelte@3.55.0:
+    resolution: {integrity: sha512-wMeNN7DxuJjemXfockkYR3py69Ek9DsHYCZlmYpy23t8KLfnmb0r+RSbMKNhOw7SEeaG5N0cBipKSKpFmbdu5w==}
     peerDependencies:
       svelte: ^3.49.0
-      svelte2tsx: ^0.4.12
     dependencies:
-      '@tabler/icons': 2.0.0-alpha2
+      '@tabler/icons': 2.0.0-beta
       svelte: 3.55.0
     dev: false
 
-  /@tabler/icons/2.0.0-alpha2:
-    resolution: {integrity: sha512-oHY1XnZZhRWP1gDrKUXv30GjHuV51cVWseauwaj6dzLUyHlczbHb88je9yEew6CFlycu0AzUB3dBOY4pA80M5A==}
+  /@tabler/icons/2.0.0-beta:
+    resolution: {integrity: sha512-XvI7y4SMkd7koZASPz6obXlnEsKBeIvDhR8hPdURQt3uu5CEPG0K6o9qn6Cm7Z0r8pmf9nHjkdouoYGrzDbwxg==}
     dev: false
 
   /@tsconfig/svelte/3.0.0:
