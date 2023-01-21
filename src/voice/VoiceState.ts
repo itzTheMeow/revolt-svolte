@@ -172,23 +172,19 @@ class VoiceStateReference {
   async startDeafen() {
     if (!this.client) return console.log("No client object"); // ! TODO: let the user know
     if (this.client.isDeaf) return;
-
     this.client.isDeaf = true;
     this.client?.consumers.forEach((consumer) => {
       consumer.audio?.pause();
     });
-
     this.syncState();
   }
   async stopDeafen() {
     if (!this.client) return console.log("No client object"); // ! TODO: let the user know
     if (!this.client.isDeaf) return;
-
     this.client.isDeaf = false;
     this.client?.consumers.forEach((consumer) => {
       consumer.audio?.resume();
     });
-
     this.syncState();
   }
 
@@ -212,17 +208,15 @@ class VoiceStateReference {
         }
       }
     }
-
     this.syncState();
   }
 
   async stopProducing(type: ProduceType) {
     await this.client?.stopProduce(type);
-
     this.syncState();
   }
 }
 
 export const voiceStateReference = new VoiceStateReference();
 export const voiceState = writable(voiceStateReference);
-voiceStateReference.events.on("stateChange", () => voiceState.update((s) => s));
+voiceStateReference.events.on("stateChange", () => voiceState.set(voiceStateReference));

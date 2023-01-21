@@ -3,8 +3,10 @@
     IconBrandGithub,
     IconChevronDown,
     IconChevronRight,
+    IconHeadphonesOff,
     IconLock,
     IconLockOpen,
+    IconMicrophoneOff,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
@@ -14,7 +16,12 @@
   import { tippy } from "svelte-tippy";
   import { BRAND_COLOR, Theme } from "Theme";
   import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL } from "utils";
+  import { voiceState, VoiceStatus } from "voice/VoiceState";
+  import ChannelIcon from "./ChannelIcon.svelte";
   import ChannelItem from "./ChannelItem.svelte";
+  import VoiceBarIcon from "./VoiceBarIcon.svelte";
+
+  const MAX_USERS = 8;
 
   let scrolledTop = true,
     scroller: HTMLDivElement;
@@ -28,6 +35,14 @@
   $: {
     useBanner = !!$SelectedServer?.banner && scrolledTop;
     savedMessages = client.channels.find((c) => c.isSavedMessages());
+  }
+
+  let voiceConnection: Channel | null = null;
+  $: {
+    voiceConnection =
+      $voiceState.status == VoiceStatus.CONNECTED
+        ? client.channels.get($voiceState.roomId || "") || null
+        : null;
   }
 
   let si: NodeJS.Timer;
@@ -133,6 +148,52 @@
         .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel}
         <ChannelItem {channel} />
       {/each}
+    </div>
+  {/if}
+  {#if voiceConnection}
+    <div class="flex flex-col gap-2 px-2 py-3">
+      <div class="flex gap-1 items-center w-full">
+        <ChannelIcon channel={voiceConnection} />
+        <div class="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap flex-1">
+          {voiceConnection.name}
+        </div>
+        <VoiceBarIcon action="mute" color={$Theme["tertiary-foreground"]} />
+        <VoiceBarIcon action="deafen" color={$Theme["tertiary-foreground"]} />
+        <VoiceBarIcon action="disconnect" color={$Theme["error"]} />
+      </div>
+      <div class="flex w-full">
+        {#each [...$voiceState.participants.keys()] as uid, ind}
+          <div class="relative w-7 h-7 -mr-2">
+            {#if ind == MAX_USERS}
+              <div
+                class="flex items-center justify-center rounded-full w-full h-full"
+                style:background={$Theme["tooltip"]}
+              >
+                +{$voiceState.participants.size - MAX_USERS}
+              </div>
+            {:else if ind < MAX_USERS}
+              <img
+                src={proxyURL(client.users.get(uid)?.generateAvatarURL({ max_side: 64 }), "image")}
+                alt={client.users.get(uid)?.username}
+                class="rounded-full w-full h-full {(client.user?.id === uid &&
+                  $voiceState.isDeaf()) ||
+                !$voiceState.participants.get(uid)?.audio
+                  ? 'brightness-50'
+                  : ''}"
+              />
+              {#if (client.user?.id === uid && $voiceState.isDeaf()) || !$voiceState.participants.get(uid)?.audio}
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  {#if client.user?.id === uid && $voiceState.isDeaf()}
+                    <IconHeadphonesOff size={14} />
+                  {:else if !$voiceState.participants.get(uid)?.audio}
+                    <IconMicrophoneOff size={14} />
+                  {/if}
+                </div>
+              {/if}
+            {/if}
+          </div>
+        {/each}
+      </div>
     </div>
   {/if}
 </div>

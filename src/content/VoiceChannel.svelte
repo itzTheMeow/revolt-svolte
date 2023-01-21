@@ -136,7 +136,6 @@
             class="p-3 bg-error inline-flex items-center justify-center rounded-full cursor-pointer"
             on:click={async () => {
               $voiceState.disconnect();
-              $voiceState = $voiceState;
             }}
           >
             <IconPhoneOff size={20} />
