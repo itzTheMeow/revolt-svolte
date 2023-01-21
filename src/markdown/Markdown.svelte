@@ -122,7 +122,9 @@
                   properties: {
                     src: proxyURL(emojiURL, "image"),
                     class: `inline object-contain ${
-                      text?.trim() == `:${match}:` ? "h-[3em] w-[3em]" : "h-[1.25em] w-[1.25em]"
+                      text?.trim() == `:${match}:` && !line
+                        ? "h-[3em] w-[3em]"
+                        : "h-[1.25em] w-[1.25em]"
                     }`,
                     style: "margin: 0px 0.05em 0px 0.1em;vertical-align:-0.2em;",
                   },
