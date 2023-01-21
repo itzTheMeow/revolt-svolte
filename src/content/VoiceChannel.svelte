@@ -32,7 +32,7 @@
       </div>
     {/if}
     {#if isConnectedHere}
-      <div class="flex">
+      <div class="flex mt-auto">
         {#each [...$voiceState.participants.keys()] as uid}
           <div class="relative w-16 h-16 mx-2">
             <img
@@ -41,7 +41,10 @@
               class="rounded-full w-full h-full"
             />
             {#if (client.user?.id === uid && $voiceState.isDeaf()) || !$voiceState.participants.get(uid)?.audio}
-              <div class="absolute right-0 bottom-0 p-1 bg-error rounded-full">
+              <div
+                class="absolute right-0 bottom-0 p-1 rounded-full"
+                style:background={$Theme["error"]}
+              >
                 {#if client.user?.id === uid && $voiceState.isDeaf()}
                   <IconHeadphonesOff size={14} />
                 {:else if !$voiceState.participants.get(uid)?.audio}

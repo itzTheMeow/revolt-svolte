@@ -25,7 +25,7 @@
 
 <div
   class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
-  style:background={tinycolor(color).setAlpha(0.2).toRgbString()}
+  style:background={tinycolor(color).setAlpha(0.4).toRgbString()}
   style:color={tinycolor(color).setAlpha(1).toRgbString()}
   on:click={() => {
     switch (action) {
