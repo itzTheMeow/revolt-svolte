@@ -23,6 +23,7 @@
   export let text: string;
   export let keepSpace = false;
   export let line = false;
+  export let noPointer = false;
 
   let content: string | null = null;
   $: {
@@ -56,8 +57,9 @@
           ) => {
             if (
               parent &&
-              DENY_TAGS.includes(node.tagName.toLowerCase()) &&
-              (node.tagName !== "img" || parent.properties?.type !== "emoji")
+              ((DENY_TAGS.includes(node.tagName.toLowerCase()) &&
+                (node.tagName !== "img" || parent.properties?.type !== "emoji")) ||
+                (line && node.tagName == "table"))
             ) {
               const i = parent.children.indexOf(node);
               if (i >= 0) parent.children.splice(i, 1);
@@ -80,8 +82,11 @@
               node.properties.style = `--bdr:${$Theme["tertiary-foreground"]}`;
             } else if (node.tagName == "code") {
               node.properties.style = `--bg:${$Theme["block"]}`;
-            } else if (node.tagName == "p") {
+            } else if (node.tagName == "p" || node.tagName == "li") {
               node.properties.style = "overflow:hidden;text-overflow:ellipsis;";
+            } else if (node.tagName == "ul" && line) {
+              node.properties.style =
+                "display:inline-flex;gap:0.5rem;overflow:hidden;text-overflow:ellipsis;";
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -181,7 +186,9 @@
 <div
   class="[line-height:normal] text-[14px] {line
     ? 'whitespace-nowrap flex gap-2'
-    : '[word-wrap:break-word]'} {keepSpace && content ? 'min-h-[1rem]' : ''}"
+    : '[word-wrap:break-word]'} {noPointer ? 'pointer-events-none' : ''} {keepSpace && content
+    ? 'min-h-[1rem]'
+    : ''}"
 >
   {#if content !== null}
     {@html content}

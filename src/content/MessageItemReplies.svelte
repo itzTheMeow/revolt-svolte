@@ -1,5 +1,8 @@
 <script lang="ts">
   import { IconCornerLeftDown } from "@tabler/icons-svelte";
+  import { showMemberContext } from "contextmenu/MemberContextMenu";
+  import Markdown from "markdown/Markdown.svelte";
+  import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Message } from "revolt-toolset";
   import { MessageCache } from "State";
   import { writable } from "svelte/store";
@@ -29,29 +32,50 @@
     {#if reply?.isUser()}
       <div class="flex gap-2 items-center">
         <IconCornerLeftDown size={18} />
-        <img
-          class="w-4 h-4 rounded-full -ml-1"
-          src={reply
-            ? MessageDetails(reply).avatar
-            : proxyURL(
-                `https://api.revolt.chat/users/${
-                  message.replyIDs?.[$replies.indexOf(reply)]
-                }/default_avatar`,
-                "image"
-              )}
-          alt=""
-        />
-        <div style="color:{reply ? MessageDetails(reply).color || 'inherit' : 'inherit'};">
-          {message.mentionIDs.includes(reply.authorID) ? "@" : ""}{reply
-            ? MessageDetails(reply).name
-            : "Unknown User"}
+        <div
+          class="cursor-pointer flex gap-2 items-center text-[14px] hover:[--u:underline]"
+          data-clickable
+          on:click={(e) => {
+            if (!reply?.isUser()) return;
+            if (reply.member) showMemberContext(reply.member, e.clientX, e.clientY, e.target);
+            else ModalStack.push({ type: "user", id: reply.authorID });
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+        >
+          <img
+            class="w-4 h-4 rounded-full -ml-1"
+            src={reply
+              ? MessageDetails(reply).avatar
+              : proxyURL(
+                  `https://api.revolt.chat/users/${
+                    message.replyIDs?.[$replies.indexOf(reply)]
+                  }/default_avatar`,
+                  "image"
+                )}
+            alt=""
+          />
+          <div
+            class="[text-decoration-line:var(--u)]"
+            style:color={reply ? MessageDetails(reply).color || "inherit" : "inherit"}
+          >
+            {message.mentionIDs.includes(reply.authorID) ? "@" : ""}{reply
+              ? MessageDetails(reply).name
+              : "Unknown User"}
+          </div>
         </div>
-        <div class="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
+        <div
+          class="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap cursor-pointer"
+          data-clickable
+        >
           {#if !reply}
             ...
           {:else if reply.content}
-            {reply.content.slice(0, 200)}
-          {:else}<i>Sent an Attachment</i>{/if}
+            <Markdown text={reply.content} line noPointer />
+          {:else}
+            <i>Sent an Attachment</i>
+          {/if}
         </div>
       </div>
     {/if}
