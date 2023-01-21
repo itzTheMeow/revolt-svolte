@@ -1,13 +1,5 @@
 <script lang="ts">
-  import {
-    IconAlertTriangle,
-    IconHeadphones,
-    IconHeadphonesOff,
-    IconMicrophone,
-    IconMicrophoneOff,
-    IconPhoneCall,
-    IconPhoneOff,
-  } from "@tabler/icons-svelte";
+  import { IconAlertTriangle, IconHeadphonesOff, IconMicrophoneOff } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
@@ -15,6 +7,7 @@
   import { Theme } from "Theme";
   import { proxyURL } from "utils";
   import { voiceState, VoiceStatus } from "../voice/VoiceState";
+  import VoiceChannelIcon from "./VoiceChannelIcon.svelte";
 
   let isConnectedHere = false;
   $: isConnectedHere =
@@ -84,75 +77,15 @@
       </div>
     {/if}
     {#if $voiceState.status !== VoiceStatus.UNAVAILABLE}
-      <div class="mt-auto mb-4 flex items-center">
+      <div class="mt-auto mb-4 flex items-center gap-2">
         {#if isConnectedHere}
-          {#if $voiceState.isProducing("audio")}
-            <div
-              class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
-              style="background-color:{$Theme['tooltip']};"
-              on:click={async () => {
-                await $voiceState.stopProducing("audio");
-                $voiceState = $voiceState;
-              }}
-            >
-              <IconMicrophone size={20} />
-            </div>
-          {:else}
-            <div
-              class="p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
-              style="background-color:{$Theme['tooltip']};"
-              on:click={async () => {
-                await $voiceState.startProducing("audio");
-                $voiceState = $voiceState;
-              }}
-            >
-              <IconMicrophoneOff size={20} />
-            </div>
-          {/if}
-          {#if $voiceState.isDeaf()}
-            <div
-              class="mx-1.5 p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
-              style="background-color:{$Theme['tooltip']};"
-              on:click={async () => {
-                await $voiceState.stopDeafen();
-                $voiceState = $voiceState;
-              }}
-            >
-              <IconHeadphonesOff size={20} />
-            </div>
-          {:else}
-            <div
-              class="mx-1.5 p-3 inline-flex items-center justify-center rounded-full cursor-pointer"
-              style="background-color:{$Theme['tooltip']};"
-              on:click={async () => {
-                await $voiceState.startDeafen();
-                $voiceState = $voiceState;
-              }}
-            >
-              <IconHeadphones size={20} />
-            </div>
-          {/if}
-          <div
-            class="p-3 bg-error inline-flex items-center justify-center rounded-full cursor-pointer"
-            on:click={async () => {
-              $voiceState.disconnect();
-            }}
-          >
-            <IconPhoneOff size={20} />
-          </div>
+          <VoiceChannelIcon action="mute" color={$Theme["tertiary-foreground"]} />
+          <VoiceChannelIcon action="deafen" color={$Theme["tertiary-foreground"]} />
+          <VoiceChannelIcon action="disconnect" color={$Theme["error"]} />
         {:else if $voiceState.status == VoiceStatus.READY || $voiceState.status == VoiceStatus.CONNECTED}
-          <div
-            class="p-3 bg-success inline-flex items-center justify-center rounded-full cursor-pointer"
-            on:click={async () => {
-              try {
-                await $voiceState.connect(channel);
-              } catch (err) {
-                alert("WebRTC is probably not enabled in settings!\n" + err);
-              }
-            }}
-          >
-            <IconPhoneCall size={20} />
-          </div>
+          <VoiceChannelIcon action={channel} color={$Theme["success"]} />
+        {:else}
+          <VoiceChannelIcon action="cancel" color={$Theme["error"]} />
         {/if}
       </div>
     {/if}
