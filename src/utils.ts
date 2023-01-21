@@ -20,7 +20,7 @@ export function escapeRegex(r: RegExp) {
   return new RegExp(escapeHTML(r.source), r.flags);
 }
 export function proxyURL(url: string = "", type: "any" | "image") {
-  return `/proxy?url=${encodeURIComponent(url)}&t=${type}`;
+  return (<any>window).STANDALONE ? url : `/proxy?url=${encodeURIComponent(url)}&t=${type}`;
 }
 
 export const Matches = {
