@@ -9,7 +9,7 @@
   export let message: Message;
 </script>
 
-<div class="flex items-center gap-1.5 -mb-0.5" style:line-height="1.1">
+<div class="flex items-center gap-1.5" style:line-height="1.1">
   <div
     class="font-semibold cursor-pointer hover:underline"
     style={UserColor(MessageDetails(message).color || "inherit")}

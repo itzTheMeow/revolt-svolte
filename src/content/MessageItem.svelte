@@ -108,7 +108,9 @@
           </div>
         {/if}
         <div
-          class="flex flex-col flex-1 max-w-[calc(100%-3rem)] {!$MobileLayout ? 'select-text' : ''}"
+          class="flex flex-col flex-1 max-w-[calc(100%-3rem)] py-0.5 {!$MobileLayout
+            ? 'select-text'
+            : ''}"
         >
           {#if shouldSeparate}
             <MessageItemHeader {message} />

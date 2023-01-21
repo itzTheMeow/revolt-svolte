@@ -179,7 +179,7 @@
 </script>
 
 <div
-  class="[line-height:normal] {line
+  class="[line-height:normal] text-[14px] {line
     ? 'whitespace-nowrap flex gap-2'
     : '[word-wrap:break-word]'} {keepSpace && content ? 'min-h-[1rem]' : ''}"
 >
