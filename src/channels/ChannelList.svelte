@@ -42,7 +42,7 @@
 
 <div
   class="h-full w-56 flex flex-col"
-  style="background-color:{$Theme['secondary-background']}"
+  style:background={$Theme["secondary-background"]}
   id="ChannelList"
 >
   {#if $SelectedServer}

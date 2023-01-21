@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { IconHash, IconHome, IconNotebook, IconUsers, IconVolume } from "@tabler/icons-svelte";
   import { UnreadState } from "Client";
   import { copyIDItem, showOptionContext } from "contextmenu/ContextMenus";
   import Indicator from "extra/Indicator.svelte";
@@ -13,7 +12,8 @@
     SelectedChannel,
   } from "State";
   import { Theme } from "Theme";
-  import { proxyURL, testMuted, UserDetails } from "utils";
+  import { testMuted, UserDetails } from "utils";
+  import ChannelIcon from "./ChannelIcon.svelte";
 
   export let channel: Channel;
   let isSelected = false;
@@ -46,34 +46,7 @@
   on:click={switchTo}
   on:contextmenu={contextmenu}
 >
-  {#if channel.icon || channel.isDM()}
-    <img
-      src={proxyURL(
-        channel.isDM()
-          ? channel.recipient?.generateAvatarURL({
-              max_side: 64,
-            })
-          : channel.generateIconURL({
-              max_side: 64,
-            }),
-        "image"
-      )}
-      width="20"
-      height="20"
-      class="object-cover aspect-square {channel.isDMBased() ? 'rounded-full' : ''}"
-      alt=""
-    />
-  {:else if channel.isGroupDM()}
-    <IconUsers size={20} />
-  {:else if channel.isText()}
-    <IconHash size={20} />
-  {:else if channel.isVoice()}
-    <IconVolume size={20} />
-  {:else if channel.isSavedMessages()}
-    <IconNotebook size={20} />
-  {:else}
-    <IconHome size={20} />
-  {/if}
+  <ChannelIcon {channel} />
   <span class="ml-1">
     {channel.isDM() ? UserDetails(channel.recipient).name : channel.name}
   </span>

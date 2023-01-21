@@ -22,6 +22,7 @@
 
   export let text: string;
   export let keepSpace = false;
+  export let line = false;
 
   let content: string | null = null;
   $: {
@@ -79,6 +80,8 @@
               node.properties.style = `--bdr:${$Theme["tertiary-foreground"]}`;
             } else if (node.tagName == "code") {
               node.properties.style = `--bg:${$Theme["block"]}`;
+            } else if (node.tagName == "p") {
+              node.properties.style = "overflow:hidden;text-overflow:ellipsis;";
             }
             if (!node.properties.type || !node.properties.match) return void 0;
             switch (node.properties.type) {
@@ -176,7 +179,9 @@
 </script>
 
 <div
-  class="[line-height:normal] [word-wrap:break-word] {keepSpace && content ? 'min-h-[1rem]' : ''}"
+  class="[line-height:normal] {line
+    ? 'whitespace-nowrap flex gap-2'
+    : '[word-wrap:break-word]'} {keepSpace && content ? 'min-h-[1rem]' : ''}"
 >
   {#if content !== null}
     {@html content}
