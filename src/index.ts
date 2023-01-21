@@ -7,5 +7,6 @@ const session = localStorage.getItem("session");
 
 if (session) {
   new App({ target: document.body });
-  client.login(JSON.parse(session).token, "user");
+  const { token, type } = JSON.parse(session);
+  client.login(token, type);
 } else new Login({ target: document.body });
