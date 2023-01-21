@@ -1,21 +1,26 @@
 <script lang="ts">
-  import { IconBrandGithub } from "@tabler/icons-svelte";
+  import { IconBrandGithub, IconRobot, IconUser } from "@tabler/icons-svelte";
   import Loader from "Loader.svelte";
   import { Client } from "revolt-toolset";
   import { BRAND_COLOR } from "Theme";
   import { API_URL, BRAND_NAME, GIT_URL } from "utils";
 
-  let signinBtn: HTMLDivElement;
-  let userInput: HTMLInputElement;
-  let passInput: HTMLInputElement;
-  let errtxt = "";
+  let signinBtn: HTMLDivElement,
+    userInput: HTMLInputElement,
+    passInput: HTMLInputElement,
+    tokenInput: HTMLInputElement;
+  let errtxt = "",
+    loginBot = false;
 
   async function signIn() {
     errtxt = "";
     const email = userInput.value,
-      password = passInput.value;
-    if (!email) return (errtxt = "Enter an email!");
-    if (!password) return (errtxt = "Enter a password!");
+      password = passInput.value,
+      token = tokenInput.value;
+    if (!token) {
+      if (!email) return (errtxt = "Enter an email!");
+      if (!password) return (errtxt = "Enter a password!");
+    }
 
     signinBtn.classList.add("loading");
     const client = new Client({
@@ -26,7 +31,8 @@
       window.location.reload();
     });
     try {
-      await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
+      if (!token) await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
+      else await client.login(token, loginBot ? "bot" : "user");
     } catch (err) {
       errtxt = String(err);
       signinBtn.classList.remove("loading");
@@ -77,11 +83,32 @@
         />
         <input
           type="password"
-          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="Password"
           bind:this={passInput}
           on:keydown={(e) => e.key == "Enter" && signIn()}
         />
+        <div class="w-full text-center my-1">OR</div>
+        <div class="input-group w-72 max-w-full mb-2">
+          <input
+            type="password"
+            class="input input-ghost !rounded-l-full w-60 input-bordered bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+            placeholder="Token"
+            bind:this={tokenInput}
+            on:keydown={(e) => e.key == "Enter" && signIn()}
+          />
+          <button
+            class="btn btn-square !rounded-r-full"
+            style:background={BRAND_COLOR}
+            on:click={() => (loginBot = !loginBot)}
+          >
+            {#if loginBot}
+              <IconRobot class="-ml-1" />
+            {:else}
+              <IconUser class="-ml-1" />
+            {/if}
+          </button>
+        </div>
         {#if errtxt}
           <div class="text-error text-sm mt-2">{errtxt}</div>
         {/if}
