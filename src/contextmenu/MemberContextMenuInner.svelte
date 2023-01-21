@@ -3,6 +3,7 @@
   import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
+  import Markdown from "markdown/Markdown.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
@@ -71,6 +72,10 @@
       {MemberDetails(member).name}
     </div>
   </div>
+  {#if profile?.bio}
+    <Header className="mt-2 mb-1">About</Header>
+    <Markdown text={profile.bio} />
+  {/if}
   {#if canRoleManage || member.roles.length}
     <Header className="mt-2 mb-1">Roles</Header>
     <div class="flex gap-1 flex-wrap">
