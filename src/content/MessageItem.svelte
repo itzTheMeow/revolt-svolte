@@ -113,8 +113,12 @@
           {#if shouldSeparate}
             <MessageItemHeader {message} />
           {/if}
-          <MessageItemContent {message} />
-          <MessageItemAttachments {message} />
+          {#if message.content}
+            <MessageItemContent {message} />
+          {/if}
+          {#if message.attachments?.length}
+            <MessageItemAttachments {message} />
+          {/if}
         </div>
       </div>
     {/if}
