@@ -7,6 +7,7 @@
 import EventEmitter from "eventemitter3";
 import { action, makeAutoObservable, runInAction } from "mobx";
 import type { VoiceChannel } from "revolt-toolset";
+import { writable } from "svelte/store";
 import type { ProduceType, VoiceUser } from "./Types";
 import type VoiceClient from "./VoiceClient";
 
@@ -222,4 +223,6 @@ class VoiceStateReference {
   }
 }
 
-export const voiceState = new VoiceStateReference();
+export const voiceStateReference = new VoiceStateReference();
+export const voiceState = writable(voiceStateReference);
+voiceStateReference.events.on("stateChange", () => voiceState.update((s) => s));
