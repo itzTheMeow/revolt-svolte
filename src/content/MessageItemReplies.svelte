@@ -28,7 +28,7 @@
 </script>
 
 <div class="mt-3 -mb-2.5 pl-1.5">
-  {#each $replies.sort((r1, r2) => (r1?.createdAt || 0) - (r2?.createdAt || 0)) as reply}
+  {#each $replies.sort((r1, r2) => (r1?.createdAt || 0) - (r2?.createdAt || 0)) as reply (reply?.id)}
     {#if reply?.isUser()}
       <div class="flex gap-2 items-center">
         <IconCornerLeftDown size={18} />

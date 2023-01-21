@@ -9,7 +9,7 @@
     class="flex py-2 overflow-x-auto w-full"
     style="height:20%;background-color:{$Theme['primary-header']};"
   >
-    {#each $uploadedFiles as file}
+    {#each $uploadedFiles as file (file.url)}
       <div
         class="relative rounded bg-white bg-opacity-25 flex items-center justify-center mx-1 h-full cursor-pointer"
         on:click={() => {

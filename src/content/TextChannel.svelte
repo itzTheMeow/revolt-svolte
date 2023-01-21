@@ -23,7 +23,7 @@
 <div class="overflow-y-auto flex-1 flex flex-col p-1.5" id="MessageList">
   {#if $MessageCache[channel.id]?.length}
     <div class="mt-auto" />
-    {#each $MessageCache[channel.id].slice(-75) as message}
+    {#each $MessageCache[channel.id].slice(-75) as message (message.id)}
       <MessageItem {message} />
     {/each}
   {:else}

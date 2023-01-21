@@ -153,7 +153,7 @@
     class="overflow-y-auto py-2 w-full"
     style="max-height:35%;background-color:{$Theme['primary-header']};"
   >
-    {#each $autocomplete.channels.slice(0, 15) as c}
+    {#each $autocomplete.channels.slice(0, 15) as c (c.id)}
       <AutocompleteItem
         icon={c.icon
           ? proxyURL(c.generateIconURL({ max_side: 64 }), "image")
@@ -164,7 +164,7 @@
         onclick={() => handleAutocompleteTab($autocomplete?.tab(c))}
       />
     {/each}
-    {#each $autocomplete.emojis.slice(0, 15) as e}
+    {#each $autocomplete.emojis.slice(0, 15) as e (e.id)}
       <AutocompleteItem
         icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
         name={e.name || ""}
@@ -172,7 +172,7 @@
         onclick={() => handleAutocompleteTab($autocomplete?.tab(e))}
       />
     {/each}
-    {#each $autocomplete.users.slice(0, 15) as u}
+    {#each $autocomplete.users.slice(0, 15) as u (u.id)}
       <AutocompleteItem
         icon={proxyURL(
           u.generateAvatarURL({ max_side: 64 }) || u.user?.generateAvatarURL({ max_side: 64 }),
@@ -191,7 +191,7 @@
 
 {#if $replyingTo.length}
   <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
-    {#each $replyingTo as reply}
+    {#each $replyingTo as reply (reply.id)}
       <TextboxReply message={reply} />
     {/each}
   </div>

@@ -76,7 +76,7 @@
     style:--scroll-width="0px"
     bind:this={list}
   >
-    {#each orderedServers as server}
+    {#each orderedServers as server (server.id)}
       <ServerIcon {server} />
     {/each}
 

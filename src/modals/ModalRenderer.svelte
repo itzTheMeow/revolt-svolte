@@ -9,7 +9,7 @@
   });
 </script>
 
-{#each stack as modal}
+{#each stack as modal (modal)}
   {#if modal.type == "confirm"}
     <ConfirmModal {modal} />
   {:else if modal.type == "user"}

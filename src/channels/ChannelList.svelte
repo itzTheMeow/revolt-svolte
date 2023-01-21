@@ -76,7 +76,7 @@
       </div>
     </div>
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
-      {#each $SelectedServer.orderedChannels as category}
+      {#each $SelectedServer.orderedChannels as category (category.id)}
         {#if $SelectedServer.orderedChannels.indexOf(category) && category.id !== "default"}
           <div
             class="text-base text-primary ml-2 mt-0.5 {$CollapsedCategories.includes(category.id)
@@ -98,7 +98,7 @@
           </div>
         {/if}
         {#if !$CollapsedCategories.includes(category.id)}
-          {#each category.channels as channel}
+          {#each category.channels as channel (channel.id)}
             <ChannelItem {channel} />
           {/each}
         {/if}
@@ -145,7 +145,7 @@
       {/if}
       {#each client.channels
         .filter((c) => c.isDMBased())
-        .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel}
+        .sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1) ) as channel (channel.id)}
         <ChannelItem {channel} />
       {/each}
     </div>

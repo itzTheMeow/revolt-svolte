@@ -7,7 +7,7 @@
   export let message: Message;
 </script>
 
-{#each message.attachments || [] as attachment}
+{#each message.attachments || [] as attachment (attachment.id)}
   <div class="rounded mt-1 block" style="max-width:90%;max-height:50vh;">
     {#if attachment.metadata.type == "Image"}
       <Image className="max-w-[inherit] max-h-[inherit]" src={attachment} />

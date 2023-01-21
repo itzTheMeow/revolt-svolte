@@ -79,7 +79,7 @@
   {#if canRoleManage || member.roles.length}
     <Header className="mt-2 mb-1">Roles</Header>
     <div class="flex gap-1 flex-wrap">
-      {#each !isRoleManaging ? member.roles.reverse() : member.server.roles.ordered as role}
+      {#each !isRoleManaging ? member.roles.reverse() : member.server.roles.ordered as role (role.id)}
         <div
           class="rounded overflow-hidden relative w-fit px-1.5 py-0.5 flex items-center gap-1 cursor-pointer [--hov:none] hover:[--hov:flex] hover:!opacity-100 {isRoleManaging &&
           !roleList.has(role.id)
