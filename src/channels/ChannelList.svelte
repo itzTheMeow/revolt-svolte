@@ -11,7 +11,7 @@
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
   import type { Channel } from "revolt-toolset";
-  import { CollapsedCategories, HomeChannel, SelectedServer } from "State";
+  import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
   import { BRAND_COLOR, Theme } from "Theme";
@@ -153,13 +153,20 @@
   {#if voiceConnection}
     <div class="flex flex-col gap-2 px-2 py-3">
       <div class="flex gap-1 items-center w-full">
-        <ChannelIcon channel={voiceConnection} />
-        <div class="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap flex-1">
-          {voiceConnection.name}
+        <div
+          class="flex items-center gap-1 overflow-hidden cursor-pointer hover:underline"
+          on:click={() => SelectedChannel.set(voiceConnection)}
+        >
+          <ChannelIcon channel={voiceConnection} />
+          <div class="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap flex-1">
+            {voiceConnection.name}
+          </div>
         </div>
-        <VoiceBarIcon action="mute" color={$Theme["tertiary-foreground"]} />
-        <VoiceBarIcon action="deafen" color={$Theme["tertiary-foreground"]} />
-        <VoiceBarIcon action="disconnect" color={$Theme["error"]} />
+        <div class="flex items-center gap-1 ml-auto">
+          <VoiceBarIcon action="mute" color={$Theme["tertiary-foreground"]} />
+          <VoiceBarIcon action="deafen" color={$Theme["tertiary-foreground"]} />
+          <VoiceBarIcon action="disconnect" color={$Theme["error"]} />
+        </div>
       </div>
       <div class="flex w-full">
         {#each [...$voiceState.participants.keys()] as uid, ind}
