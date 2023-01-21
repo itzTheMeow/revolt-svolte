@@ -64,7 +64,7 @@
       </div>
     {:else if voiceState.status !== VoiceStatus.CONNECTED && voiceState.status !== VoiceStatus.READY}
       <div
-        class="p-2 rounded-lg mt-auto flex items-center gap-2"
+        class="py-2 px-3 rounded-lg mt-auto flex items-center gap-2"
         style:background={$Theme["secondary-background"]}
       >
         {#if voiceState.status == VoiceStatus.UNAVAILABLE}
