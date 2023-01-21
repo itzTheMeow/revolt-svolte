@@ -155,7 +155,10 @@
       <div class="flex gap-1 items-center w-full">
         <div
           class="flex items-center gap-1 overflow-hidden cursor-pointer hover:underline"
-          on:click={() => SelectedChannel.set(voiceConnection)}
+          on:click={() => {
+            SelectedServer.set(voiceConnection?.isServerBased() ? voiceConnection.server : null);
+            SelectedChannel.set(voiceConnection);
+          }}
         >
           <ChannelIcon channel={voiceConnection} />
           <div class="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap flex-1">
