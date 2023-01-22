@@ -10,7 +10,7 @@
   style="height:{Native.titlebarHeight}px;border-bottom:1px solid rgba(0,0,0,0.2);"
 >
   <div class="flex-1 flex items-center gap-1" style="-webkit-app-region:drag;">
-    <img class="w-5 h-5" src="/logo.png" />
+    <img class="w-5 h-5" src="./logo.png" />
     <div class="font-semibold">{BRAND_NAME}</div>
   </div>
   <div

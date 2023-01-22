@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf dist && rimraf serverDist && tsc -b tsconfig.json",
     "start": "npm run build && node .",
-    "dev": "npm run build && node . --watch"
+    "dev": "npm run build && node . --watch",
+    "standalone": "npm run build && node . --standalone"
   },
   "repository": {
     "type": "git",

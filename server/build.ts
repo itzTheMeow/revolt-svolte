@@ -9,6 +9,8 @@ import useTailwind from "tailwindcss";
 import config from "./config";
 import { init } from "./server";
 
+const standalone = process.argv.includes("--standalone");
+
 console.log("Building client...");
 const hash = execSync("git rev-parse --short HEAD").toString().trim();
 esbuild
@@ -18,10 +20,10 @@ esbuild
     outdir: `./dist`,
     mainFields: ["svelte", "browser", "module", "main"],
     minify: true,
-    sourcemap: "external",
-    splitting: true,
+    sourcemap: standalone ? "inline" : "external",
+    splitting: !standalone,
     write: true,
-    format: `esm`,
+    format: standalone ? "iife" : "esm",
     watch: process.argv.includes(`--watch`),
     plugins: [
       esbuildSvelte({
@@ -39,13 +41,22 @@ esbuild
     loader: { ".png": "file", ".ttf": "file", ".woff": "file", ".woff2": "file" },
   })
   .then(() => {
-    const html = fs.readFileSync("src/index.html").toString();
+    let html = fs.readFileSync("src/index.html").toString();
+    if (standalone)
+      html = html.replace(
+        `<script type="module"`,
+        `<script>window.STANDALONE=true;</script><script`
+      );
     fs.writeFileSync(
       "dist/index.html",
       html.replace("%CommitHash%", hash).replace(/%BrandName%/g, config.brandName)
     );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
+    if (standalone) {
+      console.log("Standalone build finished!");
+      process.exit();
+    }
     init();
   })
   //@ts-ignore

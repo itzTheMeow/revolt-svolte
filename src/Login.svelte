@@ -65,7 +65,7 @@
         class="flex gap-2 items-center self-start mb-auto w-full bg-black bg-opacity-40 backdrop-blur-md p-3 pr-5 select-none"
         style:color={BRAND_COLOR}
       >
-        <img class="w-10 h-10" src="/logo.png" alt="" />
+        <img class="w-10 h-10" src="./logo.png" alt="" />
         <div class="text-4xl font-[Nevis]">{BRAND_NAME}</div>
         <a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank" rel="noreferrer">
           <IconBrandGithub size={28} />
