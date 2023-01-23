@@ -11,6 +11,7 @@ export const client = new Client({
 });
 export const UnreadState = writable(Date.now());
 export const UseMemberState = writable(Date.now());
+export const UseTypingState = writable(Date.now());
 client.once("ready", async () => {
   try {
     const settings = await client.syncFetchSettings([]);
@@ -36,3 +37,6 @@ client.servers.onUpdate(() => {
   UseMemberState.set(Date.now() * Math.random());
 });
 setInterval(() => client.unreads.sync(), 60000);
+
+client.on("channelStartTyping", () => UseTypingState.set(Date.now() * Math.random()));
+client.on("channelStopTyping", () => UseTypingState.set(Date.now() * Math.random()));

@@ -26,6 +26,7 @@
   import { handleUpdates, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
+  import TextboxTyping from "./TextboxTyping.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
   let inputtedMessage = "",
@@ -144,6 +145,7 @@
   handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
+<TextboxTyping />
 <TextboxUploaded />
 
 <!-- Autocomplete -->
