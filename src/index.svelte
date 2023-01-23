@@ -183,7 +183,7 @@
       isSliding = false;
       const target = e.changedTouches[0].target as HTMLElement;
       if (
-        (document.activeElement?.tagName == "INPUT" && target.tagName == "INPUT") ||
+        (document.activeElement?.tagName == "TEXTAREA" && target.tagName == "TEXTAREA") ||
         $imagePreview ||
         $MemberMenu ||
         [...document.querySelectorAll("[data-slider]")].find((s) => s.contains(target)) ||
@@ -195,8 +195,8 @@
     Container.addEventListener("touchmove", (e) => {
       if (!startedDragging) return;
       if (
-        document.activeElement?.tagName == "INPUT" &&
-        (e.changedTouches[0].target as HTMLElement).tagName == "INPUT"
+        document.activeElement?.tagName == "TEXTAREA" &&
+        (e.changedTouches[0].target as HTMLElement).tagName == "TEXTAREA"
       )
         return;
       curPos = [e.changedTouches[0].pageX, e.changedTouches[0].pageY];
