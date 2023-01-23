@@ -125,7 +125,7 @@ export const MobileLayout = writable<boolean>(false);
 export const AppHeight = writable<number>(window.innerHeight);
 export const AppWidth = writable<number>(window.innerWidth);
 function recalcMobileLayout() {
-  if (mselect) return;
+  if (mselect && window.innerWidth <= 700) return;
   MobileLayout.set(window.innerWidth <= 700);
   AppHeight.set(window.innerHeight);
   AppWidth.set(window.innerWidth);

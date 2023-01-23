@@ -1,5 +1,6 @@
 <script lang="ts">
   import { IconCircleX, IconCornerUpLeft } from "@tabler/icons-svelte";
+  import Markdown from "markdown/Markdown.svelte";
   import type { BaseMessage } from "revolt-toolset";
   import { updateReplies } from "State";
   import { Theme } from "Theme";
@@ -25,7 +26,7 @@
     </div>
     <div class="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
       {#if message.content}
-        {message.content.slice(0, 200)}
+        <Markdown text={message.content} line />
       {:else}
         <i>Sent an Attachment</i>
       {/if}

@@ -59,7 +59,7 @@
               parent &&
               ((DENY_TAGS.includes(node.tagName.toLowerCase()) &&
                 (node.tagName !== "img" || parent.properties?.type !== "emoji")) ||
-                (line && node.tagName == "table"))
+                (line && (node.tagName == "table" || node.tagName == "pre")))
             ) {
               const i = parent.children.indexOf(node);
               if (i >= 0) parent.children.splice(i, 1);
