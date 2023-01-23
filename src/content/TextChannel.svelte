@@ -24,14 +24,15 @@
     </div>
   {/if}
 </div>
-<div class="overflow-y-auto flex-1 flex flex-col p-1.5" id="MessageList">
-  {#if $MessageCache[channel.id]?.length}
-    <div class="mt-auto" />
-    {#each $MessageCache[channel.id].slice(-75) as message (message.id)}
-      <MessageItem {message} />
-    {/each}
-  {:else}
-    ...
-  {/if}
+<div class="overflow-y-auto flex-1 p-1.5 flex flex-col-reverse" id="MessageList">
+  <div class="flex flex-col-reverse">
+    {#if $MessageCache[channel.id]?.length}
+      {#each $MessageCache[channel.id].slice(-75).reverse() as message (message.id)}
+        <MessageItem {message} />
+      {/each}
+    {:else}
+      ...
+    {/if}
+  </div>
 </div>
 <Textbox />
