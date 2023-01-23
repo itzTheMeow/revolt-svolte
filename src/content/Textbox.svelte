@@ -51,7 +51,7 @@
     return false;
   }
   function handleAutocompleteTab(id: string) {
-    if (!$autocomplete) return;
+    if (!$autocomplete?.all.length) return;
     const res = $autocomplete.tab(
       $autocomplete.all.find((a) => a.id == id) || $autocomplete.all[0]
     );
