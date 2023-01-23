@@ -102,10 +102,7 @@ export function updateReplies(reply: BaseMessage, shift = false) {
 
 export const autocomplete = writable<AutocompleteResult | null>(null),
   selectedAutocomplete = writable("");
-autocomplete.subscribe((a) => {
-  const aa = a ? [...a.channels, ...a.emojis, ...a.users] : [];
-  selectedAutocomplete.update((sa) => (aa.find((t) => t.id == sa) ? sa : aa[0]?.id || ""));
-});
+autocomplete.subscribe((a) => selectedAutocomplete.set(a?.all[0]?.id || ""));
 
 export const MessageInputSelected = writable<boolean>(false);
 let mselect = false;
