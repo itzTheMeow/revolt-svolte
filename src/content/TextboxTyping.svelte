@@ -2,8 +2,9 @@
   import { UseTypingState } from "Client";
   import type { User } from "revolt-toolset";
   import { SelectedChannel } from "State";
+  import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
-  import { MemberOrUserDetails } from "utils";
+  import { handleUpdates, MemberOrUserDetails } from "utils";
 
   let typing: { user: User; details: ReturnType<typeof MemberOrUserDetails> }[] = [];
 
@@ -25,6 +26,8 @@
             u1.details.name.toLowerCase() > u2.details.name.toLowerCase() ? 1 : -1
           );
   }
+
+  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 {#if typing.length}

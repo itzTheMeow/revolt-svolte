@@ -3,11 +3,15 @@
   import Markdown from "markdown/Markdown.svelte";
   import type { Channel } from "revolt-toolset";
   import { MessageCache } from "State";
+  import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
+  import { handleUpdates } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
 
   export let channel: Channel;
+
+  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 <div class="h-10 flex items-center px-3" style:background={$Theme["secondary-background"]}>
