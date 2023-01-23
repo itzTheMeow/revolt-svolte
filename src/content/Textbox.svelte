@@ -232,7 +232,7 @@
   <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
     <textarea
       id="Textbox"
-      class="w-full resize-none bg-inherit px-1 py-3 box-content"
+      class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3 box-content"
       style:outline="none"
       style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
       autocomplete="on"
