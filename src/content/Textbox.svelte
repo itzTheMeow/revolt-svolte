@@ -177,7 +177,7 @@
       <AutocompleteItem
         id={e.id}
         icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
-        name={e.name || ""}
+        name={e.uniqueName || ""}
         detail={e.parent?.name || ""}
         onclick={() => handleAutocompleteTab(e.id)}
       />
