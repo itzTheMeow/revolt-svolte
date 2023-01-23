@@ -104,6 +104,8 @@
           >
             {#if isHovered}
               {DateTime.fromMillis(message.createdAt).toFormat("t")}
+            {:else if message.edited}
+              (edited)
             {/if}
           </div>
         {/if}
