@@ -136,6 +136,7 @@ export function hasBottom() {
   );
 }
 export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
+  return;
   let pendBottom = false,
     prevScroll = 0;
   beforeUpdate(() => {
