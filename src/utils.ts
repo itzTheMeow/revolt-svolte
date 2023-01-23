@@ -137,7 +137,9 @@ export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
       prevScroll = ListMessages.clientHeight;
       pendBottom =
         pendBottom ||
-        ListMessages.scrollTop == ListMessages.scrollHeight - ListMessages.clientHeight;
+        Math.abs(
+          ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)
+        ) <= 2;
     }
   });
   afterUpdate(() => {

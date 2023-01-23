@@ -33,7 +33,6 @@
     MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement,
-    hasBottom = false,
     UploaderButton: HTMLDivElement;
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
