@@ -1,7 +1,11 @@
 <script lang="ts">
   import { IconCircleX } from "@tabler/icons-svelte";
   import { uploadedFiles } from "State";
+  import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
+  import { handleUpdates } from "utils";
+
+  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 {#if $uploadedFiles.length}
