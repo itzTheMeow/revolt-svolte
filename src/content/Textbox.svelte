@@ -24,7 +24,7 @@
   } from "State";
   import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates, proxyURL } from "utils";
+  import { handleUpdates, MemberOrUserDetails, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxTyping from "./TextboxTyping.svelte";
@@ -38,7 +38,7 @@
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
     autocomplete.set(
-      parseAutocomplete($SelectedServer!, inputtedMessage, MessageInput.selectionStart || 0)
+      parseAutocomplete($SelectedChannel!, inputtedMessage, MessageInput.selectionStart || 0)
     );
   }
   function handleAutocomplete(e: KeyboardEvent) {
@@ -52,8 +52,9 @@
   }
   function handleAutocompleteTab(id: string) {
     if (!$autocomplete) return;
-    const i = [...$autocomplete.channels, ...$autocomplete.emojis, ...$autocomplete.users];
-    const res = $autocomplete.tab(i.find((a) => a.id == id) || i[0]);
+    const res = $autocomplete.tab(
+      $autocomplete.all.find((a) => a.id == id) || $autocomplete.all[0]
+    );
     if (!res) return;
     inputtedMessage = res.text;
     MessageInput.focus();
@@ -179,12 +180,9 @@
     {#each $autocomplete.users.slice(0, 15) as u (u.id)}
       <AutocompleteItem
         id={u.id}
-        icon={proxyURL(
-          u.generateAvatarURL({ max_side: 64 }) || u.user?.generateAvatarURL({ max_side: 64 }),
-          "image"
-        )}
-        name={u.nickname || u.user?.username || ""}
-        detail={u.user?.username || ""}
+        icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar}
+        name={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).name}
+        detail={$SelectedServer?.members.get(u.id)?.nickname ? u.username : ""}
         rounded
         onclick={() => handleAutocompleteTab(u.id)}
       />
