@@ -6,7 +6,6 @@
   import { MessageDetails } from "utils";
 
   export let message: BaseMessage;
-  let ReplyBox: HTMLDivElement;
 
   function delReply(e: Event) {
     e.preventDefault();
@@ -17,7 +16,6 @@
 <div
   class="w-full h-5 flex items-center gap-1.5 px-3 py-4 rounded"
   style="background-color:{$Theme['primary-header']};"
-  bind:this={ReplyBox}
 >
   <IconCornerUpLeft size={18} />
   {#if message.isUser()}
