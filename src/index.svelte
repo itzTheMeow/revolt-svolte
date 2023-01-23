@@ -38,7 +38,7 @@
   } from "State";
   import { afterUpdate, beforeUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates } from "utils";
+  import { handleUpdates, hasBottom } from "utils";
   import { MemberMenu, showMemberContext } from "./contextmenu/MemberContextMenu";
 
   requestAnimationFrame(function animate(time: number) {
@@ -53,7 +53,9 @@
     SelectedServer.update((s) => s);
   });
   client.on("message", async (message) => {
+    const b = hasBottom();
     if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+    //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
     if (
       (message.isUser() && message.authorID == client.user.id) ||
       (document.hasFocus() && $SelectedChannel?.id == message.channelID)

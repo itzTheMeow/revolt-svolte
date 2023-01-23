@@ -128,6 +128,13 @@ export async function copyText(text: string) {
     i.remove();
   }
 }
+export function hasBottom() {
+  const ListMessages = document.getElementById("MessageList");
+  if (!ListMessages) return false;
+  return (
+    Math.abs(ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)) <= 2
+  );
+}
 export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
   let pendBottom = false,
     prevScroll = 0;
@@ -135,11 +142,7 @@ export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
     const ListMessages = document.getElementById("MessageList");
     if (ListMessages) {
       prevScroll = ListMessages.clientHeight;
-      pendBottom =
-        pendBottom ||
-        Math.abs(
-          ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)
-        ) <= 2;
+      pendBottom = pendBottom || hasBottom();
     }
   });
   afterUpdate(() => {
