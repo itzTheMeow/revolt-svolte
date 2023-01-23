@@ -38,7 +38,10 @@
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
     autocomplete.set(
-      parseAutocomplete($SelectedChannel!, inputtedMessage, MessageInput.selectionStart || 0)
+      parseAutocomplete($SelectedChannel!, inputtedMessage, MessageInput.selectionStart || 0, {
+        emojis: true,
+        users: true,
+      })
     );
   }
   function handleAutocomplete(e: KeyboardEvent) {
@@ -91,6 +94,8 @@
       content,
       attachments: attachments.length ? attachments : null,
       replies,
+      expandEmojis: true,
+      expandMentions: true,
     });
     SendButton.classList.remove("loading");
     fc.style.display = "";
