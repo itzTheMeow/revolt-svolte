@@ -100,8 +100,15 @@ export function updateReplies(reply: BaseMessage, shift = false) {
   });
 }
 
-export const MessageInputSelected = writable<boolean>(false),
-  autocomplete = writable<AutocompleteResult | null>(null);
+export const autocomplete = writable<AutocompleteResult | null>(null),
+  selectedAutocomplete = writable("");
+autocomplete.subscribe((a) => {
+  selectedAutocomplete.update(
+    (sa) => sa || (a ? [...a.channels, ...a.emojis, ...a.users][0]?.id || "" : "")
+  );
+});
+
+export const MessageInputSelected = writable<boolean>(false);
 let mselect = false;
 MessageInputSelected.subscribe((i) => (mselect = i));
 export const HoveredMessage = writable<string | null>(null);

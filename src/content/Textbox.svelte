@@ -8,7 +8,7 @@
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
-  import { Emoji, parseAutocomplete, type AutocompleteTabResult } from "revolt-toolset";
+  import { Emoji, parseAutocomplete } from "revolt-toolset";
   import {
     autocomplete,
     MessageInputSelected,
@@ -16,6 +16,7 @@
     pushFile,
     replyingTo,
     selectBottom,
+    selectedAutocomplete,
     SelectedChannel,
     SelectedServer,
     selectInput,
@@ -43,22 +44,22 @@
   function handleAutocomplete(e: KeyboardEvent) {
     if ($autocomplete?.size && (e.key == "Enter" || e.key == "Tab")) {
       e.preventDefault();
-      handleAutocompleteTab(
-        $autocomplete.tab(
-          [...$autocomplete.channels, ...$autocomplete.emojis, ...$autocomplete.users][0]
-        )
-      );
+      handleAutocompleteTab($selectedAutocomplete);
       recalculateAutocomplete();
       return true;
     }
     return false;
   }
-  function handleAutocompleteTab(res: AutocompleteTabResult | undefined) {
+  function handleAutocompleteTab(id: string) {
+    if (!$autocomplete) return;
+    const i = [...$autocomplete.channels, ...$autocomplete.emojis, ...$autocomplete.users];
+    const res = $autocomplete.tab(i.find((a) => a.id == id) || i[0]);
     if (!res) return;
     inputtedMessage = res.text;
     MessageInput.focus();
     MessageInput.setSelectionRange(res.newCursor, res.newCursor);
-    recalculateAutocomplete();
+    selectedAutocomplete.set("");
+    autocomplete.set(null);
   }
 
   async function sendMessage() {
@@ -156,25 +157,28 @@
   >
     {#each $autocomplete.channels.slice(0, 15) as c (c.id)}
       <AutocompleteItem
+        id={c.id}
         icon={c.icon
           ? proxyURL(c.generateIconURL({ max_side: 64 }), "image")
           : c.isVoice()
           ? IconVolume
           : IconHash}
         name={c.name || ""}
-        onclick={() => handleAutocompleteTab($autocomplete?.tab(c))}
+        onclick={() => handleAutocompleteTab(c.id)}
       />
     {/each}
     {#each $autocomplete.emojis.slice(0, 15) as e (e.id)}
       <AutocompleteItem
+        id={e.id}
         icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
         name={e.name || ""}
         detail={e.parent?.name || ""}
-        onclick={() => handleAutocompleteTab($autocomplete?.tab(e))}
+        onclick={() => handleAutocompleteTab(e.id)}
       />
     {/each}
     {#each $autocomplete.users.slice(0, 15) as u (u.id)}
       <AutocompleteItem
+        id={u.id}
         icon={proxyURL(
           u.generateAvatarURL({ max_side: 64 }) || u.user?.generateAvatarURL({ max_side: 64 }),
           "image"
@@ -182,7 +186,7 @@
         name={u.nickname || u.user?.username || ""}
         detail={u.user?.username || ""}
         rounded
-        onclick={() => handleAutocompleteTab($autocomplete?.tab(u))}
+        onclick={() => handleAutocompleteTab(u.id)}
       />
     {/each}
   </div>
