@@ -2,24 +2,35 @@
   import Audio from "media/Audio.svelte";
   import Image from "media/Image.svelte";
   import Video from "media/Video.svelte";
-  import type { Message } from "revolt-toolset";
+  import { Attachment, type EmbedMedia, type Message } from "revolt-toolset";
 
   export let message: Message;
+
+  let attachments: (Attachment | EmbedMedia)[] = [];
+  $: attachments = [
+    ...(message.attachments || []),
+    ...(<EmbedMedia[]>message.embeds.filter((e) => e.isMedia())),
+  ];
 </script>
 
-{#each message.attachments || [] as attachment (attachment.id)}
+{#each attachments as attachment (attachment instanceof Attachment ? attachment.id : `${attachment.width}x${attachment.height}x${attachment.size + attachment.type}`)}
   <div class="rounded mt-1 block" style="max-width:90%;max-height:50vh;">
-    {#if attachment.metadata.type == "Image"}
-      <Image className="max-w-[inherit] max-h-[inherit]" src={attachment} />
-    {:else if attachment.metadata.type == "Video"}
-      <Video
-        src={attachment}
-        style="max-width:inherit;max-height:inherit;aspect-ratio:{attachment.metadata
-          .width} / {attachment.metadata.height};"
+    {#if (attachment instanceof Attachment ? attachment.metadata.type : attachment.type) == "Image"}
+      <Image
+        className="max-w-[inherit] max-h-[inherit]"
+        src={attachment instanceof Attachment ? attachment : attachment.url}
       />
-    {:else if attachment.metadata.type == "Audio"}
+    {:else if (attachment instanceof Attachment ? attachment.metadata.type : attachment.type) == "Video"}
+      <Video
+        src={attachment instanceof Attachment ? attachment : attachment.url}
+        style="max-width:inherit;max-height:inherit;{attachment instanceof Attachment
+          ? attachment.metadata.type == 'Video' &&
+            `aspect-ratio:${attachment.metadata.width} / ${attachment.metadata.height};`
+          : `aspect-ratio:${attachment.width} / ${attachment.height};`}"
+      />
+    {:else if attachment instanceof Attachment && attachment.metadata.type == "Audio"}
       <Audio src={attachment} />
-    {:else}
+    {:else if attachment instanceof Attachment}
       <a href={attachment.generateDownloadURL()} target="_blank" rel="noreferrer">
         [Download {attachment.name}]
       </a>

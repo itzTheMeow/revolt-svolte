@@ -151,7 +151,7 @@
         style:background="linear-gradient(0deg, transparent, rgba(0,0,0,0.9))"
         transition:slide|local={{ duration: 150 }}
       >
-        <div>{alt || (typeof src == "string" ? "Video" : src.name)}</div>
+        <div>{alt || (typeof src == "string" ? src.split("/").pop() || "Video" : src.name)}</div>
         <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
           {#if typeof src !== "string"}
             <div class="text-xs">

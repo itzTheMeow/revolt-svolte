@@ -19,7 +19,7 @@
     ? `${src.metadata.width} / ${src.metadata.height}`
     : ""}
   src={typeof src == "string" ? src : proxyURL(src.generateURL(), "image")}
-  alt={typeof src == "string" ? alt : alt || src.name}
+  alt={alt || (typeof src == "string" ? src.split("/").pop() || "Image" : src.name)}
   on:load={() => (loaded = true)}
   data-clickable={typeof src !== "string"}
   on:click={() => typeof src !== "string" && imagePreview.set(src)}
