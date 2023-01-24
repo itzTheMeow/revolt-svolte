@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     IconArrowBigRightLine,
+    IconClipboard,
     IconFileUpload,
     IconHash,
     IconPaperclip,
@@ -133,7 +134,7 @@
               }
             });
           },
-          icon: Clipboard,
+          icon: IconClipboard,
         },
         {
           name: "Choose File",

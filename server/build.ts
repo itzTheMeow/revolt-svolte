@@ -19,7 +19,7 @@ esbuild
     bundle: true,
     outdir: `./dist`,
     mainFields: ["svelte", "browser", "module", "main"],
-    minify: true,
+    minify: false,
     sourcemap: standalone ? "inline" : "external",
     splitting: !standalone,
     write: true,
