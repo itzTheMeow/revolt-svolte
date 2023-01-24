@@ -25,13 +25,16 @@
     FloatingMenuInner.parentElement!.style.setProperty("--tw-bg-opacity", String(o));
   }
   function handleTouchStart(e: TouchEvent) {
-    if (e.composedPath().includes(FloatingMenuInner)) return;
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    if (e.composedPath().includes(FloatingMenuInner)) pos = pos.map((p) => -p);
     TotalHeight = FloatingMenuInner.offsetHeight;
   }
   function handleTouchMove(e: TouchEvent) {
-    if (pos[0] == -1 && pos[1] == -1) return;
-    const diff = e.changedTouches[0].clientY - pos[1];
+    const diff = e.changedTouches[0].clientY - Math.abs(pos[1]);
+    if (pos[0] <= -1 && pos[1] <= -1) {
+      if (diff > 3 && FloatingMenuInner.scrollTop <= 0) pos = pos.map((p) => -p);
+      else return;
+    }
     if (Math.abs(diff) > 3) dragging = true;
     if (dragging) {
       const h = Math.max(0, Math.round(TotalHeight - diff));
@@ -39,9 +42,8 @@
       if (FloatingMenuInner.offsetHeight == h) setOpacity((1 - diff / TotalHeight) * 0.5);
     }
   }
-  let going = false;
   function handleTouchEnd(e: TouchEvent) {
-    if (e.composedPath().includes(FloatingMenuInner)) return (pos = [-1, -1]);
+    if (e.composedPath().includes(FloatingMenuInner) && !dragging) return;
     e.preventDefault();
     let isDone = false;
     if (dragging) {
@@ -95,7 +97,7 @@
       <div
         class="rounded-t-xl overflow-hidden shadow-sm shadow-black w-full {dragging
           ? 'h-full max-h-[80%]'
-          : 'h-fit max-h-[50%]'} overflow-y-auto"
+          : 'h-fit max-h-[50%]'} {dragging ? '' : 'overflow-y-auto'}"
         style:background-color={$Theme["primary-background"]}
         bind:this={FloatingMenuInner}
         in:slide={{ duration: 250 }}
