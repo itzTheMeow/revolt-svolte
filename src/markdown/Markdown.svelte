@@ -1,6 +1,7 @@
 <script lang="ts">
   import { client } from "Client";
-  import { RevoltEmojiDictionary, unicodeEmojiURL } from "revolt-toolset";
+  import { showEmojiContext } from "contextmenu/FloatingMenu";
+  import { RevoltEmojiDictionary, RevoltEmojiLib, unicodeEmojiURL } from "revolt-toolset";
   import { SelectedServer } from "State";
   import { afterUpdate } from "svelte";
   import { tippy } from "svelte-tippy";
@@ -194,14 +195,15 @@
       .forEach(async (e) => {
         e.setAttribute("data-clickable", "");
         const match = e.getAttribute("match") || "",
-          emoji = RevoltEmojiDictionary[match] ? null : await client.emojis.fetch(match);
+          emoji = RevoltEmojiLib.find((e) => e.name == match) || (await client.emojis.fetch(match));
         tippy(e, {
           content: `:${emoji?.name || match}:`,
           delay: 80,
         });
         if (emoji)
-          e.addEventListener("click", () => {
-            alert(emoji.name);
+          e.addEventListener("click", (ev) => {
+            const rect = e.getBoundingClientRect();
+            showEmojiContext(emoji, rect.x + rect.width + 4, rect.y + 2, ev.target);
           });
       });
   });

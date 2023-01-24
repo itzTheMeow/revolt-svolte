@@ -1,4 +1,4 @@
-import type { Emoji, Member } from "revolt-toolset";
+import type { DefaultEmoji, Emoji, Member } from "revolt-toolset";
 import { writable } from "svelte/store";
 
 type FloatingMenuState = {
@@ -9,7 +9,10 @@ type FloatingMenuState = {
     bottom?: number;
   };
   target?: HTMLElement | EventTarget | null;
-} & ({ type: "member"; member: Member; bar?: true } | { type: "emoji"; emoji: Emoji });
+} & (
+  | { type: "member"; member: Member; bar?: true }
+  | { type: "emoji"; emoji: Emoji | DefaultEmoji }
+);
 export const floatingMenu = writable<FloatingMenuState | null>(null);
 
 export function showMemberContext(
@@ -30,7 +33,7 @@ export function showMemberContext(
   });
 }
 export function showEmojiContext(
-  emoji: Emoji,
+  emoji: Emoji | DefaultEmoji,
   x: number,
   y: number,
   target?: EventTarget | HTMLElement | null

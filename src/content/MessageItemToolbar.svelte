@@ -15,7 +15,7 @@
     ? '-top-6 right-5 h-12'
     : '-top-4 right-3 h-8'} flex rounded-lg overflow-hidden"
   data-hover-item
-  style="background-color:{$Theme['primary-header']};"
+  style:background={$Theme["primary-header"]}
 >
   <MessageItemToolbarItem
     icon={IconCornerUpLeft}

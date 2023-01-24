@@ -72,10 +72,10 @@
       class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit max-h-[50vh]"
       style={Object.entries($floatingMenu?.pos || {})
         .map((e) => `${e[0]}:${e[1]}px`)
-        .join(";") + `;background-color:${$Theme["primary-background"]}`}
+        .join(";") + `;background-color:${$Theme["primary-header"]}`}
       use:clickoutside={handleClickOut}
     >
-      <div class="w-64 overflow-y-auto max-h-[inherit]">
+      <div class="{$floatingMenu.type == 'member' ? 'w-64' : ''} overflow-y-auto max-h-[inherit]">
         <Inner />
       </div>
     </div>
