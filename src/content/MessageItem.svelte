@@ -19,12 +19,13 @@
     shouldSeparate = true,
     isHovered = false,
     doHighlight = false;
+  console.log(message);
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!.id]?.[
         $MessageCache[$SelectedChannel!.id]?.indexOf(message) - 1
       ];
-    isReply = message.isUser() && !!message.replyIDs?.length;
+    isReply = message.isUser() && !!message.replies.length;
     shouldSeparate =
       !message.isUser() ||
       isReply ||
@@ -65,69 +66,72 @@
 </script>
 
 {#if $SelectedChannel}
-  {#if isReply && message.isUser()}
-    <MessageItemReplies {message} />
-  {/if}
-  <div
-    class="relative px-1 [line-height:normal] {shouldSeparate ? 'mt-3' : ''}"
-    style:background-color={isHovered
-      ? $Theme["secondary-background"]
-      : doHighlight
-      ? $Theme["mention"]
-      : ""}
-    on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message.id)}
-    on:mousemove={() => !$MobileLayout && HoveredMessage.set(message.id)}
-    on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
-    on:wheel={() => !$MobileLayout && HoveredMessage.set(message.id)}
-    on:touchstart={handleClickDown}
-    on:touchend={handleClick}
-  >
-    {#if message.isUser()}
-      <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
-        {#if shouldSeparate}
-          <img
-            class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
-            src={MessageDetails(message).avatar}
-            alt=""
-            data-clickable
-            on:click={(e) => {
-              if (!message.isUser()) return;
-              if (message.member) showMemberContext(message.member, e.clientX, e.clientY, e.target);
-              else ModalStack.push({ type: "user", id: message.authorID });
-            }}
-          />
-        {:else}
+  <div class="flex flex-col gap-0.5">
+    {#if isReply && message.isUser()}
+      <MessageItemReplies {message} />
+    {/if}
+    <div
+      class="relative px-1 [line-height:normal] {shouldSeparate ? 'mt-3' : ''}"
+      style:background-color={isHovered
+        ? $Theme["secondary-background"]
+        : doHighlight
+        ? $Theme["mention"]
+        : ""}
+      on:mouseenter={() => !$MobileLayout && HoveredMessage.set(message.id)}
+      on:mousemove={() => !$MobileLayout && HoveredMessage.set(message.id)}
+      on:mouseleave={() => !$MobileLayout && HoveredMessage.set(null)}
+      on:wheel={() => !$MobileLayout && HoveredMessage.set(message.id)}
+      on:touchstart={handleClickDown}
+      on:touchend={handleClick}
+    >
+      {#if message.isUser()}
+        <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">
+          {#if shouldSeparate}
+            <img
+              class="rounded-full h-10 w-10 shrink-0 object-cover cursor-pointer"
+              src={MessageDetails(message).avatar}
+              alt=""
+              data-clickable
+              on:click={(e) => {
+                if (!message.isUser()) return;
+                if (message.member)
+                  showMemberContext(message.member, e.clientX, e.clientY, e.target);
+                else ModalStack.push({ type: "user", id: message.authorID });
+              }}
+            />
+          {:else}
+            <div
+              class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
+              style:font-size="0.65rem"
+              style:color={$Theme["tertiary-foreground"]}
+            >
+              {#if isHovered}
+                {DateTime.fromMillis(message.createdAt).toFormat("t")}
+              {:else if message.edited}
+                (edited)
+              {/if}
+            </div>
+          {/if}
           <div
-            class="h-full w-10 shrink-0 text-center overflow-hidden whitespace-nowrap"
-            style:font-size="0.65rem"
-            style:color={$Theme["tertiary-foreground"]}
+            class="flex flex-col flex-1 max-w-[calc(100%-3rem)] py-0.5 {!$MobileLayout
+              ? 'select-text'
+              : ''}"
           >
-            {#if isHovered}
-              {DateTime.fromMillis(message.createdAt).toFormat("t")}
-            {:else if message.edited}
-              (edited)
+            {#if shouldSeparate}
+              <MessageItemHeader {message} />
+            {/if}
+            {#if message.content}
+              <MessageItemContent {message} />
+            {/if}
+            {#if message.attachments?.length}
+              <MessageItemAttachments {message} />
             {/if}
           </div>
-        {/if}
-        <div
-          class="flex flex-col flex-1 max-w-[calc(100%-3rem)] py-0.5 {!$MobileLayout
-            ? 'select-text'
-            : ''}"
-        >
-          {#if shouldSeparate}
-            <MessageItemHeader {message} />
-          {/if}
-          {#if message.content}
-            <MessageItemContent {message} />
-          {/if}
-          {#if message.attachments?.length}
-            <MessageItemAttachments {message} />
-          {/if}
         </div>
-      </div>
-    {/if}
-    {#if isHovered}
-      <MessageItemToolbar {message} />
-    {/if}
+      {/if}
+      {#if isHovered}
+        <MessageItemToolbar {message} />
+      {/if}
+    </div>
   </div>
 {/if}
