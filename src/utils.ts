@@ -128,35 +128,22 @@ export async function copyText(text: string) {
     i.remove();
   }
 }
-export function hasBottom() {
+export function hasBottom(off = 2) {
   const ListMessages = document.getElementById("MessageList");
   if (!ListMessages) return false;
   return (
-    Math.abs(ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)) <= 2
+    Math.abs(ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)) <=
+    off
   );
 }
-export function handleUpdates(beforeUpdate: any, afterUpdate: any) {
-  return;
-  let pendBottom = false,
-    prevScroll = 0;
-  beforeUpdate(() => {
-    const ListMessages = document.getElementById("MessageList");
-    if (ListMessages) {
-      prevScroll = ListMessages.clientHeight;
-      pendBottom = pendBottom || hasBottom();
-    }
-  });
-  afterUpdate(() => {
-    const ListMessages = document.getElementById("MessageList");
-    if (ListMessages) {
-      if (pendBottom) {
-        ListMessages.scrollTop = ListMessages.scrollHeight * 2;
-        pendBottom = false;
-      } else {
-        ListMessages.scrollTop += prevScroll - ListMessages.clientHeight;
-      }
-    }
-  });
+export function scrollTo(pos: number | "bottom", instant = false) {
+  const ListMessages = document.getElementById("MessageList");
+  if (ListMessages) {
+    ListMessages.scroll({
+      top: pos == "bottom" ? ListMessages.scrollHeight : pos,
+      behavior: instant ? "auto" : "smooth",
+    });
+  }
 }
 export function clickoutside(
   node: HTMLElement,

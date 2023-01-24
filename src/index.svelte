@@ -36,9 +36,9 @@
     spliceMessages,
     updatePaneState,
   } from "State";
-  import { afterUpdate, beforeUpdate, onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates, hasBottom } from "utils";
+  import { hasBottom, scrollTo } from "utils";
   import { MemberMenu, showMemberContext } from "./contextmenu/MemberContextMenu";
 
   requestAnimationFrame(function animate(time: number) {
@@ -134,6 +134,10 @@
       else if ($MemberMenu) MemberMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
+      else {
+        $SelectedChannel?.markRead(true);
+        scrollTo("bottom", true);
+      }
     }
   });
   setInterval(() => {
@@ -142,8 +146,6 @@
         fullscreenElement.set(document.fullscreenElement);
     } else fullscreenElement.set(null);
   }, 10);
-
-  handleUpdates(beforeUpdate, afterUpdate);
 
   let previous = "";
   afterUpdate(() => {

@@ -22,9 +22,8 @@
     selectInput,
     uploadedFiles,
   } from "State";
-  import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates, MemberOrUserDetails, proxyURL } from "utils";
+  import { MemberOrUserDetails, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxTyping from "./TextboxTyping.svelte";
@@ -147,8 +146,6 @@
     });
     return false;
   }
-
-  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 <TextboxTyping />
