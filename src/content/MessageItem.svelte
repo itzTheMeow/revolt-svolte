@@ -3,12 +3,13 @@
   import { showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import type { BaseMessage } from "revolt-toolset";
+  import type { BaseMessage, Embed, EmbedWeb } from "revolt-toolset";
   import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
   import MessageItemAttachments from "./MessageItemAttachments.svelte";
   import MessageItemContent from "./MessageItemContent.svelte";
+  import MessageItemEmbed from "./MessageItemEmbed.svelte";
   import MessageItemHeader from "./MessageItemHeader.svelte";
   import MessageItemReplies from "./MessageItemReplies.svelte";
   import MessageItemToolbar from "./MessageItemToolbar.svelte";
@@ -18,7 +19,8 @@
   let isReply = false,
     shouldSeparate = true,
     isHovered = false,
-    doHighlight = false;
+    doHighlight = false,
+    embeds: (Embed | EmbedWeb)[] = [];
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!.id]?.[
@@ -35,6 +37,7 @@
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
     isHovered = $HoveredMessage == message.id;
     doHighlight = message.isUser() && message.mentionIDs.includes(client.user.id);
+    embeds = message.isUser() ? <any>message.embeds.filter((e) => e.isText() || e.isWeb()) : [];
   }
 
   let startScroll: number | null = null;
@@ -125,6 +128,9 @@
             {#if message.attachments?.length || message.embeds.filter((e) => e.isMedia()).length}
               <MessageItemAttachments {message} />
             {/if}
+            {#each embeds as embed}
+              <MessageItemEmbed {embed} />
+            {/each}
           </div>
         </div>
       {/if}
