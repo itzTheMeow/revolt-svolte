@@ -19,8 +19,9 @@
   import { clickoutside, formatDuration, proxyURL } from "utils";
   import Slider from "./Slider.svelte";
 
-  export let src: Attachment;
+  export let src: Attachment | string;
   export let style = "";
+  export let alt = "";
 
   let hasFocus = false,
     isPlaying = false,
@@ -132,7 +133,7 @@
   }}
 >
   <video
-    src={proxyURL(src.generateURL(), "any")}
+    src={proxyURL(typeof src == "string" ? src : src.generateURL(), "any")}
     bind:this={video}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}
@@ -150,14 +151,16 @@
         style:background="linear-gradient(0deg, transparent, rgba(0,0,0,0.9))"
         transition:slide|local={{ duration: 150 }}
       >
-        <div>{src.name}</div>
+        <div>{alt || (typeof src == "string" ? "Video" : src.name)}</div>
         <div class="ml-auto flex items-center gap-1" style:color={$Theme["tertiary-foreground"]}>
-          <div class="text-xs">
-            {byteSize(src.size).toString().toUpperCase()}
-          </div>
+          {#if typeof src !== "string"}
+            <div class="text-xs">
+              {byteSize(src.size).toString().toUpperCase()}
+            </div>
+          {/if}
           <a
             class="cursor-pointer hover:brightness-150"
-            href={src.generateDownloadURL()}
+            href={typeof src == "string" ? src : src.generateDownloadURL()}
             target="_blank"
             rel="noreferrer"
           >
