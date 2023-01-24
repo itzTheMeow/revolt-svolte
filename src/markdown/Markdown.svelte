@@ -2,7 +2,7 @@
   import { client } from "Client";
   import { showEmojiContext } from "contextmenu/FloatingMenu";
   import { RevoltEmojiDictionary, RevoltEmojiLib, unicodeEmojiURL } from "revolt-toolset";
-  import { SelectedServer } from "State";
+  import { MobileLayout, SelectedServer } from "State";
   import { afterUpdate } from "svelte";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
@@ -199,6 +199,9 @@
         tippy(e, {
           content: `:${emoji?.name || match}:`,
           delay: 80,
+          onShow() {
+            if ($MobileLayout) return false;
+          },
         });
         if (emoji)
           e.addEventListener("click", (ev) => {
