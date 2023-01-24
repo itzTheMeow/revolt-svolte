@@ -22,6 +22,7 @@
     selectInput,
     uploadedFiles,
   } from "State";
+  import { onMount } from "svelte";
   import { Theme } from "Theme";
   import { MemberOrUserDetails, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
@@ -146,6 +147,10 @@
     });
     return false;
   }
+
+  onMount(() => {
+    if (!$MobileLayout) MessageInput.focus();
+  });
 </script>
 
 <TextboxTyping />

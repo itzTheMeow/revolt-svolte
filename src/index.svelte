@@ -129,6 +129,12 @@
     }
   });
   window.addEventListener("keydown", async (e) => {
+    if (
+      document.activeElement?.tagName !== "INPUT" &&
+      document.activeElement?.tagName !== "TEXTAREA" &&
+      !$MobileLayout
+    )
+      document.getElementById("Textbox")?.focus();
     if (e.key == "Escape") {
       if ($CMState) CMState.set(null);
       else if ($MemberMenu) MemberMenu.set(null);
