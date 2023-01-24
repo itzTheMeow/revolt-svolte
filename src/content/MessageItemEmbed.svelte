@@ -47,11 +47,10 @@
   class="rounded-lg my-1 p-3"
   style:border-inline-start="4px solid {embed.color || $Theme["tertiary-background"]}"
   style:background={$Theme["hover"]}
-  style:width="{mw}px"
-  style:height="{mh}px"
-  style:max-width="95%"
+  style:max-width="min({mw}px, 95%)"
+  style:max-height="{mh}px"
 >
-  {#if embed instanceof EmbedWeb ? embed.siteName : embed.title}
+  {#if embed.isWeb() ? embed.siteName : embed.title}
     <div class="flex items-center gap-1">
       {#if embed.iconURL}
         <img class="w-4 h-4" src={embed.proxyIconURL} alt="" />
@@ -60,8 +59,18 @@
         class="text-xs overflow-hidden overflow-ellipsis whitespace-nowrap"
         style:color={$Theme["secondary-foreground"]}
       >
-        {embed instanceof EmbedWeb ? embed.siteName : embed.title}
+        {embed.isWeb() ? embed.siteName : embed.title}
       </div>
     </div>
+  {/if}
+  {#if embed.isWeb() && embed.title}
+    <a
+      class="text-[1.1em] overflow-hidden hover:underline font-medium"
+      style:display="-webkit-box"
+      style:-webkit-line-clamp="2"
+      style:-webkit-box-orient="vertical"
+      style:color={$Theme["accent"]}
+      href={embed.url}>{embed.title}</a
+    >
   {/if}
 </div>
