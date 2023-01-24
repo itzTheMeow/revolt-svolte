@@ -6,7 +6,8 @@
   import ContentList from "content/ContentList.svelte";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
   import { CMState } from "contextmenu/ContextMenuState";
-  import MemberContextMenu from "contextmenu/MemberContextMenu.svelte";
+  import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
+  import FloatingMenu from "contextmenu/FloatingMenu.svelte";
   import Titlebar from "extra/Titlebar.svelte";
   import Loader from "Loader.svelte";
   import MemberBar from "memberbar/MemberBar.svelte";
@@ -39,7 +40,6 @@
   import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
   import { hasBottom, scrollTo } from "utils";
-  import { MemberMenu, showMemberContext } from "./contextmenu/MemberContextMenu";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -137,7 +137,7 @@
       document.getElementById("Textbox")?.focus();
     if (e.key == "Escape") {
       if ($CMState) CMState.set(null);
-      else if ($MemberMenu) MemberMenu.set(null);
+      else if ($floatingMenu) floatingMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
       else {
@@ -195,7 +195,7 @@
       if (
         (document.activeElement?.tagName == "TEXTAREA" && target.tagName == "TEXTAREA") ||
         $imagePreview ||
-        $MemberMenu ||
+        $floatingMenu ||
         [...document.querySelectorAll("[data-slider]")].find((s) => s.contains(target)) ||
         (await ModalStack.getStack()).length
       )
@@ -288,6 +288,6 @@
 
   <ImagePreview />
   <ModalRenderer />
-  <MemberContextMenu />
+  <FloatingMenu />
   <ContextMenu />
 </div>

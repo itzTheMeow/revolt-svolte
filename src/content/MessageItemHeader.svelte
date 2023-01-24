@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { showMemberContext } from "contextmenu/MemberContextMenu";
+  import { showMemberContext } from "contextmenu/FloatingMenu";
   import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt-toolset";

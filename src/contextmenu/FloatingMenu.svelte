@@ -1,25 +1,20 @@
 <script lang="ts">
   import TWEEN from "@tweenjs/tween.js";
-  import { UseMemberState } from "Client";
-  import type { Member } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { slide } from "svelte/transition";
   import { Theme } from "Theme";
   import { clickoutside } from "utils";
-  import { MemberMenu } from "./MemberContextMenu";
-  import MemberContextMenuInner from "./MemberContextMenuInner.svelte";
+  import { floatingMenu } from "./FloatingMenu";
+  import Inner from "./FloatingMenuInner.svelte";
 
-  let member: Member, MobileMemberInner: HTMLDivElement;
+  let FloatingMenuInner: HTMLDivElement;
 
-  $: {
-    member = $MemberMenu?.member!;
-  }
   function handleClickOut(e: MouseEvent | TouchEvent) {
     if (
-      !e.composedPath().includes($MemberMenu?.target!) &&
+      !e.composedPath().includes($floatingMenu?.target!) &&
       !e.composedPath().includes(document.getElementById("ContextMenu")!)
     )
-      MemberMenu.set(null);
+      floatingMenu.set(null);
   }
 
   let dragging = false,
@@ -27,12 +22,12 @@
     TotalHeight = 0;
 
   function setOpacity(o: number) {
-    MobileMemberInner.parentElement!.style.setProperty("--tw-bg-opacity", String(o));
+    FloatingMenuInner.parentElement!.style.setProperty("--tw-bg-opacity", String(o));
   }
   function handleTouchStart(e: TouchEvent) {
-    if (e.composedPath().includes(MobileMemberInner)) return;
+    if (e.composedPath().includes(FloatingMenuInner)) return;
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
-    TotalHeight = MobileMemberInner.offsetHeight;
+    TotalHeight = FloatingMenuInner.offsetHeight;
   }
   function handleTouchMove(e: TouchEvent) {
     if (pos[0] == -1 && pos[1] == -1) return;
@@ -40,13 +35,13 @@
     if (Math.abs(diff) > 3) dragging = true;
     if (dragging) {
       const h = Math.max(0, Math.round(TotalHeight - diff));
-      MobileMemberInner.style.height = `${h}px`;
-      if (MobileMemberInner.offsetHeight == h) setOpacity((1 - diff / TotalHeight) * 0.5);
+      FloatingMenuInner.style.height = `${h}px`;
+      if (FloatingMenuInner.offsetHeight == h) setOpacity((1 - diff / TotalHeight) * 0.5);
     }
   }
   let going = false;
   function handleTouchEnd(e: TouchEvent) {
-    if (e.composedPath().includes(MobileMemberInner)) return (pos = [-1, -1]);
+    if (e.composedPath().includes(FloatingMenuInner)) return (pos = [-1, -1]);
     e.preventDefault();
     let isDone = false;
     if (dragging) {
@@ -56,14 +51,14 @@
       if (diff > TotalHeight / 3) isDone = true;
     } else isDone = true;
     if (isDone) setOpacity(0);
-    new TWEEN.Tween({ h: MobileMemberInner.offsetHeight })
+    new TWEEN.Tween({ h: FloatingMenuInner.offsetHeight })
       .to({ h: isDone ? 0 : TotalHeight }, 250)
       .onUpdate(({ h }) => {
-        MobileMemberInner.style.height = MobileMemberInner.style.maxHeight = `${h}px`;
+        FloatingMenuInner.style.height = FloatingMenuInner.style.maxHeight = `${h}px`;
       })
       .onComplete(() => {
-        if (isDone) MemberMenu.set(null);
-        else MobileMemberInner.style.height = MobileMemberInner.style.maxHeight = "";
+        if (isDone) floatingMenu.set(null);
+        else FloatingMenuInner.style.height = FloatingMenuInner.style.maxHeight = "";
       })
       .easing(TWEEN.Easing.Quadratic.Out)
       .start();
@@ -71,19 +66,17 @@
   }
 </script>
 
-{#if member}
+{#if $floatingMenu}
   {#if !$MobileLayout}
     <div
       class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit max-h-[50vh]"
-      style={Object.entries($MemberMenu?.pos || {})
+      style={Object.entries($floatingMenu?.pos || {})
         .map((e) => `${e[0]}:${e[1]}px`)
         .join(";") + `;background-color:${$Theme["primary-background"]}`}
       use:clickoutside={handleClickOut}
     >
       <div class="w-64 overflow-y-auto max-h-[inherit]">
-        {#key $UseMemberState}
-          <MemberContextMenuInner {member} />
-        {/key}
+        <Inner />
       </div>
     </div>
   {:else}
@@ -104,18 +97,16 @@
           ? 'h-full max-h-[80%]'
           : 'h-fit max-h-[50%]'} overflow-y-auto"
         style:background-color={$Theme["primary-background"]}
-        bind:this={MobileMemberInner}
+        bind:this={FloatingMenuInner}
         in:slide={{ duration: 250 }}
         on:introstart={() => {
           setOpacity(0.5);
         }}
         on:introend={() => {
-          TotalHeight = MobileMemberInner.offsetHeight;
+          TotalHeight = FloatingMenuInner.offsetHeight;
         }}
       >
-        {#key $UseMemberState}
-          <MemberContextMenuInner {member} />
-        {/key}
+        <Inner />
       </div>
     </div>
   {/if}

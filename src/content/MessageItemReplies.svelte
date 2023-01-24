@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconCornerLeftDown } from "@tabler/icons-svelte";
-  import { showMemberContext } from "contextmenu/MemberContextMenu";
+  import { showMemberContext } from "contextmenu/FloatingMenu";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Message } from "revolt-toolset";
