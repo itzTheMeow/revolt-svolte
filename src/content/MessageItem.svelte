@@ -19,7 +19,6 @@
     shouldSeparate = true,
     isHovered = false,
     doHighlight = false;
-  console.log(message);
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!.id]?.[
