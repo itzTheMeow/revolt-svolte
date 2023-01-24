@@ -75,7 +75,7 @@
         .join(";") + `;background-color:${$Theme["primary-header"]}`}
       use:clickoutside={handleClickOut}
     >
-      <div class="{$floatingMenu.type == 'member' ? 'w-64' : ''} overflow-y-auto max-h-[inherit]">
+      <div class="{$floatingMenu.type == 'member' ? 'w-72' : ''} overflow-y-auto max-h-[inherit]">
         <Inner />
       </div>
     </div>
