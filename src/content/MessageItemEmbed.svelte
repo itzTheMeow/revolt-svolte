@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Markdown from "markdown/Markdown.svelte";
   import { EmbedWeb, type Embed } from "revolt-toolset";
   import { Theme } from "Theme";
 
@@ -44,7 +45,7 @@
 </script>
 
 <div
-  class="rounded-lg my-1 p-3"
+  class="rounded-lg my-1 p-3 flex flex-col gap-1.5"
   style:border-inline-start="4px solid {embed.color || $Theme["tertiary-background"]}"
   style:background={$Theme["hover"]}
   style:max-width="min({mw}px, 95%)"
@@ -72,5 +73,19 @@
       style:color={$Theme["accent"]}
       href={embed.url}>{embed.title}</a
     >
+  {/if}
+  {#if embed.description}
+    {#if embed.isText()}
+      <Markdown text={embed.description} />
+    {:else}
+      <div
+        class="text-xs overflow-hidden"
+        style:display="-webkit-box"
+        style:-webkit-line-clamp="6"
+        style:-webkit-box-orient="vertical"
+      >
+        {embed.description}
+      </div>
+    {/if}
   {/if}
 </div>
