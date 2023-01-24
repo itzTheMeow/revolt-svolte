@@ -2,6 +2,7 @@
   /* Shamelessly 'inspired' from https://www.w3schools.com/howto/howto_js_image_magnifier_glass.asp */
 
   import byteSize from "byte-size";
+  import { Attachment } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
   import { Theme } from "Theme";
@@ -26,7 +27,10 @@
     glassH = 0;
   $: {
     if ($imagePreview) {
-      imageURL = proxyURL($imagePreview.generateURL(), "image");
+      imageURL = proxyURL(
+        $imagePreview instanceof Attachment ? $imagePreview.generateURL() : $imagePreview.url,
+        "image"
+      );
       glassW = glass?.offsetWidth / 2;
       glassH = glass?.offsetHeight / 2;
     }
@@ -65,7 +69,9 @@
         <img
           bind:this={image}
           src={imageURL}
-          alt={$imagePreview.name}
+          alt={$imagePreview instanceof Attachment
+            ? $imagePreview.name
+            : $imagePreview.url.split("/").pop() || "Image"}
           class="max-w-[90vw] max-h-[85vh] {isMagnifying
             ? 'brightness-75 cursor-none'
             : 'cursor-zoom-in'}"
@@ -107,15 +113,23 @@
         class="text-xs font-semibold flex items-center gap-1 mt-0.5"
         style:color={$Theme["tertiary-foreground"]}
       >
-        <div>{$imagePreview.name}</div>
+        <div>
+          {$imagePreview instanceof Attachment
+            ? $imagePreview.name
+            : $imagePreview.url.split("/").pop() || "Image"}
+        </div>
         &bull;
         <div>{$imagePreview.metadata.width}x{$imagePreview.metadata.height}</div>
         &bull;
-        <div>{byteSize($imagePreview.size).toString().toUpperCase()}</div>
-        &bull;
+        {#if $imagePreview instanceof Attachment}
+          <div>{byteSize($imagePreview.size).toString().toUpperCase()}</div>
+          &bull;
+        {/if}
         <a
           class="hover:underline"
-          href={$imagePreview.generateURL()}
+          href={$imagePreview instanceof Attachment
+            ? $imagePreview.generateURL()
+            : $imagePreview.url}
           target="_blank"
           rel="noreferrer"
         >
@@ -124,7 +138,9 @@
         &bull;
         <a
           class="hover:underline"
-          href={$imagePreview.generateDownloadURL()}
+          href={$imagePreview instanceof Attachment
+            ? $imagePreview.generateDownloadURL()
+            : $imagePreview.url}
           target="_blank"
           rel="noreferrer"
         >

@@ -11,11 +11,12 @@
   export let width = 0;
   export let height = 0;
 
-  let loaded = false;
+  let loaded = false,
+    element: HTMLImageElement;
 </script>
 
 <img
-  class="{!square ? 'rounded' : ''} {typeof src == 'string' ? '' : 'cursor-pointer'} {className}"
+  class="{!square ? 'rounded' : ''} cursor-pointer {className}"
   style:display={loaded ? "unset" : "none"}
   style:aspect-ratio={typeof src !== "string" && src.metadata.type == "Image"
     ? `${src.metadata.width} / ${src.metadata.height}`
@@ -24,9 +25,17 @@
     : ""}
   src={typeof src == "string" ? src : proxyURL(src.generateURL(), "image")}
   alt={alt || (typeof src == "string" ? src.split("/").pop() || "Image" : src.name)}
-  on:load={() => (loaded = true)}
+  on:load={() => {
+    loaded = true;
+    if (!width) width = element.width;
+    if (!height) height = element.height;
+  }}
+  bind:this={element}
   data-clickable={typeof src !== "string"}
-  on:click={() => typeof src !== "string" && imagePreview.set(src)}
+  on:click={() =>
+    imagePreview.set(
+      typeof src == "string" ? { url: src, metadata: { width, height, type: "Image" } } : src
+    )}
 />
 {#if !loaded}
   <div
