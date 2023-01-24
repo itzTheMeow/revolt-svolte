@@ -36,9 +36,9 @@
     spliceMessages,
     updatePaneState,
   } from "State";
-  import { afterUpdate, beforeUpdate, onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates } from "utils";
+  import { hasBottom, scrollTo } from "utils";
   import { MemberMenu, showMemberContext } from "./contextmenu/MemberContextMenu";
 
   requestAnimationFrame(function animate(time: number) {
@@ -53,7 +53,9 @@
     SelectedServer.update((s) => s);
   });
   client.on("message", async (message) => {
+    const b = hasBottom();
     if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+    //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
     if (
       (message.isUser() && message.authorID == client.user.id) ||
       (document.hasFocus() && $SelectedChannel?.id == message.channelID)
@@ -127,11 +129,21 @@
     }
   });
   window.addEventListener("keydown", async (e) => {
+    if (
+      document.activeElement?.tagName !== "INPUT" &&
+      document.activeElement?.tagName !== "TEXTAREA" &&
+      !$MobileLayout
+    )
+      document.getElementById("Textbox")?.focus();
     if (e.key == "Escape") {
       if ($CMState) CMState.set(null);
       else if ($MemberMenu) MemberMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
+      else {
+        $SelectedChannel?.markRead(true);
+        scrollTo("bottom", true);
+      }
     }
   });
   setInterval(() => {
@@ -140,8 +152,6 @@
         fullscreenElement.set(document.fullscreenElement);
     } else fullscreenElement.set(null);
   }, 10);
-
-  handleUpdates(beforeUpdate, afterUpdate);
 
   let previous = "";
   afterUpdate(() => {

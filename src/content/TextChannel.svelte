@@ -3,15 +3,11 @@
   import Markdown from "markdown/Markdown.svelte";
   import type { Channel } from "revolt-toolset";
   import { MessageCache } from "State";
-  import { afterUpdate, beforeUpdate } from "svelte";
   import { Theme } from "Theme";
-  import { handleUpdates } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
 
   export let channel: Channel;
-
-  handleUpdates(beforeUpdate, afterUpdate);
 </script>
 
 <div class="h-10 flex items-center px-3" style:background={$Theme["secondary-background"]}>
@@ -24,14 +20,15 @@
     </div>
   {/if}
 </div>
-<div class="overflow-y-auto flex-1 flex flex-col p-1.5" id="MessageList">
-  {#if $MessageCache[channel.id]?.length}
-    <div class="mt-auto" />
-    {#each $MessageCache[channel.id].slice(-75) as message (message.id)}
-      <MessageItem {message} />
-    {/each}
-  {:else}
-    ...
-  {/if}
+<div class="overflow-y-auto flex-1 p-1.5 flex flex-col-reverse" id="MessageList">
+  <div class="flex flex-col-reverse">
+    {#if $MessageCache[channel.id]?.length}
+      {#each $MessageCache[channel.id].slice(-75).reverse() as message (message.id)}
+        <MessageItem {message} />
+      {/each}
+    {:else}
+      ...
+    {/if}
+  </div>
 </div>
 <Textbox />
