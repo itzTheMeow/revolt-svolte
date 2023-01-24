@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
-
   import { client } from "Client";
   import { RevoltEmojiDictionary, unicodeEmojiURL } from "revolt-toolset";
   import { SelectedServer } from "State";
+  import { afterUpdate } from "svelte";
+  import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
   import { MemberDetails, MemberOrUserDetails, proxyURL, UserColor } from "utils";
+  import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
 
   type Child =
     | {
@@ -25,7 +26,8 @@
   export let line = false;
   export let noPointer = false;
 
-  let content: string | null = null;
+  let content: string | null = null,
+    container: HTMLDivElement;
   $: {
     content = null;
     if (!text) content = "";
@@ -116,6 +118,7 @@
                         match in RevoltEmojiDictionary ? RevoltEmojiDictionary[match] : match,
                         "twemoji"
                       );
+                node.properties.class = "inline-block cursor-pointer";
                 node.children.push({
                   type: "element",
                   tagName: "img",
@@ -123,7 +126,7 @@
                     src: proxyURL(emojiURL, "image"),
                     class: `inline object-contain ${
                       text?.trim() == `:${match}:` && !line
-                        ? "h-[3em] w-[3em]"
+                        ? "h-[3em] w-[3em] elg"
                         : "h-[1.25em] w-[1.25em]"
                     }`,
                     style: "margin: 0px 0.05em 0px 0.1em;vertical-align:-0.2em;",
@@ -179,10 +182,29 @@
         );
       })
         .process(text)
-        .then((c) => {
+        .then(async (c) => {
           content = String(c.value);
         });
   }
+  afterUpdate(() => {
+    if (!container) return;
+    const emojis = [...container.querySelectorAll<HTMLElement>("emoji")];
+    emojis
+      .filter((e) => !e.hasAttribute("data-clickable"))
+      .forEach(async (e) => {
+        e.setAttribute("data-clickable", "");
+        const match = e.getAttribute("match") || "",
+          emoji = RevoltEmojiDictionary[match] ? null : await client.emojis.fetch(match);
+        tippy(e, {
+          content: `:${emoji?.name || match}:`,
+          delay: 80,
+        });
+        if (emoji)
+          e.addEventListener("click", () => {
+            alert(emoji.name);
+          });
+      });
+  });
 </script>
 
 <div
@@ -191,6 +213,7 @@
     : '[word-wrap:break-word]'} {noPointer ? 'pointer-events-none' : ''} {keepSpace && content
     ? 'min-h-[1rem]'
     : ''}"
+  bind:this={container}
 >
   {#if content !== null}
     {@html content}
