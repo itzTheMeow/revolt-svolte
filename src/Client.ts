@@ -6,9 +6,9 @@ import { API_URL } from "utils";
 import { NotifSettings } from "./State";
 
 export const ClientReady = writable(false);
-export const client = new Client({
+export const client = ((<any>window).client = new Client({
   apiURL: API_URL,
-});
+}));
 export const UnreadState = writable(Date.now());
 export const UseMemberState = writable(Date.now());
 export const UseTypingState = writable(Date.now());
