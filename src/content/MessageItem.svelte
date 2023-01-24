@@ -122,7 +122,7 @@
             {#if message.content}
               <MessageItemContent {message} />
             {/if}
-            {#if message.attachments?.length}
+            {#if message.attachments?.length || message.embeds.filter((e) => e.isMedia()).length}
               <MessageItemAttachments {message} />
             {/if}
           </div>

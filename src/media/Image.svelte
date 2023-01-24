@@ -8,6 +8,8 @@
   export let className = "";
   export let square = false;
   export let alt = "";
+  export let width = 0;
+  export let height = 0;
 
   let loaded = false;
 </script>
@@ -17,6 +19,8 @@
   style:display={loaded ? "unset" : "none"}
   style:aspect-ratio={typeof src !== "string" && src.metadata.type == "Image"
     ? `${src.metadata.width} / ${src.metadata.height}`
+    : width + height
+    ? `${width} / ${height}`
     : ""}
   src={typeof src == "string" ? src : proxyURL(src.generateURL(), "image")}
   alt={alt || (typeof src == "string" ? src.split("/").pop() || "Image" : src.name)}
@@ -29,6 +33,8 @@
     class="rounded cursor-pointer bg-black bg-opacity-30 flex items-center justify-center {className}"
     style:aspect-ratio={typeof src !== "string" && src.metadata.type == "Image"
       ? `${src.metadata.width} / ${src.metadata.height}`
+      : width + height
+      ? `${width} / ${height}`
       : ""}
     data-clickable
     on:click={() => typeof src !== "string" && imagePreview.set(src)}

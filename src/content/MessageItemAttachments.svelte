@@ -19,6 +19,8 @@
       <Image
         className="max-w-[inherit] max-h-[inherit]"
         src={attachment instanceof Attachment ? attachment : attachment.url}
+        width={attachment instanceof Attachment ? 0 : attachment.width}
+        height={attachment instanceof Attachment ? 0 : attachment.height}
       />
     {:else if (attachment instanceof Attachment ? attachment.metadata.type : attachment.type) == "Video"}
       <Video
