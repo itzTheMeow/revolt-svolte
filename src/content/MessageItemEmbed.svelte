@@ -54,7 +54,7 @@
 <div
   class="rounded-lg my-1 p-3 flex flex-col gap-1.5"
   style:border-inline-start="4px solid {embed.color || $Theme["tertiary-background"]}"
-  style:background={$Theme["hover"]}
+  style:background={$Theme["primary-header"]}
   style:max-width="min({mw}px, 95%)"
   style:max-height="90vh"
 >
