@@ -3,13 +3,7 @@
   import { showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import {
-    Attachment,
-    EmbedMedia,
-    type BaseMessage,
-    type Embed,
-    type EmbedWeb,
-  } from "revolt-toolset";
+  import { Attachment, EmbedMedia, EmbedWeb, type BaseMessage, type Embed } from "revolt-toolset";
   import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
@@ -44,12 +38,25 @@
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
     isHovered = $HoveredMessage == message.id;
     doHighlight = message.isUser() && message.mentionIDs.includes(client.user.id);
-    embeds = message.isUser() ? <any>message.embeds.filter((e) => e.isText() || e.isWeb()) : [];
+    embeds = message.isUser()
+      ? <any>message.embeds.filter((e) => e.isText() || (e.isWeb() && e.special?.type !== "GIF"))
+      : [];
     attachments = message.isUser()
-      ? [
-          ...(message.attachments || []),
-          ...(<EmbedMedia[]>message.embeds.filter((e) => e.isMedia())),
-        ]
+      ? [...(message.attachments || []), ...(<EmbedMedia[]>message.embeds
+            .filter((e) => e.isMedia() || (e.isWeb() && e.special?.type == "GIF"))
+            .map((e) =>
+              e.isMedia()
+                ? e
+                : e.isWeb() &&
+                  new EmbedMedia(e.client!, {
+                    type: "Image",
+                    width: e.source.image?.width || 0,
+                    height: e.source.image?.height || 0,
+                    url: e.source.image?.url || "",
+                    size: e.source.image?.size || "Large",
+                  })
+            )
+            .filter((e) => e))]
       : [];
   }
 
