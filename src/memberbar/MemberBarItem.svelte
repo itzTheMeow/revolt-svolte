@@ -84,7 +84,7 @@
                 placement: "left",
               }}
             >
-              <IconCrown size={16} color="gold" fill="gold" />
+              <IconCrown size={16} color="gold" fill="gold" strokeWidth={1} />
             </div>
           {/if}
         </div>
