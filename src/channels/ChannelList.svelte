@@ -28,12 +28,12 @@
   let scrolledTop = true,
     scroller: HTMLDivElement,
     scrollTop = 0;
-  function handleScroll() {
+  function handleScroll(redo = true) {
     if (scroller) {
       scrollTop = scroller.scrollTop;
       scrolledTop = scroller.scrollHeight < scroller.parentElement!.offsetHeight;
     }
-    if (si) requestAnimationFrame(handleScroll);
+    if (redo && si) requestAnimationFrame(() => handleScroll());
   }
   let useBanner = true,
     savedMessages: Channel,
@@ -55,7 +55,7 @@
   let si = false;
   onMount(() => {
     si = true;
-    requestAnimationFrame(handleScroll);
+    requestAnimationFrame(() => handleScroll());
   });
   onDestroy(() => {
     si = false;
@@ -107,6 +107,7 @@
         ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
         : ""}
       style:height="{h}px"
+      on:scroll={() => handleScroll(false)}
     >
       <div
         class="w-full mt-auto flex items-center px-2 py-1 gap-1"
