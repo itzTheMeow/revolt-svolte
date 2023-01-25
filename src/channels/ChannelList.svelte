@@ -9,6 +9,7 @@
     IconLock,
     IconLockOpen,
     IconMicrophoneOff,
+    IconSettingsFilled,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
@@ -17,7 +18,7 @@
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
   import { BRAND_COLOR, Theme } from "Theme";
-  import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL } from "utils";
+  import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL, ServerManagePermissions } from "utils";
   import { voiceState, VoiceStatus } from "voice/VoiceState";
   import ChannelIcon from "./ChannelIcon.svelte";
   import ChannelItem from "./ChannelItem.svelte";
@@ -107,10 +108,11 @@
         ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
         : ""}
       style:height="{h}px"
+      style:transition="10ms height"
       on:scroll={() => handleScroll(false)}
     >
       <div
-        class="w-full mt-auto flex items-center px-2 py-1 gap-1"
+        class="w-full mt-auto flex items-center px-3 h-10 gap-1"
         style:background="linear-gradient(0deg, {$Theme["secondary-background"]}, transparent)"
       >
         {#if $SelectedServer.flags.has(RevoltServerFlags.Official)}
@@ -122,6 +124,14 @@
         <div class="font-bold text-lg w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
           {$SelectedServer.name}
         </div>
+        {#if ServerManagePermissions.find((p) => $SelectedServer?.me?.permissions.has(p))}
+          <span
+            class="cursor-pointer hover:brightness-75"
+            style:color={$Theme["secondary-foreground"]}
+          >
+            <IconSettingsFilled size={24} strokeWidth={0.1} />
+          </span>
+        {/if}
       </div>
     </div>
   {:else}
