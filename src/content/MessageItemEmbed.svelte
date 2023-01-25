@@ -13,7 +13,8 @@
 
   let mw = 0,
     mh = 0,
-    largeMedia = false;
+    largeMedia = false,
+    failLoad = false;
   $: {
     mw = MAX_EMBED_WIDTH;
     mh = MAX_EMBED_HEIGHT;
@@ -60,8 +61,8 @@
 >
   {#if embed.isWeb() ? embed.siteName : embed.title}
     <div class="flex items-center gap-1">
-      {#if embed.iconURL}
-        <img class="w-4 h-4" src={embed.proxyIconURL} alt="" />
+      {#if embed.iconURL && !failLoad}
+        <img class="w-4 h-4" src={embed.proxyIconURL} alt="" on:error={() => (failLoad = true)} />
       {/if}
       <div
         class="text-xs overflow-hidden overflow-ellipsis whitespace-nowrap"
