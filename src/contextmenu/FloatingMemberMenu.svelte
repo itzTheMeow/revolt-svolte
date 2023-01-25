@@ -2,6 +2,7 @@
   import { IconCrown, IconPencil, IconPlus, IconSettings, IconX } from "@tabler/icons-svelte";
   import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
+  import UserBadges from "extra/UserBadges.svelte";
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
@@ -73,6 +74,7 @@
     >
       {MemberDetails(member).name}
     </div>
+    <UserBadges user={member.user} />
   </div>
   {#if profile?.bio}
     <Header className="mt-2 mb-1">About</Header>
