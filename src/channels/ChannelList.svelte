@@ -3,14 +3,16 @@
     IconBrandGithub,
     IconChevronDown,
     IconChevronRight,
+    IconCircleCheck,
     IconHeadphonesOff,
+    IconHexagonLetterR,
     IconLock,
     IconLockOpen,
     IconMicrophoneOff,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
-  import type { Channel } from "revolt-toolset";
+  import { RevoltServerFlags, type Channel } from "revolt-toolset";
   import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
@@ -69,10 +71,18 @@
       style:transition="height 200ms"
     >
       <div
-        class="w-full mt-auto flex items-center py-1"
+        class="w-full mt-auto flex items-center px-2 py-1 gap-1"
         style:background="linear-gradient(0deg, {$Theme["secondary-background"]}, transparent)"
       >
-        <div class="font-bold text-lg w-full ml-2">{$SelectedServer.name}</div>
+        {#if $SelectedServer.flags.has(RevoltServerFlags.Official)}
+          <span use:tippy={{ content: "Official" }}><IconHexagonLetterR size={20} /></span>
+        {/if}
+        {#if $SelectedServer.flags.has(RevoltServerFlags.Verified)}
+          <span use:tippy={{ content: "Verified" }}><IconCircleCheck size={20} /></span>
+        {/if}
+        <div class="font-bold text-lg w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {$SelectedServer.name}
+        </div>
       </div>
     </div>
     <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
