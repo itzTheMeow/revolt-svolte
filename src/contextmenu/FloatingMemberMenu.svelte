@@ -30,7 +30,9 @@
 </script>
 
 <div
-  class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative rounded-t-xl"
+  class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative {$MobileLayout
+    ? 'rounded-t-xl'
+    : ''}"
   style:background-image={profile?.background
     ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
     : ""}
