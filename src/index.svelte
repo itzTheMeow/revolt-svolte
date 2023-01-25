@@ -137,6 +137,7 @@
         type: "user",
         id: uid,
       });
+      window.getSelection()?.removeAllRanges();
     }
   });
   window.addEventListener("keydown", async (e) => {
