@@ -2,6 +2,8 @@
   import Markdown from "markdown/Markdown.svelte";
   import { EmbedWeb, type Embed } from "revolt-toolset";
   import { Theme } from "Theme";
+  import MessageItemAttachment from "./MessageItemAttachment.svelte";
+  import MessageItemEmbedMedia from "./MessageItemEmbedMedia.svelte";
 
   const MAX_EMBED_WIDTH = 480,
     MAX_EMBED_HEIGHT = 640,
@@ -10,7 +12,8 @@
   export let embed: Embed | EmbedWeb;
 
   let mw = 0,
-    mh = 0;
+    mh = 0,
+    largeMedia = false;
   $: {
     mw = MAX_EMBED_WIDTH;
     mh = MAX_EMBED_HEIGHT;
@@ -42,6 +45,10 @@
       mh = mh || MAX_EMBED_HEIGHT;
     }
   }
+  $: largeMedia = embed.isText()
+    ? !!embed.media
+    : (embed.special && embed.special.type !== "None") ||
+      (embed.media?.type == "Image" && embed.media.size == "Large");
 </script>
 
 <div
@@ -49,7 +56,7 @@
   style:border-inline-start="4px solid {embed.color || $Theme["tertiary-background"]}"
   style:background={$Theme["hover"]}
   style:max-width="min({mw}px, 95%)"
-  style:max-height="{mh}px"
+  style:max-height="90vh"
 >
   {#if embed.isWeb() ? embed.siteName : embed.title}
     <div class="flex items-center gap-1">
@@ -86,6 +93,13 @@
       >
         {embed.description}
       </div>
+    {/if}
+  {/if}
+  {#if largeMedia}
+    {#if embed.isWeb()}
+      <MessageItemEmbedMedia {embed} height={mh} />
+    {:else if embed.media}
+      <MessageItemAttachment attachment={embed.media} inline />
     {/if}
   {/if}
 </div>

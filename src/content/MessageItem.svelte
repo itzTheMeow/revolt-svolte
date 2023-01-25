@@ -3,11 +3,17 @@
   import { showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import type { BaseMessage, Embed, EmbedWeb } from "revolt-toolset";
+  import {
+    Attachment,
+    EmbedMedia,
+    type BaseMessage,
+    type Embed,
+    type EmbedWeb,
+  } from "revolt-toolset";
   import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
-  import MessageItemAttachments from "./MessageItemAttachments.svelte";
+  import MessageItemAttachment from "./MessageItemAttachment.svelte";
   import MessageItemContent from "./MessageItemContent.svelte";
   import MessageItemEmbed from "./MessageItemEmbed.svelte";
   import MessageItemHeader from "./MessageItemHeader.svelte";
@@ -20,7 +26,8 @@
     shouldSeparate = true,
     isHovered = false,
     doHighlight = false,
-    embeds: (Embed | EmbedWeb)[] = [];
+    embeds: (Embed | EmbedWeb)[] = [],
+    attachments: (Attachment | EmbedMedia)[] = [];
   $: {
     const previousMessage =
       $MessageCache[$SelectedChannel!.id]?.[
@@ -38,6 +45,12 @@
     isHovered = $HoveredMessage == message.id;
     doHighlight = message.isUser() && message.mentionIDs.includes(client.user.id);
     embeds = message.isUser() ? <any>message.embeds.filter((e) => e.isText() || e.isWeb()) : [];
+    attachments = message.isUser()
+      ? [
+          ...(message.attachments || []),
+          ...(<EmbedMedia[]>message.embeds.filter((e) => e.isMedia())),
+        ]
+      : [];
   }
 
   let startScroll: number | null = null;
@@ -125,9 +138,9 @@
             {#if message.content}
               <MessageItemContent {message} />
             {/if}
-            {#if message.attachments?.length || message.embeds.filter((e) => e.isMedia()).length}
-              <MessageItemAttachments {message} />
-            {/if}
+            {#each attachments as attachment (attachment instanceof Attachment ? attachment.id : `${attachment.width}x${attachment.height}x${attachment.size + attachment.type}`)}
+              <MessageItemAttachment {attachment} />
+            {/each}
             {#each embeds as embed}
               <MessageItemEmbed {embed} />
             {/each}
