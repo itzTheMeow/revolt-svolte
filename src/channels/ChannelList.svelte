@@ -26,18 +26,22 @@
   const MAX_USERS = 8;
 
   let scrolledTop = true,
-    scroller: HTMLDivElement;
+    scroller: HTMLDivElement,
+    scrollTop = 0;
   function handleScroll() {
     if (!scroller) return;
+    scrollTop = scroller.scrollTop;
     scrolledTop =
       scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
   let useBanner = true,
-    savedMessages: Channel;
+    savedMessages: Channel,
+    h = 0;
   $: {
-    useBanner = !!$SelectedServer?.banner && scrolledTop;
+    useBanner = !!$SelectedServer?.banner;
     savedMessages = client.channels.find((c) => c.isSavedMessages());
   }
+  $: h = useBanner ? (scrolledTop ? 112 : Math.max(112 - scrollTop, 40)) : 40;
 
   let voiceConnection: Channel | null = null;
   $: {
@@ -58,34 +62,16 @@
 </script>
 
 <div
-  class="h-full w-56 flex flex-col"
+  class="h-full w-56 flex flex-col relative"
   style:background={$Theme["secondary-background"]}
   id="ChannelList"
 >
   {#if $SelectedServer}
     <div
-      class="w-full {useBanner ? 'h-28' : 'h-10'} bg-cover bg-center flex"
-      style:background-image={$SelectedServer.banner
-        ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
-        : ""}
-      style:transition="height 200ms"
+      class="py-1 overflow-y-auto flex-1 {useBanner ? 'pt-28' : 'pt-10'}"
+      style:paddinlg-top="{h}px"
+      bind:this={scroller}
     >
-      <div
-        class="w-full mt-auto flex items-center px-2 py-1 gap-1"
-        style:background="linear-gradient(0deg, {$Theme["secondary-background"]}, transparent)"
-      >
-        {#if $SelectedServer.flags.has(RevoltServerFlags.Official)}
-          <span use:tippy={{ content: "Official" }}><IconHexagonLetterR size={20} /></span>
-        {/if}
-        {#if $SelectedServer.flags.has(RevoltServerFlags.Verified)}
-          <span use:tippy={{ content: "Verified" }}><IconCircleCheck size={20} /></span>
-        {/if}
-        <div class="font-bold text-lg w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-          {$SelectedServer.name}
-        </div>
-      </div>
-    </div>
-    <div class="py-1 overflow-y-auto flex-1" bind:this={scroller}>
       {#each $SelectedServer.orderedChannels as category (category.id)}
         {#if $SelectedServer.orderedChannels.indexOf(category) && category.id !== "default"}
           <div
@@ -113,6 +99,28 @@
           {/each}
         {/if}
       {/each}
+    </div>
+    <div
+      class="absolute top-0 left-0 w-full bg-inherit bg-cover bg-center flex"
+      style:background-image={$SelectedServer.banner
+        ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
+        : ""}
+      style:height="{h}px"
+    >
+      <div
+        class="w-full mt-auto flex items-center px-2 py-1 gap-1"
+        style:background="linear-gradient(0deg, {$Theme["secondary-background"]}, transparent)"
+      >
+        {#if $SelectedServer.flags.has(RevoltServerFlags.Official)}
+          <span use:tippy={{ content: "Official" }}><IconHexagonLetterR size={20} /></span>
+        {/if}
+        {#if $SelectedServer.flags.has(RevoltServerFlags.Verified)}
+          <span use:tippy={{ content: "Verified" }}><IconCircleCheck size={20} /></span>
+        {/if}
+        <div class="font-bold text-lg w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {$SelectedServer.name}
+        </div>
+      </div>
     </div>
   {:else}
     <div class="flex gap-1.5 px-2 py-1.5 items-center">
