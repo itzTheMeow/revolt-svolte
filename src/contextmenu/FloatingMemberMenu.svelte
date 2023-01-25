@@ -23,7 +23,7 @@
 
   export let member: Member;
 
-  let profile: UserProfile,
+  let profile: UserProfile | null,
     fetched = "",
     canRoleManage = false,
     isRoleManaging = false,
@@ -33,6 +33,7 @@
   $: {
     if (fetched !== member.id) {
       fetched = member.id;
+      profile = null;
       member.user.fetchProfile().then((p) => (profile = p));
     }
     canRoleManage = !!member.server.me?.permissions.has(Permissions.AssignRoles);
@@ -98,9 +99,13 @@
     </div>
     <UserBadges user={member.user} />
   </div>
-  {#if profile?.bio}
+  {#if !profile || profile.bio}
     <Header className="mt-2 mb-1">About</Header>
-    <Markdown text={profile.bio} />
+    {#if profile?.bio}
+      <Markdown text={profile.bio} />
+    {:else}
+      <Loader size={16} />
+    {/if}
   {/if}
   {#if canRoleManage || member.roles.length}
     <Header className="mt-2 mb-1">Roles</Header>
