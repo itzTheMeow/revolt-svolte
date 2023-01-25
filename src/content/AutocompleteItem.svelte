@@ -16,9 +16,9 @@
 </script>
 
 <div
-  class="p-1 bg-white {selected
+  class="h-8 px-2 bg-white {selected
     ? 'bg-opacity-5'
-    : 'bg-opacity-0 hover:bg-opacity-[0.03]'} flex items-center rounded mx-2.5 my-1 cursor-pointer"
+    : 'bg-opacity-0 hover:bg-opacity-[0.03]'} flex items-center rounded cursor-pointer"
   on:touchend|preventDefault={onclick}
   on:mousedown|preventDefault
   on:click|preventDefault={onclick}

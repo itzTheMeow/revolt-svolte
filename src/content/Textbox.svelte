@@ -9,7 +9,7 @@
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
-  import { Emoji, parseAutocomplete } from "revolt-toolset";
+  import { Emoji, parseAutocomplete, type AutocompleteResult } from "revolt-toolset";
   import {
     autocomplete,
     MessageInputSelected,
@@ -31,6 +31,8 @@
   import TextboxTyping from "./TextboxTyping.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
+  const MAX_AUTOCOMPLETE = 8;
+
   let inputtedMessage = "",
     MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
@@ -38,19 +40,35 @@
     UploaderButton: HTMLDivElement;
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
-    autocomplete.set(
-      parseAutocomplete($SelectedChannel!, inputtedMessage, MessageInput.selectionStart || 0, {
+    const ac = parseAutocomplete(
+      $SelectedChannel!,
+      inputtedMessage,
+      MessageInput.selectionStart || 0,
+      {
         emojis: true,
         users: true,
-      })
+      }
     );
+    const str = (a: AutocompleteResult) => a.all.map((a) => a.id).join("/");
+    if ($autocomplete && ac && str(ac) == str($autocomplete)) return;
+    autocomplete.set(ac);
   }
   function handleAutocomplete(e: KeyboardEvent) {
-    if ($autocomplete?.size && (e.key == "Enter" || e.key == "Tab")) {
-      e.preventDefault();
-      handleAutocompleteTab($selectedAutocomplete);
-      recalculateAutocomplete();
-      return true;
+    if ($autocomplete?.size) {
+      if (e.key == "Enter" || e.key == "Tab") {
+        e.preventDefault();
+        handleAutocompleteTab($selectedAutocomplete);
+        recalculateAutocomplete();
+        return true;
+      } else if (e.key == "ArrowUp" || e.key == "ArrowDown") {
+        e.preventDefault();
+        let i = $autocomplete.all.findIndex((t) => t.id == $selectedAutocomplete);
+        i += e.key == "ArrowUp" ? -1 : 1;
+        if (i < 0) i = Math.min($autocomplete.all.length, MAX_AUTOCOMPLETE) - 1;
+        if (i > Math.min($autocomplete.all.length, MAX_AUTOCOMPLETE) - 1) i = 0;
+        $selectedAutocomplete = $autocomplete.all[i]?.id || $autocomplete.all[0]?.id || "";
+        return true;
+      }
     }
     return false;
   }
@@ -161,10 +179,11 @@
 
 {#if $autocomplete?.size}
   <div
-    class="overflow-y-auto py-2 w-full"
-    style="max-height:35%;background-color:{$Theme['primary-header']};"
+    class="overflow-y-auto p-2 w-full flex flex-col gap-1"
+    style="max-height:{MAX_AUTOCOMPLETE * 2 +
+      (MAX_AUTOCOMPLETE + 1) * 0.25}rem;background-color:{$Theme['primary-header']};"
   >
-    {#each $autocomplete.channels.slice(0, 15) as c (c.id)}
+    {#each $autocomplete.channels.slice(0, MAX_AUTOCOMPLETE) as c (c.id)}
       <AutocompleteItem
         id={c.id}
         icon={c.icon
@@ -176,7 +195,7 @@
         onclick={() => handleAutocompleteTab(c.id)}
       />
     {/each}
-    {#each $autocomplete.emojis.slice(0, 15) as e (e.id)}
+    {#each $autocomplete.emojis.slice(0, MAX_AUTOCOMPLETE) as e (e.id)}
       <AutocompleteItem
         id={e.id}
         icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
@@ -185,7 +204,7 @@
         onclick={() => handleAutocompleteTab(e.id)}
       />
     {/each}
-    {#each $autocomplete.users.slice(0, 15) as u (u.id)}
+    {#each $autocomplete.users.slice(0, MAX_AUTOCOMPLETE) as u (u.id)}
       <AutocompleteItem
         id={u.id}
         icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar}
