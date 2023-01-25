@@ -1,16 +1,25 @@
 <script lang="ts">
-  import { IconCrown, IconPencil, IconPlus, IconSettings, IconX } from "@tabler/icons-svelte";
+  import {
+    IconCrown,
+    IconEye,
+    IconPencil,
+    IconPlus,
+    IconSettings,
+    IconX,
+  } from "@tabler/icons-svelte";
   import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
   import UserBadges from "extra/UserBadges.svelte";
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
+  import { ModalStack } from "modals/ModalStack";
   import { Permissions, type Member, type UserProfile } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
   import { copyIDItem, showOptionContext } from "./ContextMenus";
+  import { floatingMenu } from "./FloatingMenu";
 
   export let member: Member;
 
@@ -40,11 +49,19 @@
   style:background-color={MemberDetails(member).color || $Theme["secondary-background"]}
 >
   <div
-    class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6"
+    class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6 cursor-pointer [--d:0] hover:[--d:1]"
     style:background-color={$Theme["primary-background"]}
+    use:tippy={{ content: "View Profile", placement: "right" }}
+    on:click={() => {
+      ModalStack.push({
+        type: "user",
+        id: member.id,
+      });
+      floatingMenu.set(null);
+    }}
   >
     <img
-      class="avatar rounded-full w-full h-full object-cover"
+      class="avatar rounded-full w-full h-full object-cover brightness-[calc(var(--d)*-.4+1)] transition"
       src={MemberDetails(member).avatar}
       alt={MemberDetails(member).name}
     />
@@ -52,8 +69,13 @@
       pos="bottomRight"
       color={$Theme[StatusColor(member.user)]}
       bg={$Theme["primary-background"]}
-      className="h-6 w-6 -right-0.5 -bottom-0.5"
+      className="h-6 w-6 -right-0.5 -bottom-0.5 pointer-events-none"
     />
+    <div
+      class="absolute top-0 left-0 opacity-[var(--d)] transition rounded-full w-full h-full flex items-center justify-center pointer-events-none"
+    >
+      <IconEye />
+    </div>
   </div>
 </div>
 <div class="pt-6 p-5">
