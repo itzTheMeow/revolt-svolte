@@ -67,11 +67,11 @@
   {/await}
   {#if $MobileLayout}
     <div
-      class="absolute top-2 right-2 p-1 rounded-full"
+      class="absolute top-3 right-3 p-1 rounded-full"
       style:background={$Theme["tooltip"]}
       on:click={() => item.close()}
     >
-      <IconX />
+      <IconX size={26} />
     </div>
   {/if}
 </ModalBase>
