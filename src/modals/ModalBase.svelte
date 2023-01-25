@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import { scale } from "svelte/transition";
   import { Theme } from "Theme";
   import { ModalStack, type Modal, type ModalData } from "./ModalStack";
 
@@ -16,7 +17,8 @@
 </script>
 
 <div
-  class="modal modal-open bg-black bg-opacity-70"
+  class="modal modal-open bg-black bg-opacity-0"
+  style:transition="200ms background"
   on:click={(e) =>
     //@ts-ignore
     e.target.classList.contains("modal") && (dispatch("cancel"), item.close())}
@@ -26,6 +28,14 @@
       ? 'w-full h-full rounded-none max-w-full max-h-full'
       : ''} {className}"
     style:background-color={$Theme["background"]}
+    in:scale={{ duration: 200, start: 0.3 }}
+    on:introstart={(e) => {
+      e.currentTarget.parentElement?.classList.add("bg-opacity-70");
+    }}
+    out:scale={{ duration: 200 }}
+    on:outrostart={(e) => {
+      e.currentTarget.parentElement?.classList.remove("bg-opacity-70");
+    }}
   >
     <slot />
   </div>
