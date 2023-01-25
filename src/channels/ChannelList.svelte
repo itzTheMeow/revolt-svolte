@@ -29,9 +29,11 @@
     scroller: HTMLDivElement,
     scrollTop = 0;
   function handleScroll() {
-    if (!scroller) return;
-    scrollTop = scroller.scrollTop;
-    scrolledTop = scroller.scrollHeight < scroller.parentElement!.offsetHeight;
+    if (scroller) {
+      scrollTop = scroller.scrollTop;
+      scrolledTop = scroller.scrollHeight < scroller.parentElement!.offsetHeight;
+    }
+    if (si) requestAnimationFrame(handleScroll);
   }
   let useBanner = true,
     savedMessages: Channel,
@@ -50,13 +52,13 @@
         : null;
   }
 
-  let si: NodeJS.Timer;
+  let si = false;
   onMount(() => {
-    if (si) clearInterval(si);
-    si = setInterval(handleScroll, 6);
+    si = true;
+    requestAnimationFrame(handleScroll);
   });
   onDestroy(() => {
-    if (si) clearInterval(si);
+    si = false;
   });
 </script>
 
