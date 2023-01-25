@@ -31,8 +31,7 @@
   function handleScroll() {
     if (!scroller) return;
     scrollTop = scroller.scrollTop;
-    scrolledTop =
-      scroller.scrollTop <= 0 || scroller.scrollHeight < scroller.parentElement!.offsetHeight;
+    scrolledTop = scroller.scrollHeight < scroller.parentElement!.offsetHeight;
   }
   let useBanner = true,
     savedMessages: Channel,
