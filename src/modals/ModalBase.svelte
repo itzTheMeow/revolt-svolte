@@ -30,7 +30,7 @@
     style:background-color={$Theme["background"]}
     in:scale={{ duration: 200, start: 0.3 }}
     on:introstart={(e) => {
-      e.currentTarget.parentElement?.classList.add("bg-opacity-70");
+      if (!full) e.currentTarget.parentElement?.classList.add("bg-opacity-70");
     }}
     out:scale={{ duration: 200 }}
     on:outrostart={(e) => {
