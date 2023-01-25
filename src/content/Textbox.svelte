@@ -23,7 +23,7 @@
     selectInput,
     uploadedFiles,
   } from "State";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
   import { MemberOrUserDetails, proxyURL } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
@@ -72,13 +72,14 @@
     }
     return false;
   }
-  function handleAutocompleteTab(id: string) {
+  async function handleAutocompleteTab(id: string) {
     if (!$autocomplete?.all.length) return;
     const res = $autocomplete.tab(
       $autocomplete.all.find((a) => a.id == id) || $autocomplete.all[0]
     );
     if (!res) return;
     inputtedMessage = res.text;
+    await tick();
     MessageInput.focus();
     MessageInput.setSelectionRange(res.newCursor, res.newCursor);
     selectedAutocomplete.set("");
