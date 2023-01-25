@@ -1,6 +1,13 @@
 import { DateTime, Duration } from "luxon";
-import type { ThemeSettings } from "revolt-toolset";
-import { Channel, Member, Server, User, type Message } from "revolt-toolset";
+import {
+  Channel,
+  Member,
+  Permissions,
+  Server,
+  User,
+  type Message,
+  type ThemeSettings,
+} from "revolt-toolset";
 
 export const BRAND_NAME =
   document.querySelector<HTMLMetaElement>(`meta[name="brand-name"]`)?.content || "Client";
@@ -22,6 +29,55 @@ export function escapeRegex(r: RegExp) {
 export function proxyURL(url: string = "", type: "any" | "image") {
   return (<any>window).STANDALONE ? url : `/proxy?url=${encodeURIComponent(url)}&t=${type}`;
 }
+
+export const ServerManagePermissions = [
+  Permissions.AssignRoles,
+  Permissions.BanMembers,
+  Permissions.GrantAllSafe,
+  Permissions.KickMembers,
+  Permissions.ManageChannel,
+  Permissions.ManageCustomisation,
+  Permissions.ManageNicknames,
+  Permissions.ManagePermissions,
+  Permissions.ManageRole,
+  Permissions.ManageServer,
+  Permissions.ManageWebhooks,
+  Permissions.RemoveAvatars,
+  Permissions.TimeoutMembers,
+];
+// prettier-ignore
+export const PermissionLangMap: { [key in Permissions]: [string, string] } = {
+  [Permissions.AssignRoles]: ["Assign Roles", "Allows members to assign roles below their own rank to other members."],
+  [Permissions.BanMembers]: ["Ban Members", "Allows members to permanently remove members from this server."],
+  [Permissions.ChangeAvatar]: ["Change Avatar", "Allows members to change their server avatar on this server."],
+  [Permissions.ChangeNickname]: ["Change Nickname", "Allows members to change their nickname on this server."],
+  [Permissions.Connect]: ["Connect", "Allows members to connect to a voice channel."],
+  [Permissions.DeafenMembers]: ["Deafen Members", "Allows members to deafen others in a voice channel."],
+  [Permissions.GrantAllSafe]: ["Administrator", "All permissions."],
+  [Permissions.InviteOthers]: ["Invite Others", "Allows members to invite other users to a channel."],
+  [Permissions.KickMembers]: ["Kick Members", "Allows members to remove members from this server. Kicked members may rejoin with an invite."],
+  [Permissions.ManageChannel]: ["Manage Channels", "Allows members to create, edit and delete channels."],
+  [Permissions.ManageCustomisation]: ["Manage Customization", "Allows members to create, edit and delete emojis."],
+  [Permissions.ManageMessages]: ["Manage Messages", "Allows members to delete messages sent by other members."],
+  [Permissions.ManageNicknames]: ["Manage Nicknames", "Allows members to change the nicknames of other members."],
+  [Permissions.ManagePermissions]: ["Manage Permissions", "Allows members to change permissions for channels and roles with a lower ranking."],
+  [Permissions.ManageRole]: ["Manage Roles", "Allows members to create, edit and delete roles with a lower rank than theirs. Also allows them to modify role permissions on channels."],
+  [Permissions.ManageServer]: ["Manage Server", "Allows members to change this server's name, description, icon and other related information."],
+  [Permissions.ManageWebhooks]: ["Manage Webhooks", "Allows members to control webhooks in a channel."],
+  [Permissions.Masquerade]: ["Masquerade", "Allows members to change their name and avatar per-message."],
+  [Permissions.MoveMembers]: ["Move Members", "Allows members to move others between voice channels."],
+  [Permissions.MuteMembers]: ["Mute Members", "Allows members to mute others in a voice channel."],
+  [Permissions.React]: ["Use Reactions", "Allows members to react to messages."],
+  [Permissions.ReadMessageHistory]: ["Read Message History", "Allows members to read the message history of this channel."],
+  [Permissions.RemoveAvatars]: ["Remove Avatars", "Allows members to remove the server avatars of other members on this server."],
+  [Permissions.SendEmbeds]: ["Send Embeds", "Allows members to send embedded content, whether from links or custom text embeds."],
+  [Permissions.SendMessage]: ["Send Messages", "Allows members to send messages in text channels."],
+  [Permissions.Speak]: ["Speak", "Allows members to speak in a voice channel."],
+  [Permissions.TimeoutMembers]: ["Timeout Members", "Allows members to temporarily prevent users from interacting with the server."],
+  [Permissions.UploadFiles]: ["Upload Files", "Allows members to upload files in text channels."],
+  [Permissions.Video]: ["Video", "Allows members to stream video in a voice channel."],
+  [Permissions.ViewChannel]: ["View Channel", "Allows members to view any channels they have this permission on."],
+};
 
 export const Matches = {
   user: /<@([A-z0-9]{26})>/g,
