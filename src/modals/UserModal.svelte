@@ -2,6 +2,7 @@
   import { IconX } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Indicator from "extra/Indicator.svelte";
+  import Loader from "Loader.svelte";
   import type { User, UserProfile } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { Theme } from "Theme";
@@ -22,8 +23,8 @@
         user = await client.users.fetch(id);
         if (!user) rej("User does not exist.");
         profile = await user.fetchProfile();
-        res(void 0);
       }
+      res(void 0);
     });
   }
 </script>
@@ -35,7 +36,7 @@
   className="p-0 overflow-hidden {$MobileLayout ? '' : 'max-w-none w-1/2 h-2/3'}"
 >
   {#await fetch(modal.id)}
-    ...
+    <div class="w-full h-full flex items-center justify-center"><Loader /></div>
   {:then _}
     <div
       class="flex items-center w-full h-32 bg-cover bg-center p-4 relative"
