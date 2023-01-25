@@ -103,3 +103,6 @@
     {/if}
   {/if}
 </div>
+{#if !largeMedia && embed.isWeb()}
+  <MessageItemEmbedMedia {embed} height={mh} />
+{/if}
