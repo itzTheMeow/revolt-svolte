@@ -46,7 +46,7 @@
       style:background-color={$Theme["secondary-background"]}
     >
       <div
-        class="rounded-full p-1 w-16 h-16 relative"
+        class="rounded-full w-16 h-16 relative"
         style:background-color={$Theme["primary-background"]}
       >
         <img
@@ -57,7 +57,7 @@
         <Indicator
           pos="bottomRight"
           color={$Theme[StatusColor(user)]}
-          bg={$Theme["primary-background"]}
+          bg="transparent"
           className="h-6 w-6 -right-0.5 -bottom-0.5"
         />
       </div>

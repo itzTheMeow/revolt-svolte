@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconCornerLeftDown } from "@tabler/icons-svelte";
-  import { showMemberContext } from "contextmenu/FloatingMenu";
+  import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Message } from "revolt-toolset";
@@ -39,6 +39,13 @@
             if (!reply?.isUser()) return;
             if (reply.member) showMemberContext(reply.member, e.clientX, e.clientY, e.target);
             else ModalStack.push({ type: "user", id: reply.authorID });
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }}
+          on:dblclick={(e) => {
+            if ($floatingMenu) floatingMenu.set(null);
+            ModalStack.push({ type: "user", id: message.authorID });
             e.preventDefault();
             e.stopPropagation();
             return false;

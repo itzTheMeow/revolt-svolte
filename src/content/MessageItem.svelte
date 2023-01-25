@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import { showMemberContext } from "contextmenu/FloatingMenu";
+  import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import { Attachment, EmbedMedia, EmbedWeb, type BaseMessage, type Embed } from "revolt-toolset";
@@ -119,6 +119,11 @@
                 if (message.member)
                   showMemberContext(message.member, e.clientX, e.clientY, e.target);
                 else ModalStack.push({ type: "user", id: message.authorID });
+              }}
+              on:dblclick={() => {
+                if (!message.isUser()) return;
+                if ($floatingMenu) floatingMenu.set(null);
+                ModalStack.push({ type: "user", id: message.authorID });
               }}
             />
           {:else}

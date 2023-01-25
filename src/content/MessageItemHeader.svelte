@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { showMemberContext } from "contextmenu/FloatingMenu";
+  import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt-toolset";
@@ -19,6 +19,14 @@
       else ModalStack.push({ type: "user", id: message.authorID });
       e.preventDefault();
       e.stopPropagation();
+      return false;
+    }}
+    on:dblclick={(e) => {
+      if ($floatingMenu) floatingMenu.set(null);
+      ModalStack.push({ type: "user", id: message.authorID });
+      e.preventDefault();
+      e.stopPropagation();
+      window.getSelection()?.removeAllRanges();
       return false;
     }}
   >

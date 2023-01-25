@@ -128,6 +128,17 @@
       });
     }
   });
+  window.addEventListener("dblclick", async (e) => {
+    const target = <HTMLElement>e.target;
+    const uid = target.getAttribute("data-userpopup");
+    if (uid) {
+      if ($floatingMenu) floatingMenu.set(null);
+      ModalStack.push({
+        type: "user",
+        id: uid,
+      });
+    }
+  });
   window.addEventListener("keydown", async (e) => {
     if (
       document.activeElement?.tagName !== "INPUT" &&
