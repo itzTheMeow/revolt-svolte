@@ -11,7 +11,7 @@
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
   import { RelationshipStatus, type User, type UserProfile } from "revolt-toolset";
-  import { MobileLayout, SelectedChannel } from "State";
+  import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { Theme } from "Theme";
   import { proxyURL, StatusColor, UserDetails } from "utils";
@@ -154,7 +154,11 @@
               tooltip="Message"
               onclick={async () => {
                 const dm = await user.openDM();
-                if (dm) SelectedChannel.set(dm);
+                if (dm) {
+                  item.close();
+                  SelectedServer.set(null);
+                  SelectedChannel.set(dm);
+                }
               }}
             />
           {/if}
