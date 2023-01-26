@@ -10,8 +10,9 @@ export const client = ((<any>window).client = new Client({
   apiURL: API_URL,
 }));
 export const UnreadState = writable(Date.now());
-export const UseMemberState = writable(Date.now());
-export const UseTypingState = writable(Date.now());
+export const UseMemberState = writable(Date.now()),
+  UseUserState = writable(Date.now()),
+  UseTypingState = writable(Date.now());
 client.once("ready", async () => {
   try {
     const settings = await client.syncFetchSettings([]);

@@ -4,12 +4,17 @@
 
   export let icon: ConstructorOfATypedSvelteComponent;
   export let tooltip: string;
+  export let onclick: () => any;
+  export let className = "";
+  export let color = "inherit";
 </script>
 
 <div
-  class="rounded-lg p-1.5 flex items-center gap-1.5 hover:brightness-50 transition cursor-pointer"
+  class="rounded-lg p-1.5 flex items-center gap-1.5 hover:brightness-50 transition cursor-pointer {className}"
   style:background-color={$Theme["background"]}
+  style:color
   use:tippy={{ content: tooltip }}
+  on:click={() => onclick()}
 >
   <svelte:component this={icon} />
 </div>

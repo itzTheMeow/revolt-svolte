@@ -2,7 +2,7 @@
   import TWEEN from "@tweenjs/tween.js";
   import { disableBodyScroll } from "body-scroll-lock";
   import ChannelList from "channels/ChannelList.svelte";
-  import { client, ClientReady } from "Client";
+  import { client, ClientReady, UseUserState } from "Client";
   import ContentList from "content/ContentList.svelte";
   import ContextMenu from "contextmenu/ContextMenu.svelte";
   import { CMState } from "contextmenu/ContextMenuState";
@@ -47,6 +47,7 @@
   });
   client.users.onUpdate(() => {
     MessageCache.update((c) => c);
+    UseUserState.set(Date.now() * Math.random());
   });
   client.servers.onUpdate(() => {
     MessageCache.update((c) => c);
