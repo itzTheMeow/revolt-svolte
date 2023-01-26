@@ -3,6 +3,7 @@
   import { floatingMenu } from "contextmenu/FloatingMenu";
   import Indicator from "extra/Indicator.svelte";
   import UserTag from "extra/UserTag.svelte";
+  import { ModalStack } from "modals/ModalStack";
   import { Member, Role } from "revolt-toolset";
   import { AppHeight, AppWidth } from "State";
   import { tippy } from "svelte-tippy";
@@ -34,6 +35,14 @@
     class="relative [--d:none] hover:[--d:block] rounded-md overflow-hidden px-1.5 cursor-pointer"
     bind:this={BarItem}
     on:click={handleClick}
+    on:dblclick={(e) => {
+      if (!(item instanceof Member)) return;
+      if ($floatingMenu) floatingMenu.set(null);
+      ModalStack.push({ type: "user", id: item.id });
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }}
   >
     <div
       class="absolute top-0 left-0 w-full h-full opacity-20"
