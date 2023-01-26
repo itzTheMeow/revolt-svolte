@@ -41,5 +41,6 @@
   {/if}
   <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
     {MessageDetails(message).time}
+    {#if message.edited}(edited){/if}
   </div>
 </div>
