@@ -41,14 +41,18 @@
 </script>
 
 <div
-  class="flex items-center justify-center w-full h-24 bg-cover bg-center p-4 relative {$MobileLayout
+  class="flex items-center justify-center w-full h-24 p-4 relative {$MobileLayout
     ? 'rounded-t-xl'
     : ''}"
-  style:background-image={profile?.background
-    ? `url(${proxyURL(profile.generateBackgroundURL({ max_side: 256 }) || "", "image")})`
-    : ""}
-  style:background-color={MemberDetails(member).color || $Theme["secondary-background"]}
+  style:background={MemberDetails(member).color || $Theme["secondary-background"]}
 >
+  {#if profile?.background}
+    <img
+      class="w-full h-full absolute top-0 left-0 rounded-[inherit] object-cover"
+      src={proxyURL(profile.generateBackgroundURL({ max_side: 288 }) || "", "image")}
+      alt=""
+    />
+  {/if}
   <div
     class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6 cursor-pointer [--d:0] hover:[--d:1]"
     style:background-color={$Theme["primary-header"]}
