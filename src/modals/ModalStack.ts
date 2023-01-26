@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import type { SettingsPage } from "./Settings";
 
 export type ModalData =
   | {
@@ -11,7 +12,8 @@ export type ModalData =
       confirmed?: () => any;
       canceled?: () => any;
     }
-  | { type: "user"; id: string };
+  | { type: "user"; id: string }
+  | { type: "settings"; page: SettingsPage };
 export interface Modal {
   close(): void;
 }
@@ -32,6 +34,9 @@ export const ModalStack = new (class {
       stk.push(item);
       return stk;
     });
+  }
+  public update() {
+    this.stack.update((s) => s);
   }
   public close(item: ModalData) {
     this.stack.update((stk) => {
