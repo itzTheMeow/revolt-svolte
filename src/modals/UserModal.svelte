@@ -11,7 +11,7 @@
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
   import { RelationshipStatus, type User, type UserProfile } from "revolt-toolset";
-  import { MobileLayout, SelectedChannel, SelectedServer } from "State";
+  import { AppWidth, MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { Theme } from "Theme";
   import { proxyURL, StatusColor, UserDetails } from "utils";
@@ -67,7 +67,9 @@
       <div class="w-full h-full flex items-center justify-center"><Loader /></div>
     {:then _}
       <div
-        class="flex items-center w-full h-40 bg-cover bg-center px-6 relative"
+        class="flex {$MobileLayout
+          ? 'flex-col justify-center'
+          : ''} items-center w-full h-40 bg-cover bg-center px-6 relative"
         style:background-image={profile?.background
           ? `url(${proxyURL(
               profile.generateBackgroundURL({
@@ -79,7 +81,9 @@
         style:background-color={$Theme["secondary-background"]}
       >
         <div
-          class="rounded-xl px-3 py-2 flex items-center gap-2 max-w-[calc(100%-8rem)] shadow-md shadow-black overflow-hidden"
+          class="{$MobileLayout
+            ? 'max-w-full'
+            : 'max-w-[calc(100%-8rem)]'} rounded-xl px-3 py-2 flex items-center gap-2 shadow-md shadow-black overflow-hidden"
           style:background-color={$Theme["background"]}
         >
           <div class="rounded-full w-14 h-14 relative bg-inherit">
@@ -99,6 +103,7 @@
             <tr>
               <th
                 class="p-0 w-min font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+                style:max-width={$MobileLayout ? "60vw" : `${($AppWidth / 2) * 0.55}px`}
               >
                 {UserDetails(user).name}
               </th>
@@ -112,7 +117,7 @@
             {/if}
           </table>
         </div>
-        <div class="ml-auto flex gap-2 items-center">
+        <div class="{$MobileLayout ? 'mt-3' : 'ml-auto'} flex gap-2 items-center">
           {#if user.relationship !== RelationshipStatus.Self}
             {#if !user.bot}
               {#if user.relationship == RelationshipStatus.SelfBlocked}
