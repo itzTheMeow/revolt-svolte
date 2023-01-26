@@ -144,7 +144,10 @@
     if (
       document.activeElement?.tagName !== "INPUT" &&
       document.activeElement?.tagName !== "TEXTAREA" &&
-      !$MobileLayout
+      !$MobileLayout &&
+      (!e.ctrlKey ||
+        window.getSelection()?.getRangeAt(0)?.startOffset ==
+          window.getSelection()?.getRangeAt(0)?.endOffset)
     )
       document.getElementById("Textbox")?.focus();
     if (e.key == "Escape") {
