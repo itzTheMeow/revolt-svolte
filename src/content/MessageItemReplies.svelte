@@ -6,7 +6,7 @@
   import type { BaseMessage, Message } from "revolt-toolset";
   import { MessageCache } from "State";
   import { writable } from "svelte/store";
-  import { MessageDetails, proxyURL } from "utils";
+  import { MessageDetails, proxyURL, UserColor } from "utils";
 
   export let message: Message;
 
@@ -65,7 +65,7 @@
           />
           <div
             class="[text-decoration-line:var(--u)]"
-            style:color={reply ? MessageDetails(reply).color || "inherit" : "inherit"}
+            style={UserColor(MessageDetails(reply).color || "inherit")}
           >
             {message.mentionIDs.includes(reply.authorID) ? "@" : ""}{reply
               ? MessageDetails(reply).name
