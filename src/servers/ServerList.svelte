@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { IconRefresh } from "@tabler/icons-svelte";
+  import { IconRefresh, IconSettings } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Indicator from "extra/Indicator.svelte";
+  import { ModalStack } from "modals/ModalStack";
+  import { SettingsPage } from "modals/Settings";
   import type { Server } from "revolt-toolset";
   import { SelectedServer, ServerOrder } from "State";
   import { onDestroy, onMount } from "svelte";
@@ -85,6 +87,15 @@
     <ServerEntry placeholder onclick={() => window.location.reload()} tooltip="Reload">
       <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
         <IconRefresh />
+      </div>
+    </ServerEntry>
+    <ServerEntry
+      placeholder
+      onclick={() => ModalStack.push({ type: "settings", page: SettingsPage.Account })}
+      tooltip="Settings"
+    >
+      <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
+        <IconSettings />
       </div>
     </ServerEntry>
   </div>
