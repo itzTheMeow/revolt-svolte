@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Image from "media/Image.svelte";
+  import Video from "media/Video.svelte";
   import type { EmbedWeb } from "revolt-toolset";
 
   export let embed: EmbedWeb;
@@ -74,43 +76,16 @@
                 />
             );
         }
-        default: {
-            if (embed.video) {
-                const url = embed.video.url;
-                return (
-                    <video
-                        loading="lazy"
-                        className={styles.image}
-                        style={{ width, height }}
-                        src={client.proxyFile(url)}
-                        loop={embed.special?.type === "GIF"}
-                        controls={embed.special?.type !== "GIF"}
-                        autoPlay={embed.special?.type === "GIF"}
-                        muted={embed.special?.type === "GIF" ? true : undefined}
-                    />
-                );
-            } else if (embed.image) {
-                const url = embed.image.url;
-                return (
-                    <img
-                        className={styles.image}
-                        src={client.proxyFile(url)}
-                        loading="lazy"
-                        style={{ width: "100%", height: "100%" }}
-                        onClick={() =>
-                            modalController.push({
-                                type: "image_viewer",
-                                embed: embed.image!,
-                            })
-                        }
-                        onMouseDown={(ev) =>
-                            ev.button === 1 && window.open(url, "_blank")
-                        }
-                    />
-                );
-            }
-        }
-    }-->
+        -->
+{:else if embed.media?.type == "Video"}
+  <Video src={embed.media.proxyURL} />
+{:else if embed.media?.type == "Image"}
+  <Image
+    src={embed.media.proxyURL}
+    width={embed.media.width}
+    height={embed.media.height}
+    className="max-w-[480px]"
+  />
 {/if}
 
 <style>

@@ -13,7 +13,6 @@
 
   let mw = 0,
     mh = 0,
-    largeMedia = false,
     failLoad = false;
   $: {
     mw = MAX_EMBED_WIDTH;
@@ -37,7 +36,7 @@
             mw = MAX_EMBED_WIDTH;
             mh = Math.min(embed.media.height ?? 0, MAX_PREVIEW_SIZE);
           } else {
-            mw = embed.media?.width ?? MAX_EMBED_WIDTH;
+            mw = Math.min(embed.media?.width ?? MAX_EMBED_WIDTH, MAX_EMBED_WIDTH);
             mh = embed.media?.height ?? 0;
           }
         }
@@ -46,10 +45,6 @@
       mh = mh || MAX_EMBED_HEIGHT;
     }
   }
-  $: largeMedia = embed.isText()
-    ? !!embed.media
-    : (embed.special && embed.special.type !== "None") ||
-      (embed.media?.type == "Image" && embed.media.size == "Large");
 </script>
 
 <div
@@ -96,14 +91,9 @@
       </div>
     {/if}
   {/if}
-  {#if largeMedia}
-    {#if embed.isWeb()}
-      <MessageItemEmbedMedia {embed} height={mh} />
-    {:else if embed.media}
-      <MessageItemAttachment attachment={embed.media} inline />
-    {/if}
+  {#if embed.isWeb()}
+    <MessageItemEmbedMedia {embed} height={mh} />
+  {:else if embed.media}
+    <MessageItemAttachment attachment={embed.media} inline />
   {/if}
 </div>
-{#if !largeMedia && embed.isWeb()}
-  <MessageItemEmbedMedia {embed} height={mh} />
-{/if}

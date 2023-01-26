@@ -23,7 +23,7 @@
     : width + height
     ? `${width} / ${height}`
     : ""}
-  src={typeof src == "string" ? src : proxyURL(src.generateURL(), "image")}
+  src={proxyURL(typeof src == "string" ? src : src.generateURL(), "image")}
   alt={alt || (typeof src == "string" ? src.split("/").pop() || "Image" : src.name)}
   on:load={() => {
     loaded = true;
