@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
 
@@ -10,11 +11,13 @@
 </script>
 
 <div
-  class="rounded-lg p-1.5 flex items-center gap-1.5 hover:brightness-50 transition cursor-pointer shadow-sm shadow-black {className}"
+  class="rounded-lg {$MobileLayout
+    ? 'p-2'
+    : 'p-1.5'} flex items-center gap-1.5 hover:brightness-50 transition cursor-pointer shadow-sm shadow-black {className}"
   style:background-color={$Theme["background"]}
   style:color
   use:tippy={{ content: tooltip }}
   on:click={() => onclick()}
 >
-  <svelte:component this={icon} />
+  <svelte:component this={icon} size={$MobileLayout ? 26 : 24} />
 </div>
