@@ -16,20 +16,17 @@
     allowFullScreen
     style:height="{height}px"
   />
+{:else if embed.special?.type == "Twitch"}
+  <iframe
+    src="https://player.twitch.tv/?{embed.special.content_type.toLowerCase()}={embed.special
+      .id}&parent={window.location.hostname}&autoplay=false"
+    frameBorder="0"
+    allowFullScreen
+    scrolling="no"
+    loading="lazy"
+    style:height="{height}px"
+  />
   <!--
-        case "Twitch":
-            return (
-                <iframe
-                    src={`https://player.twitch.tv/?${embed.special.content_type.toLowerCase()}=${
-                        embed.special.id
-                    }&parent=${window.location.hostname}&autoplay=false`}
-                    frameBorder="0"
-                    allowFullScreen
-                    scrolling="no"
-                    loading="lazy"
-                    style={{ height }}
-                />
-            );
         case "Lightspeed":
             return (
                 <iframe
@@ -78,10 +75,10 @@
         }
         -->
 {:else if embed.media?.type == "Video"}
-  <Video src={embed.media.proxyURL} />
+  <Video src={embed.media.url} />
 {:else if embed.media?.type == "Image"}
   <Image
-    src={embed.media.proxyURL}
+    src={embed.media.url}
     width={embed.media.width}
     height={embed.media.height}
     className="max-w-[480px]"
@@ -91,6 +88,8 @@
 <style>
   iframe {
     width: 100%;
+    max-width: 40vw;
+    max-height: 50vh;
     border-radius: 0.25rem;
   }
 </style>
