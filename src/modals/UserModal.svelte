@@ -11,7 +11,7 @@
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
   import { RelationshipStatus, type User, type UserProfile } from "revolt-toolset";
-  import { AppWidth, MobileLayout, SelectedChannel, SelectedServer } from "State";
+  import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { Theme } from "Theme";
   import { proxyURL, StatusColor, UserDetails } from "utils";
@@ -83,7 +83,7 @@
         <div
           class="{$MobileLayout
             ? 'max-w-full'
-            : 'max-w-[calc(100%-8rem)]'} rounded-xl px-3 py-2 flex items-center gap-2 shadow-md shadow-black overflow-hidden"
+            : 'max-w-[50%]'} rounded-xl px-3 py-2 flex items-center gap-2 shadow-md shadow-black overflow-hidden"
           style:background-color={$Theme["background"]}
         >
           <div class="rounded-full w-14 h-14 relative bg-inherit">
@@ -99,23 +99,23 @@
               className="h-6 w-6 -right-0.5 -bottom-0.5"
             />
           </div>
-          <table class="flex-1 overflow-hidden table-fixed w-min">
-            <tr>
-              <th
-                class="p-0 w-min font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
-                style:max-width={$MobileLayout ? "60vw" : `${($AppWidth / 2) * 0.55}px`}
-              >
-                {UserDetails(user).name}
-              </th>
-            </tr>
+          <div class="flex items-center flex-col flex-1 overflow-hidden">
+            <div
+              class="font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis max-w-full"
+            >
+              {UserDetails(user).name}
+            </div>
             {#if user.status}
-              <tr>
-                <td class="p-0 text-sm overflow-hidden whitespace-nowrap overflow-ellipsis w-min">
-                  {user.status}
-                </td>
-              </tr>
+              <div
+                class="text-sm overflow-hidden overflow-ellipsis w-full"
+                style:display="-webkit-box"
+                style:-webkit-line-clamp="2"
+                style:-webkit-box-orient="vertical"
+              >
+                {user.status}
+              </div>
             {/if}
-          </table>
+          </div>
         </div>
         <div class="{$MobileLayout ? 'mt-3' : 'ml-auto'} flex gap-2 items-center">
           {#if user.relationship !== RelationshipStatus.Self}
