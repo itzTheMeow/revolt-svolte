@@ -79,7 +79,7 @@
         style:background-color={$Theme["secondary-background"]}
       >
         <div
-          class="rounded-xl px-3 py-2 flex items-center gap-2 max-w-[50%] shadow-sm"
+          class="rounded-xl px-3 py-2 flex items-center gap-2 max-w-[calc(100%-8rem)] shadow-md shadow-black overflow-hidden"
           style:background-color={$Theme["background"]}
         >
           <div class="rounded-full w-14 h-14 relative bg-inherit">
@@ -95,16 +95,22 @@
               className="h-6 w-6 -right-0.5 -bottom-0.5"
             />
           </div>
-          <div class="flex flex-col">
-            <div class="font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis">
-              {UserDetails(user).name}
-            </div>
+          <table class="flex-1 overflow-hidden table-fixed w-min">
+            <tr>
+              <th
+                class="p-0 w-min font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+              >
+                {UserDetails(user).name}
+              </th>
+            </tr>
             {#if user.status}
-              <div class="text-sm overflow-hidden whitespace-nowrap overflow-ellipsis">
-                {user.status}
-              </div>
+              <tr>
+                <td class="p-0 text-sm overflow-hidden whitespace-nowrap overflow-ellipsis w-min">
+                  {user.status}
+                </td>
+              </tr>
             {/if}
-          </div>
+          </table>
         </div>
         <div class="ml-auto flex gap-2 items-center">
           {#if user.relationship !== RelationshipStatus.Self}
