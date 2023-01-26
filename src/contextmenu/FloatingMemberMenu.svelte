@@ -51,7 +51,7 @@
 >
   <div
     class="rounded-full p-1 w-16 h-16 absolute left-4 -bottom-6 cursor-pointer [--d:0] hover:[--d:1]"
-    style:background-color={$Theme["primary-background"]}
+    style:background-color={$Theme["primary-header"]}
     use:tippy={{ content: "View Profile", placement: "right" }}
     on:click={() => {
       ModalStack.push({
@@ -69,7 +69,7 @@
     <Indicator
       pos="bottomRight"
       color={$Theme[StatusColor(member.user)]}
-      bg={$Theme["primary-background"]}
+      bg={$Theme["primary-header"]}
       className="h-6 w-6 -right-0.5 -bottom-0.5 pointer-events-none"
     />
     <div
