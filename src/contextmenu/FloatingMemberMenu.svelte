@@ -34,7 +34,19 @@
     if (fetched !== member.id) {
       fetched = member.id;
       profile = null;
-      member.user.fetchProfile().then((p) => (profile = p));
+      member.user
+        .fetchProfile()
+        .then((p) => (profile = p))
+        .catch(
+          () =>
+            (profile = {
+              background: null,
+              bio: null,
+              generateBackgroundURL() {
+                return null;
+              },
+            })
+        );
     }
     canRoleManage = !!member.server.me?.permissions.has(Permissions.AssignRoles);
   }

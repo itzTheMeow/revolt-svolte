@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { IconMessageShare, IconUserMinus, IconUserPlus, IconX } from "@tabler/icons-svelte";
+  import {
+    IconBan,
+    IconMessageShare,
+    IconUserMinus,
+    IconUserPlus,
+    IconUserX,
+    IconX,
+  } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
@@ -19,11 +26,15 @@
 
   function fetch(id: string) {
     return new Promise<void>(async (res, rej) => {
-      if (fetched !== id) {
-        fetched = id;
-        user = await client.users.fetch(id);
-        if (!user) rej("User does not exist.");
-        profile = await user.fetchProfile();
+      try {
+        if (fetched !== id) {
+          fetched = id;
+          user = await client.users.fetch(id);
+          if (!user) return rej("User does not exist.");
+          profile = await user.fetchProfile();
+        }
+      } catch (err) {
+        console.error(err);
       }
       res(void 0);
     });
@@ -72,11 +83,22 @@
       </div>
       <div class="ml-auto flex gap-2 items-center">
         {#if user.relationship !== RelationshipStatus.Self}
-          <UserModalAction
-            icon={user.relationship == RelationshipStatus.Friend ? IconUserMinus : IconUserPlus}
-          />
+          {#if user.relationship == RelationshipStatus.SelfBlocked}
+            <div class="brightness-50 cursor-not-allowed" style:color={$Theme["error"]}>
+              <UserModalAction tooltip="Blocked" icon={IconBan} />
+            </div>
+          {:else if user.relationship == RelationshipStatus.Blocked}
+            <UserModalAction tooltip="Unblock" icon={IconUserX} />
+          {:else}
+            <UserModalAction
+              tooltip={user.relationship == RelationshipStatus.Friend
+                ? "Remove Friend"
+                : "Add Friend"}
+              icon={user.relationship == RelationshipStatus.Friend ? IconUserMinus : IconUserPlus}
+            />
+          {/if}
+          <UserModalAction icon={IconMessageShare} tooltip="Message" />
         {/if}
-        <UserModalAction icon={IconMessageShare} />
       </div>
     </div>
   {:catch err}
