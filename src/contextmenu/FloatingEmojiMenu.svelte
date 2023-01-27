@@ -2,7 +2,6 @@
   import Image from "media/Image.svelte";
   import { DefaultEmoji, type Emoji } from "revolt-toolset";
   import { SelectedServer } from "State";
-  import { proxyURL } from "utils";
   import { floatingMenu } from "./FloatingMenu";
 
   export let emoji: Emoji | DefaultEmoji;
@@ -10,7 +9,7 @@
 </script>
 
 <div class="flex gap-2 m-2.5">
-  <Image className="w-12 h-12" src={proxyURL(emoji.imageURL, "image")} alt={emoji.name} square />
+  <Image className="w-12 h-12" src={emoji.imageURL} alt={emoji.name} square />
   <div class="flex flex-col justify-center items-center">
     <div class="text-xl font-bold">:{emoji.uniqueName}:</div>
     {#if emoji instanceof DefaultEmoji}
