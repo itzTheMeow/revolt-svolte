@@ -54,6 +54,8 @@
       .to({ t: isDone ? $AppHeight : 0 }, 250)
       .onUpdate(({ t }) => {
         container.style.top = `${t}px`;
+        container.style.opacity = String(1 - t / $AppHeight / 3);
+        container.style.filter = `blur(${(t / $AppHeight) * 3}px)`;
       })
       .onComplete(() => {
         if (isDone) item.close();
@@ -71,7 +73,9 @@
   bind:this={container}
   on:click={(e) =>
     //@ts-ignore
-    e.target.classList.contains("modal") && (dispatch("cancel"), item.close())}
+    e.target.classList.contains("modal") &&
+    !($MobileLayout && full) &&
+    (dispatch("cancel"), item.close())}
   on:touchstart={handleTouchStart}
   on:touchmove={handleTouchMove}
   on:touchend={handleTouchEnd}
@@ -81,7 +85,6 @@
       class="modal-box relative w-full h-full rounded-none max-w-full max-h-full {dragging
         ? 'absolute top-0 left-0'
         : 'overflow-y-auto'} {className}"
-      style:transition={!dragging ? "opacity 250ms, filter 250ms" : ""}
       style:background-color={$Theme["background"]}
       in:scale={{ duration: 200, start: 0.3 }}
     >
