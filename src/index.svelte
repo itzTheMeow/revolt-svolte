@@ -25,6 +25,7 @@
     MessageCache,
     MessageInputSelected,
     MobileLayout,
+    NotifSettings,
     PaneLeft,
     PaneState,
     PaneStates,
@@ -39,7 +40,7 @@
   } from "State";
   import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { hasBottom, scrollTo } from "utils";
+  import { hasBottom, scrollTo, testMuted } from "utils";
 
   requestAnimationFrame(function animate(time: number) {
     requestAnimationFrame(animate);
@@ -160,7 +161,8 @@
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
       else {
-        $SelectedChannel?.markRead(true);
+        if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
+          $SelectedChannel.markRead(true);
         scrollTo("bottom", true);
       }
     }
