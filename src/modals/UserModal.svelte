@@ -5,7 +5,7 @@
     IconUserMinus,
     IconUserPlus,
     IconUserX,
-    IconX,
+    IconX
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Header from "extra/Header.svelte";
@@ -18,7 +18,7 @@
     Server,
     type User,
     type UserMutuals,
-    type UserProfile,
+    type UserProfile
   } from "revolt-toolset";
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
@@ -225,26 +225,38 @@
           <div>
             <Header large lower>Mutual Servers</Header>
             {#if mutualServers.length}
-              <div class="flex gap-2 flex-wrap w-fit mt-1">
+              <div class="flex gap-2 flex-wrap mt-1 {$MobileLayout ? '' : 'w-fit'}">
                 {#each mutualServers as s (s.id)}
                   <div
-                    class="w-32 cursor-pointer bg-black bg-opacity-20 hover:bg-opacity-30 active:bg-opacity-35 transition rounded-lg px-2 py-4 flex flex-col items-center justify-center gap-2"
+                    class="{$MobileLayout
+                      ? 'w-[48%] py-2'
+                      : 'w-32 py-4 flex-col'} gap-2 px-2 cursor-pointer bg-black bg-opacity-20 hover:bg-opacity-30 active:bg-opacity-35 transition rounded-lg flex items-center justify-center"
                     use:tippy={{ content: s.name }}
                     on:click={() => (SelectedServer.set(s), item.close())}
                   >
                     {#if s.icon}
-                      <div class="w-12 h-12 rounded-full overflow-hidden">
+                      <div
+                        class="{$MobileLayout
+                          ? 'w-8 h-8'
+                          : 'w-12 h-12'} shrink-0 rounded-full overflow-hidden"
+                      >
                         <img src={s.generateIconURL({ max_side: 64 })} alt="" />
                       </div>
                     {:else}
-                      <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
+                      <div
+                        class="{$MobileLayout
+                          ? 'w-8 h-8'
+                          : 'w-12 h-12'} bg-black bg-opacity-30 rounded-full"
+                      >
                         <span>
                           {ServerDetails(s).acronym}
                         </span>
                       </div>
                     {/if}
                     <div
-                      class="w-full text-sm text-center overflow-hidden overflow-ellipsis whitespace-nowrap"
+                      class="{$MobileLayout
+                        ? ''
+                        : 'text-center text-sm'} w-full overflow-hidden overflow-ellipsis whitespace-nowrap"
                     >
                       {s.name}
                     </div>
