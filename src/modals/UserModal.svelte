@@ -8,9 +8,16 @@
     IconX,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
+  import Header from "extra/Header.svelte";
   import Indicator from "extra/Indicator.svelte";
   import Loader from "Loader.svelte";
-  import { RelationshipStatus, type User, type UserProfile } from "revolt-toolset";
+  import Markdown from "markdown/Markdown.svelte";
+  import {
+    RelationshipStatus,
+    type User,
+    type UserMutuals,
+    type UserProfile,
+  } from "revolt-toolset";
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { Theme } from "Theme";
@@ -23,7 +30,7 @@
   let item: Modal,
     fetched = "";
 
-  let user: User, profile: UserProfile;
+  let user: User, profile: UserProfile, mutual: UserMutuals;
 
   function fetch(id: string) {
     return new Promise<void>(async (res, rej) => {
@@ -32,7 +39,23 @@
           fetched = id;
           user = await client.users.fetch(id);
           if (!user) return rej("User does not exist.");
-          profile = await user.fetchProfile();
+          user
+            .fetchProfile()
+            .then((d) => (profile = d))
+            .catch(
+              () =>
+                (profile = {
+                  background: null,
+                  bio: null,
+                  generateBackgroundURL() {
+                    return null;
+                  },
+                })
+            );
+          user
+            .fetchMutual()
+            .then((d) => (mutual = d))
+            .catch(() => (mutual = { servers: [], friends: [] }));
         }
       } catch (err) {
         console.error(err);
@@ -60,7 +83,9 @@
   {modal}
   bind:item
   full={$MobileLayout}
-  className="p-0 overflow-hidden {$MobileLayout ? '' : 'max-w-none w-1/2 h-2/3'}"
+  className="p-0 overflow-hidden flex flex-col overflow-y-auto {$MobileLayout
+    ? ''
+    : 'max-w-none w-1/2 h-2/3'}"
 >
   {#key state}
     {#await fetch(modal.id)}
@@ -69,7 +94,7 @@
       <div
         class="flex {$MobileLayout
           ? 'flex-col justify-center'
-          : ''} items-center w-full h-40 bg-cover bg-center px-6 relative"
+          : ''} items-center w-full h-40 bg-cover bg-center px-6 relative shrink-0"
         style:background-image={profile?.background
           ? `url(${proxyURL(
               profile.generateBackgroundURL({
@@ -174,6 +199,20 @@
             />
           {/if}
         </div>
+      </div>
+      <div
+        class="flex-1 px-4 pt-2 pb-3 {profile && mutual ? 'gap-2' : 'items-center justify-center'}"
+      >
+        {#if profile && mutual}
+          {#if profile?.bio}
+            <div>
+              <Header large>About</Header>
+              <Markdown text={profile.bio} />
+            </div>
+          {/if}
+        {:else}
+          <Loader size={26} />
+        {/if}
       </div>
     {:catch err}
       Failed to fetch user. {err}

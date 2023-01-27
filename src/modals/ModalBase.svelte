@@ -84,8 +84,8 @@
   {#if $MobileLayout && full}
     <div
       class="modal-box relative w-full h-full rounded-none max-w-full max-h-full {dragging
-        ? 'absolute top-0 left-0'
-        : 'overflow-y-auto'} {className}"
+        ? 'absolute top-0 left-0 !overflow-y-hidden'
+        : ''} {className}"
       style:background-color={$Theme["background"]}
       in:scale={{ duration: 200, start: 0.3 }}
     >
