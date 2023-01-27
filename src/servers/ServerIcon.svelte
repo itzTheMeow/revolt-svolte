@@ -4,7 +4,7 @@
   import type { Server } from "revolt-toolset";
   import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
-  import { testMuted } from "utils";
+  import { ServerDetails, testMuted } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
 
   export let server: Server;
@@ -36,10 +36,7 @@
   {:else}
     <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
       <span>
-        {server.name
-          .split(" ")
-          .map((a) => a[0].toUpperCase())
-          .join("")}
+        {ServerDetails(server).acronym}
       </span>
     </div>
   {/if}

@@ -13,15 +13,18 @@
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
   import {
+    GroupDMChannel,
     RelationshipStatus,
+    Server,
     type User,
     type UserMutuals,
     type UserProfile,
   } from "revolt-toolset";
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
+  import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
-  import { StatusColor, UserDetails } from "utils";
+  import { ServerDetails, StatusColor, UserDetails } from "utils";
   import ModalBase from "./ModalBase.svelte";
   import type { Modal, ModalData } from "./ModalStack";
   import UserModalAction from "./UserModalAction.svelte";
@@ -67,6 +70,16 @@
       })
       .catch((err) => (console.error(err), (err = String(err?.message || err))));
   }
+
+  let mutualServers: Server[] = [],
+    mutualFriends: User[] = [],
+    mutualGroups: GroupDMChannel[] = [];
+
+  $: mutualServers =
+    mutual?.servers
+      .map((s) => client.servers.get(s)!)
+      .filter((s) => s)
+      .sort((s1, s2) => (s1.name.toLowerCase() > s2.name.toLowerCase() ? 1 : -1)) || [];
 
   $: if (user) {
     user.offUpdate(handleState);
@@ -198,15 +211,52 @@
         </div>
       </div>
       <div
-        class="flex-1 px-4 pt-2 pb-3 {profile && mutual ? 'gap-2' : 'items-center justify-center'}"
+        class="flex-1 px-4 pt-2 pb-3 flex flex-col {profile && mutual
+          ? 'gap-4'
+          : 'items-center justify-center'}"
       >
         {#if profile && mutual}
           {#if profile?.bio}
             <div>
-              <Header large>About</Header>
+              <Header large lower>About</Header>
               <Markdown text={profile.bio} />
             </div>
           {/if}
+          <div>
+            <Header large lower>Mutual Servers</Header>
+            {#if mutualServers.length}
+              <div class="flex gap-2 flex-wrap w-fit mt-1">
+                {#each mutualServers as s (s.id)}
+                  <div
+                    class="w-32 cursor-pointer bg-black bg-opacity-20 hover:bg-opacity-30 active:bg-opacity-35 transition rounded-lg px-2 py-4 flex flex-col items-center justify-center gap-2"
+                    use:tippy={{ content: s.name }}
+                    on:click={() => (SelectedServer.set(s), item.close())}
+                  >
+                    {#if s.icon}
+                      <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img src={s.generateIconURL({ max_side: 64 })} alt="" />
+                      </div>
+                    {:else}
+                      <div class="bg-black bg-opacity-30 w-12 h-12 rounded-full">
+                        <span>
+                          {ServerDetails(s).acronym}
+                        </span>
+                      </div>
+                    {/if}
+                    <div
+                      class="w-full text-sm text-center overflow-hidden overflow-ellipsis whitespace-nowrap"
+                    >
+                      {s.name}
+                    </div>
+                  </div>
+                {/each}
+              </div>
+            {:else}
+              <div class="text-xs ml-1" style:color={$Theme["secondary-foreground"]}>
+                No mutual servers.
+              </div>
+            {/if}
+          </div>
         {:else}
           <Loader size={26} />
         {/if}

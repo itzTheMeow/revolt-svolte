@@ -83,6 +83,15 @@ export const Matches = {
   emojiDefault: /:([A-z0-9_]+?):/g,
 };
 
+export function ServerDetails(server?: Server) {
+  return {
+    acronym:
+      server?.name
+        .split(" ")
+        .map((a) => a[0].toUpperCase())
+        .join("") || "",
+  };
+}
 export function MemberOrUserDetails(user?: User, member?: Member) {
   return {
     name: member ? MemberDetails(member).name : UserDetails(user).name,
