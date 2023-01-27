@@ -22,12 +22,17 @@
     pos = [-1, -1];
   function handleTouchStart(e: TouchEvent) {
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    if (item.container!.firstElementChild!.scrollTop > 0) pos = pos.map((p) => -p);
   }
   function handleTouchMove(e: TouchEvent) {
     const container = item.container!;
-    const diff = e.changedTouches[0].clientY - pos[1];
+    const diff = pos[0] <= 0 && pos[1] <= 0 ? 4 : e.changedTouches[0].clientY - pos[1];
     if (pos[0] == -1 && pos[1] == -1) return;
-    if (diff > 3 && container.firstElementChild!.scrollTop <= 0) dragging = true;
+    if (diff > 3 && container.firstElementChild!.scrollTop <= 0) {
+      dragging = true;
+      if (pos[0] <= 0 && pos[1] <= 0)
+        pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    }
     if (dragging) {
       const h = Math.max(0, Math.round(diff));
       container.style.top = `${h}px`;
