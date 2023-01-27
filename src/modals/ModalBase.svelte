@@ -31,7 +31,8 @@
     if (dragging) {
       const h = Math.max(0, Math.round(diff));
       container.style.top = `${h}px`;
-      if (container.offsetHeight == h) container.style.opacity = String(1 - diff / $AppHeight / 2);
+      container.style.opacity = String(1 - diff / $AppHeight / 3);
+      container.style.filter = `blur(${(diff / $AppHeight) * 3}px)`;
     }
   }
   function handleTouchEnd(e: TouchEvent) {
@@ -42,9 +43,13 @@
       const diff = e.changedTouches[0].clientY - pos[1];
       dragging = false;
       container.style.opacity = "1";
+      container.style.filter = "";
       if (diff > $AppHeight * 0.25) isDone = true;
     } else isDone = true;
-    if (isDone) container.style.opacity = "0";
+    if (isDone) {
+      container.style.opacity = "0";
+      container.style.filter = "blur(3px)";
+    }
     new TWEEN.Tween({ t: Number(container.style.top?.replace("px", "")) || 0 })
       .to({ t: isDone ? $AppHeight : 0 }, 250)
       .onUpdate(({ t }) => {
@@ -76,7 +81,7 @@
       class="modal-box relative w-full h-full rounded-none max-w-full max-h-full {dragging
         ? 'absolute top-0 left-0'
         : 'overflow-y-auto'} {className}"
-      style:transition={!dragging ? "opacity 250ms" : ""}
+      style:transition={!dragging ? "opacity 250ms, filter 250ms" : ""}
       style:background-color={$Theme["background"]}
       in:scale={{ duration: 200, start: 0.3 }}
     >
