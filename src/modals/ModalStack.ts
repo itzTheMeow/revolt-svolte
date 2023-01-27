@@ -16,6 +16,7 @@ export type ModalData =
   | { type: "settings"; page: SettingsPage };
 export interface Modal {
   close(): void;
+  container: HTMLDivElement | null;
 }
 
 export const ModalStack = new (class {

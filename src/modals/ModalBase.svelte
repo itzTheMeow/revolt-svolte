@@ -15,16 +15,16 @@
     close() {
       ModalStack.close(modal);
     },
+    container: null,
   };
 
   let dragging = false,
-    pos = [-1, -1],
-    container: HTMLDivElement;
-
+    pos = [-1, -1];
   function handleTouchStart(e: TouchEvent) {
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
   }
   function handleTouchMove(e: TouchEvent) {
+    const container = item.container!;
     const diff = e.changedTouches[0].clientY - pos[1];
     if (pos[0] == -1 && pos[1] == -1) return;
     if (diff > 3 && container.scrollTop <= 0) dragging = true;
@@ -36,6 +36,7 @@
     }
   }
   function handleTouchEnd(e: TouchEvent) {
+    const container = item.container!;
     if (!dragging) return;
     e.preventDefault();
     let isDone = false;
@@ -70,7 +71,7 @@
 <div
   class="modal modal-open bg-black bg-opacity-0"
   style:transition="200ms background"
-  bind:this={container}
+  bind:this={item.container}
   on:click={(e) =>
     //@ts-ignore
     e.target.classList.contains("modal") &&
