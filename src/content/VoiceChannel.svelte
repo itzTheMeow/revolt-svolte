@@ -5,7 +5,6 @@
   import Markdown from "markdown/Markdown.svelte";
   import type { VoiceChannel } from "revolt-toolset";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
   import { voiceState, VoiceStatus } from "../voice/VoiceState";
   import VoiceChannelIcon from "./VoiceChannelIcon.svelte";
 
@@ -36,7 +35,7 @@
         {#each [...$voiceState.participants.keys()] as uid}
           <div class="relative w-16 h-16 mx-2">
             <img
-              src={proxyURL(client.users.get(uid)?.generateAvatarURL({ max_side: 256 }), "image")}
+              src={client.users.get(uid)?.generateAvatarURL({ max_side: 256 })}
               alt={client.users.get(uid)?.username}
               class="rounded-full w-full h-full"
             />

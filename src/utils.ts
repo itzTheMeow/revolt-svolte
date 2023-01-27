@@ -26,9 +26,6 @@ export function escapeHTML(txt: string) {
 export function escapeRegex(r: RegExp) {
   return new RegExp(escapeHTML(r.source), r.flags);
 }
-export function proxyURL(url: string = "", type: "any" | "image") {
-  return (<any>window).STANDALONE ? url : `/proxy?url=${encodeURIComponent(url)}&t=${type}`;
-}
 
 export const ServerManagePermissions = [
   Permissions.AssignRoles,
@@ -97,17 +94,14 @@ export function UserDetails(user: User | undefined) {
   return {
     online: user?.online && (!user?.presence || user.presence !== "Invisible"),
     name: user?.username || "Unknown User",
-    avatar: proxyURL(user?.generateAvatarURL({ max_side: 256 }), "image"),
+    avatar: user?.generateAvatarURL({ max_side: 256 }),
   };
 }
 export function MemberDetails(member: Member | undefined) {
   return {
-    avatar: proxyURL(
-      member?.avatar
-        ? member.generateAvatarURL({ max_side: 256 })
-        : member?.user?.generateAvatarURL({ max_side: 256 }),
-      "image"
-    ),
+    avatar: member?.avatar
+      ? member.generateAvatarURL({ max_side: 256 })
+      : member?.user?.generateAvatarURL({ max_side: 256 }),
     color: member?.colorRole?.color || "",
     name: member?.nickname || UserDetails(member?.user).name,
   };
@@ -117,7 +111,7 @@ export function MessageDetails(message: Message) {
   const time = DateTime.fromMillis(message.createdAt);
   return {
     avatar: message.masquerade?.avatar
-      ? proxyURL(message.generateMasqAvatarURL(), "image")
+      ? message.generateMasqAvatarURL()
       : MemberOrUserDetails(message.author, message.member).avatar,
     name: message.masquerade?.name || MemberOrUserDetails(message.author, message.member).name,
     color: message.masquerade?.colour || MemberOrUserDetails(message.author, message.member).color,

@@ -6,7 +6,7 @@
   import type { BaseMessage, Message } from "revolt-toolset";
   import { MessageCache } from "State";
   import { writable } from "svelte/store";
-  import { MessageDetails, proxyURL, UserColor } from "utils";
+  import { MessageDetails, UserColor } from "utils";
 
   export let message: Message;
 
@@ -55,12 +55,9 @@
             class="w-4 h-4 rounded-full -ml-1"
             src={reply
               ? MessageDetails(reply).avatar
-              : proxyURL(
-                  `https://api.revolt.chat/users/${
-                    message.replyIDs?.[$replies.indexOf(reply)]
-                  }/default_avatar`,
-                  "image"
-                )}
+              : `https://api.revolt.chat/users/${
+                  message.replyIDs?.[$replies.indexOf(reply)]
+                }/default_avatar`}
             alt=""
           />
           <div

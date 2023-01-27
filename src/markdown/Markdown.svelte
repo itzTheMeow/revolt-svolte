@@ -7,7 +7,7 @@
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
-  import { MemberDetails, MemberOrUserDetails, proxyURL, UserColor } from "utils";
+  import { MemberDetails, MemberOrUserDetails, UserColor } from "utils";
   import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
 
   type Child =
@@ -124,7 +124,7 @@
                   type: "element",
                   tagName: "img",
                   properties: {
-                    src: proxyURL(emojiURL, "image"),
+                    src: emojiURL,
                     class: `inline object-contain ${
                       text?.trim() == `:${match}:` && !line
                         ? "h-[3em] w-[3em] elg"

@@ -6,7 +6,6 @@
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
   import { imagePreview } from "./ImagePreview";
 
   const zoomSettings = {
@@ -27,10 +26,8 @@
     glassH = 0;
   $: {
     if ($imagePreview) {
-      imageURL = proxyURL(
-        $imagePreview instanceof Attachment ? $imagePreview.generateURL() : $imagePreview.url,
-        "image"
-      );
+      imageURL =
+        $imagePreview instanceof Attachment ? $imagePreview.generateURL() : $imagePreview.url;
       glassW = glass?.offsetWidth / 2;
       glassH = glass?.offsetHeight / 2;
     }

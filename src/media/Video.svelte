@@ -16,7 +16,7 @@
   import { onDestroy, onMount } from "svelte";
   import { slide } from "svelte/transition";
   import { Theme } from "Theme";
-  import { clickoutside, formatDuration, proxyURL } from "utils";
+  import { clickoutside, formatDuration } from "utils";
   import Slider from "./Slider.svelte";
 
   export let src: Attachment | string;
@@ -133,7 +133,7 @@
   }}
 >
   <video
-    src={proxyURL(typeof src == "string" ? src : src.generateURL(), "any")}
+    src={typeof src == "string" ? src : src.generateURL()}
     bind:this={video}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}

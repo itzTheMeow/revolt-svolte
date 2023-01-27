@@ -78,7 +78,7 @@
   <Video src={embed.media.url} />
 {:else if embed.media?.type == "Image"}
   <Image
-    src={embed.media.url}
+    src={embed.media.proxyURL}
     width={embed.media.width}
     height={embed.media.height}
     className="max-w-[480px]"

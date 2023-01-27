@@ -4,7 +4,7 @@
   import type { Server } from "revolt-toolset";
   import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
-  import { proxyURL, testMuted } from "utils";
+  import { testMuted } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
 
   export let server: Server;
@@ -28,7 +28,7 @@
   {#if server.icon}
     <div class="w-12 h-12 rounded-full">
       <img
-        src={proxyURL(server.generateIconURL({ max_side: 64 }), "image")}
+        src={server.generateIconURL({ max_side: 64 })}
         alt=""
         class="before:text-sm before:font-bold before:align-text-top before:flex before:justify-center"
       />

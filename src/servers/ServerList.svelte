@@ -10,7 +10,7 @@
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
   import { Theme } from "Theme";
-  import { proxyURL, StatusColor } from "utils";
+  import { StatusColor } from "utils";
   import ServerEntry from "./ServerEntry.svelte";
   import ServerIcon from "./ServerIcon.svelte";
   import ServerSeparator from "./ServerSeparator.svelte";
@@ -49,7 +49,7 @@
   <ServerEntry onclick={() => SelectedServer.set(null)} className="mb-1.5">
     <div class="w-12 h-12 rounded-full">
       <img
-        src={proxyURL(client.user.generateAvatarURL({ max_side: 64 }), "image")}
+        src={client.user.generateAvatarURL({ max_side: 64 })}
         alt=""
         class="before:text-sm before:font-bold before:align-text-top before:flex before:justify-center"
       />

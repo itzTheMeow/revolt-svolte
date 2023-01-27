@@ -2,7 +2,6 @@
   import Loader from "Loader.svelte";
   import { imagePreview } from "modals/ImagePreview";
   import type { Attachment } from "revolt-toolset";
-  import { proxyURL } from "utils";
 
   export let src: Attachment | string;
   export let className = "";
@@ -23,7 +22,7 @@
     : width + height
     ? `${width} / ${height}`
     : ""}
-  src={proxyURL(typeof src == "string" ? src : src.generateURL(), "image")}
+  src={typeof src == "string" ? src : src.generateURL()}
   alt={alt || (typeof src == "string" ? src.split("/").pop() || "Image" : src.name)}
   on:load={() => {
     loaded = true;

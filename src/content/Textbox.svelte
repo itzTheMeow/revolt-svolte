@@ -25,7 +25,7 @@
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
-  import { MemberOrUserDetails, proxyURL } from "utils";
+  import { MemberOrUserDetails } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxTyping from "./TextboxTyping.svelte";
@@ -187,11 +187,7 @@
     {#each $autocomplete.channels.slice(0, MAX_AUTOCOMPLETE) as c (c.id)}
       <AutocompleteItem
         id={c.id}
-        icon={c.icon
-          ? proxyURL(c.generateIconURL({ max_side: 64 }), "image")
-          : c.isVoice()
-          ? IconVolume
-          : IconHash}
+        icon={c.icon ? c.generateIconURL({ max_side: 64 }) : c.isVoice() ? IconVolume : IconHash}
         name={c.name || ""}
         onclick={() => handleAutocompleteTab(c.id)}
       />
@@ -199,7 +195,7 @@
     {#each $autocomplete.emojis.slice(0, MAX_AUTOCOMPLETE) as e (e.id)}
       <AutocompleteItem
         id={e.id}
-        icon={proxyURL((e instanceof Emoji ? e : e.setPack("twemoji")).imageURL, "image")}
+        icon={(e instanceof Emoji ? e : e.setPack("twemoji")).imageURL}
         name={e.uniqueName || ""}
         detail={e.parent?.name || ""}
         onclick={() => handleAutocompleteTab(e.id)}

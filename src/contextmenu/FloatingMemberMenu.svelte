@@ -17,7 +17,7 @@
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
-  import { MemberDetails, proxyURL, StatusColor, UserColor } from "utils";
+  import { MemberDetails, StatusColor, UserColor } from "utils";
   import { copyIDItem, showOptionContext } from "./ContextMenus";
   import { floatingMenu } from "./FloatingMenu";
 
@@ -61,7 +61,7 @@
   {#if profile?.background}
     <img
       class="w-full h-full absolute top-0 left-0 rounded-[inherit] object-cover"
-      src={proxyURL(profile.generateBackgroundURL({ max_side: 288 }) || "", "image")}
+      src={profile.generateBackgroundURL({ max_side: 288 }) || ""}
       alt=""
     />
   {/if}

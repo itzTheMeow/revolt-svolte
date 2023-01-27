@@ -14,7 +14,7 @@
   import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { clickoutside, formatDuration, proxyURL } from "utils";
+  import { clickoutside, formatDuration } from "utils";
   import Slider from "./Slider.svelte";
 
   export let src: Attachment;
@@ -100,7 +100,7 @@
 >
   <audio
     class="hidden"
-    src={proxyURL(src.generateURL(), "any")}
+    src={src.generateURL()}
     bind:this={audio}
     on:play={() => ((isPlaying = true), (didEnd = false))}
     on:pause={() => (isPlaying = false)}

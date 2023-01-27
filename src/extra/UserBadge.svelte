@@ -3,7 +3,6 @@
   import type { CustomBadge, UserBadge } from "revolt-toolset";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
-  import { proxyURL } from "utils";
 
   export let data: UserBadge | CustomBadge;
   export let size: number;
@@ -16,6 +15,6 @@
   }}
   width={size}
   height={size}
-  src={proxyURL("ids" in data ? client.proxyFile(data.image) || data.image : data.image, "image")}
+  src={"ids" in data ? client.proxyFile(data.image) || data.image : data.image}
   alt={data.name}
 />

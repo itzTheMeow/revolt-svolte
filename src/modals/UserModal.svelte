@@ -21,7 +21,7 @@
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { Theme } from "Theme";
-  import { proxyURL, StatusColor, UserDetails } from "utils";
+  import { StatusColor, UserDetails } from "utils";
   import ModalBase from "./ModalBase.svelte";
   import type { Modal, ModalData } from "./ModalStack";
   import UserModalAction from "./UserModalAction.svelte";
@@ -94,12 +94,11 @@
           ? 'flex-col justify-center'
           : ''} items-center w-full h-40 bg-cover bg-center px-6 relative shrink-0"
         style:background-image={profile?.background
-          ? `url(${proxyURL(
+          ? `url(${
               profile.generateBackgroundURL({
                 max_side: Math.round($MobileLayout ? window.innerWidth : window.innerWidth / 2),
-              }) || "",
-              "image"
-            )})`
+              }) || ""
+            })`
           : ""}
         style:background-color={$Theme["secondary-background"]}
       >

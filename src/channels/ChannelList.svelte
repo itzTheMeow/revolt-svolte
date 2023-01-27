@@ -18,7 +18,7 @@
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
   import { BRAND_COLOR, Theme } from "Theme";
-  import { BRAND_NAME, COMMIT_HASH, GIT_URL, proxyURL, ServerManagePermissions } from "utils";
+  import { BRAND_NAME, COMMIT_HASH, GIT_URL, ServerManagePermissions } from "utils";
   import { voiceState, VoiceStatus } from "voice/VoiceState";
   import ChannelIcon from "./ChannelIcon.svelte";
   import ChannelItem from "./ChannelItem.svelte";
@@ -105,7 +105,7 @@
     <div
       class="absolute top-0 left-0 w-full bg-inherit bg-cover bg-center flex"
       style:background-image={$SelectedServer.banner
-        ? `url(${proxyURL($SelectedServer.generateBannerURL({ max_side: 480 }), "image")})`
+        ? `url(${$SelectedServer.generateBannerURL({ max_side: 480 })})`
         : ""}
       style:height="{h}px"
       style:transition="10ms height"
@@ -213,7 +213,7 @@
               </div>
             {:else if ind < MAX_USERS}
               <img
-                src={proxyURL(client.users.get(uid)?.generateAvatarURL({ max_side: 64 }), "image")}
+                src={client.users.get(uid)?.generateAvatarURL({ max_side: 64 })}
                 alt={client.users.get(uid)?.username}
                 class="rounded-full w-full h-full {(client.user?.id === uid &&
                   $voiceState.isDeaf()) ||
