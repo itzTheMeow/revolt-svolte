@@ -27,7 +27,7 @@
     const container = item.container!;
     const diff = e.changedTouches[0].clientY - pos[1];
     if (pos[0] == -1 && pos[1] == -1) return;
-    if (diff > 3 && container.scrollTop <= 0) dragging = true;
+    if (diff > 3 && container.firstElementChild!.scrollTop <= 0) dragging = true;
     if (dragging) {
       const h = Math.max(0, Math.round(diff));
       container.style.top = `${h}px`;
