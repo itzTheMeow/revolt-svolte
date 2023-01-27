@@ -105,10 +105,10 @@
         <div
           class="{$MobileLayout
             ? 'max-w-full'
-            : 'max-w-[50%]'} rounded-xl px-3 py-2 flex items-center gap-2 shadow-md shadow-black overflow-hidden"
+            : 'mr-8'} rounded-xl px-3 py-2 flex items-center gap-2 shadow-md shadow-black overflow-hidden"
           style:background-color={$Theme["background"]}
         >
-          <div class="rounded-full w-14 h-14 relative bg-inherit">
+          <div class="rounded-full w-14 h-14 relative bg-inherit shrink-0">
             <img
               class="avatar rounded-full w-full h-full object-cover"
               src={UserDetails(user).avatar}
@@ -123,7 +123,7 @@
           </div>
           <div class="flex items-center flex-col flex-1 overflow-hidden">
             <div
-              class="font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis max-w-full"
+              class="self-start font-semibold text-xl overflow-hidden whitespace-nowrap overflow-ellipsis max-w-full"
             >
               {UserDetails(user).name}
             </div>
