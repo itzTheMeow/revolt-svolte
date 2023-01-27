@@ -30,52 +30,50 @@
   let item: Modal,
     fetched = "";
 
-  let user: User, profile: UserProfile, mutual: UserMutuals;
-
-  function fetch(id: string) {
-    return new Promise<void>(async (res, rej) => {
-      try {
-        if (fetched !== id) {
-          fetched = id;
-          user = await client.users.fetch(id);
-          if (!user) return rej("User does not exist.");
-          user
-            .fetchProfile()
-            .then((d) => (profile = d))
-            .catch(
-              () =>
-                (profile = {
-                  background: null,
-                  bio: null,
-                  generateBackgroundURL() {
-                    return null;
-                  },
-                })
-            );
-          user
-            .fetchMutual()
-            .then((d) => (mutual = d))
-            .catch(() => (mutual = { servers: [], friends: [] }));
-        }
-      } catch (err) {
-        console.error(err);
-      }
-      res(void 0);
-    });
-  }
+  let user: User,
+    profile: UserProfile,
+    mutual: UserMutuals,
+    err = "";
 
   let state = Date.now();
   function handleState() {
     state = Date.now();
   }
-  $: {
-    if (user) {
-      user.offUpdate(handleState);
-      user.onUpdate(handleState);
-    }
+  $: if (fetched !== modal.id) {
+    fetched = modal.id;
+    client.users
+      .fetch(modal.id)
+      .then((u) => {
+        user = u;
+
+        if (!user) return (err = "User does not exist.");
+        user
+          .fetchProfile()
+          .then((d) => (profile = d))
+          .catch(
+            () =>
+              (profile = {
+                background: null,
+                bio: null,
+                generateBackgroundURL() {
+                  return null;
+                },
+              })
+          );
+        user
+          .fetchMutual()
+          .then((d) => (mutual = d))
+          .catch(() => (mutual = { servers: [], friends: [] }));
+      })
+      .catch((err) => (console.error(err), (err = String(err?.message || err))));
+  }
+
+  $: if (user) {
+    user.offUpdate(handleState);
+    user.onUpdate(handleState);
   }
   onDestroy(() => {
-    user.offUpdate(handleState);
+    user?.offUpdate(handleState);
   });
 </script>
 
@@ -88,9 +86,9 @@
     : 'max-w-none w-1/2 h-2/3'}"
 >
   {#key state}
-    {#await fetch(modal.id)}
+    {#if !user}
       <div class="w-full h-full flex items-center justify-center"><Loader /></div>
-    {:then _}
+    {:else if !err}
       <div
         class="flex {$MobileLayout
           ? 'flex-col justify-center'
@@ -214,9 +212,9 @@
           <Loader size={26} />
         {/if}
       </div>
-    {:catch err}
+    {:else}
       Failed to fetch user. {err}
-    {/await}
+    {/if}
     {#if $MobileLayout}
       <div
         class="absolute top-3 right-3 p-1 rounded-full"
