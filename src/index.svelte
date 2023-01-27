@@ -147,8 +147,11 @@
       document.activeElement?.tagName !== "TEXTAREA" &&
       !$MobileLayout &&
       (!e.ctrlKey ||
-        window.getSelection()?.getRangeAt(0)?.startOffset ==
-          window.getSelection()?.getRangeAt(0)?.endOffset)
+        !window.getSelection()?.rangeCount ||
+        (window.getSelection()?.getRangeAt(0)?.startOffset ==
+          window.getSelection()?.getRangeAt(0)?.endOffset &&
+          window.getSelection()?.getRangeAt(0)?.startContainer ==
+            window.getSelection()?.getRangeAt(0)?.endContainer))
     )
       document.getElementById("Textbox")?.focus();
     if (e.key == "Escape") {
