@@ -17,4 +17,5 @@
   height={size}
   src={"ids" in data ? client.proxyFile(data.image) || data.image : data.image}
   alt={data.name}
+  class="shrink-0"
 />
