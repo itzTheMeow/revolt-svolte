@@ -74,7 +74,7 @@
 </script>
 
 <div
-  class="modal modal-open bg-black bg-opacity-0"
+  class="modal modal-open bg-black bg-opacity-0 absolute"
   style:transition="200ms background"
   bind:this={item.container}
   on:click={(e) =>
