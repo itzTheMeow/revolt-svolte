@@ -199,7 +199,9 @@
     document.body.style.caretColor = $Theme["accent"]!;
     document.body.style.width = `${$AppWidth}px`;
     document.body.style.height = `${$AppHeight}px`;
-    document.body.style.setProperty("--tip", $Theme["tooltip"] ?? null);
+    Object.entries($Theme).forEach((e) => {
+      document.body.style.setProperty("--" + e[0], e[1] ?? null);
+    });
   }
   AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
   AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
