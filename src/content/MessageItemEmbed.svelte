@@ -79,7 +79,7 @@
   {/if}
   {#if embed.description}
     {#if embed.isText()}
-      <Markdown text={embed.description} />
+      <Markdown text={embed.description} keepSpace />
     {:else}
       <div
         class="text-xs overflow-hidden"
