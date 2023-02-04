@@ -28,6 +28,16 @@
   export let line = false;
   export let noPointer = false;
 
+  // shamelessly 'inspired' from revite's renderer
+  function sanitize(content: string) {
+    return content
+      .replace(/(^(?:[>*+-][^\S\r\n]*){5})(?:[>*+-][^\S\r\n]*)+(.*$)/gm, (_, m0, m1) => m0 + m1)
+      .replace(/^(<\/?[a-zA-Z0-9]+>)(.*$)/gm, (match) => `\u200E${match}`)
+      .replace(/^\s*\+(?:$|[^+])/gm, (match) => `\u200E${match}`)
+      .replace(/^\s*?$/gm, "‎")
+      .replace(/^([^\S\r\n]*>[^\n]+\n?)+/gm, (match) => `${match}\n`);
+  }
+
   let container: HTMLDivElement, renderer: Processor;
   $: {
     renderer = MarkdownRenderer(() => (tree) => {
@@ -214,7 +224,7 @@
     : ''}"
   bind:this={container}
 >
-  {@html String(renderer.processSync(text).value)}
+  {@html String(renderer.processSync(sanitize(text)).value)}
 </div>
 
 <!-- just to make sure it 100% includes the classes for emojis/others in the bundle -->
