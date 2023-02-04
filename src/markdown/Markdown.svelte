@@ -34,7 +34,7 @@
       .replace(/(^(?:[>*+-][^\S\r\n]*){5})(?:[>*+-][^\S\r\n]*)+(.*$)/gm, (_, m0, m1) => m0 + m1)
       .replace(/^(<\/?[a-zA-Z0-9]+>)(.*$)/gm, (match) => `\u200E${match}`)
       .replace(/^\s*\+(?:$|[^+])/gm, (match) => `\u200E${match}`)
-      .replace(/^\s*?$/gm, "‎")
+      .replace(/^\s*?$/gm, "\u200e")
       .replace(/^([^\S\r\n]*>[^\n]+\n?)+/gm, (match) => `${match}\n`);
   }
 
