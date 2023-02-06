@@ -193,7 +193,7 @@
 
   onMount(() => {
     barHeight = BoxSizer.clientHeight;
-    if (!$MobileLayout) MessageInput.focus();
+    if (!$MobileLayout || standalone) MessageInput.focus();
   });
 </script>
 
