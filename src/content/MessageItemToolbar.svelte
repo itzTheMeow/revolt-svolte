@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconCornerUpLeft, IconEdit, IconTrash } from "@tabler/icons-svelte";
+  import { IconCornerUpLeft, IconPencil, IconTrash } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
   import { BaseMessage, Permissions } from "revolt-toolset";
@@ -27,7 +27,7 @@
   />
   {#if message.isUser() && message.authorID == client.user?.id}
     <MessageItemToolbarItem
-      icon={IconEdit}
+      icon={IconPencil}
       on:click={() => isEditing.set(message.id)}
       title="Edit"
     />
