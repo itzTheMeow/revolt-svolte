@@ -2,6 +2,7 @@
   /* Shamelessly 'inspired' from https://www.w3schools.com/howto/howto_js_image_magnifier_glass.asp */
 
   import byteSize from "byte-size";
+  import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
   import { Attachment } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
@@ -89,6 +90,17 @@
                 zoomSettings.min,
                 Math.min(zoomSettings.max, zoom + (e.deltaY < 0 ? 1 : -1) * zoomSettings.step)
               );
+            }
+          }}
+          on:contextmenu|stopPropagation={(e) => {
+            if (!!navigator.clipboard?.write && $imagePreview) {
+              showOptionContext(
+                e,
+                mediaContext(
+                  $imagePreview instanceof Attachment ? $imagePreview : $imagePreview.url
+                )
+              );
+              e.preventDefault();
             }
           }}
         />
