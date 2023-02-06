@@ -16,6 +16,7 @@
     GroupDMChannel,
     RelationshipStatus,
     Server,
+    UserPermissions,
     type User,
     type UserMutuals,
     type UserProfile,
@@ -195,18 +196,20 @@
                 />
               {/if}
             {/if}
-            <UserModalAction
-              icon={IconMessageShare}
-              tooltip="Message"
-              onclick={async () => {
-                const dm = await user.openDM();
-                if (dm) {
-                  item.close();
-                  SelectedServer.set(null);
-                  SelectedChannel.set(dm);
-                }
-              }}
-            />
+            {#if user.permissionsAgainst.has(UserPermissions.SendMessage)}
+              <UserModalAction
+                icon={IconMessageShare}
+                tooltip="Message"
+                onclick={async () => {
+                  const dm = await user.openDM();
+                  if (dm) {
+                    item.close();
+                    SelectedServer.set(null);
+                    SelectedChannel.set(dm);
+                  }
+                }}
+              />
+            {/if}
           {/if}
         </div>
       </div>
