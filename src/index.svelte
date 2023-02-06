@@ -32,6 +32,7 @@
     PaneStates,
     pushFile,
     pushMessages,
+    replyingTo,
     selectBottom,
     SelectedChannel,
     SelectedServer,
@@ -165,6 +166,7 @@
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
       else if ($isEditing) isEditing.set(null);
+      else if ($replyingTo.length) $replyingTo = $replyingTo.slice(1);
       else if ($uploadedFiles.length) $uploadedFiles = $uploadedFiles.slice(1);
       else {
         if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
