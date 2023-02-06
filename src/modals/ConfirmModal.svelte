@@ -18,7 +18,7 @@
   <div class="py-4">
     {modal.text}
   </div>
-  <div class="modal-action !flex-start">
+  <div class="modal-action justify-start">
     <div
       class="btn border-none text-inherit"
       bind:this={confirmer}

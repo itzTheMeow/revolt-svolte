@@ -1,5 +1,6 @@
 <script lang="ts">
   import ConfirmModal from "./ConfirmModal.svelte";
+  import MarkdownModal from "./MarkdownModal.svelte";
   import { ModalStack, type ModalData } from "./ModalStack";
   import UserModal from "./UserModal.svelte";
 
@@ -14,5 +15,7 @@
     <ConfirmModal {modal} />
   {:else if modal.type == "user"}
     <UserModal {modal} />
+  {:else if modal.type == "markdown"}
+    <MarkdownModal {modal} />
   {/if}
 {/each}

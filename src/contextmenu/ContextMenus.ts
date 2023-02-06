@@ -11,7 +11,7 @@ import {
 } from "@tabler/icons-svelte";
 import { client } from "Client";
 import { ModalStack } from "modals/ModalStack";
-import { Attachment, Permissions, type BaseMessage } from "revolt-toolset";
+import { Attachment, Channel, Permissions, type BaseMessage } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { isEditing, selectBottom, updateReplies } from "State";
 import { copyText, downloadFile } from "utils";
@@ -37,6 +37,12 @@ export function showOptionContext(
   });
 }
 
+export function channelContext(channel: Channel) {
+  const opts = [, copyIDItem(channel)];
+  if (channel.isServerBased() && channel.permissions.has(Permissions.ManageChannel))
+    opts.unshift(deleteItem(channel));
+  return opts;
+}
 export function messageContext(message: BaseMessage) {
   const opts = [, copyIDItem(message)];
 

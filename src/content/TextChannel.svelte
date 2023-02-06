@@ -1,7 +1,9 @@
 <script lang="ts">
   import ChannelIcon from "channels/ChannelIcon.svelte";
   import { UseTypingState } from "Client";
+  import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
   import Markdown from "markdown/Markdown.svelte";
+  import { ModalStack } from "modals/ModalStack";
   import type { Channel } from "revolt-toolset";
   import { MessageCache, SelectedChannel } from "State";
   import { Theme } from "Theme";
@@ -11,12 +13,23 @@
   export let channel: Channel;
 </script>
 
-<div class="h-10 flex items-center px-3" style:background={$Theme["secondary-background"]}>
+<div
+  class="h-10 flex items-center px-3 {channel.description ? 'cursor-pointer' : ''}"
+  style:background={$Theme["secondary-background"]}
+  on:click={() =>
+    channel.description &&
+    ModalStack.push({
+      type: "markdown",
+      title: channel.name,
+      content: channel.description,
+    })}
+  on:contextmenu={(e) => showOptionContext(e, channelContext(channel))}
+>
   <ChannelIcon {channel} />
-  <div class="text-lg ml-1">{channel.name}</div>
+  <div class="text-lg ml-1 pointer-events-none">{channel.name}</div>
   {#if channel.description}
-    <div class="text-lg opacity-30 ml-2">&bull;</div>
-    <div class="ml-2 text-sm flex-1 overflow-hidden">
+    <div class="text-lg opacity-30 ml-2 pointer-events-none">&bull;</div>
+    <div class="ml-2 text-sm flex-1 overflow-hidden pointer-events-none">
       <Markdown text={channel.description} line />
     </div>
   {/if}

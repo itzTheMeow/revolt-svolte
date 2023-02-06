@@ -1,8 +1,8 @@
 <script lang="ts">
   import { UnreadState } from "Client";
-  import { copyIDItem, deleteItem, showOptionContext } from "contextmenu/ContextMenus";
+  import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
   import Indicator from "extra/Indicator.svelte";
-  import { Permissions, type Channel } from "revolt-toolset";
+  import type { Channel } from "revolt-toolset";
   import {
     MobileLayout,
     NotifSettings,
@@ -35,19 +35,12 @@
     numMentions = channel.getMentions(testMuted($NotifSettings)).length;
     isUnread = !!channel.checkUnread(testMuted($NotifSettings)) || !!numMentions;
   }
-
-  function contextmenu(e: MouseEvent) {
-    const items = [, copyIDItem(channel)];
-    if (channel.isServerBased() && channel.permissions.has(Permissions.ManageChannel))
-      items.unshift(deleteItem(channel));
-    showOptionContext(e, items);
-  }
 </script>
 
 <div
   class="cursor-pointer m-1.5 p-2 rounded flex items-center box-border bg-black bg-opacity-30 hover:bg-opacity-20 relative"
   on:click={switchTo}
-  on:contextmenu={contextmenu}
+  on:contextmenu={(e) => showOptionContext(e, channelContext(channel))}
 >
   <ChannelIcon {channel} />
   <span class="ml-1">

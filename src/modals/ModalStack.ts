@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 import type { SettingsPage } from "./Settings";
 
 export type ModalData =
+  | { type: "markdown"; title?: string; content: string }
   | {
       type: "confirm";
       title: string;
