@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import type { Handler } from "mdast-util-to-hast";
+import { FULL_DATE_FORMAT } from "utils";
 
 export const passThroughRehype: (name: string) => Handler = (name: string) => (h, node) =>
   h(node, name, node);
@@ -39,6 +40,6 @@ export const handlers = {
         break;
     }
 
-    return h(null, "code", {}, [{ type: "text", value }]);
+    return h(null, "code", { title: date.toFormat(FULL_DATE_FORMAT) }, [{ type: "text", value }]);
   }),
 };

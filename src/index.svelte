@@ -40,6 +40,7 @@
     uploadedFiles,
   } from "State";
   import { afterUpdate, onMount } from "svelte";
+  import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { hasBottom, scrollTo, testMuted } from "utils";
 
@@ -284,6 +285,13 @@
       isSliding = false;
     });
   });
+  afterUpdate(() =>
+    document.querySelectorAll<HTMLElement>("[title]").forEach((e) => {
+      const content = e.getAttribute("title");
+      if (content) tippy(e, { content });
+      e.removeAttribute("title");
+    })
+  );
 </script>
 
 {#if Native.isNative}

@@ -41,6 +41,7 @@
     "express": "^4.18.1",
     "katex": "^0.16.3",
     "luxon": "^3.1.1",
+    "mdast-util-to-hast": "^12.3.0",
     "mediasoup-client": "^3.6.57",
     "mobx": "^6.7.0",
     "postcss": "^8.4.16",

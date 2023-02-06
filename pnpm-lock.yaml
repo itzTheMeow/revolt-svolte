@@ -22,6 +22,7 @@ specifiers:
   express: ^4.18.1
   katex: ^0.16.3
   luxon: ^3.1.1
+  mdast-util-to-hast: ^12.3.0
   mediasoup-client: ^3.6.57
   mobx: ^6.7.0
   postcss: ^8.4.16
@@ -68,6 +69,7 @@ dependencies:
   express: 4.18.2
   katex: 0.16.4
   luxon: 3.2.1
+  mdast-util-to-hast: 12.3.0
   mediasoup-client: 3.6.70
   mobx: 6.7.0
   postcss: 8.4.21
@@ -1576,15 +1578,14 @@ packages:
       unist-util-is: 5.1.1
     dev: false
 
-  /mdast-util-to-hast/12.2.5:
-    resolution: {integrity: sha512-EFNhT35ZR/VZ85/EedDdCNTq0oFM+NM/+qBomVGQ0+Lcg0nhI8xIwmdCzNMlVlCJNXRprpobtKP/IUh8cfz6zQ==}
+  /mdast-util-to-hast/12.3.0:
+    resolution: {integrity: sha512-pits93r8PhnIoU4Vy9bjW39M2jJ6/tdHyja9rrot9uujkN7UTU9SDnE6WNJz/IGyQk3XHX6yNNtrBH6cQzm8Hw==}
     dependencies:
       '@types/hast': 2.3.4
       '@types/mdast': 3.0.10
       mdast-util-definitions: 5.1.1
       micromark-util-sanitize-uri: 1.1.0
       trim-lines: 3.0.1
-      unist-builder: 3.0.0
       unist-util-generated: 2.0.0
       unist-util-position: 4.0.3
       unist-util-visit: 4.1.1
@@ -2382,7 +2383,7 @@ packages:
     dependencies:
       '@types/hast': 2.3.4
       '@types/mdast': 3.0.10
-      mdast-util-to-hast: 12.2.5
+      mdast-util-to-hast: 12.3.0
       unified: 10.1.2
     dev: false
 
@@ -2768,12 +2769,6 @@ packages:
       is-plain-obj: 4.1.0
       trough: 2.1.0
       vfile: 5.3.6
-    dev: false
-
-  /unist-builder/3.0.0:
-    resolution: {integrity: sha512-GFxmfEAa0vi9i5sd0R2kcrI9ks0r82NasRq5QHh2ysGngrc6GiqD5CDf1FjPenY4vApmFASBIIlk/jj5J5YbmQ==}
-    dependencies:
-      '@types/unist': 2.0.6
     dev: false
 
   /unist-util-find-after/4.0.0:
