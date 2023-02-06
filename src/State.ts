@@ -101,7 +101,7 @@ export function updateReplies(reply: BaseMessage, shift = false) {
 }
 export const isEditing = writable<string | null>(null);
 
-export const autocomplete = writable<AutocompleteResult | null>(null),
+export const autocomplete = writable<(AutocompleteResult & { standalone: boolean }) | null>(null),
   selectedAutocomplete = writable("");
 autocomplete.subscribe((a) => selectedAutocomplete.set(a?.all[0]?.id || ""));
 

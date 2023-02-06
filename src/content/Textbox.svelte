@@ -7,7 +7,7 @@
     IconHash,
     IconPaperclip,
     IconVolume,
-    IconX
+    IconX,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
@@ -25,7 +25,7 @@
     SelectedChannel,
     SelectedServer,
     selectInput,
-    uploadedFiles
+    uploadedFiles,
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
@@ -61,7 +61,7 @@
     );
     const str = (a: AutocompleteResult) => a.all.map((a) => a.id).join("/");
     if ($autocomplete && ac && str(ac) == str($autocomplete)) return;
-    autocomplete.set(ac);
+    autocomplete.set(ac ? { ...ac, standalone: !!standalone } : null);
   }
   function handleAutocomplete(e: KeyboardEvent) {
     if ($autocomplete?.size) {
@@ -204,9 +204,9 @@
   {/if}
 
   <!-- Autocomplete -->
-  {#if $autocomplete?.size}
+  {#if $autocomplete?.size && $autocomplete.standalone == !!standalone}
     <div
-      class="overflow-y-auto px-2 py-2.5 w-[calc(100%-2rem)] flex flex-col gap-1 absolute bottom-full left-4 rounded-t-md"
+      class="overflow-y-auto px-2 py-2.5 w-[calc(100%-2rem)] flex flex-col gap-1 absolute bottom-full left-4 rounded-t-md z-10"
       style="max-height:{MAX_AUTOCOMPLETE * 2 +
         (MAX_AUTOCOMPLETE + 1) * 0.25}rem;background-color:{$Theme['primary-header']};"
     >
