@@ -5,7 +5,7 @@
     IconUserMinus,
     IconUserPlus,
     IconUserX,
-    IconX
+    IconX,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Header from "extra/Header.svelte";
@@ -18,7 +18,7 @@
     Server,
     type User,
     type UserMutuals,
-    type UserProfile
+    type UserProfile,
   } from "revolt-toolset";
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
@@ -222,53 +222,55 @@
               <Markdown text={profile.bio} />
             </div>
           {/if}
-          <div>
-            <Header large lower>Mutual Servers</Header>
-            {#if mutualServers.length}
-              <div class="flex gap-2 flex-wrap mt-1 {$MobileLayout ? '' : 'w-fit'}">
-                {#each mutualServers as s (s.id)}
-                  <div
-                    class="{$MobileLayout
-                      ? 'w-[48%] py-2'
-                      : 'w-32 py-4 flex-col'} gap-2 px-2 cursor-pointer bg-black bg-opacity-20 hover:bg-opacity-30 active:bg-opacity-35 transition rounded-lg flex items-center justify-center"
-                    use:tippy={{ content: s.name }}
-                    on:click={() => (SelectedServer.set(s), item.close())}
-                  >
-                    {#if s.icon}
-                      <div
-                        class="{$MobileLayout
-                          ? 'w-8 h-8'
-                          : 'w-12 h-12'} shrink-0 rounded-full overflow-hidden"
-                      >
-                        <img src={s.generateIconURL({ max_side: 64 })} alt="" />
-                      </div>
-                    {:else}
-                      <div
-                        class="{$MobileLayout
-                          ? 'w-8 h-8'
-                          : 'w-12 h-12'} bg-black bg-opacity-30 rounded-full"
-                      >
-                        <span>
-                          {ServerDetails(s).acronym}
-                        </span>
-                      </div>
-                    {/if}
+          {#if user.id !== client.user.id}
+            <div>
+              <Header large lower>Mutual Servers</Header>
+              {#if mutualServers.length}
+                <div class="flex gap-2 flex-wrap mt-1 {$MobileLayout ? '' : 'w-fit'}">
+                  {#each mutualServers as s (s.id)}
                     <div
                       class="{$MobileLayout
-                        ? ''
-                        : 'text-center text-sm'} w-full overflow-hidden overflow-ellipsis whitespace-nowrap"
+                        ? 'w-[48%] py-2'
+                        : 'w-32 py-4 flex-col'} gap-2 px-2 cursor-pointer bg-black bg-opacity-20 hover:bg-opacity-30 active:bg-opacity-35 transition rounded-lg flex items-center justify-center"
+                      use:tippy={{ content: s.name }}
+                      on:click={() => (SelectedServer.set(s), item.close())}
                     >
-                      {s.name}
+                      {#if s.icon}
+                        <div
+                          class="{$MobileLayout
+                            ? 'w-8 h-8'
+                            : 'w-12 h-12'} shrink-0 rounded-full overflow-hidden"
+                        >
+                          <img src={s.generateIconURL({ max_side: 64 })} alt="" />
+                        </div>
+                      {:else}
+                        <div
+                          class="{$MobileLayout
+                            ? 'w-8 h-8'
+                            : 'w-12 h-12'} bg-black bg-opacity-30 rounded-full"
+                        >
+                          <span>
+                            {ServerDetails(s).acronym}
+                          </span>
+                        </div>
+                      {/if}
+                      <div
+                        class="{$MobileLayout
+                          ? ''
+                          : 'text-center text-sm'} w-full overflow-hidden overflow-ellipsis whitespace-nowrap"
+                      >
+                        {s.name}
+                      </div>
                     </div>
-                  </div>
-                {/each}
-              </div>
-            {:else}
-              <div class="text-xs ml-1" style:color={$Theme["secondary-foreground"]}>
-                No mutual servers.
-              </div>
-            {/if}
-          </div>
+                  {/each}
+                </div>
+              {:else}
+                <div class="text-xs ml-1" style:color={$Theme["secondary-foreground"]}>
+                  No mutual servers.
+                </div>
+              {/if}
+            </div>
+          {/if}
         {:else}
           <Loader size={26} />
         {/if}
