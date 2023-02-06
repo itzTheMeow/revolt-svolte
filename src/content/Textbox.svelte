@@ -255,7 +255,7 @@
     <div class="flex-1 flex items-center relative" style:background-color={$Theme["message-box"]}>
       <textarea
         id="Textbox"
-        class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3"
+        class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3 max-h-[30vh]"
         style:outline="none"
         style:height="{barHeight}px"
         autocomplete="on"
