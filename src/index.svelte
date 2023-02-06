@@ -37,6 +37,7 @@
     selectInput,
     spliceMessages,
     updatePaneState,
+    uploadedFiles,
   } from "State";
   import { afterUpdate, onMount } from "svelte";
   import { Theme } from "Theme";
@@ -160,6 +161,7 @@
       else if ($floatingMenu) floatingMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
+      else if ($uploadedFiles.length) $uploadedFiles = $uploadedFiles.slice(1);
       else {
         if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
           $SelectedChannel.markRead(true);
