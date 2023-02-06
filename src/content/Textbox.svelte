@@ -204,7 +204,7 @@
     {#each $autocomplete.users.slice(0, MAX_AUTOCOMPLETE) as u (u.id)}
       <AutocompleteItem
         id={u.id}
-        icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar}
+        icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar || ""}
         name={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).name}
         detail={$SelectedServer?.members.get(u.id)?.nickname ? u.username : ""}
         rounded
