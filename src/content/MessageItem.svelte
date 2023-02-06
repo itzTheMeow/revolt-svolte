@@ -1,5 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
+  import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
@@ -105,6 +106,7 @@
       on:wheel={() => !$MobileLayout && HoveredMessage.set(message.id)}
       on:touchstart={handleClickDown}
       on:touchend={handleClick}
+      on:contextmenu={(e) => showOptionContext(e, messageContext(message))}
     >
       {#if message.isUser()}
         <div class="flex gap-2 {shouldSeparate ? '' : 'items-center'}">

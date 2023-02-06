@@ -29,7 +29,7 @@ export function showOptionContext(
 export function messageContext(message: BaseMessage) {
   const opts = [, copyIDItem(message)];
 
-  if (message.isUser())
+  if (message.isUser() && message.content)
     opts.splice(1, 0, {
       name: "Copy Text",
       clicked() {
