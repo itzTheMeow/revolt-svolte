@@ -16,7 +16,7 @@
 </script>
 
 <img
-  class="{!square ? 'rounded' : ''} cursor-pointer {className}"
+  class="{!square ? 'rounded' : 'object-contain'} cursor-pointer {className}"
   style:display={loaded ? "unset" : "none"}
   style:aspect-ratio={typeof src !== "string" && src.metadata.type == "Image"
     ? `${src.metadata.width} / ${src.metadata.height}`
