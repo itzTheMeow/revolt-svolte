@@ -22,6 +22,7 @@
     AppWidth,
     fullscreenElement,
     HoveredMessage,
+    isEditing,
     MessageCache,
     MessageInputSelected,
     MobileLayout,
@@ -69,8 +70,9 @@
   client.on("messageUpdate", async (message) => {
     if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
   });
-  client.on("messageDelete", (_, message) => {
+  client.on("messageDelete", (id, message) => {
     if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
+    if ($isEditing == id) isEditing.set(null);
   });
   const fetching = new Set();
   SelectedChannel.subscribe((c) => {
@@ -162,6 +164,7 @@
       else if ($floatingMenu) floatingMenu.set(null);
       else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
       else if ($imagePreview) imagePreview.set(null);
+      else if ($isEditing) isEditing.set(null);
       else if ($uploadedFiles.length) $uploadedFiles = $uploadedFiles.slice(1);
       else {
         if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))

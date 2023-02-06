@@ -1,17 +1,21 @@
 <script lang="ts">
   import {
     IconArrowBigRightLine,
+    IconCheck,
     IconClipboard,
     IconFileUpload,
     IconHash,
     IconPaperclip,
     IconVolume,
+    IconX
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
-  import { Emoji, parseAutocomplete, type AutocompleteResult } from "revolt-toolset";
+  import { ModalStack } from "modals/ModalStack";
+  import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revolt-toolset";
   import {
     autocomplete,
+    isEditing,
     MessageInputSelected,
     MobileLayout,
     pushFile,
@@ -21,7 +25,7 @@
     SelectedChannel,
     SelectedServer,
     selectInput,
-    uploadedFiles,
+    uploadedFiles
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
@@ -31,16 +35,19 @@
   import TextboxTyping from "./TextboxTyping.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
 
+  export let standalone: Message | null = null,
+    className = "";
+
   const MAX_AUTOCOMPLETE = 8;
 
-  let inputtedMessage = "",
-    MessageInput: HTMLTextAreaElement,
+  let inputtedMessage = standalone?.content || "";
+
+  let MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement,
     UploaderButton: HTMLDivElement,
     barHeight = 0,
-    BoxSizer: HTMLDivElement,
-    BoxText = "";
+    BoxSizer: HTMLDivElement;
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
     const ac = parseAutocomplete(
@@ -90,19 +97,24 @@
   }
 
   async function sendMessage() {
-    if (!$SelectedChannel || (!inputtedMessage.trim() && !$uploadedFiles.length)) return;
+    if (!$SelectedChannel) return;
+    if (!inputtedMessage.trim()) {
+      if (standalone) return ModalStack.showDeleteModal(standalone);
+      if (!$uploadedFiles.length) return;
+    }
 
     const content = inputtedMessage ? inputtedMessage : null,
       channel = $SelectedChannel;
     const fc = SendButton.firstElementChild as HTMLDivElement;
     SendButton.classList.add("loading");
     fc.style.display = "none";
-    inputtedMessage = "";
+    if (!standalone) inputtedMessage = "";
     recalculateAutocomplete();
-    const toUpload = [...$uploadedFiles];
+
+    const toUpload = standalone ? [] : [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
-    const replies = $replyingTo.map((r) => ({ id: r.id, mention: false }));
+    const replies = standalone ? [] : $replyingTo.map((r) => ({ id: r.id, mention: false }));
     replyingTo.set([]);
     const attachments: string[] = [];
     for (const attachment of toUpload) {
@@ -113,16 +125,24 @@
         console.error("no attachment", err);
       }
     }
-    const message = await channel.send({
-      content,
-      attachments: attachments.length ? attachments : null,
-      replies,
-      expandEmojis: true,
-      expandMentions: true,
-    });
+
+    const message = standalone
+      ? await standalone.edit({ content })
+      : await channel.send({
+          content,
+          attachments: attachments.length ? attachments : null,
+          replies,
+          expandEmojis: true,
+          expandMentions: true,
+        });
+
     SendButton.classList.remove("loading");
     fc.style.display = "";
     recalculateAutocomplete();
+    if (standalone) {
+      inputtedMessage = "";
+      isEditing.set(null);
+    }
   }
 
   function handleUpload(e: MouseEvent | TouchEvent) {
@@ -177,9 +197,11 @@
   });
 </script>
 
-<div class="flex flex-col relative">
-  <TextboxTyping />
-  <TextboxUploaded />
+<div class="flex flex-col relative {className}">
+  {#if !standalone}
+    <TextboxTyping />
+    <TextboxUploaded />
+  {/if}
 
   <!-- Autocomplete -->
   {#if $autocomplete?.size}
@@ -220,7 +242,7 @@
 
   <!-- Replies -->
 
-  {#if $replyingTo.length}
+  {#if $replyingTo.length && !standalone}
     <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
       {#each $replyingTo as reply (reply.id)}
         <TextboxReply message={reply} />
@@ -231,27 +253,38 @@
   <!-- Textbox / Buttons -->
 
   <div class="flex w-full min-h-12">
-    <input
-      type="file"
-      class="hidden"
-      bind:this={FileInput}
-      multiple
-      on:change={() => {
-        const takeBottom = !$MobileLayout || !!$selectInput;
-        const files = [...(FileInput.files || [])];
-        files.forEach(pushFile);
-        if (takeBottom) selectBottom();
-      }}
-    />
-    <div
-      class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
-      style="background-color:{$Theme['primary-header']};"
-      bind:this={UploaderButton}
-      on:click={handleUpload}
-      on:touchend={handleUpload}
-    >
-      <IconPaperclip />
-    </div>
+    {#if !standalone}
+      <input
+        type="file"
+        class="hidden"
+        bind:this={FileInput}
+        multiple
+        on:change={() => {
+          const takeBottom = !$MobileLayout || !!$selectInput;
+          const files = [...(FileInput.files || [])];
+          files.forEach(pushFile);
+          if (takeBottom) selectBottom();
+        }}
+      />
+      <div
+        class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
+        style="background-color:{$Theme['primary-header']};"
+        bind:this={UploaderButton}
+        on:click={handleUpload}
+        on:touchend={handleUpload}
+      >
+        <IconPaperclip />
+      </div>
+    {:else}
+      <div
+        class="btn btn-square btn-secondary rounded-none border-none h-12 mb-auto"
+        style="background-color:{$Theme['error']};"
+        on:click={() => isEditing.set(null)}
+        on:touchend|preventDefault={() => isEditing.set(null)}
+      >
+        <IconX />
+      </div>
+    {/if}
     <div class="flex-1 flex items-center relative" style:background-color={$Theme["message-box"]}>
       <textarea
         id="Textbox"
@@ -305,18 +338,26 @@
           .join("\n") || "\u200b"}
       </div>
     </div>
-    <div
-      class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
-      style="background-color:{$Theme['accent']};"
-      bind:this={SendButton}
-      on:touchend={(e) => {
-        e.preventDefault();
-        sendMessage();
-        return false;
-      }}
-      on:click={() => sendMessage()}
-    >
-      <IconArrowBigRightLine />
-    </div>
+    {#if !standalone}
+      <div
+        class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
+        style="background-color:{$Theme['accent']};"
+        bind:this={SendButton}
+        on:touchend|preventDefault={sendMessage}
+        on:click={sendMessage}
+      >
+        <IconArrowBigRightLine />
+      </div>
+    {:else}
+      <div
+        class="btn btn-square btn-primary rounded-none border-none h-12 mb-auto"
+        style="background-color:{$Theme['success']};"
+        bind:this={SendButton}
+        on:touchend|preventDefault={sendMessage}
+        on:click={sendMessage}
+      >
+        <IconCheck />
+      </div>
+    {/if}
   </div>
 </div>

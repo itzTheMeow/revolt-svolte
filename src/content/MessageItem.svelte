@@ -5,7 +5,14 @@
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import { Attachment, EmbedMedia, EmbedWeb, type BaseMessage, type Embed } from "revolt-toolset";
-  import { HoveredMessage, MessageCache, MobileLayout, selectBottom, SelectedChannel } from "State";
+  import {
+    HoveredMessage,
+    isEditing,
+    MessageCache,
+    MobileLayout,
+    selectBottom,
+    SelectedChannel,
+  } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
   import MessageItemAttachment from "./MessageItemAttachment.svelte";
@@ -37,8 +44,9 @@
       previousMessage.authorID !== message.authorID ||
       JSON.stringify(previousMessage.masquerade) !== JSON.stringify(message.masquerade) ||
       Math.abs(previousMessage.createdAt - message.createdAt) >= 420000;
-    isHovered = $HoveredMessage == message.id;
-    doHighlight = message.isUser() && message.mentionIDs.includes(client.user.id);
+    isHovered = $HoveredMessage == message.id && $isEditing !== message.id;
+    doHighlight =
+      message.isUser() && message.mentionIDs.includes(client.user.id) && $isEditing !== message.id;
     embeds = message.isUser()
       ? <any>message.embeds.filter((e) => e.isText() || (e.isWeb() && e.special?.type !== "GIF"))
       : [];
@@ -149,7 +157,7 @@
             {#if shouldSeparate}
               <MessageItemHeader {message} />
             {/if}
-            {#if message.content}
+            {#if message.content || $isEditing == message.id}
               <MessageItemContent {message} />
             {/if}
             {#each attachments as attachment (attachment instanceof Attachment ? attachment.id : `${attachment.width}x${attachment.height}x${attachment.size + attachment.type}`)}
