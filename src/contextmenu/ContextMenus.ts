@@ -4,6 +4,7 @@ import {
   IconDownload,
   IconExternalLink,
   IconLink,
+  IconPencil,
   IconPhotoDown,
   IconTrash,
 } from "@tabler/icons-svelte";
@@ -11,6 +12,7 @@ import { client } from "Client";
 import { ModalStack } from "modals/ModalStack";
 import { Attachment, Permissions, type BaseMessage } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
+import { isEditing } from "State";
 import { copyText, downloadFile } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
@@ -50,7 +52,15 @@ export function messageContext(message: BaseMessage) {
     (message.isUser() && message.authorID == client.user.id) ||
     (message.channel.isServerBased() && message.channel.permissions.has(Permissions.ManageMessages))
   )
-    opts.unshift(deleteItem(message));
+    opts.unshift(deleteItem(message, " Message"));
+  if (message.isUser() && message.authorID == client.user.id)
+    opts.unshift({
+      name: "Edit Message",
+      clicked() {
+        isEditing.set(message.id);
+      },
+      icon: IconPencil,
+    });
 
   return opts;
 }
@@ -102,9 +112,12 @@ export function mediaContext(src: string | Attachment): (ContextMenuStateOption 
 export function copyIDItem(item: BaseObject<any>): ContextMenuStateOption {
   return { name: "Copy ID", clicked: () => copyText(item.id), icon: IconCopy };
 }
-export function deleteItem(item: BaseObject<any> & { delete(): any }): ContextMenuStateOption {
+export function deleteItem(
+  item: BaseObject<any> & { delete(): any },
+  text = ""
+): ContextMenuStateOption {
   return {
-    name: "Delete",
+    name: "Delete" + text,
     clicked: () => ModalStack.showDeleteModal(item),
     icon: IconTrash,
     danger: true,
