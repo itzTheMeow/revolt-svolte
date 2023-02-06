@@ -1,6 +1,7 @@
 import {
   IconClipboard,
   IconCopy,
+  IconCornerUpLeft,
   IconDownload,
   IconExternalLink,
   IconLink,
@@ -12,7 +13,7 @@ import { client } from "Client";
 import { ModalStack } from "modals/ModalStack";
 import { Attachment, Permissions, type BaseMessage } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
-import { isEditing } from "State";
+import { isEditing, selectBottom, updateReplies } from "State";
 import { copyText, downloadFile } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
@@ -61,6 +62,14 @@ export function messageContext(message: BaseMessage) {
       },
       icon: IconPencil,
     });
+  opts.unshift({
+    name: "Reply",
+    clicked() {
+      updateReplies(message);
+      selectBottom();
+    },
+    icon: IconCornerUpLeft,
+  });
 
   return opts;
 }
