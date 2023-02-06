@@ -173,129 +173,130 @@
   });
 </script>
 
-<TextboxTyping />
-<TextboxUploaded />
+<div class="flex flex-col relative">
+  <TextboxTyping />
+  <TextboxUploaded />
 
-<!-- Autocomplete -->
+  <!-- Autocomplete -->
+  {#if $autocomplete?.size}
+    <div
+      class="overflow-y-auto px-2 py-2.5 w-[calc(100%-2rem)] flex flex-col gap-1 absolute bottom-full left-4 rounded-t-md"
+      style="max-height:{MAX_AUTOCOMPLETE * 2 +
+        (MAX_AUTOCOMPLETE + 1) * 0.25}rem;background-color:{$Theme['primary-header']};"
+    >
+      {#each $autocomplete.channels.slice(0, MAX_AUTOCOMPLETE) as c (c.id)}
+        <AutocompleteItem
+          id={c.id}
+          icon={c.icon ? c.generateIconURL({ max_side: 64 }) : c.isVoice() ? IconVolume : IconHash}
+          name={c.name || ""}
+          onclick={() => handleAutocompleteTab(c.id)}
+        />
+      {/each}
+      {#each $autocomplete.emojis.slice(0, MAX_AUTOCOMPLETE) as e (e.id)}
+        <AutocompleteItem
+          id={e.id}
+          icon={(e instanceof Emoji ? e : e.setPack("twemoji")).imageURL}
+          name={e.uniqueName || ""}
+          detail={e.parent?.name || ""}
+          onclick={() => handleAutocompleteTab(e.id)}
+        />
+      {/each}
+      {#each $autocomplete.users.slice(0, MAX_AUTOCOMPLETE) as u (u.id)}
+        <AutocompleteItem
+          id={u.id}
+          icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar || ""}
+          name={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).name}
+          detail={$SelectedServer?.members.get(u.id)?.nickname ? u.username : ""}
+          rounded
+          onclick={() => handleAutocompleteTab(u.id)}
+        />
+      {/each}
+    </div>
+  {/if}
 
-{#if $autocomplete?.size}
-  <div
-    class="overflow-y-auto p-2 w-full flex flex-col gap-1"
-    style="max-height:{MAX_AUTOCOMPLETE * 2 +
-      (MAX_AUTOCOMPLETE + 1) * 0.25}rem;background-color:{$Theme['primary-header']};"
-  >
-    {#each $autocomplete.channels.slice(0, MAX_AUTOCOMPLETE) as c (c.id)}
-      <AutocompleteItem
-        id={c.id}
-        icon={c.icon ? c.generateIconURL({ max_side: 64 }) : c.isVoice() ? IconVolume : IconHash}
-        name={c.name || ""}
-        onclick={() => handleAutocompleteTab(c.id)}
-      />
-    {/each}
-    {#each $autocomplete.emojis.slice(0, MAX_AUTOCOMPLETE) as e (e.id)}
-      <AutocompleteItem
-        id={e.id}
-        icon={(e instanceof Emoji ? e : e.setPack("twemoji")).imageURL}
-        name={e.uniqueName || ""}
-        detail={e.parent?.name || ""}
-        onclick={() => handleAutocompleteTab(e.id)}
-      />
-    {/each}
-    {#each $autocomplete.users.slice(0, MAX_AUTOCOMPLETE) as u (u.id)}
-      <AutocompleteItem
-        id={u.id}
-        icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar || ""}
-        name={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).name}
-        detail={$SelectedServer?.members.get(u.id)?.nickname ? u.username : ""}
-        rounded
-        onclick={() => handleAutocompleteTab(u.id)}
-      />
-    {/each}
-  </div>
-{/if}
+  <!-- Replies -->
 
-<!-- Replies -->
+  {#if $replyingTo.length}
+    <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
+      {#each $replyingTo as reply (reply.id)}
+        <TextboxReply message={reply} />
+      {/each}
+    </div>
+  {/if}
 
-{#if $replyingTo.length}
-  <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
-    {#each $replyingTo as reply (reply.id)}
-      <TextboxReply message={reply} />
-    {/each}
-  </div>
-{/if}
+  <!-- Textbox / Buttons -->
 
-<!-- Textbox / Buttons -->
-
-<div class="flex w-full min-h-12">
-  <input
-    type="file"
-    class="hidden"
-    bind:this={FileInput}
-    multiple
-    on:change={() => {
-      const takeBottom = !$MobileLayout || !!$selectInput;
-      const files = [...(FileInput.files || [])];
-      files.forEach(pushFile);
-      if (takeBottom) selectBottom();
-    }}
-  />
-  <div
-    class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
-    style="background-color:{$Theme['primary-header']};"
-    bind:this={UploaderButton}
-    on:click={handleUpload}
-    on:touchend={handleUpload}
-  >
-    <IconPaperclip />
-  </div>
-  <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
-    <textarea
-      id="Textbox"
-      class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3 box-content"
-      style:outline="none"
-      style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
-      autocomplete="on"
-      bind:this={MessageInput}
-      bind:value={inputtedMessage}
-      on:keydown={(e) => {
-        recalculateAutocomplete();
-        if (handleAutocomplete(e)) return;
-        if (e.key == "Enter" && !e.shiftKey) {
-          sendMessage();
-          e.preventDefault();
-        }
-      }}
-      on:keyup={() => {
-        recalculateAutocomplete();
-      }}
-      on:touchmove={() => recalculateAutocomplete()}
-      on:touchend={() => recalculateAutocomplete()}
-      on:mouseup={() => recalculateAutocomplete()}
-      on:click={() => {
-        MessageInputSelected.set(true);
-        recalculateAutocomplete();
-      }}
-      on:focus={() => {
-        MessageInputSelected.set(true);
-        recalculateAutocomplete();
-      }}
-      on:blur={() => {
-        MessageInputSelected.set(false);
-        recalculateAutocomplete();
+  <div class="flex w-full min-h-12">
+    <input
+      type="file"
+      class="hidden"
+      bind:this={FileInput}
+      multiple
+      on:change={() => {
+        const takeBottom = !$MobileLayout || !!$selectInput;
+        const files = [...(FileInput.files || [])];
+        files.forEach(pushFile);
+        if (takeBottom) selectBottom();
       }}
     />
-  </div>
-  <div
-    class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
-    style="background-color:{$Theme['accent']};"
-    bind:this={SendButton}
-    on:touchend={(e) => {
-      e.preventDefault();
-      sendMessage();
-      return false;
-    }}
-    on:click={() => sendMessage()}
-  >
-    <IconArrowBigRightLine />
+    <div
+      class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
+      style="background-color:{$Theme['primary-header']};"
+      bind:this={UploaderButton}
+      on:click={handleUpload}
+      on:touchend={handleUpload}
+    >
+      <IconPaperclip />
+    </div>
+    <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
+      <textarea
+        id="Textbox"
+        class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3 box-content"
+        style:outline="none"
+        style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
+        autocomplete="on"
+        bind:this={MessageInput}
+        bind:value={inputtedMessage}
+        on:keydown={(e) => {
+          recalculateAutocomplete();
+          if (handleAutocomplete(e)) return;
+          if (e.key == "Enter" && !e.shiftKey) {
+            sendMessage();
+            e.preventDefault();
+          }
+        }}
+        on:keyup={() => {
+          recalculateAutocomplete();
+        }}
+        on:touchmove={() => recalculateAutocomplete()}
+        on:touchend={() => recalculateAutocomplete()}
+        on:mouseup={() => recalculateAutocomplete()}
+        on:click={() => {
+          MessageInputSelected.set(true);
+          recalculateAutocomplete();
+        }}
+        on:focus={() => {
+          MessageInputSelected.set(true);
+          recalculateAutocomplete();
+        }}
+        on:blur={() => {
+          MessageInputSelected.set(false);
+          recalculateAutocomplete();
+        }}
+      />
+    </div>
+    <div
+      class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
+      style="background-color:{$Theme['accent']};"
+      bind:this={SendButton}
+      on:touchend={(e) => {
+        e.preventDefault();
+        sendMessage();
+        return false;
+      }}
+      on:click={() => sendMessage()}
+    >
+      <IconArrowBigRightLine />
+    </div>
   </div>
 </div>
