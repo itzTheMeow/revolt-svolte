@@ -23,6 +23,7 @@
     fullscreenElement,
     HoveredMessage,
     isEditing,
+    MembersCollapsed,
     MessageCache,
     MessageInputSelected,
     MobileLayout,
@@ -319,7 +320,7 @@
       <ChannelList />
     {/if}
     <ContentList />
-    {#if !$MobileLayout || $PaneState !== PaneStates.LEFT}
+    {#if (!$MobileLayout && !$MembersCollapsed) || $PaneState !== PaneStates.LEFT}
       <MemberBar />
     {/if}
   {/if}

@@ -12,6 +12,10 @@ export const SelectionState: {
   ...JSON.parse(localStorage.getItem("selstate") || "{}"),
 };
 if (!SelectionState.map) SelectionState.map = {};
+export const MembersCollapsed = writable(localStorage.getItem("collapse_mems") == "true");
+MembersCollapsed.subscribe((c) => {
+  localStorage.setItem("collapse_mems", String(c));
+});
 
 export const fetchedMembers = new Set<string>();
 export const HomeChannel = new Channel(client, {
