@@ -11,6 +11,7 @@
     IconVolume3,
   } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
+  import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
   import type { Attachment } from "revolt-toolset";
   import { fullscreenElement, MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
@@ -131,6 +132,8 @@
       paneHover = false;
     }, 150);
   }}
+  on:contextmenu|stopPropagation|preventDefault={(e) =>
+    typeof src !== "string" && showOptionContext(e, mediaContext(src))}
 >
   <video
     src={typeof src == "string" ? src : src.generateURL()}

@@ -10,6 +10,7 @@
     IconVolume3,
   } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
+  import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
   import type { Attachment } from "revolt-toolset";
   import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
@@ -97,6 +98,8 @@
   on:click={() => (hasFocus = true)}
   use:clickoutside={() => (hasFocus = false)}
   style:background={$Theme["secondary-background"]}
+  on:contextmenu|stopPropagation|preventDefault={(e) =>
+    typeof src !== "string" && showOptionContext(e, mediaContext(src))}
 >
   <audio
     class="hidden"

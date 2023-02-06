@@ -1,7 +1,15 @@
-import { IconClipboard, IconCopy, IconTrash } from "@tabler/icons-svelte";
+import {
+  IconClipboard,
+  IconCopy,
+  IconDownload,
+  IconExternalLink,
+  IconLink,
+  IconPhotoDown,
+  IconTrash,
+} from "@tabler/icons-svelte";
 import { client } from "Client";
 import { ModalStack } from "modals/ModalStack";
-import { Permissions, type BaseMessage } from "revolt-toolset";
+import { Attachment, Permissions, type BaseMessage } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { copyText } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
@@ -45,6 +53,51 @@ export function messageContext(message: BaseMessage) {
     opts.unshift(deleteItem(message));
 
   return opts;
+}
+export function mediaContext(src: string | Attachment): (ContextMenuStateOption | undefined)[] {
+  const term = typeof src == "string" ? "Image" : src.metadata.type;
+
+  return [
+    {
+      name: `Open ${term}`,
+      clicked() {
+        window.open(typeof src == "string" ? src : src.generateURL(), "_blank");
+      },
+      icon: IconExternalLink,
+    },
+    {
+      name: `Save ${term}`,
+      clicked() {
+        window.open(typeof src == "string" ? src : src.generateDownloadURL(), "_blank");
+      },
+      icon: term == "Image" ? IconPhotoDown : IconDownload,
+    },
+    ...(term == "Image" && navigator.clipboard?.write
+      ? [
+          {
+            name: "Copy Image",
+            async clicked() {
+              navigator.clipboard.write([
+                new ClipboardItem({
+                  "image/png": await fetch(typeof src == "string" ? src : src.generateURL()).then(
+                    (f) => f.blob()
+                  ),
+                }),
+              ]);
+            },
+            icon: IconClipboard,
+          },
+          ,
+        ]
+      : [undefined]),
+    {
+      name: `Copy ${term} Link`,
+      clicked() {
+        copyText(typeof src == "string" ? src : src.generateURL());
+      },
+      icon: IconLink,
+    },
+  ];
 }
 
 export function copyIDItem(item: BaseObject<any>): ContextMenuStateOption {

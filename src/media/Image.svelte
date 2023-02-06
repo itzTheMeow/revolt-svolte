@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
   import Loader from "Loader.svelte";
   import { imagePreview } from "modals/ImagePreview";
   import type { Attachment } from "revolt-toolset";
@@ -35,6 +36,7 @@
     imagePreview.set(
       typeof src == "string" ? { url: src, metadata: { width, height, type: "Image" } } : src
     )}
+  on:contextmenu|stopPropagation|preventDefault={(e) => showOptionContext(e, mediaContext(src))}
 />
 {#if !loaded}
   <div

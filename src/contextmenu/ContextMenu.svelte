@@ -33,7 +33,7 @@
         {#if opt}
           <li>
             <div
-              class="active:bg-inherit flex items-center gap-0.5 font-semibold justify-start !rounded-md {!$MobileLayout
+              class="active:bg-inherit flex items-center gap-1 font-semibold justify-start !rounded-md {!$MobileLayout
                 ? 'px-3 py-1 my-0.5 text-sm'
                 : ''}"
               on:click={(e) => handleClick(e, opt)}
