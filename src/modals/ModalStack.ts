@@ -1,4 +1,4 @@
-import { Message } from "revolt-toolset";
+import { BaseMessage, Channel } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { writable } from "svelte/store";
 import type { SettingsPage } from "./Settings";
@@ -51,7 +51,8 @@ export const ModalStack = new (class {
 
   public showDeleteModal(item: BaseObject<any> & { delete(): any }) {
     const term = (() => {
-      if (item instanceof Message) return "Message";
+      if (item instanceof BaseMessage) return "Message";
+      else if (item instanceof Channel) return "Channel";
       else return "Item";
     })();
     this.push({

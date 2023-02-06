@@ -4,7 +4,8 @@ import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { copyText } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
-export function showOptionContext(e: MouseEvent, options: ContextMenuStateOption[]) {
+export function showOptionContext(e: MouseEvent, options: (ContextMenuStateOption | undefined)[]) {
+  if (!options[0]) options.shift();
   CMState.set({
     pos: {
       top: e.clientY,

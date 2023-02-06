@@ -1,8 +1,8 @@
 <script lang="ts">
   import { UnreadState } from "Client";
-  import { copyIDItem, showOptionContext } from "contextmenu/ContextMenus";
+  import { copyIDItem, deleteItem, showOptionContext } from "contextmenu/ContextMenus";
   import Indicator from "extra/Indicator.svelte";
-  import type { Channel } from "revolt-toolset";
+  import { Permissions, type Channel } from "revolt-toolset";
   import {
     MobileLayout,
     NotifSettings,
@@ -37,7 +37,10 @@
   }
 
   function contextmenu(e: MouseEvent) {
-    showOptionContext(e, [copyIDItem(channel)]);
+    const items = [, copyIDItem(channel)];
+    if (channel.isServerBased() && channel.permissions.has(Permissions.ManageChannel))
+      items.unshift(deleteItem(channel));
+    showOptionContext(e, items);
   }
 </script>
 

@@ -15,7 +15,7 @@ export interface ContextMenuState {
   };
   time?: number;
   target?: HTMLElement | EventTarget | null;
-  options: ContextMenuStateOption[];
+  options: (ContextMenuStateOption | undefined)[];
 }
 
 export const CMState = writable<ContextMenuState | null>(null);
