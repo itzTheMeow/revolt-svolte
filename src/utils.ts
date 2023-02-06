@@ -16,6 +16,8 @@ export const COMMIT_HASH =
 export const GIT_URL = "https://github.com/itzTheMeow/revolt-svolte";
 export const API_URL = "https://api.revolt.chat";
 
+export const FULL_DATE_FORMAT = "cccc LLLL L, yyyy @ t";
+
 export function escapeHTML(txt: string) {
   return txt
     .replace(/&/g, "&amp;")

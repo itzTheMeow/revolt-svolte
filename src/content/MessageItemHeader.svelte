@@ -1,10 +1,12 @@
 <script lang="ts">
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import UserTag from "extra/UserTag.svelte";
+  import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt-toolset";
+  import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
-  import { MessageDetails, UserColor } from "utils";
+  import { FULL_DATE_FORMAT, MessageDetails, UserColor } from "utils";
 
   export let message: Message;
 </script>
@@ -39,8 +41,20 @@
   {:else if message.author?.bot}
     <UserTag text="BOT" />
   {/if}
-  <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
-    {MessageDetails(message).time}
-    {#if message.edited}(edited){/if}
+  <div class="text-xs cursor-default" style:color={$Theme["tertiary-foreground"]}>
+    <span
+      use:tippy={{ content: DateTime.fromMillis(message.createdAt).toFormat(FULL_DATE_FORMAT) }}
+    >
+      {MessageDetails(message).time}
+    </span>
+    {#if message.edited}
+      <span
+        use:tippy={{
+          content: "Edited " + DateTime.fromJSDate(message.edited).toFormat(FULL_DATE_FORMAT),
+        }}
+      >
+        (edited)
+      </span>
+    {/if}
   </div>
 </div>
