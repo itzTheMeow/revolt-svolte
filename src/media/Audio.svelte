@@ -7,7 +7,7 @@
     IconReload,
     IconVolume,
     IconVolume2,
-    IconVolume3,
+    IconVolume3
   } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
   import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
@@ -15,7 +15,7 @@
   import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { Theme } from "Theme";
-  import { clickoutside, formatDuration } from "utils";
+  import { clickoutside, downloadFile, formatDuration } from "utils";
   import Slider from "./Slider.svelte";
 
   export let src: Attachment;
@@ -121,15 +121,13 @@
       <div class="text-xs">
         {byteSize(src.size).toString().toUpperCase()}
       </div>
-      <a
+      <div
         class="cursor-pointer hover:brightness-150"
-        href={src.generateDownloadURL()}
-        target="_blank"
-        rel="noreferrer"
+        on:click={() => downloadFile(src.generateURL(), src.name)}
         data-clickable
       >
         <IconDownload size={20} />
-      </a>
+      </div>
     </div>
   </div>
   <div class="flex items-center gap-1">

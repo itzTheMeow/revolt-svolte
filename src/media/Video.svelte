@@ -17,7 +17,7 @@
   import { onDestroy, onMount } from "svelte";
   import { slide } from "svelte/transition";
   import { Theme } from "Theme";
-  import { clickoutside, formatDuration } from "utils";
+  import { clickoutside, downloadFile, formatDuration } from "utils";
   import Slider from "./Slider.svelte";
 
   export let src: Attachment | string;
@@ -161,14 +161,16 @@
               {byteSize(src.size).toString().toUpperCase()}
             </div>
           {/if}
-          <a
+          <div
             class="cursor-pointer hover:brightness-150"
-            href={typeof src == "string" ? src : src.generateDownloadURL()}
-            target="_blank"
-            rel="noreferrer"
+            on:click={() =>
+              downloadFile(
+                typeof src == "string" ? src : src.generateURL(),
+                typeof src == "string" ? undefined : src.name
+              )}
           >
             <IconDownload size={20} />
-          </a>
+          </div>
         </div>
       </div>
       <div

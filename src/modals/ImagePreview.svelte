@@ -7,6 +7,7 @@
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
   import { Theme } from "Theme";
+  import { downloadFile } from "utils";
   import { imagePreview } from "./ImagePreview";
 
   const zoomSettings = {
@@ -149,16 +150,17 @@
           Open Original
         </a>
         &bull;
-        <a
-          class="hover:underline"
-          href={$imagePreview instanceof Attachment
-            ? $imagePreview.generateDownloadURL()
-            : $imagePreview.url}
-          target="_blank"
-          rel="noreferrer"
+        <div
+          class="hover:underline cursor-pointer"
+          on:click={() =>
+            $imagePreview &&
+            downloadFile(
+              $imagePreview instanceof Attachment ? $imagePreview.generateURL() : $imagePreview.url,
+              $imagePreview instanceof Attachment ? $imagePreview.name : undefined
+            )}
         >
           Download
-        </a>
+        </div>
       </div>
     </div>
   </div>
