@@ -99,6 +99,7 @@ export function updateReplies(reply: BaseMessage, shift = false) {
     return replies;
   });
 }
+export const isEditing = writable<string | null>(null);
 
 export const autocomplete = writable<AutocompleteResult | null>(null),
   selectedAutocomplete = writable("");

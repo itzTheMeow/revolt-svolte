@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { IconCornerUpLeft, IconTrash } from "@tabler/icons-svelte";
+  import { IconCornerUpLeft, IconEdit, IconTrash } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { ModalStack } from "modals/ModalStack";
   import { BaseMessage, Permissions } from "revolt-toolset";
-  import { MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
+  import { isEditing, MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
@@ -25,6 +25,13 @@
     }}
     title="Reply"
   />
+  {#if message.isUser() && message.authorID == client.user?.id}
+    <MessageItemToolbarItem
+      icon={IconEdit}
+      on:click={() => isEditing.set(message.id)}
+      title="Edit"
+    />
+  {/if}
   {#if message.channel?.permissions.has(Permissions.ManageMessages) || (message.isUser() && message.authorID == client.user?.id)}
     <MessageItemToolbarItem
       icon={IconTrash}

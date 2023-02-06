@@ -37,7 +37,10 @@
     MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement,
-    UploaderButton: HTMLDivElement;
+    UploaderButton: HTMLDivElement,
+    barHeight = 0,
+    BoxSizer: HTMLDivElement,
+    BoxText = "";
   function recalculateAutocomplete() {
     if (!$MessageInputSelected) return autocomplete.set(null);
     const ac = parseAutocomplete(
@@ -169,6 +172,7 @@
   }
 
   onMount(() => {
+    barHeight = BoxSizer.clientHeight;
     if (!$MobileLayout) MessageInput.focus();
   });
 </script>
@@ -248,25 +252,32 @@
     >
       <IconPaperclip />
     </div>
-    <div class="flex-1 flex items-center" style:background-color={$Theme["message-box"]}>
+    <div class="flex-1 flex items-center relative" style:background-color={$Theme["message-box"]}>
       <textarea
         id="Textbox"
-        class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3 box-content"
+        class="w-full resize-none bg-inherit pl-1.5 pr-2.5 py-3"
         style:outline="none"
-        style:height="{Math.max(1, inputtedMessage.split("\n").length) * 1.5}rem"
+        style:height="{barHeight}px"
         autocomplete="on"
         bind:this={MessageInput}
         bind:value={inputtedMessage}
         on:keydown={(e) => {
           recalculateAutocomplete();
+          barHeight = BoxSizer.clientHeight;
           if (handleAutocomplete(e)) return;
           if (e.key == "Enter" && !e.shiftKey) {
             sendMessage();
             e.preventDefault();
           }
+          barHeight = BoxSizer.clientHeight;
         }}
         on:keyup={() => {
+          barHeight = BoxSizer.clientHeight;
           recalculateAutocomplete();
+        }}
+        on:input={async () => {
+          await tick();
+          barHeight = BoxSizer.clientHeight;
         }}
         on:touchmove={() => recalculateAutocomplete()}
         on:touchend={() => recalculateAutocomplete()}
@@ -284,6 +295,15 @@
           recalculateAutocomplete();
         }}
       />
+      <div
+        class="invisible absolute pointer-events-none w-full whitespace-pre-wrap break-all pl-1.5 pr-2.5 py-3"
+        bind:this={BoxSizer}
+      >
+        {inputtedMessage
+          .split("\n")
+          .map((d) => `\u200b${d}`)
+          .join("\n") || "\u200b"}
+      </div>
     </div>
     <div
       class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
