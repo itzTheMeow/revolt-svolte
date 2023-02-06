@@ -11,7 +11,7 @@ import { client } from "Client";
 import { ModalStack } from "modals/ModalStack";
 import { Attachment, Permissions, type BaseMessage } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
-import { copyText } from "utils";
+import { copyText, downloadFile } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
 export function showOptionContext(
@@ -55,20 +55,21 @@ export function messageContext(message: BaseMessage) {
   return opts;
 }
 export function mediaContext(src: string | Attachment): (ContextMenuStateOption | undefined)[] {
-  const term = typeof src == "string" ? "Image" : src.metadata.type;
+  const term = typeof src == "string" ? "Image" : src.metadata.type,
+    url = typeof src == "string" ? src : src.generateURL();
 
   return [
     {
       name: `Open ${term}`,
       clicked() {
-        window.open(typeof src == "string" ? src : src.generateURL(), "_blank");
+        window.open(url, "_blank");
       },
       icon: IconExternalLink,
     },
     {
       name: `Save ${term}`,
       clicked() {
-        window.open(typeof src == "string" ? src : src.generateDownloadURL(), "_blank");
+        downloadFile(url, typeof src == "string" ? undefined : src.name);
       },
       icon: term == "Image" ? IconPhotoDown : IconDownload,
     },
@@ -79,9 +80,7 @@ export function mediaContext(src: string | Attachment): (ContextMenuStateOption 
             async clicked() {
               navigator.clipboard.write([
                 new ClipboardItem({
-                  "image/png": await fetch(typeof src == "string" ? src : src.generateURL()).then(
-                    (f) => f.blob()
-                  ),
+                  "image/png": await fetch(url).then((f) => f.blob()),
                 }),
               ]);
             },
@@ -93,7 +92,7 @@ export function mediaContext(src: string | Attachment): (ContextMenuStateOption 
     {
       name: `Copy ${term} Link`,
       clicked() {
-        copyText(typeof src == "string" ? src : src.generateURL());
+        copyText(url);
       },
       icon: IconLink,
     },

@@ -187,6 +187,14 @@ export async function copyText(text: string) {
     i.remove();
   }
 }
+export async function downloadFile(src: string, filename?: string) {
+  const blob = await fetch(src).then((r) => r.blob());
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename || src.split("/").pop() || "file";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 export function hasBottom(off = 2) {
   const ListMessages = document.getElementById("MessageList");
   if (!ListMessages) return false;
