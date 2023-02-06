@@ -1,3 +1,5 @@
+import { Message } from "revolt-toolset";
+import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { writable } from "svelte/store";
 import type { SettingsPage } from "./Settings";
 
@@ -44,6 +46,23 @@ export const ModalStack = new (class {
       const i = stk.indexOf(item);
       if (i >= 0) stk.splice(i, 1);
       return stk;
+    });
+  }
+
+  public showDeleteModal(item: BaseObject<any> & { delete(): any }) {
+    const term = (() => {
+      if (item instanceof Message) return "Message";
+      else return "Item";
+    })();
+    this.push({
+      type: "confirm",
+      title: `Delete ${term}`,
+      text: `Are you sure you want to delete this ${term.toLowerCase()}?`,
+      confirm: "Delete",
+      red: true,
+      confirmed() {
+        item.delete();
+      },
     });
   }
 })();

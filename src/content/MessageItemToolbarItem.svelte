@@ -1,9 +1,11 @@
 <script lang="ts">
   import { MobileLayout } from "State";
   import { createEventDispatcher } from "svelte";
+  import { tippy } from "svelte-tippy";
 
-  export let icon: ConstructorOfATypedSvelteComponent;
-  export let style = "";
+  export let icon: ConstructorOfATypedSvelteComponent,
+    style = "",
+    title: string;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -21,6 +23,7 @@
     if (e.shiftKey) dispatch("shiftclick", e);
     else dispatch("click", e);
   }}
+  use:tippy={{ content: title }}
 >
   <svelte:component this={icon} />
 </div>

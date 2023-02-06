@@ -23,28 +23,19 @@
       updateReplies(message);
       selectBottom();
     }}
+    title="Reply"
   />
   {#if message.channel?.permissions.has(Permissions.ManageMessages) || (message.isUser() && message.authorID == client.user?.id)}
     <MessageItemToolbarItem
       icon={IconTrash}
-      on:click={() => {
-        ModalStack.push({
-          type: "confirm",
-          title: "Delete Message",
-          text: "Are you sure you want to delete this message?",
-          confirm: "Delete",
-          red: true,
-          async confirmed() {
-            await message.delete();
-          },
-        });
-      }}
+      on:click={() => ModalStack.showDeleteModal(message)}
       on:shiftclick={() => {
         if (!message.channel) return;
         spliceMessages(message.channel, [message]);
         message.delete();
       }}
       style="color:{$Theme['error']};"
+      title="Delete"
     />
   {/if}
 </div>
