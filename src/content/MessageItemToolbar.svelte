@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { IconCornerUpLeft, IconPencil, IconTrash } from "@tabler/icons-svelte";
+  import { IconCornerUpLeft, IconDots, IconPencil, IconTrash } from "@tabler/icons-svelte";
   import { client } from "Client";
+  import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
   import { ModalStack } from "modals/ModalStack";
   import { BaseMessage, Permissions } from "revolt-toolset";
   import { isEditing, MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
@@ -19,7 +20,7 @@
 >
   <MessageItemToolbarItem
     icon={IconCornerUpLeft}
-    on:click={() => {
+    on:anyclick={() => {
       updateReplies(message);
       selectBottom();
     }}
@@ -28,7 +29,7 @@
   {#if message.isUser() && message.authorID == client.user?.id}
     <MessageItemToolbarItem
       icon={IconPencil}
-      on:click={() => isEditing.set(message.id)}
+      on:anyclick={() => isEditing.set(message.id)}
       title="Edit"
     />
   {/if}
@@ -45,4 +46,9 @@
       title="Delete"
     />
   {/if}
+  <MessageItemToolbarItem
+    icon={IconDots}
+    on:anyclick={(e) => showOptionContext(e.detail, messageContext(message), e.detail.target)}
+    title="More"
+  />
 </div>

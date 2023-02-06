@@ -18,10 +18,12 @@
   on:touchend|preventDefault={(e) => {
     if (e.shiftKey) dispatch("shiftclick", e);
     else dispatch("click", e);
+    dispatch("anyclick", e);
   }}
   on:click|preventDefault={(e) => {
     if (e.shiftKey) dispatch("shiftclick", e);
     else dispatch("click", e);
+    dispatch("anyclick", e);
   }}
   use:tippy={{ content: title }}
 >

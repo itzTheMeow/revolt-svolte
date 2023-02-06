@@ -33,15 +33,15 @@
         {#if opt}
           <li>
             <div
-              class="active:bg-inherit flex items-center gap-1 font-semibold justify-start !rounded-md {!$MobileLayout
-                ? 'px-3 py-1 my-0.5 text-[0.95rem]'
+              class="active:bg-inherit flex items-center gap-0.5 font-semibold justify-start !rounded-md {!$MobileLayout
+                ? 'px-3 py-1 my-0.5 text-sm'
                 : ''}"
               on:click={(e) => handleClick(e, opt)}
               on:touchend={(e) => handleClick(e, opt)}
               style:color={opt.danger ? $Theme["error"] : "inherit"}
             >
               {#if opt.icon}
-                <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 20} />
+                <svelte:component this={opt.icon} size={$MobileLayout ? 24 : 18} />
               {/if}
               <span>{opt.name}</span>
             </div>
