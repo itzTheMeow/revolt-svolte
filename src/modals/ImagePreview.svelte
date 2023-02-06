@@ -15,7 +15,10 @@
     step: 0.5,
   };
 
-  let preview: HTMLDivElement, image: HTMLImageElement, glass: HTMLDivElement;
+  let preview: HTMLDivElement,
+    image: HTMLImageElement,
+    glass: HTMLDivElement,
+    footer: HTMLDivElement;
 
   let imageURL: string,
     mouseDown = false,
@@ -52,7 +55,7 @@
     class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center"
     on:mouseup={(e) => {
       //@ts-ignore
-      !preview.contains(e.target) && !mouseDown && imagePreview.set(null);
+      !footer.contains(e.target) && e.target !== image && !mouseDown && imagePreview.set(null);
       mouseDown = isMagnifying = false;
     }}
     out:scale|local={{ duration: 100 }}
@@ -109,6 +112,7 @@
       <div
         class="text-xs font-semibold flex items-center gap-1 mt-0.5"
         style:color={$Theme["tertiary-foreground"]}
+        bind:this={footer}
       >
         <div>
           {$imagePreview instanceof Attachment
