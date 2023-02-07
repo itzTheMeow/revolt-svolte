@@ -13,6 +13,8 @@
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import UserTag from "extra/UserTag.svelte";
+  import { ModalStack } from "modals/ModalStack";
+  import { SettingsServerPage } from "modals/Settings";
   import { RevoltServerFlags, type Channel } from "revolt-toolset";
   import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
@@ -128,6 +130,13 @@
           <span
             class="cursor-pointer hover:brightness-75"
             style:color={$Theme["secondary-foreground"]}
+            on:click={() =>
+              $SelectedServer &&
+              ModalStack.push({
+                type: "settings_server",
+                server: $SelectedServer,
+                page: SettingsServerPage.Overview,
+              })}
           >
             <IconSettingsFilled size={24} strokeWidth={0.1} />
           </span>

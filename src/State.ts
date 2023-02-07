@@ -1,6 +1,12 @@
 import { Tween } from "@tweenjs/tween.js";
 import { client } from "Client";
-import { Channel, type AutocompleteResult, type BaseMessage, type Server } from "revolt-toolset";
+import {
+  Channel,
+  type AutocompleteResult,
+  type AutumnConfig,
+  type BaseMessage,
+  type Server,
+} from "revolt-toolset";
 import { writable } from "svelte/store";
 import type { NotificationSettings } from "utils";
 
@@ -192,3 +198,11 @@ export function selectBottom(blur = false) {
 }
 
 export const fullscreenElement = writable<Element | null>(null);
+
+let autumnFetched = false;
+export const AutumnService = writable<AutumnConfig | null>(null);
+export async function fetchAutumn() {
+  if (autumnFetched) return;
+  autumnFetched = true;
+  AutumnService.set(await client.fetchAutumnConfiguration());
+}
