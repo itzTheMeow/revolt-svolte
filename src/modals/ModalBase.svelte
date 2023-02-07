@@ -22,6 +22,7 @@
   let dragging = false,
     pos = [-1, -1];
   function handleTouchStart(e: TouchEvent) {
+    if (!full) return;
     pos = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
     if (item.container!.firstElementChild!.scrollTop > 0) pos = pos.map((p) => -p);
   }
