@@ -13,4 +13,4 @@ export enum SettingsServerPage {
   Bans,
 }
 
-export const ServerSettingsChanges = writable<(() => any) | null>(null);
+export const ServerSettingsChanges = writable<{ save: () => any; cancel: () => any } | null>(null);

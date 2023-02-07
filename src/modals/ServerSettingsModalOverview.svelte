@@ -25,7 +25,16 @@
     changes.name !== server.name ||
       changes.description !== server.description ||
       changes.icon !== server.icon?.id
-      ? saveChanges
+      ? {
+          save: saveChanges,
+          cancel: () => {
+            changes = {
+              name: server.name,
+              description: server.description,
+              icon: server.icon?.id,
+            };
+          },
+        }
       : null
   );
 

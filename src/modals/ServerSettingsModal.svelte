@@ -61,24 +61,37 @@
         <IconX size={20} />
       </div>
       {#if $ServerSettingsChanges}
-        <div class="w-36 p-2 rounded-lg mt-auto" style:background={$Theme["secondary-background"]}>
-          <h4 class="mb-0.5">Hey!</h4>
-          <div class="mb-1 text-sm">You have unsaved changes.</div>
-          <div
-            class="btn btn-sm border-none font-bold"
-            style:background-color={$Theme["success"]}
-            style:color={$Theme["background"]}
-            on:click={async (e) => {
-              if (!$ServerSettingsChanges) return;
-              //@ts-ignore
-              e.target.classList.add("loading");
-              await $ServerSettingsChanges();
-              //@ts-ignore
-              e.target.classList.remove("loading");
-              ServerSettingsChanges.set(null);
-            }}
-          >
-            Save
+        <div class="w-28 p-2 rounded-lg mt-auto" style:background={$Theme["secondary-background"]}>
+          <div class="mb-1 text-xs">You have unsaved changes.</div>
+          <div class="flex gap-1 flex-col">
+            <div
+              class="btn btn-sm border-none font-bold"
+              style:background-color={$Theme["success"]}
+              style:color={$Theme["background"]}
+              on:click={async (e) => {
+                if (!$ServerSettingsChanges) return;
+                //@ts-ignore
+                e.target.classList.add("loading");
+                await $ServerSettingsChanges.save();
+                //@ts-ignore
+                e.target.classList.remove("loading");
+                ServerSettingsChanges.set(null);
+              }}
+            >
+              Save
+            </div>
+            <div
+              class="btn btn-sm border-none font-bold"
+              style:background-color={$Theme["error"]}
+              style:color={$Theme["background"]}
+              on:click={async (e) => {
+                if (!$ServerSettingsChanges) return;
+                $ServerSettingsChanges.cancel();
+                ServerSettingsChanges.set(null);
+              }}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       {/if}
