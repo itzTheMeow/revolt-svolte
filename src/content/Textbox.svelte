@@ -127,7 +127,7 @@
     }
 
     const message = standalone
-      ? await standalone.edit({ content })
+      ? await standalone.edit({ content, expandEmojis: true, expandMentions: true })
       : await channel.send({
           content,
           attachments: attachments.length ? attachments : null,
