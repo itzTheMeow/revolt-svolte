@@ -1,7 +1,7 @@
-import { BaseMessage, Channel } from "revolt-toolset";
+import { BaseMessage, Channel, Server } from "revolt-toolset";
 import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { writable } from "svelte/store";
-import type { SettingsPage } from "./Settings";
+import type { SettingsPage, SettingsServerPage } from "./Settings";
 
 export type ModalData =
   | { type: "markdown"; title?: string; content: string }
@@ -16,7 +16,8 @@ export type ModalData =
       canceled?: () => any;
     }
   | { type: "user"; id: string }
-  | { type: "settings"; page: SettingsPage };
+  | { type: "settings"; page: SettingsPage }
+  | { type: "settings_server"; server: Server; page: SettingsServerPage };
 export interface Modal {
   close(): void;
   container: HTMLDivElement | null;
