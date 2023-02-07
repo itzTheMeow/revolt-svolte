@@ -35,7 +35,7 @@ specifiers:
   remark-math: ^5.1.1
   remark-parse: ^10.0.1
   remark-rehype: ^10.1.0
-  revolt-toolset: ^1.0.61
+  revolt-toolset: ^1.0.62
   rimraf: ^3.0.2
   sass: ^1.57.1
   svelte: ^3.49.0
@@ -83,7 +83,7 @@ dependencies:
   remark-math: 5.1.1
   remark-parse: 10.0.1
   remark-rehype: 10.1.0
-  revolt-toolset: 1.0.61
+  revolt-toolset: 1.0.62
   rimraf: 3.0.2
   sass: 1.57.1
   svelte: 3.55.0
@@ -2413,8 +2413,8 @@ packages:
       - debug
     dev: false
 
-  /revolt-toolset/1.0.61:
-    resolution: {integrity: sha512-h5nIoSEM5N4F5DLCRtffe5l84FW308pT4vmKwSP9AO5fXOHBlcEylgsDZRF6GVLyUMqHCGwoQ7tXRe9d0KIIdg==}
+  /revolt-toolset/1.0.62:
+    resolution: {integrity: sha512-IEPi65PbYg3drEfLCZLQehemZw4/B7ERYM4H5YeNgWdNJGFyioDTHpDXc+YiNVGRMhK0Pq3OJcZQ+8iHx6RtsQ==}
     dependencies:
       '@insertish/exponential-backoff': 3.1.0-patch.2
       '@insertish/isomorphic-ws': 4.0.1
