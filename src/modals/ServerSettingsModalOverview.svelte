@@ -71,8 +71,6 @@
   });
 </script>
 
-<h1 class="mb-3">Overview</h1>
-
 <div class="flex flex-col gap-0.5 items-center w-fit relative">
   <ImageUploader bind:uploader />
   {#if changes.icon && iconURL}

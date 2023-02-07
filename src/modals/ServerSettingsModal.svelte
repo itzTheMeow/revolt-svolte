@@ -48,6 +48,39 @@
       <ServerSettingsModalButton category={SettingsServerPage.Bans} icon={IconGavel} {modal} />
     </div>
     <div class="flex-1">
+      <div class="flex mb-3 gap-1 items-center">
+        <h1 class="mr-3">{SettingsServerPage[modal.page]}</h1>
+        {#if $ServerSettingsChanges}
+          <div
+            class="btn btn-sm border-none font-bold"
+            style:background-color={$Theme["success"]}
+            style:color={$Theme["background"]}
+            on:click={async (e) => {
+              if (!$ServerSettingsChanges) return;
+              //@ts-ignore
+              e.target.classList.add("loading");
+              await $ServerSettingsChanges.save();
+              //@ts-ignore
+              e.target.classList.remove("loading");
+              ServerSettingsChanges.set(null);
+            }}
+          >
+            Save
+          </div>
+          <div
+            class="btn btn-sm border-none font-bold"
+            style:background-color={$Theme["error"]}
+            style:color={$Theme["background"]}
+            on:click={async (e) => {
+              if (!$ServerSettingsChanges) return;
+              $ServerSettingsChanges.cancel();
+              ServerSettingsChanges.set(null);
+            }}
+          >
+            Cancel
+          </div>
+        {/if}
+      </div>
       {#if modal.page == SettingsServerPage.Overview}
         <ServerSettingsModalOverview server={modal.server} />
       {/if}
@@ -60,41 +93,6 @@
       >
         <IconX size={20} />
       </div>
-      {#if $ServerSettingsChanges}
-        <div class="w-28 p-2 rounded-lg mt-auto" style:background={$Theme["secondary-background"]}>
-          <div class="mb-1 text-xs">You have unsaved changes.</div>
-          <div class="flex gap-1 flex-col">
-            <div
-              class="btn btn-sm border-none font-bold"
-              style:background-color={$Theme["success"]}
-              style:color={$Theme["background"]}
-              on:click={async (e) => {
-                if (!$ServerSettingsChanges) return;
-                //@ts-ignore
-                e.target.classList.add("loading");
-                await $ServerSettingsChanges.save();
-                //@ts-ignore
-                e.target.classList.remove("loading");
-                ServerSettingsChanges.set(null);
-              }}
-            >
-              Save
-            </div>
-            <div
-              class="btn btn-sm border-none font-bold"
-              style:background-color={$Theme["error"]}
-              style:color={$Theme["background"]}
-              on:click={async (e) => {
-                if (!$ServerSettingsChanges) return;
-                $ServerSettingsChanges.cancel();
-                ServerSettingsChanges.set(null);
-              }}
-            >
-              Cancel
-            </div>
-          </div>
-        </div>
-      {/if}
     </div>
   </div>
 </ModalBase>
