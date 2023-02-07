@@ -22,6 +22,8 @@
     changes.name !== server.name ||
       changes.description !== server.description ||
       changes.icon !== server.icon?.id
+      ? saveChanges
+      : null
   );
 
   $: iconURL =
@@ -30,9 +32,18 @@
       : Uploader.files?.[0]
       ? URL.createObjectURL(Uploader.files[0])
       : "";
+
+  async function saveChanges() {
+    const o: API.DataEditServer = {};
+    if (changes.name !== server.name) o.name = changes.name;
+    if (changes.description !== server.description) o.description = changes.description;
+    if (!changes.icon) o.remove = [...(o.remove || []), "Icon"];
+    else if (changes.icon !== (server.icon?.id || "")) o.icon = changes.icon;
+    await server.edit(o);
+  }
 </script>
 
-<h1 class="text-lg mb-3">Overview</h1>
+<h1 class="mb-3">Overview</h1>
 
 <div class="flex flex-col gap-0.5 items-center w-fit relative">
   <input
@@ -55,7 +66,7 @@
     }}
   />
   {#if changes.icon && iconURL}
-    <img src={iconURL} alt="" class="w-16 h-16 rounded-full" />
+    <img src={iconURL} alt="" class="w-16 h-16 rounded-full object-cover" />
   {:else}
     <div
       class="bg-black bg-opacity-30 w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"

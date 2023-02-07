@@ -16,7 +16,7 @@
   import type { Modal, ModalData } from "./ModalStack";
   import ServerSettingsModalButton from "./ServerSettingsModalButton.svelte";
   import ServerSettingsModalOverview from "./ServerSettingsModalOverview.svelte";
-  import { SettingsServerPage } from "./Settings";
+  import { ServerSettingsChanges, SettingsServerPage } from "./Settings";
 
   export let modal: Extract<ModalData, { type: "settings_server" }>;
   let item: Modal;
@@ -52,12 +52,36 @@
         <ServerSettingsModalOverview server={modal.server} />
       {/if}
     </div>
-    <div
-      class="rounded-full p-2 cursor-pointer h-fit"
-      style:border="3px solid {$Theme["tertiary-background"]}"
-      on:click={() => item.close()}
-    >
-      <IconX size={20} />
+    <div class="relative flex flex-col items-end">
+      <div
+        class="rounded-full p-2 cursor-pointer h-fit w-fit"
+        style:border="3px solid {$Theme["tertiary-background"]}"
+        on:click={() => item.close()}
+      >
+        <IconX size={20} />
+      </div>
+      {#if $ServerSettingsChanges}
+        <div class="w-36 p-2 rounded-lg mt-auto" style:background={$Theme["secondary-background"]}>
+          <h4 class="mb-0.5">Hey!</h4>
+          <div class="mb-1 text-sm">You have unsaved changes.</div>
+          <div
+            class="btn btn-sm border-none font-bold"
+            style:background-color={$Theme["success"]}
+            style:color={$Theme["background"]}
+            on:click={async (e) => {
+              if (!$ServerSettingsChanges) return;
+              //@ts-ignore
+              e.target.classList.add("loading");
+              await $ServerSettingsChanges();
+              //@ts-ignore
+              e.target.classList.remove("loading");
+              ServerSettingsChanges.set(null);
+            }}
+          >
+            Save
+          </div>
+        </div>
+      {/if}
     </div>
   </div>
 </ModalBase>
