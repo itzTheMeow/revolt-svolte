@@ -53,10 +53,11 @@
       bind:zoom
       showGrid={false}
       cropShape="round"
+      zoomSpeed={0.5}
       on:cropcomplete={(e) => (pixels = e.detail.pixels)}
     />
   </div>
-  <div class="modal-action justify-start w-full mt-4">
+  <div class="modal-action w-full mt-4">
     <div
       class="btn btn-sm border-none text-inherit"
       style:background-color={$Theme["accent"]}
@@ -66,7 +67,7 @@
       Done
     </div>
     <div
-      class="btn btn-sm border-none text-inherit mr-auto"
+      class="btn btn-sm border-none text-inherit"
       style:background-color={$Theme["secondary-background"]}
       on:click={() => {
         modal.canceled?.();
@@ -76,7 +77,7 @@
       Cancel
     </div>
     <div
-      class="btn btn-sm border-none text-inherit"
+      class="btn btn-sm border-none text-inherit !ml-auto"
       style:background-color={$Theme["secondary-background"]}
       on:click={() => {
         modal.done?.(modal.file);
@@ -87,3 +88,10 @@
     </div>
   </div>
 </ModalBase>
+
+<style>
+  :global(.container .cropperArea[class*="svelte-"].round) {
+    border-width: 2px;
+    border-color: var(--accent);
+  }
+</style>
