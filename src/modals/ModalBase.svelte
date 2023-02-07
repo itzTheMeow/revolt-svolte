@@ -9,8 +9,9 @@
   const dispatch = createEventDispatcher();
 
   export let modal: ModalData;
-  export let className = "";
-  export let full = false;
+  export let className = "",
+    full = false,
+    noClickOut = false;
   export const item: Modal = {
     close() {
       ModalStack.close(modal);
@@ -80,6 +81,7 @@
   on:click={(e) =>
     //@ts-ignore
     e.target.classList.contains("modal") &&
+    !noClickOut &&
     !($MobileLayout && full) &&
     (dispatch("cancel"), item.close())}
   on:touchstart={handleTouchStart}
