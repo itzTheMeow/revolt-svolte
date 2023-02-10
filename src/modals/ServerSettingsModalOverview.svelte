@@ -99,7 +99,7 @@
   });
 </script>
 
-<div class="flex items-center gap-3">
+<div class="flex items-center gap-4">
   <div class="flex flex-col gap-0.5 items-center w-fit relative shrink-0">
     <ImageUploader bind:uploader={iconUploader} round />
     {#if changes.icon && iconURL}
@@ -132,9 +132,9 @@
       MAX {byteSize($AutumnService?.tags.icons.max_size || 0)}
     </div>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col flex-1">
     <Header className="ml-0.5 mb-0.5">Name</Header>
-    <Input className=" {$MobileLayout ? '' : 'max-w-xs'}" bind:value={changes.name} />
+    <Input className=" {$MobileLayout ? 'flex-1' : 'max-w-xs'}" bind:value={changes.name} />
   </div>
 </div>
 
@@ -142,20 +142,28 @@
 <Input rows={4} bind:value={changes.description} />
 
 <Header className="mt-2 ml-0.5 mb-1">Banner</Header>
-<div class="flex flex-col items-start relative">
+<div class="flex flex-col items-start relative w-full">
   <ImageUploader bind:uploader={bannerUploader} aspect={2} />
   {#if changes.banner && bannerURL}
-    <img src={bannerURL} alt="" class="h-48 aspect-[2/1] rounded object-cover" />
+    <img
+      src={bannerURL}
+      alt=""
+      class="{$MobileLayout ? 'w-full' : 'h-48'} aspect-[2/1] max-w-full rounded object-cover"
+    />
   {:else}
     <div
-      class="h-48 aspect-[2/1] rounded flex items-center justify-center"
+      class="{$MobileLayout
+        ? 'w-full'
+        : 'h-48'} aspect-[2/1] max-w-full rounded flex items-center justify-center"
       style:background={$Theme["secondary-background"]}
     >
       <IconPlus size={30} />
     </div>
   {/if}
   <div
-    class="absolute top-0 left-0 cursor-pointer opacity-0 h-48 aspect-[2/1] rounded flex items-center justify-center bg-black bg-opacity-50 hover:opacity-100 transition"
+    class="absolute top-0 left-0 cursor-pointer opacity-0 {$MobileLayout
+      ? 'w-full'
+      : 'h-48'} aspect-[2/1] max-w-full rounded flex items-center justify-center bg-black bg-opacity-50 hover:opacity-100 transition"
     on:click={async () => {
       if (changes.banner) changes.banner = "";
       else bannerUploader.trigger();
