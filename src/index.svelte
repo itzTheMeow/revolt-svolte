@@ -320,7 +320,7 @@
       <ChannelList />
     {/if}
     <ContentList />
-    {#if (!$MobileLayout && !$MembersCollapsed) || $PaneState !== PaneStates.LEFT}
+    {#if !$MobileLayout ? !$MembersCollapsed : $PaneState !== PaneStates.LEFT}
       <MemberBar />
     {/if}
   {/if}
