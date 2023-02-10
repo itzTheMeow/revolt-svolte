@@ -18,7 +18,14 @@ export type ModalData =
   | { type: "user"; id: string }
   | { type: "settings"; page: SettingsPage }
   | { type: "settings_server"; server: Server; page: SettingsServerPage }
-  | { type: "crop"; file: File; done?: (cropped: File) => any; canceled?: () => any };
+  | {
+      type: "crop";
+      file: File;
+      done?: (cropped: File) => any;
+      canceled?: () => any;
+      aspect?: number;
+      round?: boolean;
+    };
 export interface Modal {
   close(): void;
   container: HTMLDivElement | null;

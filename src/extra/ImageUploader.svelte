@@ -2,6 +2,9 @@
   import { ModalStack } from "modals/ModalStack";
   import type { ExportedImageUploader } from "./ImageUploader";
 
+  export let round = false,
+    aspect = 1;
+
   export const uploader: ExportedImageUploader = {
     trigger() {
       input.click();
@@ -20,6 +23,8 @@
           canceled() {
             cb(null);
           },
+          aspect,
+          round,
         });
       });
     },

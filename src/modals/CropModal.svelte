@@ -48,11 +48,11 @@
   <div class="relative w-80 h-80 rounded overflow-hidden mx-auto">
     <Cropper
       {image}
-      aspect={1}
+      aspect={modal.aspect || 1}
       bind:crop
       bind:zoom
       showGrid={false}
-      cropShape="round"
+      cropShape={modal.round ? "round" : "rect"}
       zoomSpeed={0.5}
       on:cropcomplete={(e) => (pixels = e.detail.pixels)}
     />
@@ -90,7 +90,7 @@
 </ModalBase>
 
 <style>
-  :global(.container .cropperArea[class*="svelte-"].round) {
+  :global(.container .cropperArea[class*="svelte-"]) {
     border-width: 2px;
     border-color: var(--accent);
   }
