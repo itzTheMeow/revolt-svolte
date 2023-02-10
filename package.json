@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/itzTheMeow/svelte-daisyui-template#readme",
   "dependencies": {
-    "@tabler/icons-svelte": "2.0.0-beta",
+    "@tabler/icons-svelte": "2.3.0",
     "@tsconfig/svelte": "^3.0.0",
     "@tweenjs/tween.js": "^18.6.4",
     "@types/body-scroll-lock": "^3.1.0",
