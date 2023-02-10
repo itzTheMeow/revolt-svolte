@@ -5,7 +5,7 @@
   import type { ExportedImageUploader } from "extra/ImageUploader";
   import ImageUploader from "extra/ImageUploader.svelte";
   import type { API, Server } from "revolt-toolset";
-  import { AutumnService, fetchAutumn } from "State";
+  import { AutumnService, fetchAutumn, MobileLayout } from "State";
   import { onMount } from "svelte";
   import { Theme } from "Theme";
   import { ServerDetails } from "utils";
@@ -73,7 +73,7 @@
 </script>
 
 <div class="flex items-center gap-3">
-  <div class="flex flex-col gap-0.5 items-center w-fit relative">
+  <div class="flex flex-col gap-0.5 items-center w-fit relative shrink-0">
     <ImageUploader bind:uploader />
     {#if changes.icon && iconURL}
       <img src={iconURL} alt="" class="w-16 h-16 rounded-full object-cover" />
@@ -101,5 +101,5 @@
       (MAX {byteSize($AutumnService?.tags.icons.max_size || 0)})
     </div>
   </div>
-  <Input bind:value={changes.name} />
+  <Input className=" {$MobileLayout ? '' : 'max-w-xs'}" bind:value={changes.name} />
 </div>
