@@ -19,7 +19,7 @@
   >
     {#if !$MobileLayout}
       <div
-        class="flex flex-col gap-1 p-6 rounded-lg w-56"
+        class="flex flex-col gap-1 p-6 rounded-lg w-56 h-fit"
         style:background={$Theme["secondary-background"]}
       >
         <div class="text-lg font-semibold">{modal.server.name}</div>
