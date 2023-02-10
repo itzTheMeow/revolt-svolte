@@ -2,6 +2,7 @@
   import { IconUpload, IconX } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
   import { client } from "Client";
+  import Header from "extra/Header.svelte";
   import type { ExportedImageUploader } from "extra/ImageUploader";
   import ImageUploader from "extra/ImageUploader.svelte";
   import type { API, Server } from "revolt-toolset";
@@ -97,9 +98,18 @@
         <IconUpload size={30} />
       {/if}
     </div>
-    <div class="text-xs absolute top-full w-max mt-0.5" style:color={$Theme["tertiary-foreground"]}>
-      (MAX {byteSize($AutumnService?.tags.icons.max_size || 0)})
+    <div
+      class="text-[10px] absolute top-full w-max mt-0.5"
+      style:color={$Theme["tertiary-foreground"]}
+    >
+      MAX {byteSize($AutumnService?.tags.icons.max_size || 0)}
     </div>
   </div>
-  <Input className=" {$MobileLayout ? '' : 'max-w-xs'}" bind:value={changes.name} />
+  <div class="flex flex-col">
+    <Header className="ml-0.5 mb-0.5">Name</Header>
+    <Input className=" {$MobileLayout ? '' : 'max-w-xs'}" bind:value={changes.name} />
+  </div>
 </div>
+
+<Header className="mt-8 ml-0.5 mb-1">Description</Header>
+<Input rows={4} bind:value={changes.description} />
