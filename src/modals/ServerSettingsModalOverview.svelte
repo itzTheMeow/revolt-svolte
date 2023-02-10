@@ -9,13 +9,14 @@
   import { onMount } from "svelte";
   import { Theme } from "Theme";
   import { ServerDetails } from "utils";
+  import Input from "../extra/Input.svelte";
   import { ModalStack } from "./ModalStack";
   import { ServerSettingsChanges } from "./Settings";
 
   export let server: Server;
   fetchAutumn();
 
-  let changes: API.DataEditServer = {
+  let changes = {
       name: server.name,
       description: server.description,
       icon: server.icon?.id,
@@ -71,31 +72,34 @@
   });
 </script>
 
-<div class="flex flex-col gap-0.5 items-center w-fit relative">
-  <ImageUploader bind:uploader />
-  {#if changes.icon && iconURL}
-    <img src={iconURL} alt="" class="w-16 h-16 rounded-full object-cover" />
-  {:else}
-    <div
-      class="bg-black bg-opacity-30 w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
-    >
-      {ServerDetails(server).acronym}
-    </div>
-  {/if}
-  <div
-    class="absolute top-0 left-1/2 -translate-x-1/2 cursor-pointer opacity-0 w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-50 hover:opacity-100 transition"
-    on:click={async () => {
-      if (changes.icon) changes.icon = "";
-      else uploader.trigger();
-    }}
-  >
-    {#if changes.icon}
-      <IconX size={30} />
+<div class="flex items-center gap-3">
+  <div class="flex flex-col gap-0.5 items-center w-fit relative">
+    <ImageUploader bind:uploader />
+    {#if changes.icon && iconURL}
+      <img src={iconURL} alt="" class="w-16 h-16 rounded-full object-cover" />
     {:else}
-      <IconUpload size={30} />
+      <div
+        class="bg-black bg-opacity-30 w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
+      >
+        {ServerDetails(server).acronym}
+      </div>
     {/if}
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 cursor-pointer opacity-0 w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-50 hover:opacity-100 transition"
+      on:click={async () => {
+        if (changes.icon) changes.icon = "";
+        else uploader.trigger();
+      }}
+    >
+      {#if changes.icon}
+        <IconX size={30} />
+      {:else}
+        <IconUpload size={30} />
+      {/if}
+    </div>
+    <div class="text-xs absolute top-full w-max mt-0.5" style:color={$Theme["tertiary-foreground"]}>
+      (MAX {byteSize($AutumnService?.tags.icons.max_size || 0)})
+    </div>
   </div>
-  <div class="text-xs" style:color={$Theme["tertiary-foreground"]}>
-    (MAX {byteSize($AutumnService?.tags.icons.max_size || 0)})
-  </div>
+  <Input bind:value={changes.name} />
 </div>

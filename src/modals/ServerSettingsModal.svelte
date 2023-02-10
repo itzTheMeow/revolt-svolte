@@ -23,7 +23,7 @@
 </script>
 
 <ModalBase {modal} bind:item full>
-  <div class="flex w-full max-w-5xl mx-auto gap-5 {!$MobileLayout ? 'my-8' : ''}">
+  <div class="flex w-full max-w-5xl mx-auto gap-6 {!$MobileLayout ? 'my-8' : ''}">
     <div
       class="flex flex-col gap-1 p-6 rounded-lg w-56"
       style:background={$Theme["secondary-background"]}
