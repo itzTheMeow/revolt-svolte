@@ -138,7 +138,7 @@
                 page: SettingsServerPage.Overview,
               })}
           >
-            <IconSettingsFilled size={24} strokeWidth={0.1} />
+            <IconSettingsFilled size={24} stroke={0} />
           </span>
         {/if}
       </div>
