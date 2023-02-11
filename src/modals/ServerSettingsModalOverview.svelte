@@ -33,7 +33,7 @@
       description: server.description,
       icon: server.icon?.id,
       banner: server.banner?.id,
-      system_messages: { ...defaultSys, ...server.source.system_messages },
+      system_messages: { ...defaultSys, ...server.systemMessages },
     },
     iconUploader: ExportedImageUploader,
     bannerUploader: ExportedImageUploader;
@@ -44,7 +44,7 @@
       changes.icon !== server.icon?.id ||
       changes.banner !== server.banner?.id ||
       systemKeys.map((k) => changes.system_messages[k]).join(",") !==
-        systemKeys.map((k) => server.source.system_messages?.[k] || "").join(",")
+        systemKeys.map((k) => server.systemMessages?.[k] || "").join(",")
       ? {
           save: saveChanges,
           cancel: () => {
@@ -53,7 +53,7 @@
               description: server.description,
               icon: server.icon?.id,
               banner: server.banner?.id,
-              system_messages: { ...defaultSys, ...server.source.system_messages },
+              system_messages: { ...defaultSys, ...server.systemMessages },
             };
           },
         }
@@ -85,12 +85,12 @@
     Object.entries(o.system_messages).forEach(
       ([k, v]) => !v && delete o.system_messages![<SysKey>k]
     );
-    if (JSON.stringify(o.system_messages) == "{}" && server.source.system_messages) {
+    if (JSON.stringify(o.system_messages) == "{}" && server.systemMessages) {
       o.remove = [...(o.remove || []), "SystemMessages"];
       delete o.system_messages;
     } else if (
       systemKeys.map((k) => o.system_messages![k]).join(",") ==
-      systemKeys.map((k) => server.source.system_messages?.[k] || "").join(",")
+      systemKeys.map((k) => server.systemMessages?.[k] || "").join(",")
     )
       delete o.system_messages;
     await server.edit(o);
