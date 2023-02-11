@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 declare var self: ServiceWorkerGlobalScope;
 
-const cacheName = `cache-%CommitHash%`;
+const cacheName = `svoltecache-%CommitHash%`;
 
 self.addEventListener("install", (e) => {
   console.log("[Service Worker] Install");
@@ -26,6 +26,20 @@ self.addEventListener("fetch", (e) => {
       cache.put(e.request, response.clone());
       return response;
     })()
+  );
+});
+
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== cacheName)
+          .map((name) => {
+            return caches.delete(name);
+          })
+      );
+    })
   );
 });
 
