@@ -16,26 +16,30 @@
 
 <ModalBase {modal} bind:item full>
   <div
-    class="flex w-full max-w-5xl mx-auto {$MobileLayout ? 'flex-col-reverse gap-1' : 'my-8 gap-6'}"
+    class="flex w-full max-w-5xl mx-auto relative {$MobileLayout
+      ? 'flex-col-reverse gap-1'
+      : 'my-8 gap-6'}"
   >
     {#if !$MobileLayout}
-      <div class="flex flex-col gap-2 items-center">
-        <div
-          class="flex flex-col gap-1 p-6 rounded-lg w-56 h-fit"
-          style:background={$Theme["secondary-background"]}
-        >
-          <div class="text-lg font-semibold">{modal.server.name}</div>
-          {#each ServerSettingsCategories as cat}
-            {#if cat.name}
-              <Header className="mb-1 mt-0.5">{cat.name}</Header>
-            {/if}
-            {#each cat.items as i}
-              <ServerSettingsModalButton category={i.id} icon={i.icon} {modal} />
+      <div class="w-56">
+        <div class="flex flex-col gap-2 items-center sticky top-0">
+          <div
+            class="flex flex-col gap-1 p-6 rounded-lg w-full h-fit"
+            style:background={$Theme["secondary-background"]}
+          >
+            <div class="text-lg font-semibold">{modal.server.name}</div>
+            {#each ServerSettingsCategories as cat}
+              {#if cat.name}
+                <Header className="mb-1 mt-0.5">{cat.name}</Header>
+              {/if}
+              {#each cat.items as i}
+                <ServerSettingsModalButton category={i.id} icon={i.icon} {modal} />
+              {/each}
             {/each}
-          {/each}
-        </div>
-        <div class="flex gap-1">
-          <ServerSettingsModalSave />
+          </div>
+          <div class="flex gap-1">
+            <ServerSettingsModalSave />
+          </div>
         </div>
       </div>
     {/if}
