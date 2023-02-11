@@ -53,7 +53,6 @@ esbuild
     );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
-    fs.copyFileSync("src/manifest.webmanifest", "dist/manifest.webmanifest");
     if (standalone) {
       console.log("Standalone build finished!");
       process.exit();
