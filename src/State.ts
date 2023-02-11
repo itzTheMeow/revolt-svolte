@@ -100,12 +100,12 @@ export function pushFile(file: File) {
     return files;
   });
 }
-export const replyingTo = writable<BaseMessage[]>([]);
+export const replyingTo = writable<[BaseMessage, false][]>([]);
 export function updateReplies(reply: BaseMessage, shift = false) {
   replyingTo.update((replies) => {
-    const i = replies.findIndex((r) => r.id == reply.id);
+    const i = replies.findIndex((r) => r[0].id == reply.id);
     if (shift && i >= 0) replies.splice(i, 1);
-    if (!shift && replies.length < 5 && i == -1) replies.push(reply);
+    if (!shift && replies.length < 5 && i == -1) replies.push([reply, false]);
     return replies;
   });
 }

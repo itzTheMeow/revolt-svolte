@@ -177,3 +177,5 @@
     MAX {byteSize($AutumnService?.tags.banners.max_size || 0)}
   </div>
 </div>
+
+<Header className="mt-2 ml-0.5 mb-1">System Messages</Header>

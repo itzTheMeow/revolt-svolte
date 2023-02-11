@@ -114,7 +114,7 @@
     const toUpload = standalone ? [] : [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
-    const replies = standalone ? [] : $replyingTo.map((r) => ({ id: r.id, mention: false }));
+    const replies = standalone ? [] : $replyingTo.map((r) => ({ id: r[0].id, mention: r[1] }));
     replyingTo.set([]);
     const attachments: string[] = [];
     for (const attachment of toUpload) {
@@ -244,8 +244,8 @@
 
   {#if $replyingTo.length && !standalone}
     <div class="w-full flex flex-col gap-1 mt-1 pb-1 px-1">
-      {#each $replyingTo as reply (reply.id)}
-        <TextboxReply message={reply} />
+      {#each $replyingTo as reply (reply[0].id)}
+        <TextboxReply {reply} />
       {/each}
     </div>
   {/if}
