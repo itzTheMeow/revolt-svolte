@@ -14,6 +14,13 @@
   import { ModalStack } from "./ModalStack";
   import { ServerSettingsChanges } from "./Settings";
 
+  const systemKeys: (keyof API.SystemMessageChannels)[] = [
+    "user_banned",
+    "user_joined",
+    "user_kicked",
+    "user_left",
+  ];
+
   export let server: Server;
   fetchAutumn();
 
@@ -179,3 +186,6 @@
 </div>
 
 <Header className="mt-2 ml-0.5 mb-1">System Messages</Header>
+{#each systemKeys as sys}
+  {sys}
+{/each}
