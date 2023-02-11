@@ -29,7 +29,8 @@ export function init() {
         })
       )
   );
-  app.use(express.static(process.cwd() + "/dist"));
+  app.use((_, res, next) => (res.setHeader("Cache-Control", "public, max-age=0"), next()));
+  app.use(express.static(process.cwd() + "/dist", { cacheControl: false }));
   app.get("*", (req, res) => {
     res.sendFile(process.cwd() + "/dist/index.html");
   });

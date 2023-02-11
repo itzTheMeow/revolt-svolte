@@ -4,7 +4,7 @@ declare var self: ServiceWorkerGlobalScope;
 const cacheName = `svoltecache-%CommitHash%`;
 
 self.addEventListener("install", (e) => {
-  console.log("[Service Worker] Install");
+  console.log("[SW] Installing...");
   e.waitUntil(
     (async () => {
       const cache = await caches.open(cacheName);
@@ -15,13 +15,15 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  const url = new URL(e.request.url);
   e.respondWith(
     (async () => {
-      const r = await caches.match(e.request);
-      console.log(`[SW] Fetching Resource: ${e.request.url}`);
+      if (url.hostname !== self.location.hostname) return await fetch(e.request);
+      const cache = await caches.open(cacheName);
+      const r = await cache.match(e.request);
+      console.log(`[SW] Retreiving Resource: ${e.request.url}`);
       if (r) return r;
       const response = await fetch(e.request);
-      const cache = await caches.open(cacheName);
       console.log(`[SW] Caching Resource: ${e.request.url}`);
       cache.put(e.request, response.clone());
       return response;
