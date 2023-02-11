@@ -15,7 +15,15 @@
   import { ServerSettingsChanges } from "./Settings";
 
   type SysKey = keyof API.SystemMessageChannels;
-  const systemKeys: SysKey[] = ["user_joined", "user_banned", "user_kicked", "user_left"];
+  const systemKeys: SysKey[] = ["user_joined", "user_banned", "user_kicked", "user_left"],
+    defaultSys: {
+      [key in SysKey]: "";
+    } = {
+      user_banned: "",
+      user_joined: "",
+      user_kicked: "",
+      user_left: "",
+    };
 
   export let server: Server;
   fetchAutumn();
@@ -25,7 +33,7 @@
       description: server.description,
       icon: server.icon?.id,
       banner: server.banner?.id,
-      system_messages: { ...server.source.system_messages },
+      system_messages: { ...defaultSys, ...server.source.system_messages },
     },
     iconUploader: ExportedImageUploader,
     bannerUploader: ExportedImageUploader;
@@ -45,7 +53,7 @@
               description: server.description,
               icon: server.icon?.id,
               banner: server.banner?.id,
-              system_messages: { ...server.source.system_messages },
+              system_messages: { ...defaultSys, ...server.source.system_messages },
             };
           },
         }
@@ -198,10 +206,10 @@
 </div>
 
 <Header className="mt-2 ml-0.5 mb-1">System Messages</Header>
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2 w-full ml-1.5">
   {#each systemKeys as sys}
     <div class="flex gap-3 items-center">
-      <div class="capitalize text-lg">{sys.replace(/_/g, " ")}</div>
+      <div class="capitalize text-lg min-w-[6em]">{sys.replace(/_/g, " ")}</div>
       <select
         class="select"
         style:background-color={$Theme["secondary-background"]}
