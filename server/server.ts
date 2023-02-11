@@ -19,6 +19,7 @@ export function init() {
               src: "logo.svg",
               sizes: "512x512",
               type: "image/svg+xml",
+              purpose: "maskable",
             },
           ],
           name: "Svolte",
