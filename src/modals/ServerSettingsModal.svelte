@@ -18,27 +18,60 @@
     class="flex w-full max-w-5xl mx-auto {$MobileLayout ? 'flex-col-reverse gap-1' : 'my-8 gap-6'}"
   >
     {#if !$MobileLayout}
-      <div
-        class="flex flex-col gap-1 p-6 rounded-lg w-56 h-fit"
-        style:background={$Theme["secondary-background"]}
-      >
-        <div class="text-lg font-semibold">{modal.server.name}</div>
-        {#each ServerSettingsCategories as cat}
-          {#if cat.name}
-            <Header className="mb-1 mt-0.5">{cat.name}</Header>
-          {/if}
-          {#each cat.items as i}
-            <ServerSettingsModalButton category={i.id} icon={i.icon} {modal} />
+      <div class="flex flex-col gap-2 items-center">
+        <div
+          class="flex flex-col gap-1 p-6 rounded-lg w-56 h-fit"
+          style:background={$Theme["secondary-background"]}
+        >
+          <div class="text-lg font-semibold">{modal.server.name}</div>
+          {#each ServerSettingsCategories as cat}
+            {#if cat.name}
+              <Header className="mb-1 mt-0.5">{cat.name}</Header>
+            {/if}
+            {#each cat.items as i}
+              <ServerSettingsModalButton category={i.id} icon={i.icon} {modal} />
+            {/each}
           {/each}
-        {/each}
+        </div>
+        <div class="flex gap-1">
+          {#if $ServerSettingsChanges}
+            <div
+              class="btn btn-sm border-none font-bold"
+              style:background-color={$Theme["success"]}
+              style:color={$Theme["background"]}
+              on:click={async (e) => {
+                if (!$ServerSettingsChanges) return;
+                //@ts-ignore
+                e.target.classList.add("loading");
+                await $ServerSettingsChanges.save();
+                //@ts-ignore
+                e.target.classList.remove("loading");
+                ServerSettingsChanges.set(null);
+              }}
+            >
+              Save
+            </div>
+            <div
+              class="btn btn-sm border-none font-bold"
+              style:background-color={$Theme["error"]}
+              style:color={$Theme["background"]}
+              on:click={async (e) => {
+                if (!$ServerSettingsChanges) return;
+                $ServerSettingsChanges.cancel();
+                ServerSettingsChanges.set(null);
+              }}
+            >
+              Cancel
+            </div>
+          {/if}
+        </div>
       </div>
     {/if}
     <div class="flex-1">
       <div class="flex mb-3 gap-1 items-center {$MobileLayout ? 'mt-1' : ''}">
         {#if !$MobileLayout}
           <h1 class="mr-3">{SettingsServerPage[modal.page]}</h1>
-        {/if}
-        {#if $ServerSettingsChanges}
+        {:else if $ServerSettingsChanges}
           <div
             class="btn btn-sm border-none font-bold"
             style:background-color={$Theme["success"]}
