@@ -6,6 +6,7 @@ import esbuildSvelte from "esbuild-svelte";
 import fs from "fs";
 import sveltePreprocess from "svelte-preprocess";
 import useTailwind from "tailwindcss";
+import { injectManifest } from "workbox-build";
 import config from "./config";
 import { init } from "./server";
 
@@ -66,18 +67,15 @@ esbuild
       entryPoints: ["./src/sw.ts"],
       bundle: true,
       write: false,
+      minify: true,
     }).outputFiles[0].text;
-    fs.writeFileSync(
-      "dist/sw.js",
-      sw.replace("%CommitHash%", hash).replace(
-        '"%RequestInfo%"',
-        fs
-          .readdirSync("dist")
-          .filter((f) => !f.endsWith(".map") && !f.startsWith("KaTeX"))
-          .map((f) => `"/${f}"`)
-          .join(",")
-      )
-    );
+    fs.writeFileSync("dist/sw.js", sw.replace("%CommitHash%", hash));
+    injectManifest({
+      swSrc: "./dist/sw.js",
+      swDest: "./dist/sw.js",
+      globDirectory: "./dist",
+      globPatterns: ["**/*.js", "**/*.css", "**/*.svg", "**/*.png", "**/*.ttf"],
+    });
     if (standalone) {
       console.log("Standalone build finished!");
       process.exit();
