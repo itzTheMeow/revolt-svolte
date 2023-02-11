@@ -47,141 +47,144 @@
   import { Theme } from "Theme";
   import { hasBottom, scrollTo, testMuted } from "utils";
 
-  requestAnimationFrame(function animate(time: number) {
-    requestAnimationFrame(animate);
-    TWEEN.update(time);
-  });
-  client.users.onUpdate(() => {
-    MessageCache.update((c) => c);
-    UseUserState.set(Date.now() * Math.random());
-  });
-  client.servers.onUpdate(() => {
-    MessageCache.update((c) => c);
-    SelectedServer.update((s) => s);
-  });
-  client.on("message", async (message) => {
-    const b = hasBottom();
-    if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
-    //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
-    if (
-      (message.isUser() && message.authorID == client.user.id) ||
-      (document.hasFocus() && $SelectedChannel?.id == message.channelID)
-    )
-      message.channel.markRead(true);
-  });
-  client.on("messageUpdate", async (message) => {
-    if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
-  });
-  client.on("messageDelete", (id, message) => {
-    if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
-    if ($isEditing == id) isEditing.set(null);
-  });
-  const fetching = new Set();
-  SelectedChannel.subscribe((c) => {
-    if (c?.isTextBased() && !$MessageCache[c.id] && !fetching.has(c.id)) {
-      fetching.add(c.id);
-      c.messages
-        .fetchMultiple({
-          limit: 100,
-          include_users: true,
-        })
-        .then((m) => {
-          pushMessages(c, m);
-          fetching.delete(c);
+  onMount(() => {
+    requestAnimationFrame(function animate(time: number) {
+      requestAnimationFrame(animate);
+      TWEEN.update(time);
+    });
+    client.users.onUpdate(() => {
+      MessageCache.update((c) => c);
+      UseUserState.set(Date.now() * Math.random());
+    });
+    client.servers.onUpdate(() => {
+      MessageCache.update((c) => c);
+      SelectedServer.update((s) => s);
+    });
+    client.on("message", async (message) => {
+      const b = hasBottom();
+      if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+      //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
+      if (
+        (message.isUser() && message.authorID == client.user.id) ||
+        (document.hasFocus() && $SelectedChannel?.id == message.channelID)
+      )
+        message.channel.markRead(true);
+    });
+    client.on("messageUpdate", async (message) => {
+      if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+    });
+    client.on("messageDelete", (id, message) => {
+      if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
+      if ($isEditing == id) isEditing.set(null);
+    });
+    const fetching = new Set();
+    SelectedChannel.subscribe((c) => {
+      if (c?.isTextBased() && !$MessageCache[c.id] && !fetching.has(c.id)) {
+        fetching.add(c.id);
+        c.messages
+          .fetchMultiple({
+            limit: 100,
+            include_users: true,
+          })
+          .then((m) => {
+            pushMessages(c, m);
+            fetching.delete(c);
+          });
+      }
+    });
+    window.addEventListener("touchstart", (e) => {
+      if (!$HoveredMessage) return;
+      const target = e.target as HTMLElement;
+      if ([...document.querySelectorAll("[data-hover-item]")].find((i) => i.contains(target)))
+        return;
+      HoveredMessage.set(null);
+    });
+    document.addEventListener("paste", (e) => {
+      [...(e.clipboardData?.items || [])].forEach((item) => {
+        if (item.kind === "file") {
+          const blob = item.getAsFile();
+          if (blob) {
+            pushFile(blob);
+            selectBottom();
+          }
+        }
+      });
+    });
+    window.addEventListener("contextmenu", (e) => {
+      const target = <HTMLElement>e.target,
+        tag = target.tagName;
+      if (
+        tag == "INPUT" ||
+        tag == "TEXTAREA" ||
+        (tag == "A" && target.getAttribute("type") == "link")
+      )
+        return;
+      e.preventDefault();
+    });
+    window.addEventListener("dragstart", (e) => {
+      if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
+    });
+    window.addEventListener("click", async (e) => {
+      const target = <HTMLElement>e.target;
+      const uid = target.getAttribute("data-userpopup");
+      if (uid) {
+        try {
+          const member = await $SelectedServer?.members.fetch(uid);
+          if (member) return showMemberContext(member, e.clientX, e.clientY, target);
+        } catch {}
+        ModalStack.push({
+          type: "user",
+          id: uid,
         });
-    }
-  });
-  window.addEventListener("touchstart", (e) => {
-    if (!$HoveredMessage) return;
-    const target = e.target as HTMLElement;
-    if ([...document.querySelectorAll("[data-hover-item]")].find((i) => i.contains(target))) return;
-    HoveredMessage.set(null);
-  });
-  document.addEventListener("paste", (e) => {
-    [...(e.clipboardData?.items || [])].forEach((item) => {
-      if (item.kind === "file") {
-        const blob = item.getAsFile();
-        if (blob) {
-          pushFile(blob);
-          selectBottom();
+      }
+    });
+    window.addEventListener("dblclick", async (e) => {
+      const target = <HTMLElement>e.target;
+      const uid = target.getAttribute("data-userpopup");
+      if (uid) {
+        if ($floatingMenu) floatingMenu.set(null);
+        ModalStack.push({
+          type: "user",
+          id: uid,
+        });
+        window.getSelection()?.removeAllRanges();
+      }
+    });
+    window.addEventListener("keydown", async (e) => {
+      if (
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA" &&
+        !$MobileLayout &&
+        (!e.ctrlKey ||
+          !window.getSelection()?.rangeCount ||
+          (window.getSelection()?.getRangeAt(0)?.startOffset ==
+            window.getSelection()?.getRangeAt(0)?.endOffset &&
+            window.getSelection()?.getRangeAt(0)?.startContainer ==
+              window.getSelection()?.getRangeAt(0)?.endContainer))
+      )
+        document.getElementById("Textbox")?.focus();
+      if (e.key == "Escape") {
+        if ($CMState) CMState.set(null);
+        else if ($floatingMenu) floatingMenu.set(null);
+        else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
+        else if ($imagePreview) imagePreview.set(null);
+        else if ($isEditing) isEditing.set(null);
+        else if ($replyingTo.length) $replyingTo = $replyingTo.slice(1);
+        else if ($uploadedFiles.length) $uploadedFiles = $uploadedFiles.slice(1);
+        else {
+          if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
+            $SelectedChannel.markRead(true);
+          scrollTo("bottom", true);
         }
       }
     });
+    setInterval(() => {
+      if (document.fullscreenElement) {
+        if (!$fullscreenElement || !document.fullscreenElement.isEqualNode($fullscreenElement))
+          fullscreenElement.set(document.fullscreenElement);
+      } else fullscreenElement.set(null);
+    }, 10);
   });
-  window.addEventListener("contextmenu", (e) => {
-    const target = <HTMLElement>e.target,
-      tag = target.tagName;
-    if (
-      tag == "INPUT" ||
-      tag == "TEXTAREA" ||
-      (tag == "A" && target.getAttribute("type") == "link")
-    )
-      return;
-    e.preventDefault();
-  });
-  window.addEventListener("dragstart", (e) => {
-    if ((<HTMLElement>e.target).tagName == "IMG") e.preventDefault();
-  });
-  window.addEventListener("click", async (e) => {
-    const target = <HTMLElement>e.target;
-    const uid = target.getAttribute("data-userpopup");
-    if (uid) {
-      try {
-        const member = await $SelectedServer?.members.fetch(uid);
-        if (member) return showMemberContext(member, e.clientX, e.clientY, target);
-      } catch {}
-      ModalStack.push({
-        type: "user",
-        id: uid,
-      });
-    }
-  });
-  window.addEventListener("dblclick", async (e) => {
-    const target = <HTMLElement>e.target;
-    const uid = target.getAttribute("data-userpopup");
-    if (uid) {
-      if ($floatingMenu) floatingMenu.set(null);
-      ModalStack.push({
-        type: "user",
-        id: uid,
-      });
-      window.getSelection()?.removeAllRanges();
-    }
-  });
-  window.addEventListener("keydown", async (e) => {
-    if (
-      document.activeElement?.tagName !== "INPUT" &&
-      document.activeElement?.tagName !== "TEXTAREA" &&
-      !$MobileLayout &&
-      (!e.ctrlKey ||
-        !window.getSelection()?.rangeCount ||
-        (window.getSelection()?.getRangeAt(0)?.startOffset ==
-          window.getSelection()?.getRangeAt(0)?.endOffset &&
-          window.getSelection()?.getRangeAt(0)?.startContainer ==
-            window.getSelection()?.getRangeAt(0)?.endContainer))
-    )
-      document.getElementById("Textbox")?.focus();
-    if (e.key == "Escape") {
-      if ($CMState) CMState.set(null);
-      else if ($floatingMenu) floatingMenu.set(null);
-      else if (await ModalStack.top()) ModalStack.close(await ModalStack.top());
-      else if ($imagePreview) imagePreview.set(null);
-      else if ($isEditing) isEditing.set(null);
-      else if ($replyingTo.length) $replyingTo = $replyingTo.slice(1);
-      else if ($uploadedFiles.length) $uploadedFiles = $uploadedFiles.slice(1);
-      else {
-        if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
-          $SelectedChannel.markRead(true);
-        scrollTo("bottom", true);
-      }
-    }
-  });
-  setInterval(() => {
-    if (document.fullscreenElement) {
-      if (!$fullscreenElement || !document.fullscreenElement.isEqualNode($fullscreenElement))
-        fullscreenElement.set(document.fullscreenElement);
-    } else fullscreenElement.set(null);
-  }, 10);
 
   let previous = "";
   afterUpdate(() => {
