@@ -3,6 +3,16 @@ declare var self: ServiceWorkerGlobalScope;
 
 const cacheName = `svoltecache-%CommitHash%`;
 
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    (async () => {
+      const cache = await caches.open(cacheName);
+      console.log("[SW] Caching...");
+      await cache.addAll(["%RequestInfo%"]);
+    })()
+  );
+});
+
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   e.respondWith(
@@ -23,9 +33,6 @@ self.addEventListener("fetch", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then(async (cacheNames) => {
-      const cache = await caches.open(cacheName);
-      console.log("[SW] Caching...");
-      await cache.addAll(["%RequestInfo%"]);
       return Promise.all(
         cacheNames
           .filter((name) => name !== cacheName)
