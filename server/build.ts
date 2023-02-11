@@ -53,6 +53,7 @@ esbuild
     );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo-optimized.svg", "dist/logo.svg");
+    fs.copyFileSync("svolte-splash.svg", "dist/splash.svg");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
     const sw = esbuild.buildSync({
       entryPoints: ["./src/sw.ts"],
