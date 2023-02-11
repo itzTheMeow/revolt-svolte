@@ -17,7 +17,8 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   e.respondWith(
     (async () => {
-      if (url.hostname !== self.location.hostname) return await fetch(e.request);
+      if (url.hostname !== self.location.hostname || self.location.hostname == "localhost")
+        return await fetch(e.request);
       const cache = await caches.open(cacheName);
       const r = await cache.match(e.request);
       console.log(`[SW] Retreiving Resource: ${e.request.url}`);
