@@ -39,7 +39,8 @@
     }
   }
 
-  let loaded = false;
+  let loaded = false,
+    bg: HTMLImageElement;
 </script>
 
 <div class="w-screen h-screen">
@@ -48,13 +49,12 @@
     style:transition="all 500ms"
     src="https://images.unsplash.com/photo-1565120729227-86872732df92?w={window.innerWidth}"
     alt=""
+    bind:this={bg}
     on:load={(e) => {
       loaded = true;
       setTimeout(() => {
-        //@ts-ignore
-        e.target.style.setProperty("--tw-blur", "blur(2px)");
-        //@ts-ignore
-        e.target.style.setProperty("--tw-brightness", "brightness(.85)");
+        bg.style.setProperty("--tw-blur", "blur(2px)");
+        bg.style.setProperty("--tw-brightness", "brightness(.85)");
         userInput.select();
       }, 10);
     }}
