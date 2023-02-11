@@ -4,6 +4,7 @@ declare var self: ServiceWorkerGlobalScope;
 const cacheName = `svoltecache-%CommitHash%`;
 
 self.addEventListener("install", (e) => {
+  self.skipWaiting();
   e.waitUntil(
     (async () => {
       const cache = await caches.open(cacheName);
