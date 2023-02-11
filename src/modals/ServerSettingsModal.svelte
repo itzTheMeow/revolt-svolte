@@ -7,7 +7,8 @@
   import type { Modal, ModalData } from "./ModalStack";
   import ServerSettingsModalButton from "./ServerSettingsModalButton.svelte";
   import ServerSettingsModalOverview from "./ServerSettingsModalOverview.svelte";
-  import { ServerSettingsCategories, ServerSettingsChanges, SettingsServerPage } from "./Settings";
+  import ServerSettingsModalSave from "./ServerSettingsModalSave.svelte";
+  import { ServerSettingsCategories, SettingsServerPage } from "./Settings";
 
   export let modal: Extract<ModalData, { type: "settings_server" }>;
   let item: Modal;
@@ -34,36 +35,7 @@
           {/each}
         </div>
         <div class="flex gap-1">
-          {#if $ServerSettingsChanges}
-            <div
-              class="btn btn-sm border-none font-bold"
-              style:background-color={$Theme["success"]}
-              style:color={$Theme["background"]}
-              on:click={async (e) => {
-                if (!$ServerSettingsChanges) return;
-                //@ts-ignore
-                e.target.classList.add("loading");
-                await $ServerSettingsChanges.save();
-                //@ts-ignore
-                e.target.classList.remove("loading");
-                ServerSettingsChanges.set(null);
-              }}
-            >
-              Save
-            </div>
-            <div
-              class="btn btn-sm border-none font-bold"
-              style:background-color={$Theme["error"]}
-              style:color={$Theme["background"]}
-              on:click={async (e) => {
-                if (!$ServerSettingsChanges) return;
-                $ServerSettingsChanges.cancel();
-                ServerSettingsChanges.set(null);
-              }}
-            >
-              Cancel
-            </div>
-          {/if}
+          <ServerSettingsModalSave />
         </div>
       </div>
     {/if}
@@ -71,35 +43,8 @@
       <div class="flex mb-3 gap-1 items-center {$MobileLayout ? 'mt-1' : ''}">
         {#if !$MobileLayout}
           <h1 class="mr-3">{SettingsServerPage[modal.page]}</h1>
-        {:else if $ServerSettingsChanges}
-          <div
-            class="btn btn-sm border-none font-bold"
-            style:background-color={$Theme["success"]}
-            style:color={$Theme["background"]}
-            on:click={async (e) => {
-              if (!$ServerSettingsChanges) return;
-              //@ts-ignore
-              e.target.classList.add("loading");
-              await $ServerSettingsChanges.save();
-              //@ts-ignore
-              e.target.classList.remove("loading");
-              ServerSettingsChanges.set(null);
-            }}
-          >
-            Save
-          </div>
-          <div
-            class="btn btn-sm border-none font-bold"
-            style:background-color={$Theme["error"]}
-            style:color={$Theme["background"]}
-            on:click={async (e) => {
-              if (!$ServerSettingsChanges) return;
-              $ServerSettingsChanges.cancel();
-              ServerSettingsChanges.set(null);
-            }}
-          >
-            Cancel
-          </div>
+        {:else}
+          <ServerSettingsModalSave />
         {/if}
       </div>
       {#if modal.page == SettingsServerPage.Overview}
