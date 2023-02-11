@@ -41,20 +41,27 @@ esbuild
     loader: { ".png": "file", ".ttf": "file", ".woff": "file", ".woff2": "file" },
   })
   .then(() => {
-    let html = fs.readFileSync("src/index.html").toString();
+    let html = fs.readFileSync("src/index.html").toString(),
+      extra = "";
     if (standalone)
       html = html.replace(
         `<script type="module"`,
         `<script>window.STANDALONE=true;</script><script`
       );
-    fs.writeFileSync(
-      "dist/index.html",
-      html.replace("%CommitHash%", hash).replace(/%BrandName%/g, config.brandName)
-    );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo-optimized.svg", "dist/logo.svg");
-    fs.copyFileSync("svolte-splash.svg", "dist/splash.svg");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
+    fs.readdirSync("generated").forEach((f) => {
+      if (f.endsWith(".png")) fs.copyFileSync(`generated/${f}`, `dist/${f}`);
+      else if (f.endsWith(".html")) extra += fs.readFileSync(`generated/${f}`);
+    });
+    fs.writeFileSync(
+      "dist/index.html",
+      html
+        .replace("%CommitHash%", hash)
+        .replace(/%BrandName%/g, config.brandName)
+        .replace("<!--X-->", extra)
+    );
     const sw = esbuild.buildSync({
       entryPoints: ["./src/sw.ts"],
       bundle: true,
