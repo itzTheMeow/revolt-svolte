@@ -33,6 +33,7 @@ self.addEventListener("fetch", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then(async (cacheNames) => {
+      console.log("[SW] Clearing old caches...");
       return Promise.all(
         cacheNames
           .filter((name) => name !== cacheName)
