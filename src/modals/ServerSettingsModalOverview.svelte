@@ -14,12 +14,8 @@
   import { ModalStack } from "./ModalStack";
   import { ServerSettingsChanges } from "./Settings";
 
-  const systemKeys: (keyof API.SystemMessageChannels)[] = [
-    "user_banned",
-    "user_joined",
-    "user_kicked",
-    "user_left",
-  ];
+  type SysKey = keyof API.SystemMessageChannels;
+  const systemKeys: SysKey[] = ["user_joined", "user_banned", "user_kicked", "user_left"];
 
   export let server: Server;
   fetchAutumn();
@@ -29,6 +25,7 @@
       description: server.description,
       icon: server.icon?.id,
       banner: server.banner?.id,
+      system_messages: { ...server.source.system_messages },
     },
     iconUploader: ExportedImageUploader,
     bannerUploader: ExportedImageUploader;
@@ -37,7 +34,9 @@
     changes.name !== server.name ||
       changes.description !== server.description ||
       changes.icon !== server.icon?.id ||
-      changes.banner !== server.banner?.id
+      changes.banner !== server.banner?.id ||
+      systemKeys.map((k) => changes.system_messages[k]).join(",") !==
+        systemKeys.map((k) => server.source.system_messages?.[k] || "").join(",")
       ? {
           save: saveChanges,
           cancel: () => {
@@ -46,6 +45,7 @@
               description: server.description,
               icon: server.icon?.id,
               banner: server.banner?.id,
+              system_messages: { ...server.source.system_messages },
             };
           },
         }
@@ -69,10 +69,22 @@
     const o: API.DataEditServer = {};
     if (changes.name !== server.name) o.name = changes.name;
     if (changes.description !== server.description) o.description = changes.description;
-    if (!changes.icon) o.remove = [...(o.remove || []), "Icon"];
+    if (!changes.icon && server.icon) o.remove = [...(o.remove || []), "Icon"];
     else if (changes.icon !== (server.icon?.id || "")) o.icon = changes.icon;
-    if (!changes.banner) o.remove = [...(o.remove || []), "Banner"];
+    if (!changes.banner && server.banner) o.remove = [...(o.remove || []), "Banner"];
     else if (changes.banner !== (server.banner?.id || "")) o.banner = changes.banner;
+    o.system_messages = { ...changes.system_messages };
+    Object.entries(o.system_messages).forEach(
+      ([k, v]) => !v && delete o.system_messages![<SysKey>k]
+    );
+    if (JSON.stringify(o.system_messages) == "{}" && server.source.system_messages) {
+      o.remove = [...(o.remove || []), "SystemMessages"];
+      delete o.system_messages;
+    } else if (
+      systemKeys.map((k) => o.system_messages![k]).join(",") ==
+      systemKeys.map((k) => server.source.system_messages?.[k] || "").join(",")
+    )
+      delete o.system_messages;
     await server.edit(o);
   }
 
@@ -186,6 +198,24 @@
 </div>
 
 <Header className="mt-2 ml-0.5 mb-1">System Messages</Header>
-{#each systemKeys as sys}
-  {sys}
-{/each}
+<div class="flex flex-col gap-2">
+  {#each systemKeys as sys}
+    <div class="flex gap-3 items-center">
+      <div class="capitalize text-lg">{sys.replace(/_/g, " ")}</div>
+      <select
+        class="select"
+        style:background-color={$Theme["secondary-background"]}
+        bind:value={changes.system_messages[sys]}
+      >
+        <option value="">Disabled</option>
+        {#each server.orderedChannels as cat}
+          <optgroup label={cat.name}>
+            {#each cat.channels.filter((c) => c.isText()) as chan}
+              <option value={chan.id}>{chan.name}</option>
+            {/each}
+          </optgroup>
+        {/each}
+      </select>
+    </div>
+  {/each}
+</div>
