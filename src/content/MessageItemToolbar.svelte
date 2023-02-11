@@ -14,7 +14,7 @@
 <div
   class="absolute {$MobileLayout
     ? '-top-6 right-5 h-12'
-    : '-top-4 right-3 h-8'} flex rounded-lg overflow-hidden"
+    : '-top-4 right-3 h-8'} flex rounded-lg overflow-hidden z-[1]"
   data-hover-item
   style:background={$Theme["primary-header"]}
 >
