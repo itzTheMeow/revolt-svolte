@@ -7,6 +7,7 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   e.respondWith(
     (async () => {
+      console.log(url.hostname, self.location.hostname);
       if (url.hostname !== self.location.hostname) return await fetch(e.request);
       const cache = await caches.open(cacheName);
       const r = await cache.match(e.request);
