@@ -1,0 +1,15 @@
+{
+  "background_color": "#242424",
+  "description": "A simpler Revolt client.",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "name": "Svolte",
+  "start_url": "/",
+  "theme_color": "#ff4654"
+}
