@@ -16,9 +16,9 @@ export function init() {
           display: "standalone",
           icons: [
             {
-              src: "logo.png",
+              src: "logo.svg",
               sizes: "512x512",
-              type: "image/png",
+              type: "image/svg+xml",
             },
           ],
           name: "Svolte",
