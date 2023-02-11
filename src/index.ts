@@ -1,5 +1,6 @@
 import { client } from "Client";
 import type { ClientSession } from "revolt-toolset";
+//@ts-ignore
 import App from "./index.svelte";
 import Login from "./Login.svelte";
 import "./style.css";
@@ -11,3 +12,5 @@ if (session) {
   const data = <ClientSession>JSON.parse(session);
   client.login(data.token, data.type || "user", true, data);
 } else new Login({ target: document.body });
+
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");

@@ -53,6 +53,22 @@ esbuild
     );
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
+    const sw = esbuild.buildSync({
+      entryPoints: ["./src/sw.ts"],
+      bundle: true,
+      write: false,
+    }).outputFiles[0].text;
+    fs.writeFileSync(
+      "dist/sw.js",
+      sw.replace("%CommitHash%", hash).replace(
+        '"%RequestInfo%"',
+        fs
+          .readdirSync("dist")
+          .filter((f) => !f.endsWith(".map") && !f.startsWith("KaTeX"))
+          .map((f) => `"/${f}"`)
+          .join(",")
+      )
+    );
     if (standalone) {
       console.log("Standalone build finished!");
       process.exit();
