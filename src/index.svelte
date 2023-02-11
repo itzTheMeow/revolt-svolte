@@ -214,6 +214,9 @@
     Object.entries($Theme).forEach((e) => {
       document.body.style.setProperty("--" + e[0], e[1] ?? null);
     });
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", $Theme["primary-background"]!);
   }
   AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
   AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));

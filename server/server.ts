@@ -23,7 +23,7 @@ export function init() {
           ],
           name: "Svolte",
           start_url: "/",
-          theme_color: "#ff4654",
+          theme_color: "#242424",
           orientation: "portrait",
         })
       )
