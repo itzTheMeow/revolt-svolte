@@ -74,7 +74,7 @@ esbuild
       swSrc: "./dist/sw.js",
       swDest: "./dist/sw.js",
       globDirectory: "./dist",
-      globPatterns: ["**/*.js", "**/*.css", "**/*.svg", "**/*.png", "**/*.ttf"],
+      globPatterns: ["**/*.html", "**/*.js", "**/*.css", "**/*.svg", "**/*.png", "**/*.ttf"],
     });
     if (standalone) {
       console.log("Standalone build finished!");

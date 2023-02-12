@@ -11,8 +11,7 @@ precacheAndRoute(
       const url = typeof entry == "string" ? entry : entry.url,
         name = url.split("/").pop() || "";
 
-      if (name.startsWith("KaTeX") || name.startsWith("apple-touch") || name == "index.html")
-        return false;
+      if (name.startsWith("KaTeX") || name.startsWith("apple-touch")) return false;
 
       return true;
     } catch (err) {
