@@ -13,7 +13,8 @@ import { init } from "./server";
 const standalone = process.argv.includes("--standalone");
 
 console.log("Building client...");
-const hash = execSync("git rev-parse --short HEAD").toString().trim();
+const hash = execSync("git rev-parse --short HEAD").toString().trim(),
+  loader: esbuild.Loader = standalone ? "base64" : "file";
 esbuild
   .build({
     entryPoints: [`./src/index.ts`],
@@ -39,7 +40,7 @@ esbuild
     ],
     logLevel: "info",
     target: "es6",
-    loader: { ".png": "file", ".ttf": "file", ".woff": "file", ".woff2": "file" },
+    loader: { ".png": loader, ".ttf": loader, ".woff": loader, ".woff2": loader },
   })
   .then(() => {
     let html = fs.readFileSync("src/index.html").toString(),
@@ -52,10 +53,11 @@ esbuild
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo-optimized.svg", "dist/logo.svg");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
-    fs.readdirSync("generated").forEach((f) => {
-      if (f.endsWith(".png")) fs.copyFileSync(`generated/${f}`, `dist/${f}`);
-      else if (f.endsWith(".html")) extra += fs.readFileSync(`generated/${f}`);
-    });
+    if (!standalone)
+      fs.readdirSync("generated").forEach((f) => {
+        if (f.endsWith(".png")) fs.copyFileSync(`generated/${f}`, `dist/${f}`);
+        else if (f.endsWith(".html")) extra += fs.readFileSync(`generated/${f}`);
+      });
     fs.writeFileSync(
       "dist/index.html",
       html
