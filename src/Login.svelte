@@ -92,7 +92,7 @@
         <div class="input-group w-72 max-w-full mb-2">
           <input
             type="password"
-            class="input input-ghost !rounded-l-full w-60 input-bordered bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+            class="input input-ghost !rounded-l-full w-full input-bordered bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
             placeholder="Token"
             bind:this={tokenInput}
             on:keydown={(e) => e.key == "Enter" && signIn()}
