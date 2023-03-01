@@ -16,6 +16,7 @@
     MobileLayout,
     SelectedChannel,
   } from "State";
+  import { onDestroy, onMount } from "svelte";
   import { Theme } from "Theme";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
@@ -23,7 +24,8 @@
   export let channel: Channel;
 
   let messages: BaseMessage[] = [],
-    messageIndex = 0;
+    messageIndex = 0,
+    useMessages: BaseMessage[] = [];
   $: {
     $MessageState;
     messages = channel.messages.ordered.reverse();
@@ -32,8 +34,32 @@
         ? messages.map((m) => m.id)
         : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
     ).indexOf($MessageOffset);
+    useMessages = messages.slice(messageIndex, messageIndex + 50);
     console.log(messageIndex);
   }
+
+  let MessageList: HTMLDivElement,
+    i: NodeJS.Timer,
+    fetching = false;
+
+  onMount(() => {
+    i = setInterval(async () => {
+      if (-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30) {
+        const first = useMessages[useMessages.length - 1];
+        if (!first) return;
+        MessageOffset.set(first.id);
+        if (fetching) return;
+        fetching = true;
+        await channel.messages.fetchMultiple({
+          limit: 100,
+          before: first.id,
+        });
+        MessageOffset.set(useMessages.slice(-25)[0].id);
+        if (messages.length) fetching = false;
+      }
+    }, 3);
+  });
+  onDestroy(() => clearInterval(i));
 </script>
 
 <div
@@ -74,10 +100,11 @@
   class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse"
   style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
   id="MessageList"
+  bind:this={MessageList}
 >
   <div class="flex flex-col-reverse">
-    {#if messages.length}
-      {#each messages.slice(messageIndex, messageIndex + 50) as message (message.id)}
+    {#if useMessages.length}
+      {#each useMessages as message (message.id)}
         <MessageItem {message} />
       {/each}
     {:else}
