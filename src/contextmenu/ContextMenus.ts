@@ -23,8 +23,8 @@ export function showOptionContext(
   target?: EventTarget | null
 ) {
   if (!options[0]) options.shift();
-  const x = e instanceof TouchEvent ? e.changedTouches[0].clientX : e.clientX,
-    y = e instanceof TouchEvent ? e.changedTouches[0].clientY : e.clientY,
+  const x = e instanceof MouseEvent ? e.clientX : e.changedTouches[0].clientX,
+    y = e instanceof MouseEvent ? e.clientY : e.changedTouches[0].clientY,
     isRight = x >= window.innerWidth * 0.75,
     isBottom = y >= window.innerHeight * 0.75;
   CMState.set({
