@@ -52,25 +52,33 @@
       requestAnimationFrame(animate);
       TWEEN.update(time);
     });
-    client.users.onUpdate(() => {
-      MessageState.set(Date.now());
+    client.users.onUpdate((updated) => {
+      if (
+        $SelectedChannel?.messages.find(
+          (m) => m.isUser() && updated.find((u) => u.id == m.authorID)
+        )
+      )
+        MessageState.set(Date.now());
       UseUserState.set(Date.now() * Math.random());
     });
-    client.servers.onUpdate(() => {
-      MessageState.set(Date.now());
-      SelectedServer.update((s) => s);
+    client.servers.onUpdate((updated) => {
+      if (updated.find((u) => u.id == $SelectedServer?.id)) {
+        MessageState.set(Date.now());
+        SelectedServer.update((s) => s);
+      }
     });
     client.on("message", async (message) => {
+      const selected = $SelectedChannel?.id == message.channelID;
       const b = hasBottom();
-      MessageState.set(Date.now());
+      if (selected) MessageState.set(Date.now());
       //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
       if (
         (message.isUser() && message.authorID == client.user.id) ||
-        (document.hasFocus() && $SelectedChannel?.id == message.channelID)
+        (document.hasFocus() && selected)
       )
         message.channel.markRead(true);
 
-      if ($SelectedChannel?.id == message.channelID) {
+      if (selected) {
         const messages = message.channel.messages.ordered.reverse();
         const messageIndex = (
           message.channel.messages.get($MessageOffset)
@@ -81,10 +89,10 @@
       }
     });
     client.on("messageUpdate", async (message) => {
-      MessageState.set(Date.now());
+      if ($SelectedChannel?.id == message.channelID) MessageState.set(Date.now());
     });
     client.on("messageDelete", (id, message) => {
-      MessageState.set(Date.now());
+      if ($SelectedChannel?.id == message?.channelID) MessageState.set(Date.now());
       if ($isEditing == id) isEditing.set(null);
     });
     const fetching = new Set();
