@@ -54,7 +54,7 @@
     });
     client.users.onUpdate((updated) => {
       if (
-        $SelectedChannel?.messages.find(
+        $SelectedChannel?.messages?.find(
           (m) => m.isUser() && updated.find((u) => u.id == m.authorID)
         )
       )
@@ -78,7 +78,7 @@
       )
         message.channel.markRead(true);
 
-      if (selected) {
+      if (selected && message.channel.messages) {
         const messages = message.channel.messages.ordered.reverse();
         const messageIndex = (
           message.channel.messages.get($MessageOffset)
