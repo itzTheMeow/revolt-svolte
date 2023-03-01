@@ -5,14 +5,7 @@
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import { Attachment, EmbedMedia, EmbedWeb, type BaseMessage, type Embed } from "revolt-toolset";
-  import {
-    HoveredMessage,
-    isEditing,
-    MessageCache,
-    MobileLayout,
-    selectBottom,
-    SelectedChannel,
-  } from "State";
+  import { HoveredMessage, isEditing, MobileLayout, selectBottom, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";
   import MessageItemAttachment from "./MessageItemAttachment.svelte";
@@ -32,9 +25,7 @@
     attachments: (Attachment | EmbedMedia)[] = [];
   $: {
     const previousMessage =
-      $MessageCache[$SelectedChannel!.id]?.[
-        $MessageCache[$SelectedChannel!.id]?.indexOf(message) - 1
-      ];
+      $SelectedChannel!.messages.ordered[$SelectedChannel!.messages.ordered.indexOf(message) - 1];
     isReply = message.isUser() && !!message.replies.length;
     shouldSeparate =
       !message.isUser() ||

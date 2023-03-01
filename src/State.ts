@@ -57,6 +57,7 @@ SelectedServer.subscribe((s) => {
     .then(() => s.id == serverID && SelectedServer.set(s));
 });
 export const SelectedChannel = writable<Channel | null>(null);
+const didListenChannel: string[] = [];
 SelectedChannel.subscribe((c) => {
   if (went) went--;
   if (!went) {
@@ -64,25 +65,16 @@ SelectedChannel.subscribe((c) => {
     else delete SelectionState.map[serverID];
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
+  if (c && !didListenChannel.includes(c.id)) {
+    didListenChannel.push(c.id);
+    c.messages.onUpdate(() => {
+      MessageState.set(Date.now());
+    });
+  }
 });
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
-export const MessageCache = writable<{ [key: string]: BaseMessage[] }>({});
-export function pushMessages(channel: Channel, msgs: BaseMessage[]) {
-  MessageCache.update((cache) => {
-    cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
-    cache[channel.id].push(...msgs);
-    cache[channel.id].sort((m1, m2) => m1.createdAt - m2.createdAt);
-    return cache;
-  });
-}
-export function spliceMessages(channel: Channel, msgs: BaseMessage[]) {
-  MessageCache.update((cache) => {
-    cache[channel.id] = (cache[channel.id] || []).filter((c) => !msgs.find((m) => m.id == c.id));
-    cache[channel.id].sort((m1, m2) => m1.createdAt - m2.createdAt);
-    return cache;
-  });
-}
+export const MessageState = writable(Date.now());
 
 export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
   []

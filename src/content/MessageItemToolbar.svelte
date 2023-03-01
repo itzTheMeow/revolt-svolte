@@ -4,7 +4,7 @@
   import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
   import { ModalStack } from "modals/ModalStack";
   import { BaseMessage, Permissions } from "revolt-toolset";
-  import { isEditing, MobileLayout, selectBottom, spliceMessages, updateReplies } from "State";
+  import { isEditing, MessageState, MobileLayout, selectBottom, updateReplies } from "State";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
@@ -39,8 +39,8 @@
       on:click={() => ModalStack.showDeleteModal(message)}
       on:shiftclick={() => {
         if (!message.channel) return;
-        spliceMessages(message.channel, [message]);
         message.delete();
+        MessageState.set(Date.now());
       }}
       style="color:{$Theme['error']};"
       title="Delete"

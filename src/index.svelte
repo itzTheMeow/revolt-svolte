@@ -24,21 +24,19 @@
     HoveredMessage,
     isEditing,
     MembersCollapsed,
-    MessageCache,
     MessageInputSelected,
+    MessageState,
     MobileLayout,
     NotifSettings,
     PaneLeft,
     PaneState,
     PaneStates,
     pushFile,
-    pushMessages,
     replyingTo,
     selectBottom,
     SelectedChannel,
     SelectedServer,
     selectInput,
-    spliceMessages,
     updatePaneState,
     uploadedFiles,
   } from "State";
@@ -53,16 +51,16 @@
       TWEEN.update(time);
     });
     client.users.onUpdate(() => {
-      MessageCache.update((c) => c);
+      MessageState.set(Date.now());
       UseUserState.set(Date.now() * Math.random());
     });
     client.servers.onUpdate(() => {
-      MessageCache.update((c) => c);
+      MessageState.set(Date.now());
       SelectedServer.update((s) => s);
     });
     client.on("message", async (message) => {
       const b = hasBottom();
-      if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+      MessageState.set(Date.now());
       //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
       if (
         (message.isUser() && message.authorID == client.user.id) ||
@@ -71,15 +69,15 @@
         message.channel.markRead(true);
     });
     client.on("messageUpdate", async (message) => {
-      if ($MessageCache[message.channelID]) pushMessages(message.channel!, [message]);
+      MessageState.set(Date.now());
     });
     client.on("messageDelete", (id, message) => {
-      if (message && $MessageCache[message.channelID]) spliceMessages(message.channel!, [message]);
+      MessageState.set(Date.now());
       if ($isEditing == id) isEditing.set(null);
     });
     const fetching = new Set();
     SelectedChannel.subscribe((c) => {
-      if (c?.isTextBased() && !$MessageCache[c.id] && !fetching.has(c.id)) {
+      if (c?.isTextBased() && !c.messages.size && !fetching.has(c.id)) {
         fetching.add(c.id);
         c.messages
           .fetchMultiple({
@@ -87,7 +85,7 @@
             include_users: true,
           })
           .then((m) => {
-            pushMessages(c, m);
+            MessageState.set(Date.now());
             fetching.delete(c);
           });
       }

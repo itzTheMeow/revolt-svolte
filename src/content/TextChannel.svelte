@@ -9,7 +9,7 @@
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { Channel } from "revolt-toolset";
-  import { MembersCollapsed, MessageCache, MobileLayout, SelectedChannel } from "State";
+  import { MembersCollapsed, MessageState, MobileLayout, SelectedChannel } from "State";
   import { Theme } from "Theme";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
@@ -57,13 +57,15 @@
   id="MessageList"
 >
   <div class="flex flex-col-reverse">
-    {#if $MessageCache[channel.id]?.length}
-      {#each $MessageCache[channel.id].slice(-75).reverse() as message (message.id)}
-        <MessageItem {message} />
-      {/each}
-    {:else}
-      ...
-    {/if}
+    {#key $MessageState}
+      {#if channel.messages.size}
+        {#each channel.messages.ordered.reverse() as message (message.id)}
+          <MessageItem {message} />
+        {/each}
+      {:else}
+        ...
+      {/if}
+    {/key}
   </div>
 </div>
 <Textbox />

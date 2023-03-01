@@ -4,7 +4,6 @@
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Message } from "revolt-toolset";
-  import { MessageCache } from "State";
   import { writable } from "svelte/store";
   import { MessageDetails, UserColor } from "utils";
 
@@ -13,7 +12,7 @@
   let replies = writable<(BaseMessage | undefined)[]>([]);
   $: replies.set(
     message.replyIDs?.map((i, ii) => {
-      const cached = $MessageCache[message.channelID].find((m) => m.id == i);
+      const cached = message.channel.messages.find((m) => m.id == i);
       if (!cached) {
         message.channel?.fetchMessage(i).then((m) => {
           replies.update((repl) => {
