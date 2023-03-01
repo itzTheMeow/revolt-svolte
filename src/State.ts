@@ -72,7 +72,7 @@ SelectedChannel.subscribe((c) => {
   MessageOffset.set(ulid());
   if (c && !didListenChannel.includes(c.id)) {
     didListenChannel.push(c.id);
-    c.messages.onUpdate(() => {
+    c.messages?.onUpdate(() => {
       MessageState.set(Date.now());
     });
   }
