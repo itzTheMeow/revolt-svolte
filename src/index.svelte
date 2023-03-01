@@ -193,6 +193,7 @@
           if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
             $SelectedChannel.markRead(true);
           scrollTo("bottom", true);
+          MessageOffset.set(ulid());
         }
       }
     });
