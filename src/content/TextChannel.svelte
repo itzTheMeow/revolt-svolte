@@ -8,13 +8,32 @@
   import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import type { Channel } from "revolt-toolset";
-  import { MembersCollapsed, MessageState, MobileLayout, SelectedChannel } from "State";
+  import type { BaseMessage, Channel } from "revolt-toolset";
+  import {
+    MembersCollapsed,
+    MessageOffset,
+    MessageState,
+    MobileLayout,
+    SelectedChannel,
+  } from "State";
   import { Theme } from "Theme";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
 
   export let channel: Channel;
+
+  let messages: BaseMessage[] = [],
+    messageIndex = 0;
+  $: {
+    $MessageState;
+    messages = channel.messages.ordered.reverse();
+    messageIndex = (
+      channel.messages.get($MessageOffset)
+        ? messages.map((m) => m.id)
+        : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
+    ).indexOf($MessageOffset);
+    console.log(messageIndex);
+  }
 </script>
 
 <div
@@ -57,15 +76,13 @@
   id="MessageList"
 >
   <div class="flex flex-col-reverse">
-    {#key $MessageState}
-      {#if channel.messages.size}
-        {#each channel.messages.ordered.reverse() as message (message.id)}
-          <MessageItem {message} />
-        {/each}
-      {:else}
-        ...
-      {/if}
-    {/key}
+    {#if messages.length}
+      {#each messages.slice(messageIndex, messageIndex + 50) as message (message.id)}
+        <MessageItem {message} />
+      {/each}
+    {:else}
+      ...
+    {/if}
   </div>
 </div>
 <Textbox />

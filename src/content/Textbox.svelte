@@ -17,6 +17,7 @@
     autocomplete,
     isEditing,
     MessageInputSelected,
+    MessageOffset,
     MobileLayout,
     pushFile,
     replyingTo,
@@ -29,6 +30,7 @@
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
+  import { ulid } from "ulid";
   import { MemberOrUserDetails } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
@@ -126,6 +128,8 @@
       }
     }
 
+    if (!standalone) MessageOffset.set(ulid());
+
     const message = standalone
       ? await standalone.edit({ content, expandEmojis: true, expandMentions: true })
       : await channel.send({
@@ -136,6 +140,7 @@
           expandMentions: true,
         });
 
+    if (!standalone) MessageOffset.set(message.id);
     SendButton.classList.remove("loading");
     fc.style.display = "";
     recalculateAutocomplete();

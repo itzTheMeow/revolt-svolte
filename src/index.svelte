@@ -25,6 +25,7 @@
     isEditing,
     MembersCollapsed,
     MessageInputSelected,
+    MessageOffset,
     MessageState,
     MobileLayout,
     NotifSettings,
@@ -43,6 +44,7 @@
   import { afterUpdate, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
+  import { ulid } from "ulid";
   import { hasBottom, scrollTo, testMuted } from "utils";
 
   onMount(() => {
@@ -67,6 +69,16 @@
         (document.hasFocus() && $SelectedChannel?.id == message.channelID)
       )
         message.channel.markRead(true);
+
+      if ($SelectedChannel?.id == message.channelID) {
+        const messages = message.channel.messages.ordered.reverse();
+        const messageIndex = (
+          message.channel.messages.get($MessageOffset)
+            ? messages.map((m) => m.id)
+            : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
+        ).indexOf($MessageOffset);
+        MessageOffset.set((messages[messageIndex - 1] || messages[0])?.id || ulid());
+      }
     });
     client.on("messageUpdate", async (message) => {
       MessageState.set(Date.now());

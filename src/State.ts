@@ -8,6 +8,7 @@ import {
   type Server,
 } from "revolt-toolset";
 import { writable } from "svelte/store";
+import { ulid } from "ulid";
 import type { NotificationSettings } from "utils";
 
 export const SelectionState: {
@@ -75,6 +76,7 @@ SelectedChannel.subscribe((c) => {
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
 
 export const MessageState = writable(Date.now());
+export const MessageOffset = writable(ulid());
 
 export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
   []
