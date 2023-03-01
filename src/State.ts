@@ -66,6 +66,7 @@ SelectedChannel.subscribe((c) => {
     else delete SelectionState.map[serverID];
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
+  MessageOffset.set(ulid());
   if (c && !didListenChannel.includes(c.id)) {
     didListenChannel.push(c.id);
     c.messages.onUpdate(() => {
