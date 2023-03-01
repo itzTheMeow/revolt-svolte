@@ -20,6 +20,7 @@
   import { Theme } from "Theme";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
+  import {ulid} from "ulid";
 
   export let channel: Channel;
 
@@ -54,7 +55,7 @@
           limit: 100,
           before: first.id,
         });
-        MessageOffset.set(useMessages.slice(-25)[0].id);
+        MessageOffset.set(useMessages.slice(-25)[0]?.id || ulid());
         if (messages.length) fetching = false;
       }
     }, 3);
