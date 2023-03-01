@@ -35,7 +35,7 @@
         ? messages.map((m) => m.id)
         : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
     ).indexOf($MessageOffset);
-    useMessages = messages.slice(messageIndex, messageIndex + 50);
+    useMessages = messages.slice(0,50); //messages.slice(messageIndex, messageIndex + 50);
     console.log(messageIndex);
   }
 
