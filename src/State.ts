@@ -32,6 +32,9 @@ export const HomeChannel = new Channel(client, {
   server: "",
 });
 
+export const MessageState = writable(Date.now());
+export const MessageOffset = writable(ulid());
+
 // super hacky but whatever
 let went = 3;
 export const ServerOrder = writable<string[]>([]);
@@ -75,9 +78,6 @@ SelectedChannel.subscribe((c) => {
   }
 });
 export const NotifSettings = writable<NotificationSettings>({ server: {}, channel: {} });
-
-export const MessageState = writable(Date.now());
-export const MessageOffset = writable(ulid());
 
 export const uploadedFiles = writable<{ name: string; type: string; url: string; data: File }[]>(
   []
