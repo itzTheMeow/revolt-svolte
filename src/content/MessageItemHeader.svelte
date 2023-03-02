@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { IconLink, IconRobot, IconSpy } from "@tabler/icons-svelte";
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
-  import UserTag from "extra/UserTag.svelte";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
   import type { Message } from "revolt-toolset";
@@ -11,7 +11,7 @@
   export let message: Message;
 </script>
 
-<div class="flex items-center gap-1.5" style:line-height="1.1">
+<div class="flex items-center gap-1" style:line-height="1.1">
   <div
     class="font-semibold cursor-pointer hover:underline"
     style={UserColor(MessageDetails(message).color || "inherit")}
@@ -35,11 +35,27 @@
     {MessageDetails(message).name}
   </div>
   {#if message.masquerade}
-    <UserTag
-      text={message.author?.bot ? "BRIDGE" : `MASKED @${message.author?.username || "MASKED"}`}
-    />
-  {:else if message.author?.bot}
-    <UserTag text="BOT" />
+    <div
+      use:tippy={{
+        content: message.author.bot
+          ? "Bridged message."
+          : `Masked from @${message.author.username}`,
+      }}
+    >
+      <svelte:component
+        this={message.author.bot ? IconLink : IconSpy}
+        size={16}
+        color={$Theme["accent"]}
+      />
+    </div>
+  {:else if message.author.bot}
+    <div
+      use:tippy={{
+        content: "Bot",
+      }}
+    >
+      <IconRobot size={16} color={$Theme["accent"]} />
+    </div>
   {/if}
   <div class="text-xs cursor-default" style:color={$Theme["tertiary-foreground"]}>
     <span
