@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { IconCrown } from "@tabler/icons-svelte";
+  import { IconCrown, IconRobot } from "@tabler/icons-svelte";
   import { floatingMenu } from "contextmenu/FloatingMenu";
   import Indicator from "extra/Indicator.svelte";
-  import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { Member, Role } from "revolt-toolset";
   import { AppHeight, AppWidth } from "State";
@@ -75,7 +74,7 @@
       </div>
       <div class="flex flex-col" style:width="calc(100% - 2.5rem - 0.375rem)">
         <div
-          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis inline-flex items-center gap-1"
+          class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis inline-flex items-center gap-0.5"
         >
           <div
             class="overflow-hidden overflow-ellipsis"
@@ -84,7 +83,14 @@
             {MemberDetails(item).name}
           </div>
           {#if item.user?.bot}
-            <UserTag text="BOT" />
+            <div
+              use:tippy={{
+                content: "Bot",
+                placement: "left",
+              }}
+            >
+              <IconRobot size={16} color={$Theme["accent"]} />
+            </div>
           {/if}
           {#if item.id == item.server?.ownerID}
             <div
