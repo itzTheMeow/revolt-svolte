@@ -57,11 +57,12 @@
       class="inline-flex gap-1.5 w-full items-center my-1 relative"
       style:opacity={UserDetails(item.user).online ? "1" : "0.5"}
     >
-      <div class="relative h-10 w-10">
+      <div class="relative h-11 w-11 shrink-0">
         <img
           class="rounded-full h-full w-full object-cover"
           src={MemberDetails(item).avatar}
           alt={item.user?.username}
+          style:border="3px solid {$Theme["secondary-background"]}"
         />
         {#if UserDetails(item.user).online}
           <Indicator
@@ -92,7 +93,7 @@
                 placement: "left",
               }}
             >
-              <IconCrown size={16} color="gold" fill="gold" strokeWidth={1} />
+              <IconCrown size={16} color="gold" fill="gold" stroke={1} />
             </div>
           {/if}
         </div>
