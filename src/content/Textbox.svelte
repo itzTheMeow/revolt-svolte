@@ -30,6 +30,7 @@
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
+  import tinycolor from "tinycolor2";
   import { ulid } from "ulid";
   import { MemberOrUserDetails } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
@@ -346,7 +347,10 @@
     {#if !standalone}
       <div
         class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
-        style="background-color:{$Theme['accent']};"
+        style:background-color={$Theme["accent"]}
+        style:color={tinycolor($Theme["accent"]).isDark()
+          ? $Theme["foreground"]
+          : $Theme["background"]}
         bind:this={SendButton}
         on:touchend|preventDefault={sendMessage}
         on:click={sendMessage}
