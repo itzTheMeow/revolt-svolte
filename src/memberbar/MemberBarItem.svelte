@@ -61,6 +61,7 @@
           class="rounded-full h-full w-full object-cover"
           src={MemberDetails(item).avatar}
           alt={item.user?.username}
+          style:background-color={$Theme["secondary-background"]}
           style:border="3px solid {$Theme["secondary-background"]}"
         />
         {#if UserDetails(item.user).online}
