@@ -35,6 +35,6 @@ export function init() {
     res.sendFile(process.cwd() + "/dist/index.html");
   });
   app.listen(config.port, () => {
-    console.log(`Listening on port ${config.port}.`);
+    console.log(`Svolte is online and listening on port ${config.port}.`);
   });
 }
