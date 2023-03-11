@@ -4,7 +4,7 @@
   "description": "Svelte, TypeScript, and DaisyUI template.",
   "main": "serverDist/build.js",
   "scripts": {
-    "build": "rimraf dist && rimraf serverDist && tsc -b tsconfig.json",
+    "build": "npx rimraf dist && npx rimraf serverDist && tsc -b tsconfig.json",
     "start": "npm run build && node .",
     "dev": "npm run build && node . --watch",
     "standalone": "npm run build && node . --standalone"
