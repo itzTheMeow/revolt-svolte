@@ -10,14 +10,14 @@
   export let message: Message;
 
   let replies = writable<(BaseMessage | undefined)[]>([]);
-  $: message.replyIDs?.forEach(async (i) => {
-    if (!message.channel) return;
-    const cached = message.channel.messages.get(i) || (await message.channel.fetchMessage(i));
-    replies.update((repl) => {
-      repl[message.replyIDs.indexOf(i)] = cached;
-      return repl;
-    });
-  });
+  $: (async () => {
+    $replies = await Promise.all(
+      message.replyIDs?.map(async (i) => {
+        if (!message.channel) return;
+        return message.channel.messages.get(i) || (await message.channel.fetchMessage(i));
+      })
+    );
+  })();
 </script>
 
 <div class="mt-3 -mb-2.5 pl-1.5">
