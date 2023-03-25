@@ -149,6 +149,8 @@
       inputtedMessage = "";
       isEditing.set(null);
     }
+    await tick();
+    barHeight = BoxSizer.clientHeight;
   }
 
   function handleUpload(e: MouseEvent | TouchEvent) {
