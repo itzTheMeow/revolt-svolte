@@ -113,7 +113,10 @@
     fc.style.display = "none";
     if (!standalone) inputtedMessage = "";
     recalculateAutocomplete();
-
+    tick().then(() => {
+      barHeight = BoxSizer.clientHeight;
+    });
+    
     const toUpload = standalone ? [] : [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
