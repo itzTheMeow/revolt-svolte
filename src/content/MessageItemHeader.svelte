@@ -37,18 +37,18 @@
   {#if message.masquerade}
     <div
       use:tippy={{
-        content: message.author.bot
+        content: message.author?.bot
           ? "Bridged message."
-          : `Masked from @${message.author.username}`,
+          : `Masked from @${message.author?.username}`,
       }}
     >
       <svelte:component
-        this={message.author.bot ? IconLink : IconSpy}
+        this={message.author?.bot ? IconLink : IconSpy}
         size={16}
         color={$Theme["accent"]}
       />
     </div>
-  {:else if message.author.bot}
+  {:else if message.author?.bot}
     <div
       use:tippy={{
         content: "Bot",
