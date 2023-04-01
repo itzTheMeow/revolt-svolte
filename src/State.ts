@@ -64,12 +64,15 @@ SelectedServer.subscribe((s) => {
 });
 export const SelectedChannel = writable<Channel | null>(null);
 const didListenChannel: string[] = [];
+let lastChannel = "";
 SelectedChannel.subscribe((c) => {
   if (went) went--;
   if (!went) {
     if (c) SelectionState.map[serverID] = c.id;
     else delete SelectionState.map[serverID];
   }
+  if (lastChannel !== c?.id) MessageOffset.set(ulid());
+  lastChannel = c?.id || "";
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
   if (c && !didListenChannel.includes(c.id)) {
     didListenChannel.push(c.id);

@@ -55,30 +55,46 @@
     i = setInterval(async () => {
       if (fetching) return; // don't fire if we are already fetching messages
       // be within 30px of the top of the scroll container
-      if (-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30) {
-        // get the first "reference" message (the message at the top of the scroll container)
-        const first = useMessages[useMessages.length - 1];
-        if (first && ChannelTops[channel.id] == first.id) return; // there's no messages in the channel
-        fetching = 1; // block future fetches
+      const isUp =
+        -(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30;
+      const isDown = MessageList.scrollTop >= -15;
+      if (isUp || isDown) {
+        // get the first "reference" message
+        // (the message at the top/bottom of the scroll container)
+        const first = useMessages[isUp ? useMessages.length - 1 : 0];
+        if (
+          first &&
+          (isUp ? ChannelTops[channel.id] == first.id : channel.lastMessageID == first.id)
+        )
+          return; // there's no (more) messages in the channel
+        fetching = isUp ? 1 : -1; // block future fetches
         const fetched = await channel.messages.fetchMultiple({
           limit: MSG_PER_PAGE,
           include_users: true,
-          ...(first ? { before: first.id } : {}),
+          ...(first ? { [isUp ? "before" : "after"]: first.id } : {}),
         });
         // add an offset so there's still messages below the reference (1/4 of the total per page)
-        const newOff = useMessages.slice(first ? -Math.round(MSG_PER_PAGE / 4) : 0)[0]?.id;
-        if (newOff) MessageOffset.set(newOff);
+        // (use 1/2 of the page for scrolling back down)
+        const newOff = useMessages.slice(
+          first && fetched.length ? -Math.round(MSG_PER_PAGE / 2) : 0
+        )[0];
+        if (newOff) MessageOffset.set(newOff.id);
         await tick(); // wait for DOM update
         // prevent repeat requests
         if (fetched.length && !useMessages.length) MessageOffset.set(ulid());
         await tick();
         if (first) {
           if (MessageList) {
+            const ref = document.getElementById(first.id);
             // scroll the message list back to the reference message
-            scrollTo((document.getElementById(first.id)?.offsetTop || 0) - barHeight, true);
+            scrollTo(
+              (ref?.offsetTop || 0) + (isUp ? 0 : MessageList.offsetHeight) - barHeight,
+              true
+            );
           }
           // mark the channel as done
-          if (!fetched.length) ChannelTops[channel.id] = first.id;
+          if (!fetched.length && isUp) ChannelTops[channel.id] = first.id;
+          if (!fetched.length && isDown) channel.update({ last_message_id: first.id });
         } else {
           scrollTo("bottom", true);
         }
@@ -125,11 +141,18 @@
   {/if}
 </div>
 <div
-  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1 ? 'pt-8' : ''}"
+  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1
+    ? 'pt-8'
+    : ''} {fetching !== -1 ? 'pb-8' : ''}"
   style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
   id="MessageList"
   bind:this={MessageList}
 >
+  {#if fetching == -1}
+    <div class="w-full flex items-center justify-center h-8">
+      <Loader size={24} />
+    </div>
+  {/if}
   <div class="flex flex-col-reverse">
     {#each useMessages as message (message.id)}
       <MessageItem {message} />
