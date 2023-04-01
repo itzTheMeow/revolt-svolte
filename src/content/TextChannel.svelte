@@ -18,11 +18,13 @@
   } from "State";
   import { onDestroy, onMount } from "svelte";
   import { Theme } from "Theme";
+  import { MSG_PER_PAGE } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
-  import {ulid} from "ulid";
 
   export let channel: Channel;
+
+  const barHeight = 40;
 
   let messages: BaseMessage[] = [],
     messageIndex = 0,
@@ -30,12 +32,13 @@
   $: {
     $MessageState;
     messages = channel.messages.ordered.reverse();
+    console.log("d" + messages.length + " " + messageIndex);
     messageIndex = (
       channel.messages.get($MessageOffset)
-        ? messages.map((m) => m.id)
+        ? messages.map((m) => m.id).sort((i1, i2) => (i2 > i1 ? 1 : 0))
         : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
     ).indexOf($MessageOffset);
-    useMessages = messages.slice(0,50); //messages.slice(messageIndex, messageIndex + 50);
+    useMessages = messages.slice(messageIndex, messageIndex + MSG_PER_PAGE);
     console.log(messageIndex);
   }
 
@@ -52,10 +55,14 @@
         if (fetching) return;
         fetching = true;
         await channel.messages.fetchMultiple({
-          limit: 100,
+          limit: MSG_PER_PAGE,
           before: first.id,
         });
-        MessageOffset.set(useMessages.slice(-25)[0]?.id || ulid());
+        console.log("fetch");
+        //MessageOffset.set(useMessages.slice(-25)[0]?.id || ulid());
+        if (MessageList)
+          MessageList.scrollTop =
+            (document.getElementById($MessageOffset)?.offsetHeight || 0) - barHeight;
         if (messages.length) fetching = false;
       }
     }, 3);
@@ -64,8 +71,9 @@
 </script>
 
 <div
-  class="h-10 flex items-center px-3 {channel.description ? 'cursor-pointer' : ''}"
+  class="flex items-center px-3 {channel.description ? 'cursor-pointer' : ''}"
   style:background={$Theme["secondary-background"]}
+  style:height="{barHeight}px"
   on:click={() =>
     channel.description &&
     ModalStack.push({

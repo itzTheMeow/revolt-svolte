@@ -17,6 +17,7 @@ export const GIT_URL = "https://github.com/itzTheMeow/revolt-svolte";
 export const API_URL = "https://api.revolt.chat";
 
 export const FULL_DATE_FORMAT = "cccc LLLL L, yyyy @ t";
+export const MSG_PER_PAGE = 50;
 
 export function escapeHTML(txt: string) {
   return txt

@@ -45,7 +45,7 @@
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { ulid } from "ulid";
-  import { hasBottom, scrollTo, testMuted } from "utils";
+  import { hasBottom, MSG_PER_PAGE, scrollTo, testMuted } from "utils";
 
   onMount(() => {
     requestAnimationFrame(function animate(time: number) {
@@ -101,7 +101,7 @@
         fetching.add(c.id);
         c.messages
           .fetchMultiple({
-            limit: 100,
+            limit: MSG_PER_PAGE,
             include_users: true,
           })
           .then((m) => {
