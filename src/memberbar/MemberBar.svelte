@@ -54,7 +54,11 @@
   bind:this={membar}
 >
   {#if $SelectedServer}
-    <VirtualList items={memberList.map((i) => [[i[0], i[1].length], ...i[1]]).flat(1)} let:item>
+    <VirtualList
+      className="py-1.5 -:- flex flex-col w-[calc(100%-1rem)] mx-auto"
+      items={memberList.map((i) => [[i[0], i[1].length], ...i[1]]).flat(1)}
+      let:item
+    >
       <MemberBarItem {item} />
     </VirtualList>
   {:else}

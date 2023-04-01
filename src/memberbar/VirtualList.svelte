@@ -7,8 +7,7 @@
   export let items;
   export let height = "100%";
   export let itemHeight = undefined;
-
-  let foo;
+  export let className = "";
 
   // read-only, but visible to consumers via bind:start
   export let start = 0;
@@ -122,6 +121,10 @@
       const d = actual_height - expected_height;
       viewport.scrollTo(0, scrollTop + d);
     }
+
+    // TODO if we overestimated the space these
+    // rows would occupy we may need to add some
+    // more. maybe we can just call handle_scroll again?
   }
 
   // trigger initial refresh
@@ -136,16 +139,15 @@
   bind:offsetHeight={viewport_height}
   on:scroll={handle_scroll}
   style="height: {height};"
-  class="py-1.5"
+  class={className.split("-:-")[0]}
 >
   <svelte-virtual-list-contents
     bind:this={contents}
     style="padding-top: {top}px; padding-bottom: {bottom}px;"
-    style:width="calc(100% - 1rem)"
-    class="flex flex-col w-fit mx-auto"
+    class={className.split("-:-")[1]}
   >
     {#each visible as row (row.index)}
-      <svelte-virtual-list-row>
+      <svelte-virtual-list-row class={className.split("-:-")[2]}>
         <slot item={row.data}>Missing template</slot>
       </svelte-virtual-list-row>
     {/each}
@@ -160,8 +162,9 @@
     display: block;
   }
 
+  svelte-virtual-list-contents,
   svelte-virtual-list-row {
-    display: inline-block;
+    display: block;
   }
 
   svelte-virtual-list-row {
