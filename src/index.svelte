@@ -45,7 +45,7 @@
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { ulid } from "ulid";
-  import { hasBottom, MSG_PER_PAGE, scrollTo, testMuted } from "utils";
+  import { hasBottom, scrollTo, testMuted } from "utils";
 
   onMount(() => {
     requestAnimationFrame(function animate(time: number) {
@@ -94,22 +94,6 @@
     client.on("messageDelete", (id, message) => {
       if ($SelectedChannel?.id == message?.channelID) MessageState.set(Date.now());
       if ($isEditing == id) isEditing.set(null);
-    });
-    const fetching = new Set();
-    SelectedChannel.subscribe((c) => {
-      if (c?.isTextBased() && !c.messages.size && !fetching.has(c.id)) {
-        fetching.add(c.id);
-        c.messages
-          .fetchMultiple({
-            limit: MSG_PER_PAGE,
-            include_users: true,
-          })
-          .then((m) => {
-            MessageState.set(Date.now());
-            MessageOffset.set(ulid());
-            fetching.delete(c);
-          });
-      }
     });
     window.addEventListener("touchstart", (e) => {
       if (!$HoveredMessage) return;
