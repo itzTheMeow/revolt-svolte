@@ -20,6 +20,7 @@
   } from "State";
   import { onDestroy, onMount, tick } from "svelte";
   import { Theme } from "Theme";
+  import { ulid } from "ulid";
   import { MSG_PER_PAGE, scrollTo } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
@@ -68,6 +69,9 @@
         const newOff = useMessages.slice(first ? -Math.round(MSG_PER_PAGE / 4) : 0)[0]?.id;
         if (newOff) MessageOffset.set(newOff);
         await tick(); // wait for DOM update
+        // prevent repeat requests
+        if (fetched.length && !useMessages.length) MessageOffset.set(ulid());
+        await tick();
         if (first) {
           if (MessageList) {
             // scroll the message list back to the reference message
