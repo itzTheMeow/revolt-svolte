@@ -10,6 +10,7 @@
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Channel } from "revolt-toolset";
   import {
+    ChannelTops,
     MembersCollapsed,
     MessageOffset,
     MessageState,
@@ -18,7 +19,6 @@
   } from "State";
   import { onDestroy, onMount, tick } from "svelte";
   import { Theme } from "Theme";
-  import { ulid } from "ulid";
   import { MSG_PER_PAGE } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
@@ -56,7 +56,7 @@
       if (-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30) {
         // get the first "reference" message (the message at the top of the scroll container)
         const first = useMessages[useMessages.length - 1];
-        if (!first) return; // there's no messages in the channel
+        if (!first || ChannelTops[channel.id] == first.id) return; // there's no messages in the channel
         fetching = true; // block future fetches
         const fetched = await channel.messages.fetchMultiple({
           limit: MSG_PER_PAGE,
@@ -64,12 +64,15 @@
           include_users: true,
         });
         // add an offset so there's still messages below the reference (1/4 of the total per page)
-        MessageOffset.set(useMessages.slice(-Math.round(MSG_PER_PAGE / 4))[0]?.id || ulid());
+        const newOff = useMessages.slice(-Math.round(MSG_PER_PAGE / 4))[0]?.id;
+        if (newOff) MessageOffset.set(newOff);
         await tick(); // wait for DOM update
         if (MessageList) {
           // scroll the message list back to the reference message
           MessageList.scrollTop = (document.getElementById(first.id)?.offsetTop || 0) - barHeight;
         }
+        // mark the channel as done
+        if (!fetched.length) ChannelTops[channel.id] = first.id;
         fetching = false;
       }
     }, 3);

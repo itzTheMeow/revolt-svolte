@@ -34,6 +34,8 @@ export const HomeChannel = new Channel(client, {
 
 export const MessageState = writable(Date.now());
 export const MessageOffset = writable(ulid());
+/** Map defining the "topmost" (first) message of a channel. */
+export const ChannelTops: Record<string, string> = {};
 
 // super hacky but whatever
 let went = 3;
@@ -69,7 +71,6 @@ SelectedChannel.subscribe((c) => {
     else delete SelectionState.map[serverID];
   }
   localStorage.setItem("selstate", JSON.stringify(SelectionState));
-  MessageOffset.set(ulid());
   if (c && !didListenChannel.includes(c.id)) {
     didListenChannel.push(c.id);
     c.messages?.onUpdate(() => {

@@ -7,7 +7,7 @@
     IconHash,
     IconPaperclip,
     IconVolume,
-    IconX,
+    IconX
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
@@ -26,7 +26,7 @@
     SelectedChannel,
     SelectedServer,
     selectInput,
-    uploadedFiles,
+    uploadedFiles
   } from "State";
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
@@ -116,7 +116,7 @@
     tick().then(() => {
       barHeight = BoxSizer.clientHeight;
     });
-    
+
     const toUpload = standalone ? [] : [...$uploadedFiles];
     $uploadedFiles.splice(0);
     $uploadedFiles = $uploadedFiles;
@@ -132,6 +132,7 @@
       }
     }
 
+    document.getElementById("MessageList")?.scrollTo({top: 0});
     if (!standalone) MessageOffset.set(ulid());
 
     const message = standalone
