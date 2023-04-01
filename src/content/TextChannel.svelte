@@ -16,8 +16,9 @@
     MobileLayout,
     SelectedChannel,
   } from "State";
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy, onMount, tick } from "svelte";
   import { Theme } from "Theme";
+  import { ulid } from "ulid";
   import { MSG_PER_PAGE } from "utils";
   import MessageItem from "./MessageItem.svelte";
   import Textbox from "./Textbox.svelte";
@@ -31,15 +32,17 @@
     useMessages: BaseMessage[] = [];
   $: {
     $MessageState;
+    // reverse so newest is first
     messages = channel.messages.ordered.reverse();
-    console.log("d" + messages.length + " " + messageIndex);
     messageIndex = (
-      channel.messages.get($MessageOffset)
-        ? messages.map((m) => m.id).sort((i1, i2) => (i2 > i1 ? 1 : 0))
-        : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
-    ).indexOf($MessageOffset);
+      channel.messages.get($MessageOffset) // if the offset isnt arbitrary (not a real message)
+        ? messages.map((m) => m.id) // we can just get the messages
+        : [...messages.map((m) => m.id), $MessageOffset]
+    ) // otherwise we need to factor in the arbitrary offset
+      .sort((i1, i2) => (i2 > i1 ? 1 : 0)) // sort the message IDs to calculate which message index to use
+      .indexOf($MessageOffset);
+    // use the messages from the offset (arbitrary offsets will still work)
     useMessages = messages.slice(messageIndex, messageIndex + MSG_PER_PAGE);
-    console.log(messageIndex);
   }
 
   let MessageList: HTMLDivElement,
@@ -48,22 +51,26 @@
 
   onMount(() => {
     i = setInterval(async () => {
+      if (fetching) return; // don't fire if we are already fetching messages
+      // be within 30px of the top of the scroll container
       if (-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30) {
+        // get the first "reference" message (the message at the top of the scroll container)
         const first = useMessages[useMessages.length - 1];
-        if (!first) return;
-        MessageOffset.set(first.id);
-        if (fetching) return;
-        fetching = true;
-        await channel.messages.fetchMultiple({
+        if (!first) return; // there's no messages in the channel
+        fetching = true; // block future fetches
+        const fetched = await channel.messages.fetchMultiple({
           limit: MSG_PER_PAGE,
           before: first.id,
+          include_users: true,
         });
-        console.log("fetch");
-        //MessageOffset.set(useMessages.slice(-25)[0]?.id || ulid());
-        if (MessageList)
-          MessageList.scrollTop =
-            (document.getElementById($MessageOffset)?.offsetHeight || 0) - barHeight;
-        if (messages.length) fetching = false;
+        // add an offset so there's still messages below the reference (1/4 of the total per page)
+        MessageOffset.set(useMessages.slice(-Math.round(MSG_PER_PAGE / 4))[0]?.id || ulid());
+        await tick(); // wait for DOM update
+        if (MessageList) {
+          // scroll the message list back to the reference message
+          MessageList.scrollTop = (document.getElementById(first.id)?.offsetTop || 0) - barHeight;
+        }
+        fetching = false;
       }
     }, 3);
   });
