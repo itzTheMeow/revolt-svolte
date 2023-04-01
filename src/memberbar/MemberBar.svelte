@@ -4,8 +4,8 @@
   import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { MemberDetails, UserDetails } from "utils";
+  import VirtualList from "../extra/VirtualList.svelte";
   import MemberBarItem from "./MemberBarItem.svelte";
-  import VirtualList from "./VirtualList.svelte";
 
   let membar: HTMLDivElement;
 
