@@ -106,6 +106,7 @@
           })
           .then((m) => {
             MessageState.set(Date.now());
+            MessageOffset.set(ulid());
             fetching.delete(c);
           });
       }

@@ -6,6 +6,7 @@
   import ChannelIcon from "channels/ChannelIcon.svelte";
   import { UseTypingState } from "Client";
   import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
+  import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
   import type { BaseMessage, Channel } from "revolt-toolset";
@@ -47,7 +48,7 @@
 
   let MessageList: HTMLDivElement,
     i: NodeJS.Timer,
-    fetching = false;
+    fetching: 1 | 0 | -1 = 0;
 
   onMount(() => {
     i = setInterval(async () => {
@@ -57,7 +58,7 @@
         // get the first "reference" message (the message at the top of the scroll container)
         const first = useMessages[useMessages.length - 1];
         if (!first || ChannelTops[channel.id] == first.id) return; // there's no messages in the channel
-        fetching = true; // block future fetches
+        fetching = 1; // block future fetches
         const fetched = await channel.messages.fetchMultiple({
           limit: MSG_PER_PAGE,
           before: first.id,
@@ -73,7 +74,7 @@
         }
         // mark the channel as done
         if (!fetched.length) ChannelTops[channel.id] = first.id;
-        fetching = false;
+        fetching = 0;
       }
     }, 3);
   });
@@ -116,7 +117,7 @@
   {/if}
 </div>
 <div
-  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse"
+  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1 ? 'pt-8' : ''}"
   style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
   id="MessageList"
   bind:this={MessageList}
@@ -130,5 +131,10 @@
       ...
     {/if}
   </div>
+  {#if fetching == 1}
+    <div class="w-full flex items-center justify-center h-8">
+      <Loader size={24} />
+    </div>
+  {/if}
 </div>
 <Textbox />
