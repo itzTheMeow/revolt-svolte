@@ -39,11 +39,9 @@
     messageIndex = (
       channel.messages.get($MessageOffset) // if the offset isnt arbitrary (not a real message)
         ? messages.map((m) => m.id) // we can just get the messages
-        : [...messages.map((m) => m.id), $MessageOffset]
-    ) // otherwise we need to factor in the arbitrary offset
-      .sort() // sort the message IDs to calculate which message index to use
-      .reverse()
-      .indexOf($MessageOffset);
+        : // otherwise we need to factor in the arbitrary offset and re-sort
+          [...messages.map((m) => m.id), $MessageOffset].sort().reverse()
+    ).indexOf($MessageOffset);
     // use the messages from the offset (arbitrary offsets will still work)
     useMessages = messages.slice(messageIndex, messageIndex + MSG_PER_PAGE);
   }
