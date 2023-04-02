@@ -31,7 +31,6 @@
   import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
   import tinycolor from "tinycolor2";
-  import { ulid } from "ulid";
   import { MemberOrUserDetails, scrollTo } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
@@ -132,8 +131,10 @@
       }
     }
 
-    if (!standalone) MessageOffset.set(ulid());
-    scrollTo("bottom");
+    if (!standalone) {
+      MessageOffset.set(channel.lastMessageID);
+      tick().then(() => scrollTo("bottom", true));
+    }
 
     const message = standalone
       ? await standalone.edit({ content, expandEmojis: true, expandMentions: true })
@@ -145,7 +146,10 @@
           expandMentions: true,
         });
 
-    if (!standalone) MessageOffset.set(message.id);
+    if (!standalone) {
+      MessageOffset.set(message.id);
+      tick().then(() => scrollTo("bottom", true));
+    }
     SendButton.classList.remove("loading");
     fc.style.display = "";
     recalculateAutocomplete();
