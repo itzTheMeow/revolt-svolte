@@ -71,7 +71,6 @@
       const selected = $SelectedChannel?.id == message.channelID;
       const b = hasBottom();
       if (selected) MessageState.set(Date.now());
-      //if ($SelectedChannel?.id == message.channelID && b) setTimeout(() => addScroll(99999), 50);
       if (
         (message.isUser() && message.authorID == client.user.id) ||
         (document.hasFocus() && selected)
@@ -83,7 +82,7 @@
         const messageIndex = (
           message.channel.messages.get($MessageOffset)
             ? messages.map((m) => m.id)
-            : [...messages.map((m) => m.id), $MessageOffset].sort((i1, i2) => (i2 > i1 ? 1 : 0))
+            : [...messages.map((m) => m.id), $MessageOffset].sort().reverse()
         ).indexOf($MessageOffset);
         MessageOffset.set((messages[messageIndex - 1] || messages[0])?.id || ulid());
       }

@@ -201,10 +201,7 @@ export async function downloadFile(src: string, filename?: string) {
 export function hasBottom(off = 2) {
   const ListMessages = document.getElementById("MessageList");
   if (!ListMessages) return false;
-  return (
-    Math.abs(ListMessages.scrollTop - (ListMessages.scrollHeight - ListMessages.clientHeight)) <=
-    off
-  );
+  return ListMessages.scrollTop <= off;
 }
 export function scrollTo(pos: number | "bottom", instant = false) {
   const ListMessages = document.getElementById("MessageList");
