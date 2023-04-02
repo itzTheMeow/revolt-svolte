@@ -41,7 +41,8 @@
         ? messages.map((m) => m.id) // we can just get the messages
         : [...messages.map((m) => m.id), $MessageOffset]
     ) // otherwise we need to factor in the arbitrary offset
-      .sort((i1, i2) => (i2 > i1 ? 1 : 0)) // sort the message IDs to calculate which message index to use
+      .sort() // sort the message IDs to calculate which message index to use
+      .reverse()
       .indexOf($MessageOffset);
     // use the messages from the offset (arbitrary offsets will still work)
     useMessages = messages.slice(messageIndex, messageIndex + MSG_PER_PAGE);
