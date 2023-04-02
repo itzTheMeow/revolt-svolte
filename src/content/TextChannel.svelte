@@ -140,9 +140,7 @@
   {/if}
 </div>
 <div
-  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1
-    ? 'pt-8'
-    : ''} {fetching !== -1 ? 'pb-8' : ''}"
+  class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1 ? 'pt-8' : ''}"
   style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
   id="MessageList"
   bind:this={MessageList}
