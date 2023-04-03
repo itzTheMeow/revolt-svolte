@@ -36,10 +36,10 @@
       if (!token) {
         const loginResult = await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
         if (loginResult.type === "mfa") {
-          if (!mfaToken) return errtxt = "Input your 2FA token."
+          if (!mfaToken) return errtxt = "Input your MFA token.";
           await client.authenticate({ mfa_ticket: loginResult.ticket, mfa_response: {
             totp_code: mfaToken,
-          }})
+          }});
         }
       }
       else await client.login(token, loginBot ? "bot" : "user");
