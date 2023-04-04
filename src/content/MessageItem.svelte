@@ -1,18 +1,27 @@
 <script lang="ts">
+  import { IconDoorEnter, IconDoorExit } from "@tabler/icons-svelte";
   import { client } from "Client";
+  import { HoveredMessage, MobileLayout, SelectedChannel, isEditing, selectBottom } from "State";
+  import { Theme } from "Theme";
   import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import { Attachment, EmbedMedia, EmbedWeb, type BaseMessage, type Embed } from "revolt-toolset";
-  import { HoveredMessage, isEditing, MobileLayout, selectBottom, SelectedChannel } from "State";
-  import { Theme } from "Theme";
+  import {
+    Attachment,
+    EmbedMedia,
+    EmbedWeb,
+    SystemMessageType,
+    type BaseMessage,
+    type Embed,
+  } from "revolt-toolset";
   import { MessageDetails } from "utils";
   import MessageItemAttachment from "./MessageItemAttachment.svelte";
   import MessageItemContent from "./MessageItemContent.svelte";
   import MessageItemEmbed from "./MessageItemEmbed.svelte";
   import MessageItemHeader from "./MessageItemHeader.svelte";
   import MessageItemReplies from "./MessageItemReplies.svelte";
+  import MessageItemSystemUser from "./MessageItemSystemUser.svelte";
   import MessageItemToolbar from "./MessageItemToolbar.svelte";
 
   export let message: BaseMessage;
@@ -159,6 +168,22 @@
             {/each}
           </div>
         </div>
+      {:else if message.isSystem()}
+        {#if message.detail.type == SystemMessageType.UserJoined}
+          <MessageItemSystemUser
+            channel={message.channel}
+            user={message.detail.user}
+            icon={IconDoorEnter}
+            text="joined"
+          />
+        {:else if message.detail.type == SystemMessageType.UserLeft}
+          <MessageItemSystemUser
+            channel={message.channel}
+            user={message.detail.user}
+            icon={IconDoorExit}
+            text="left"
+          />
+        {/if}
       {/if}
       {#if isHovered}
         <MessageItemToolbar {message} />
