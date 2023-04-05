@@ -8,7 +8,8 @@
   let signinBtn: HTMLDivElement,
     userInput: HTMLInputElement,
     passInput: HTMLInputElement,
-    tokenInput: HTMLInputElement;
+    tokenInput: HTMLInputElement,
+    mfaInput: HTMLInputElement;
   let errtxt = "",
     loginBot = false;
 
@@ -16,6 +17,7 @@
     errtxt = "";
     const email = userInput.value,
       password = passInput.value,
+      mfaToken = mfaInput.value,
       token = tokenInput.value;
     if (!token) {
       if (!email) return (errtxt = "Enter an email!");
@@ -31,8 +33,22 @@
       window.location.reload();
     });
     try {
-      if (!token) await client.authenticate({ email, password, friendly_name: `${BRAND_NAME}` });
-      else await client.login(token, loginBot ? "bot" : "user");
+      if (!token) {
+        const loginResult = await client.authenticate({
+          email,
+          password,
+          friendly_name: `${BRAND_NAME}`,
+        });
+        if (loginResult.type === "mfa") {
+          if (!mfaToken) return (errtxt = "Input your MFA token.");
+          await client.authenticate({
+            mfa_ticket: loginResult.ticket,
+            mfa_response: {
+              totp_code: mfaToken,
+            },
+          });
+        }
+      } else await client.login(token, loginBot ? "bot" : "user");
     } catch (err) {
       errtxt = String(err);
       signinBtn.classList.remove("loading");
@@ -83,9 +99,15 @@
         />
         <input
           type="password"
-          class="input input-ghost input-bordered rounded-full w-72 max-w-full bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="Password"
           bind:this={passInput}
+          on:keydown={(e) => e.key == "Enter" && signIn()}
+        />
+        <input
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+          placeholder="MFA Code"
+          bind:this={mfaInput}
           on:keydown={(e) => e.key == "Enter" && signIn()}
         />
         <div class="w-full text-center my-1">OR</div>
