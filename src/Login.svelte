@@ -99,13 +99,13 @@
         />
         <input
           type="password"
-          class="input input-ghost input-bordered rounded-full w-72 max-w-full bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="Password"
           bind:this={passInput}
           on:keydown={(e) => e.key == "Enter" && signIn()}
         />
         <input
-          class="input input-ghost input-bordered rounded-full w-72 max-w-full mb-2 bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
+          class="input input-ghost input-bordered rounded-full w-72 max-w-full bg-transparent backdrop-blur-[1px] focus:backdrop-blur-md ![outline:none]"
           placeholder="MFA Code"
           bind:this={mfaInput}
           on:keydown={(e) => e.key == "Enter" && signIn()}
