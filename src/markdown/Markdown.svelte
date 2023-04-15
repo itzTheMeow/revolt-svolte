@@ -1,12 +1,12 @@
 <script lang="ts">
   import { client } from "Client";
+  import { MobileLayout, SelectedServer } from "State";
+  import { Theme } from "Theme";
   import { showEmojiContext } from "contextmenu/FloatingMenu";
   import type { Processor } from "remark-rehype";
   import { RevoltEmojiDictionary, RevoltEmojiLib, unicodeEmojiURL } from "revolt-toolset";
-  import { MobileLayout, SelectedServer } from "State";
   import { afterUpdate } from "svelte";
   import { tippy } from "svelte-tippy";
-  import { Theme } from "Theme";
   import { visit } from "unist-util-visit";
   import { MemberDetails, MemberOrUserDetails, UserColor } from "utils";
   import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
@@ -122,7 +122,7 @@
             case "emoji": {
               const { match } = node.properties,
                 emojiURL = CUSTOM_EMOJI_REGEX.test(match)
-                  ? `https://autumn.revolt.chat/emojis/${node.properties.match}`
+                  ? `${client.config?.features.autumn.url}/emojis/${node.properties.match}`
                   : unicodeEmojiURL(
                       match in RevoltEmojiDictionary ? RevoltEmojiDictionary[match] : match,
                       "twemoji"
