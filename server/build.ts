@@ -43,8 +43,7 @@ esbuild
     loader: { ".png": loader, ".ttf": loader, ".woff": loader, ".woff2": loader },
   })
   .then(() => {
-    let html = fs.readFileSync("src/index.html").toString(),
-      extra = "";
+    let html = fs.readFileSync("src/index.html").toString();
     if (standalone)
       html = html.replace(
         `<script type="module"`,
@@ -53,17 +52,9 @@ esbuild
     fs.copyFileSync("svolte-logo.png", "dist/logo.png");
     fs.copyFileSync("svolte-logo-optimized.svg", "dist/logo.svg");
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
-    if (!standalone)
-      fs.readdirSync("generated").forEach((f) => {
-        if (f.endsWith(".png")) fs.copyFileSync(`generated/${f}`, `dist/${f}`);
-        else if (f.endsWith(".html")) extra += fs.readFileSync(`generated/${f}`);
-      });
     fs.writeFileSync(
       "dist/index.html",
-      html
-        .replace("%CommitHash%", hash)
-        .replace(/%BrandName%/g, config.brandName)
-        .replace("<!--X-->", extra)
+      html.replace("%CommitHash%", hash).replace(/%BrandName%/g, config.brandName)
     );
     const sw = esbuild.buildSync({
       entryPoints: ["./src/sw.ts"],
