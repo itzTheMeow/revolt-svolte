@@ -1,12 +1,16 @@
 import { client } from "Client";
+import generateSplash from "pwasplash";
 import type { ClientSession } from "revolt-toolset";
-import generateSplash from "splash";
 import Login from "./Login.svelte";
 //@ts-ignore
+import { Native } from "Native";
 import App from "./index.svelte";
 import "./style.css";
 
-generateSplash();
+if (!((<any>window).standalone || Native.isNative))
+  generateSplash("./logo.png", {
+    background: "#101823",
+  });
 
 const session = localStorage.getItem("session");
 

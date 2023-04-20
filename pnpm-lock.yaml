@@ -28,6 +28,7 @@ specifiers:
   mobx: ^6.7.0
   postcss: ^8.4.16
   prismjs: ^1.29.0
+  pwasplash: ^0.0.1
   rehype-dom-stringify: ^3.0.1
   rehype-katex: ^6.0.2
   rehype-prism: ^2.1.3
@@ -80,6 +81,7 @@ dependencies:
   mobx: 6.7.0
   postcss: 8.4.21
   prismjs: 1.29.0
+  pwasplash: 0.0.1
   rehype-dom-stringify: 3.0.1
   rehype-katex: 6.0.2
   rehype-prism: 2.1.3_unified@10.1.2
@@ -4347,6 +4349,10 @@ packages:
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
     engines: {node: '>=6'}
+    dev: false
+
+  /pwasplash/0.0.1:
+    resolution: {integrity: sha512-VWjBzll1S/rtg92MNBZWiSZyM1bGzGYnk+ADRMlYRVvbrVWn+dk1g+sL+DbxuzF/K+cQDtq3YY8H7cnCpDS4Cg==}
     dev: false
 
   /qs/6.11.0:

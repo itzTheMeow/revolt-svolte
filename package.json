@@ -47,6 +47,7 @@
     "mobx": "^6.7.0",
     "postcss": "^8.4.16",
     "prismjs": "^1.29.0",
+    "pwasplash": "^0.0.1",
     "rehype-dom-stringify": "^3.0.1",
     "rehype-katex": "^6.0.2",
     "rehype-prism": "^2.1.3",
