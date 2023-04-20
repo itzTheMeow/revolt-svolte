@@ -22,7 +22,7 @@ specifiers:
   eventemitter3: ^5.0.0
   express: ^4.18.1
   katex: ^0.16.6
-  luxon: git://github.com/moment/luxon
+  luxon: ^3.3.0
   mdast-util-to-hast: ^12.3.0
   mediasoup-client: ^3.6.57
   mobx: ^6.9.0
@@ -75,7 +75,7 @@ dependencies:
   eventemitter3: 5.0.0
   express: 4.18.2
   katex: 0.16.6
-  luxon: github.com/moment/luxon/07023283e74321c2080de9bb73070a3ffd2a7acc
+  luxon: 3.3.0
   mdast-util-to-hast: 12.3.0
   mediasoup-client: 3.6.70
   mobx: 6.9.0
@@ -5772,13 +5772,4 @@ packages:
 
   /zwitch/2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-    dev: false
-
-  github.com/moment/luxon/07023283e74321c2080de9bb73070a3ffd2a7acc:
-    resolution: {tarball: https://codeload.github.com/moment/luxon/tar.gz/07023283e74321c2080de9bb73070a3ffd2a7acc}
-    name: luxon
-    version: 3.3.0
-    engines: {node: '>=12'}
-    prepare: true
-    requiresBuild: true
     dev: false
