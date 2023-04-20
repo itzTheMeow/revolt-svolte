@@ -5,7 +5,7 @@
     type CustomBadge,
     type User,
     type UserBadge as UBadge,
-  } from "revolt-toolset";
+  } from "revkit";
   import UserBadge from "./UserBadge.svelte";
 
   export let user: User;

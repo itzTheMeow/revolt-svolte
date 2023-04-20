@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Message } from "revolt-toolset";
+  import type { Message } from "revkit";
   import { isEditing } from "State";
   import Markdown from "../markdown/Markdown.svelte";
   import Textbox from "./Textbox.svelte";

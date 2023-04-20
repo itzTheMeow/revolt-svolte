@@ -13,7 +13,7 @@
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import { Permissions, type Member, type UserProfile } from "revolt-toolset";
+  import { Permissions, type Member, type UserProfile } from "revkit";
   import { MobileLayout } from "State";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";

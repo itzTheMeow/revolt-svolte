@@ -1,7 +1,7 @@
 <script lang="ts">
   import { UnreadState } from "Client";
   import Indicator from "extra/Indicator.svelte";
-  import type { Server } from "revolt-toolset";
+  import type { Server } from "revkit";
   import { NotifSettings, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { ServerDetails, testMuted } from "utils";

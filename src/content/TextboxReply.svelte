@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconAt, IconAtOff, IconCircleX, IconCornerUpLeft } from "@tabler/icons-svelte";
   import Markdown from "markdown/Markdown.svelte";
-  import type { BaseMessage } from "revolt-toolset";
+  import type { BaseMessage } from "revkit";
   import { updateReplies } from "State";
   import { Theme } from "Theme";
   import { MessageDetails } from "utils";

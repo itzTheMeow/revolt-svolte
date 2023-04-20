@@ -5,7 +5,7 @@
   import Header from "extra/Header.svelte";
   import type { ExportedImageUploader } from "extra/ImageUploader";
   import ImageUploader from "extra/ImageUploader.svelte";
-  import type { API, Server } from "revolt-toolset";
+  import type { API, Server } from "revkit";
   import { AutumnService, fetchAutumn, MobileLayout } from "State";
   import { onMount } from "svelte";
   import { Theme } from "Theme";

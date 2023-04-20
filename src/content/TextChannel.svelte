@@ -9,7 +9,7 @@
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import type { BaseMessage, Channel } from "revolt-toolset";
+  import type { BaseMessage, Channel } from "revkit";
   import {
     ChannelTops,
     MembersCollapsed,

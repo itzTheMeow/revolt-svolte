@@ -1,7 +1,7 @@
 <script lang="ts">
   import Image from "media/Image.svelte";
   import Video from "media/Video.svelte";
-  import type { EmbedWeb } from "revolt-toolset";
+  import type { EmbedWeb } from "revkit";
 
   export let embed: EmbedWeb;
   export let height: number;

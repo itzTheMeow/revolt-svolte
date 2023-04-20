@@ -3,7 +3,7 @@
   import { client } from "Client";
   import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
   import { ModalStack } from "modals/ModalStack";
-  import { BaseMessage, Permissions } from "revolt-toolset";
+  import { BaseMessage, Permissions } from "revkit";
   import { isEditing, MessageState, MobileLayout, selectBottom, updateReplies } from "State";
   import { Theme } from "Theme";
   import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";

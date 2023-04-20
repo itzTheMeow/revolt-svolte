@@ -14,7 +14,7 @@
     SystemMessageType,
     type BaseMessage,
     type Embed,
-  } from "revolt-toolset";
+  } from "revkit";
   import { MessageDetails } from "utils";
   import MessageItemAttachment from "./MessageItemAttachment.svelte";
   import MessageItemContent from "./MessageItemContent.svelte";

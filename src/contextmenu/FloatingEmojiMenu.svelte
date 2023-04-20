@@ -1,6 +1,6 @@
 <script lang="ts">
   import Image from "media/Image.svelte";
-  import { DefaultEmoji, type Emoji } from "revolt-toolset";
+  import { DefaultEmoji, type Emoji } from "revkit";
   import { SelectedServer } from "State";
   import { floatingMenu } from "./FloatingMenu";
 

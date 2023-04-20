@@ -10,10 +10,9 @@ import {
   IconTrash,
 } from "@tabler/icons-svelte";
 import { client } from "Client";
-import { ModalStack } from "modals/ModalStack";
-import { Attachment, Channel, Permissions, type BaseMessage } from "revolt-toolset";
-import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
 import { isEditing, selectBottom, updateReplies } from "State";
+import { ModalStack } from "modals/ModalStack";
+import { Attachment, Channel, Permissions, type BaseMessage, type BaseObject } from "revkit";
 import { copyText, downloadFile } from "utils";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 

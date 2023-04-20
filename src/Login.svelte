@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconBrandGithub, IconRobot, IconUser } from "@tabler/icons-svelte";
   import Loader from "Loader.svelte";
-  import { Client } from "revolt-toolset";
+  import { Client } from "revkit";
   import { BRAND_COLOR } from "Theme";
   import { API_URL, BRAND_NAME, GIT_URL } from "utils";
 

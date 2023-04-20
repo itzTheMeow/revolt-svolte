@@ -2,7 +2,7 @@
   import Audio from "media/Audio.svelte";
   import Image from "media/Image.svelte";
   import Video from "media/Video.svelte";
-  import { Attachment, type EmbedMedia } from "revolt-toolset";
+  import { Attachment, type EmbedMedia } from "revkit";
 
   export let attachment: Attachment | EmbedMedia;
   export let inline = false;

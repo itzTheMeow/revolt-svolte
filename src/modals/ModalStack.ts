@@ -1,5 +1,5 @@
-import { BaseMessage, Channel, Server } from "revolt-toolset";
-import type { BaseObject } from "revolt-toolset/dist/es6/objects/BaseObject";
+import { BaseMessage, Channel, Server } from "revkit";
+import type { BaseObject } from "revkit/dist/es6/objects/BaseObject";
 import { writable } from "svelte/store";
 import type { SettingsPage, SettingsServerPage } from "./Settings";
 

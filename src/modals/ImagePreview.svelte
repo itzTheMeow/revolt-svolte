@@ -3,7 +3,7 @@
 
   import byteSize from "byte-size";
   import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
-  import { Attachment } from "revolt-toolset";
+  import { Attachment } from "revkit";
   import { MobileLayout } from "State";
   import { scale } from "svelte/transition";
   import { Theme } from "Theme";

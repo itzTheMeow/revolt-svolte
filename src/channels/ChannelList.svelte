@@ -15,7 +15,7 @@
   import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { SettingsServerPage } from "modals/Settings";
-  import { RevoltServerFlags, type Channel } from "revolt-toolset";
+  import { RevoltServerFlags, type Channel } from "revkit";
   import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";

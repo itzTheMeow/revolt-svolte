@@ -11,7 +11,7 @@
   } from "@tabler/icons-svelte";
   import byteSize from "byte-size";
   import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
-  import type { Attachment } from "revolt-toolset";
+  import type { Attachment } from "revkit";
   import { MobileLayout } from "State";
   import { onDestroy, onMount } from "svelte";
   import { Theme } from "Theme";

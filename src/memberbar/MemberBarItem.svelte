@@ -3,7 +3,7 @@
   import { floatingMenu } from "contextmenu/FloatingMenu";
   import Indicator from "extra/Indicator.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import { Member, Role } from "revolt-toolset";
+  import { Member, Role } from "revkit";
   import { AppHeight, AppWidth } from "State";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";

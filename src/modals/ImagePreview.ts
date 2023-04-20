@@ -1,4 +1,4 @@
-import type { Attachment } from "revolt-toolset";
+import type { Attachment } from "revkit";
 import { writable } from "svelte/store";
 
 export const imagePreview = writable<

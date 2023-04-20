@@ -3,7 +3,7 @@
   import { client } from "Client";
   import Loader from "Loader.svelte";
   import Markdown from "markdown/Markdown.svelte";
-  import type { VoiceChannel } from "revolt-toolset";
+  import type { VoiceChannel } from "revkit";
   import { Theme } from "Theme";
   import { voiceState, VoiceStatus } from "../voice/VoiceState";
   import VoiceChannelIcon from "./VoiceChannelIcon.svelte";

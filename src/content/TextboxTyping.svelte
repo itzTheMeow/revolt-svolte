@@ -1,6 +1,6 @@
 <script lang="ts">
   import { UseTypingState } from "Client";
-  import type { User } from "revolt-toolset";
+  import type { User } from "revkit";
   import { SelectedChannel } from "State";
   import { Theme } from "Theme";
   import { MemberOrUserDetails } from "utils";

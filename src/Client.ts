@@ -1,7 +1,7 @@
-import { Client, DEFAULT_THEME } from "revolt-toolset";
 import { CollapsedCategories, SelectedServer, SelectionState, ServerOrder } from "State";
-import { writable } from "svelte/store";
 import { Theme } from "Theme";
+import { Client, DEFAULT_THEME } from "revkit";
+import { writable } from "svelte/store";
 import { API_URL } from "utils";
 import { NotifSettings } from "./State";
 

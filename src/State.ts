@@ -6,7 +6,7 @@ import {
   type AutumnConfig,
   type BaseMessage,
   type Server,
-} from "revolt-toolset";
+} from "revkit";
 import { writable } from "svelte/store";
 import { ulid } from "ulid";
 import type { NotificationSettings } from "utils";

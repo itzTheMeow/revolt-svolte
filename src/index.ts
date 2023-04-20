@@ -1,6 +1,6 @@
 import { client } from "Client";
 import generateSplash from "pwasplash";
-import type { ClientSession } from "revolt-toolset";
+import type { ClientSession } from "revkit";
 import Login from "./Login.svelte";
 //@ts-ignore
 import { Native } from "Native";

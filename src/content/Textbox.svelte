@@ -12,7 +12,7 @@
   import { client } from "Client";
   import { CMState } from "contextmenu/ContextMenuState";
   import { ModalStack } from "modals/ModalStack";
-  import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revolt-toolset";
+  import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
   import {
     autocomplete,
     isEditing,

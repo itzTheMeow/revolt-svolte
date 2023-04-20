@@ -7,7 +7,7 @@ import {
   User,
   type Message,
   type ThemeSettings,
-} from "revolt-toolset";
+} from "revkit";
 
 export const BRAND_NAME =
   document.querySelector<HTMLMetaElement>(`meta[name="brand-name"]`)?.content || "Client";

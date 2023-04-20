@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconHash, IconHome, IconNotebook, IconUsers, IconVolume } from "@tabler/icons-svelte";
-  import type { Channel } from "revolt-toolset";
+  import type { Channel } from "revkit";
 
   export let channel: Channel;
   export let size = 20;

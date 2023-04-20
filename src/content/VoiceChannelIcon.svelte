@@ -8,7 +8,7 @@
     IconPhoneOff,
     IconX,
   } from "@tabler/icons-svelte";
-  import type { VoiceChannel } from "revolt-toolset";
+  import type { VoiceChannel } from "revkit";
   import tinycolor from "tinycolor2";
   import { voiceState } from "voice/VoiceState";
 

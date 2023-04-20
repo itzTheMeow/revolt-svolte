@@ -4,7 +4,7 @@
   import Indicator from "extra/Indicator.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { SettingsPage } from "modals/Settings";
-  import type { Server } from "revolt-toolset";
+  import type { Server } from "revkit";
   import { SelectedServer, ServerOrder } from "State";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";

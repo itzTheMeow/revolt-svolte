@@ -6,7 +6,7 @@
 
 import EventEmitter from "eventemitter3";
 import { action, makeAutoObservable, runInAction } from "mobx";
-import type { VoiceChannel } from "revolt-toolset";
+import type { VoiceChannel } from "revkit";
 import { writable } from "svelte/store";
 import type { ProduceType, VoiceUser } from "./Types";
 import type VoiceClient from "./VoiceClient";

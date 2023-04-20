@@ -1,6 +1,6 @@
 <script lang="ts">
   import Markdown from "markdown/Markdown.svelte";
-  import { EmbedWeb, type Embed } from "revolt-toolset";
+  import { EmbedWeb, type Embed } from "revkit";
   import { Theme } from "Theme";
   import MessageItemAttachment from "./MessageItemAttachment.svelte";
   import MessageItemEmbedMedia from "./MessageItemEmbedMedia.svelte";

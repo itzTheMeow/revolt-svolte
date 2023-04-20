@@ -2,7 +2,7 @@
   import { UnreadState } from "Client";
   import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
   import Indicator from "extra/Indicator.svelte";
-  import type { Channel } from "revolt-toolset";
+  import type { Channel } from "revkit";
   import {
     MobileLayout,
     NotifSettings,

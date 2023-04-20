@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import type { CustomBadge, UserBadge } from "revolt-toolset";
+  import type { CustomBadge, UserBadge } from "revkit";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
 

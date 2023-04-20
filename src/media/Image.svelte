@@ -2,7 +2,7 @@
   import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
   import Loader from "Loader.svelte";
   import { imagePreview } from "modals/ImagePreview";
-  import type { Attachment } from "revolt-toolset";
+  import type { Attachment } from "revkit";
 
   export let src: Attachment | string;
   export let className = "";

@@ -1,4 +1,4 @@
-import type { DefaultEmoji, Emoji, Member } from "revolt-toolset";
+import type { DefaultEmoji, Emoji, Member } from "revkit";
 import { writable } from "svelte/store";
 
 type FloatingMenuState = {

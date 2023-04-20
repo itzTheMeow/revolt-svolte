@@ -3,7 +3,7 @@
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import Markdown from "markdown/Markdown.svelte";
   import { ModalStack } from "modals/ModalStack";
-  import type { BaseMessage, Message } from "revolt-toolset";
+  import type { BaseMessage, Message } from "revkit";
   import { writable } from "svelte/store";
   import { MessageDetails, UserColor } from "utils";
 

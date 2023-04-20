@@ -20,7 +20,7 @@
     type User,
     type UserMutuals,
     type UserProfile,
-  } from "revolt-toolset";
+  } from "revkit";
   import { MobileLayout, SelectedChannel, SelectedServer } from "State";
   import { onDestroy } from "svelte";
   import { tippy } from "svelte-tippy";

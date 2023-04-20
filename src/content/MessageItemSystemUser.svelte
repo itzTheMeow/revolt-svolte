@@ -1,7 +1,7 @@
 <script lang="ts">
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import { ModalStack } from "modals/ModalStack";
-  import type { Channel, Member, User } from "revolt-toolset";
+  import type { Channel, Member, User } from "revkit";
   import { MemberDetails, UserColor } from "utils";
 
   export let user: User, channel: Channel, icon: ConstructorOfATypedSvelteComponent, text: string;

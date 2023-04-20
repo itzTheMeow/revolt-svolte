@@ -3,7 +3,7 @@
   import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
   import { DateTime } from "luxon";
   import { ModalStack } from "modals/ModalStack";
-  import type { Message } from "revolt-toolset";
+  import type { Message } from "revkit";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { FULL_DATE_FORMAT, MessageDetails, UserColor } from "utils";

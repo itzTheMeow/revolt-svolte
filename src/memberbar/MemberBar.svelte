@@ -1,6 +1,6 @@
 <script lang="ts">
   import { client } from "Client";
-  import { Permissions, Role, type Member } from "revolt-toolset";
+  import { Permissions, Role, type Member } from "revkit";
   import { AppWidth, MobileLayout, PaneLeft, SelectedChannel, SelectedServer } from "State";
   import { Theme } from "Theme";
   import { MemberDetails, UserDetails } from "utils";
