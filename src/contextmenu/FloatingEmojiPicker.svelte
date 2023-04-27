@@ -9,7 +9,7 @@
   import tinycolor from "tinycolor2";
 
   let perPage = 0, unit = "vh";
-  $: perPage = $MobileLayout ? 10 : 8;
+  $: perPage = 8;
   $: unit = $MobileLayout ? "vw" : "vh";
 
   let state = Date.now();
