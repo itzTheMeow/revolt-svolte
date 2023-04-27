@@ -56,8 +56,8 @@
             <div
               class="p-1 rounded cursor-pointer hover:bg-[var(--hv)]"
               style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
-              style:width="{(60 - perPage) * (1 / perPage)}{unit}"
-              style:height="{(60 - perPage) * (1 / perPage)}{unit}"
+              style:width="{(($MobileLayout ? 100 : 60) - perPage) * (1 / perPage)}{unit}"
+              style:height="{(($MobileLayout ? 100 : 60) - perPage) * (1 / perPage)}{unit}"
             >
               <img
                 class="w-full h-full object-contain"
