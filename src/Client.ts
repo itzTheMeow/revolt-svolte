@@ -1,4 +1,10 @@
-import { CollapsedCategories, SelectedServer, SelectionState, ServerOrder } from "State";
+import {
+  CollapsedCategories,
+  CollapsedEmojiCategories,
+  SelectedServer,
+  SelectionState,
+  ServerOrder,
+} from "State";
 import { Theme } from "Theme";
 import { Client, DEFAULT_THEME } from "revkit";
 import { writable } from "svelte/store";
@@ -21,6 +27,7 @@ client.once("ready", async () => {
     const theme = JSON.parse(settings.theme?.[1] || "{}")["appearance:theme:overrides"] || {};
     Theme.set({ ...DEFAULT_THEME, ...theme });
     CollapsedCategories.set(JSON.parse(settings.collapsed?.[1] || "[]"));
+    CollapsedEmojiCategories.set(JSON.parse(settings.collapsed_emojis?.[1] || "[]"));
     localStorage.setItem("theme", JSON.stringify(theme));
     SelectedServer.update(() => {
       return SelectionState.server ? client.servers.get(SelectionState.server) || null : null;

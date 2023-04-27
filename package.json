@@ -56,7 +56,7 @@
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "revkit": "^1.1.4",
+    "revkit": "^1.1.6",
     "rimraf": "^5.0.0",
     "sass": "^1.62.0",
     "svelte": "^3.58.0",

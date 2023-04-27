@@ -1,32 +1,25 @@
 <script lang="ts">
   import { IconRefresh, IconSettings } from "@tabler/icons-svelte";
   import { client } from "Client";
+  import { SelectedServer } from "State";
+  import { Theme } from "Theme";
   import Indicator from "extra/Indicator.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { SettingsPage } from "modals/Settings";
-  import type { Server } from "revkit";
-  import { SelectedServer, ServerOrder } from "State";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
-  import { Theme } from "Theme";
   import { StatusColor } from "utils";
+  import { OrderedServers } from "../state/orderedServers";
   import ServerEntry from "./ServerEntry.svelte";
   import ServerIcon from "./ServerIcon.svelte";
   import ServerSeparator from "./ServerSeparator.svelte";
 
-  let orderedServers = client.servers.items(),
-    selectedDMs = false,
+  let selectedDMs = false,
     list: HTMLDivElement,
     hasTop = true;
   const scrollTop = writable(0);
   $: {
-    orderedServers = <Server[]>(
-      [
-        ...$ServerOrder.map((s) => client.servers.get(s)),
-        ...client.servers.filter((s) => !$ServerOrder.includes(s.id)),
-      ].filter((o) => o)
-    );
     selectedDMs = !$SelectedServer;
     hasTop = $scrollTop <= 0;
   }
@@ -78,7 +71,7 @@
     style:--scroll-width="0px"
     bind:this={list}
   >
-    {#each orderedServers as server (server.id)}
+    {#each $OrderedServers as server (server.id)}
       <ServerIcon {server} />
     {/each}
 

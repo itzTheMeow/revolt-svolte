@@ -5,31 +5,33 @@
     IconClipboard,
     IconFileUpload,
     IconHash,
+    IconMoodHappy,
     IconPaperclip,
     IconVolume,
     IconX,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
-  import { CMState } from "contextmenu/ContextMenuState";
-  import { ModalStack } from "modals/ModalStack";
-  import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
   import {
-    autocomplete,
-    isEditing,
     MessageInputSelected,
     MessageOffset,
     MobileLayout,
+    SelectedChannel,
+    SelectedServer,
+    autocomplete,
+    isEditing,
     pushFile,
     replyingTo,
     selectBottom,
-    selectedAutocomplete,
-    SelectedChannel,
-    SelectedServer,
     selectInput,
+    selectedAutocomplete,
     uploadedFiles,
   } from "State";
-  import { onMount, tick } from "svelte";
   import { Theme } from "Theme";
+  import { CMState } from "contextmenu/ContextMenuState";
+  import { floatingMenu } from "contextmenu/FloatingMenu";
+  import { ModalStack } from "modals/ModalStack";
+  import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
+  import { onMount, tick } from "svelte";
   import tinycolor from "tinycolor2";
   import { MemberOrUserDetails, scrollTo } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
@@ -48,6 +50,7 @@
     FileInput: HTMLInputElement,
     SendButton: HTMLDivElement,
     UploaderButton: HTMLDivElement,
+    EmojiPickerButton: HTMLDivElement,
     barHeight = 0,
     BoxSizer: HTMLDivElement;
   function recalculateAutocomplete() {
@@ -205,6 +208,21 @@
     return false;
   }
 
+  function handleEmojiPicker(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
+    floatingMenu.set({
+      type: "emoji_picker",
+      target: EmojiPickerButton,
+      pos: {
+        right:
+          EmojiPickerButton.getBoundingClientRect().left -
+          EmojiPickerButton.getBoundingClientRect().width +
+          4,
+        bottom: EmojiPickerButton.getBoundingClientRect().height + 6,
+      },
+    });
+  }
+
   onMount(() => {
     barHeight = BoxSizer.clientHeight;
     if (!$MobileLayout || standalone) MessageInput.focus();
@@ -353,6 +371,15 @@
       </div>
     </div>
     {#if !standalone}
+      <div
+        class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
+        style="background-color:{$Theme['primary-header']};"
+        bind:this={EmojiPickerButton}
+        on:click={handleEmojiPicker}
+        on:touchend={handleEmojiPicker}
+      >
+        <IconMoodHappy />
+      </div>
       <div
         class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
         style:background-color={$Theme["accent"]}

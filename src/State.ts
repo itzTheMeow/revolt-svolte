@@ -150,6 +150,14 @@ export const CollapsedCategories = writable<string[]>([]);
     client.syncSetSettings({ collapsed });
   });
 }
+export const CollapsedEmojiCategories = writable<string[]>([]);
+{
+  let setcount = 2;
+  CollapsedEmojiCategories.subscribe((collapsed_emojis) => {
+    if (setcount) return (setcount -= 1);
+    client.syncSetSettings({ collapsed_emojis });
+  });
+}
 
 export enum PaneStates {
   LEFT,

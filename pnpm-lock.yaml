@@ -37,7 +37,7 @@ specifiers:
   remark-math: ^5.1.1
   remark-parse: ^10.0.1
   remark-rehype: ^10.1.0
-  revkit: ^1.1.4
+  revkit: ^1.1.6
   rimraf: ^5.0.0
   sass: ^1.62.0
   svelte: ^3.58.0
@@ -90,7 +90,7 @@ dependencies:
   remark-math: 5.1.1
   remark-parse: 10.0.1
   remark-rehype: 10.1.0
-  revkit: 1.1.4
+  revkit: 1.1.6
   rimraf: 5.0.0
   sass: 1.62.0
   svelte: 3.58.0
@@ -4678,8 +4678,8 @@ packages:
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: false
 
-  /revkit/1.1.4:
-    resolution: {integrity: sha512-1lAE0yeWiFdBAvJL26ijF81xSAAsK+6h6WJJzQEiVkU8gOPS46423wYRWbW6sEy7Aw8iiOLkudf0LE9rddoFTA==}
+  /revkit/1.1.6:
+    resolution: {integrity: sha512-ZVoCExI2Crnu4jtjILCXOaZFCqInvo6rxCCmI9BdIpi6cTTOdG3aTNcoe2x9ZcD7V8CKUCXTmautNw7nhoYiwQ==}
     dependencies:
       '@insertish/exponential-backoff': 3.1.0-patch.2
       '@insertish/isomorphic-ws': 4.0.1

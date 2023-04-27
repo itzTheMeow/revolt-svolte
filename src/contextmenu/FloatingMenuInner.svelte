@@ -1,6 +1,7 @@
 <script lang="ts">
   import { UseMemberState } from "Client";
   import FloatingEmojiMenu from "./FloatingEmojiMenu.svelte";
+  import FloatingEmojiPicker from "./FloatingEmojiPicker.svelte";
   import FloatingMemberMenu from "./FloatingMemberMenu.svelte";
   import { floatingMenu } from "./FloatingMenu";
 </script>
@@ -10,6 +11,8 @@
     {#key $UseMemberState}
       <FloatingMemberMenu member={$floatingMenu.member} />
     {/key}
+  {:else if $floatingMenu.type == "emoji_picker"}
+    <FloatingEmojiPicker />
   {:else if $floatingMenu.type == "emoji"}
     <FloatingEmojiMenu emoji={$floatingMenu.emoji} />
   {/if}
