@@ -1,3 +1,3 @@
 git pull
-pnpm i
+pnpm i --frozen-lockfile
 pnpm start
