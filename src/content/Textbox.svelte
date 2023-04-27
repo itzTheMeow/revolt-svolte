@@ -45,7 +45,8 @@
 
   const MAX_AUTOCOMPLETE = 8;
 
-  let inputtedMessage = standalone?.content || "";
+  let inputtedMessage = standalone?.content || "",
+    cursorPos = 0;
 
   let MessageInput: HTMLTextAreaElement,
     FileInput: HTMLInputElement,
@@ -222,6 +223,8 @@
           4,
         bottom: EmojiPickerButton.getBoundingClientRect().height + 6,
       },
+      input: MessageInput,
+      cursor: cursorPos,
     });
   }
 
@@ -338,25 +341,33 @@
             e.preventDefault();
           }
           barHeight = BoxSizer.clientHeight;
+          cursorPos = MessageInput.selectionStart;
         }}
         on:keyup={() => {
           barHeight = BoxSizer.clientHeight;
           recalculateAutocomplete();
+          cursorPos = MessageInput.selectionStart;
         }}
         on:input={async () => {
           await tick();
           barHeight = BoxSizer.clientHeight;
+          cursorPos = MessageInput.selectionStart;
         }}
         on:touchmove={() => recalculateAutocomplete()}
-        on:touchend={() => recalculateAutocomplete()}
+        on:touchend={() => {
+          recalculateAutocomplete();
+          cursorPos = MessageInput.selectionStart;
+        }}
         on:mouseup={() => recalculateAutocomplete()}
         on:click={() => {
           MessageInputSelected.set(true);
           recalculateAutocomplete();
+          cursorPos = MessageInput.selectionStart;
         }}
         on:focus={() => {
           MessageInputSelected.set(true);
           recalculateAutocomplete();
+          cursorPos = MessageInput.selectionStart;
         }}
         on:blur={() => {
           MessageInputSelected.set(false);

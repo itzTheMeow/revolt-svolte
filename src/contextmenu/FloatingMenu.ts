@@ -12,7 +12,7 @@ type FloatingMenuState = {
 } & (
   | { type: "member"; member: Member; bar?: true }
   | { type: "emoji"; emoji: Emoji | DefaultEmoji }
-  | { type: "emoji_picker" }
+  | { type: "emoji_picker"; cursor: number; input: HTMLInputElement | HTMLTextAreaElement }
 );
 export const floatingMenu = writable<FloatingMenuState | null>(null);
 

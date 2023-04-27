@@ -7,6 +7,9 @@
   import { OrderedServers } from "state/orderedServers";
   import { onDestroy, onMount } from "svelte";
   import tinycolor from "tinycolor2";
+  import { floatingMenu } from "./FloatingMenu";
+
+  export let targetInput: HTMLInputElement | HTMLTextAreaElement, cursorPos: number;
 
   let perPage = 0,
     unit = "vh";
@@ -32,7 +35,7 @@
         icon: s.generateIconURL({ max_side: 64 }),
         emojis: s.emojis.items(),
       })),
-    { id: "0", name: "Default Emojis", emojis: RevoltEmojiLib },
+    { id: "0", name: "Default Emojis", emojis: RevoltEmojiLib.map((e) => e.setPack("twemoji")) },
   ];
   $: emojiChunks = emojiList.reduce<typeof emojiChunks>((cats, cat) => {
     cats.push({ id: cat.id, name: cat.name, icon: cat.icon });
@@ -63,6 +66,15 @@
               style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
               style:width="{(($MobileLayout ? 100 : 60) - perPage) * (1 / perPage)}{unit}"
               style:height="{(($MobileLayout ? 100 : 60) - perPage) * (1 / perPage)}{unit}"
+              on:click={() => {
+                floatingMenu.set(null);
+                if (!targetInput) return;
+                targetInput.focus();
+                const str = emoji.toString().replace(emoji.id, emoji.uniqueName);
+                targetInput.value =
+                  targetInput.value.slice(0, cursorPos) + str + targetInput.value.slice(cursorPos);
+                targetInput.selectionStart = targetInput.selectionEnd = cursorPos + str.length;
+              }}
             >
               <img
                 class="w-full h-full object-contain"

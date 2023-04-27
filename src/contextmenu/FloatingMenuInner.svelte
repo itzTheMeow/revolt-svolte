@@ -12,7 +12,7 @@
       <FloatingMemberMenu member={$floatingMenu.member} />
     {/key}
   {:else if $floatingMenu.type == "emoji_picker"}
-    <FloatingEmojiPicker />
+    <FloatingEmojiPicker cursorPos={$floatingMenu.cursor} targetInput={$floatingMenu.input} />
   {:else if $floatingMenu.type == "emoji"}
     <FloatingEmojiMenu emoji={$floatingMenu.emoji} />
   {/if}
