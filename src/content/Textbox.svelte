@@ -12,6 +12,7 @@
   } from "@tabler/icons-svelte";
   import { client } from "Client";
   import {
+    AppWidth,
     MessageInputSelected,
     MessageOffset,
     MobileLayout,
@@ -33,7 +34,7 @@
   import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
   import { onMount, tick } from "svelte";
   import tinycolor from "tinycolor2";
-  import { MemberOrUserDetails, scrollTo } from "utils";
+  import { MemberOrUserDetails, ZIndexes, scrollTo } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxTyping from "./TextboxTyping.svelte";
@@ -215,6 +216,7 @@
       target: EmojiPickerButton,
       pos: {
         right:
+          $AppWidth -
           EmojiPickerButton.getBoundingClientRect().left -
           EmojiPickerButton.getBoundingClientRect().width +
           4,
@@ -238,9 +240,10 @@
   <!-- Autocomplete -->
   {#if $autocomplete?.size && $autocomplete.standalone == !!standalone}
     <div
-      class="overflow-y-auto px-2 py-2.5 w-[calc(100%-2rem)] flex flex-col gap-1 absolute bottom-full left-4 rounded-t-md z-10"
+      class="overflow-y-auto px-2 py-2.5 w-[calc(100%-2rem)] flex flex-col gap-1 absolute bottom-full left-4 rounded-t-md"
       style="max-height:{MAX_AUTOCOMPLETE * 2 +
         (MAX_AUTOCOMPLETE + 1) * 0.25}rem;background-color:{$Theme['primary-header']};"
+      style:z-index={ZIndexes.Autocomplete}
     >
       {#each $autocomplete.channels.slice(0, MAX_AUTOCOMPLETE) as c (c.id)}
         <AutocompleteItem

@@ -1,9 +1,10 @@
 <script lang="ts">
   import TWEEN from "@tweenjs/tween.js";
   import { AppHeight, MobileLayout } from "State";
+  import { Theme } from "Theme";
   import { createEventDispatcher } from "svelte";
   import { scale } from "svelte/transition";
-  import { Theme } from "Theme";
+  import { ZIndexes } from "utils";
   import { ModalStack, type Modal, type ModalData } from "./ModalStack";
 
   const dispatch = createEventDispatcher();
@@ -77,6 +78,7 @@
 
 <div
   class="modal modal-open bg-black bg-opacity-0 absolute"
+  style:z-index={ZIndexes.Modal}
   style:transition="200ms background"
   bind:this={item.container}
   on:click={(e) =>

@@ -239,3 +239,12 @@ export function formatDuration(duration: number) {
     .normalize()
     .toFormat("mm:ss");
 }
+
+export enum ZIndexes {
+  Default,
+  Toolbar,
+  Autocomplete,
+  Floating,
+  Modal,
+  ContextMenu,
+}

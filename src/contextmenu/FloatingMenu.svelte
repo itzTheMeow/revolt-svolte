@@ -1,9 +1,9 @@
 <script lang="ts">
   import TWEEN from "@tweenjs/tween.js";
   import { MobileLayout } from "State";
-  import { slide } from "svelte/transition";
   import { Theme } from "Theme";
-  import { clickoutside } from "utils";
+  import { slide } from "svelte/transition";
+  import { ZIndexes, clickoutside } from "utils";
   import { floatingMenu } from "./FloatingMenu";
   import Inner from "./FloatingMenuInner.svelte";
 
@@ -75,6 +75,7 @@
       style={Object.entries($floatingMenu?.pos || {})
         .map((e) => `${e[0]}:${e[1]}px`)
         .join(";") + `;background-color:${$Theme["primary-header"]}`}
+      style:z-index={ZIndexes.Floating}
       use:clickoutside={handleClickOut}
     >
       <div class="{$floatingMenu.type == 'member' ? 'w-72' : ''} overflow-y-auto max-h-[inherit]">
@@ -85,6 +86,7 @@
     <div
       class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 flex flex-col"
       style:transition={!dragging ? "background-color 250ms" : ""}
+      style:z-index={ZIndexes.Floating}
       on:touchstart={handleTouchStart}
       on:touchmove={handleTouchMove}
       on:touchend={handleTouchEnd}

@@ -2,7 +2,7 @@
   import { MobileLayout } from "State";
   import { Theme } from "Theme";
   import tinycolor from "tinycolor2";
-  import { clickoutside } from "utils";
+  import { ZIndexes, clickoutside } from "utils";
   import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
   function handleClick(e: MouseEvent | TouchEvent, opt: ContextMenuStateOption | undefined) {
@@ -26,6 +26,7 @@
       .map((e) => `${e[0]}:${e[1]}px`)
       .join(";") + `;background-color:${$Theme["primary-background"]}`}
     id="ContextMenu"
+    style:z-index={ZIndexes.ContextMenu}
     use:clickoutside={handleClickOut}
   >
     <ul class="menu {!$MobileLayout ? '!p-1' : ''}">
