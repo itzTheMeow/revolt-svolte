@@ -103,7 +103,7 @@
       <div
         class="rounded-t-xl overflow-hidden shadow-sm shadow-black w-full {dragging
           ? 'h-full max-h-[80%]'
-          : 'h-fit max-h-[50%]'} {dragging ? '' : 'overflow-y-auto'}"
+          : 'h-fit max-h-[50%]'} {dragging || $floatingMenu.type == "emoji_picker" ? '' : 'overflow-y-auto'}"
         style:background-color={$Theme["primary-background"]}
         bind:this={FloatingMenuInner}
         in:slide={{ duration: 250 }}
