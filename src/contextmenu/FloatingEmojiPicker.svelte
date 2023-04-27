@@ -43,7 +43,7 @@
 </script>
 
 {#key state}
-  <div class="flex flex-col h-[60vh] w-[60vh] py-2">
+  <div class="flex flex-col {$MobileLayout ? '' : 'h-[60vh] w-[60vh]'} py-2">
     <VirtualList className="px-2" items={emojiChunks} let:item={cat}>
       {#if !Array.isArray(cat)}
         <div class="uppercase font-semibold text-xs flex mb-2">
@@ -55,8 +55,8 @@
             <div
               class="p-1 rounded cursor-pointer hover:bg-[var(--hv)]"
               style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
-              style:width="{(60 - perPage) * (1 / perPage)}vh"
-              style:height="{(60 - perPage) * (1 / perPage)}vh"
+              style:width="{(60 - perPage) * (1 / perPage)}v{$MobileLayout ? 'w' : 'h'}"
+              style:height="{(60 - perPage) * (1 / perPage)}v{$MobileLayout ? 'w' : 'h'}"
             >
               <img
                 class="w-full h-full object-contain"
