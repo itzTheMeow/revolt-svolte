@@ -32,7 +32,8 @@
   function handleTouchMove(e: TouchEvent) {
     const diff = e.changedTouches[0].clientY - Math.abs(pos[1]);
     if (pos[0] <= -1 && pos[1] <= -1) {
-      if (diff > 3 && FloatingMenuInner.scrollTop <= 0) pos = pos.map((p) => -p);
+      if ($floatingMenu.type !==
+      'emoji_picker' && diff > 3 && FloatingMenuInner.scrollTop <= 0) pos = pos.map((p) => -p);
       else return;
     }
     if (Math.abs(diff) > 3) dragging = true;
