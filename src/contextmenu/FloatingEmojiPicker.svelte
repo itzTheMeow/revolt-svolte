@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { IconChevronDown, IconChevronLeft } from "@tabler/icons-svelte";
   import { client } from "Client";
-  import { CollapsedEmojiCategories } from "State";
+  import { MobileLayout } from "State";
   import { Theme } from "Theme";
   import VirtualList from "extra/VirtualList.svelte";
   import { RevoltEmojiLib, type AnyEmoji } from "revkit";
@@ -10,7 +9,7 @@
   import tinycolor from "tinycolor2";
 
   let perPage = 0;
-  $: perPage = 8;
+  $: perPage = $MobileLayout ? 5 : 8;
 
   let state = Date.now();
   function update() {
@@ -18,9 +17,10 @@
   }
   onMount(() => client.emojis.onUpdate(update));
   onDestroy(() => client.emojis.offUpdate(update));
+  $: state += perPage;
 
   let emojiList: { id: string; name: string; icon?: string; emojis: AnyEmoji[] }[] = [],
-    emojiChunks: (Omit<(typeof emojiList)[0], "emojis"> | AnyEmoji[])[] = [];
+    emojiChunks: (Omit<(typeof emojiList)[0], "emojis"> | (AnyEmoji | string)[])[] = [];
   $: emojiList = [
     ...$OrderedServers
       .filter((s) => s.emojis.size)
@@ -43,31 +43,20 @@
 </script>
 
 {#key state}
-  <div class="flex flex-col h-[50vw] w-[50vh] max-h-[inherit]">
-    <VirtualList className="" items={emojiChunks} let:item={cat}>
+  <div class="flex flex-col h-[60vh] w-[60vh] py-2">
+    <VirtualList className="px-2" items={emojiChunks} let:item={cat}>
       {#if !Array.isArray(cat)}
-        <div
-          class="uppercase font-semibold text-xs flex cursor-pointer hover:brightness-90"
-          on:click={() => {
-            const i = $CollapsedEmojiCategories.indexOf(cat.id);
-            if (i >= 0) $CollapsedEmojiCategories.splice(i, 1);
-            else $CollapsedEmojiCategories.push(cat.id);
-          }}
-        >
-          <span class="mr-auto">{cat.name}</span>
-          {#if $CollapsedEmojiCategories.includes(cat.id)}
-            <IconChevronLeft size={16} />
-          {:else}
-            <IconChevronDown size={16} />
-          {/if}
+        <div class="uppercase font-semibold text-xs flex mb-2">
+          {cat.name}
         </div>
       {:else}
-        <div class="flex gap-1">
+        <div class="flex gap-1 mb-1">
           {#each cat as emoji}
             <div
-              class="p-0.5 aspect-square rounded-sm cursor-pointer hover:bg-[var(--hv)]"
+              class="p-1 rounded cursor-pointer hover:bg-[var(--hv)]"
               style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
-              style:width="{100 * (1 / perPage)}%"
+              style:width="{(60 - perPage) * (1 / perPage)}vh"
+              style:height="{(60 - perPage) * (1 / perPage)}vh"
             >
               <img
                 class="w-full h-full object-contain"

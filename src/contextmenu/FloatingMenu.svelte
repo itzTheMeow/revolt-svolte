@@ -71,7 +71,10 @@
 {#if $floatingMenu}
   {#if !$MobileLayout}
     <div
-      class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit max-h-[50vh]"
+      class="absolute rounded-md overflow-hidden shadow-sm shadow-black w-fit h-fit {$floatingMenu.type ==
+      'emoji_picker'
+        ? ''
+        : 'max-h-[50vh]'}"
       style={Object.entries($floatingMenu?.pos || {})
         .map((e) => `${e[0]}:${e[1]}px`)
         .join(";") + `;background-color:${$Theme["primary-header"]}`}
