@@ -8,8 +8,9 @@
   import { onDestroy, onMount } from "svelte";
   import tinycolor from "tinycolor2";
 
-  let perPage = 0;
+  let perPage = 0, unit = "vh";
   $: perPage = $MobileLayout ? 5 : 8;
+  $: unit = $MobileLayout ? "vw" : "vh";
 
   let state = Date.now();
   function update() {
@@ -43,7 +44,7 @@
 </script>
 
 {#key state}
-  <div class="flex flex-col {$MobileLayout ? '' : 'h-[60vh] w-[60vh]'} py-2">
+  <div class="flex flex-col py-2" style:height="60{unit}" style:width="60{unit}">
     <VirtualList className="px-2" items={emojiChunks} let:item={cat}>
       {#if !Array.isArray(cat)}
         <div class="uppercase font-semibold text-xs flex mb-2">
@@ -55,8 +56,8 @@
             <div
               class="p-1 rounded cursor-pointer hover:bg-[var(--hv)]"
               style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
-              style:width="{(60 - perPage) * (1 / perPage)}v{$MobileLayout ? 'w' : 'h'}"
-              style:height="{(60 - perPage) * (1 / perPage)}v{$MobileLayout ? 'w' : 'h'}"
+              style:width="{(60 - perPage) * (1 / perPage)}{unit}"
+              style:height="{(60 - perPage) * (1 / perPage)}{unit}"
             >
               <img
                 class="w-full h-full object-contain"
