@@ -8,7 +8,8 @@
   import { onDestroy, onMount } from "svelte";
   import tinycolor from "tinycolor2";
 
-  let perPage = 0, unit = "vh";
+  let perPage = 0,
+    unit = "vh";
   $: perPage = 8;
   $: unit = $MobileLayout ? "vw" : "vh";
 
@@ -44,7 +45,11 @@
 </script>
 
 {#key state}
-  <div class="flex flex-col py-2" style:height={$MobileLayout ? "50vh" : "60vh"} style:width={$MobileLayout ? "100%" : "60vh"}>
+  <div
+    class="flex flex-col py-2"
+    style:height={$MobileLayout ? "50vh" : "60vh"}
+    style:width={$MobileLayout ? "100%" : "60vh"}
+  >
     <VirtualList className="px-2" items={emojiChunks} let:item={cat}>
       {#if !Array.isArray(cat)}
         <div class="uppercase font-semibold text-xs flex mb-2">

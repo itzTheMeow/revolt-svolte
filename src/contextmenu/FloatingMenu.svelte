@@ -10,6 +10,7 @@
   let FloatingMenuInner: HTMLDivElement;
 
   function handleClickOut(e: MouseEvent | TouchEvent) {
+    // close the menu when clicked outside of
     if (
       !e.composedPath().includes($floatingMenu?.target!) &&
       !e.composedPath().includes(document.getElementById("ContextMenu")!)
@@ -32,14 +33,18 @@
   function handleTouchMove(e: TouchEvent) {
     const diff = e.changedTouches[0].clientY - Math.abs(pos[1]);
     if (pos[0] <= -1 && pos[1] <= -1) {
-      if ($floatingMenu.type !==
-      'emoji_picker' && diff > 3 && FloatingMenuInner.scrollTop <= 0) pos = pos.map((p) => -p);
+      // disable swipe-down
+      if ($floatingMenu?.type !== "emoji_picker" && diff > 3 && FloatingMenuInner.scrollTop <= 0)
+        pos = pos.map((p) => -p);
       else return;
     }
+    // start dragging if cursor moved 3 pixels
     if (Math.abs(diff) > 3) dragging = true;
     if (dragging) {
+      // get the new height for the container
       const h = Math.max(0, Math.round(TotalHeight - diff));
-      FloatingMenuInner.style.height = `${h}px`;
+      FloatingMenuInner.style.height = `${h}px`; // set the height
+      // if the container height actually changed, set the background opacity relative to the height
       if (FloatingMenuInner.offsetHeight == h) setOpacity((1 - diff / TotalHeight) * 0.5);
     }
   }
@@ -48,18 +53,22 @@
     e.preventDefault();
     let isDone = false;
     if (dragging) {
+      // get the total distance dragged
       const diff = e.changedTouches[0].clientY - pos[1];
       dragging = false;
-      setOpacity(0.5);
+      setOpacity(0.5); // reset the background opacity
+      // if dragged more than 1/3 of the container height down, close the menu
       if (diff > TotalHeight / 3) isDone = true;
     } else isDone = true;
-    if (isDone) setOpacity(0);
+    if (isDone) setOpacity(0); // set the background opacity (css animation handles this)
     new TWEEN.Tween({ h: FloatingMenuInner.offsetHeight })
+      // create a Tween to bring the container back to start or the bottom
       .to({ h: isDone ? 0 : TotalHeight }, 250)
       .onUpdate(({ h }) => {
         FloatingMenuInner.style.height = FloatingMenuInner.style.maxHeight = `${h}px`;
       })
       .onComplete(() => {
+        // erase the menu if closed
         if (isDone) floatingMenu.set(null);
         else FloatingMenuInner.style.height = FloatingMenuInner.style.maxHeight = "";
       })
@@ -103,7 +112,9 @@
       <div
         class="rounded-t-xl overflow-hidden shadow-sm shadow-black w-full {dragging
           ? 'h-full max-h-[80%]'
-          : 'h-fit max-h-[50%]'} {dragging || $floatingMenu.type == 'emoji_picker' ? '' : 'overflow-y-auto'}"
+          : 'h-fit max-h-[50%]'} {dragging || $floatingMenu.type == 'emoji_picker'
+          ? ''
+          : 'overflow-y-auto'}"
         style:background-color={$Theme["primary-background"]}
         bind:this={FloatingMenuInner}
         in:slide={{ duration: 250 }}
