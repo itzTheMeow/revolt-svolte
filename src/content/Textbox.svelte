@@ -212,6 +212,7 @@
 
   function handleEmojiPicker(e: MouseEvent | TouchEvent) {
     e.preventDefault();
+    MessageInput?.blur();
     floatingMenu.set({
       type: "emoji_picker",
       target: EmojiPickerButton,
