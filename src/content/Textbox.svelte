@@ -33,9 +33,9 @@
   import { ModalStack } from "modals/ModalStack";
   import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
   import { onMount, tick } from "svelte";
-  import tinycolor from "tinycolor2";
   import { MemberOrUserDetails, ZIndexes, scrollTo } from "utils";
   import AutocompleteItem from "./AutocompleteItem.svelte";
+  import TextboxButton from "./TextboxButton.svelte";
   import TextboxReply from "./TextboxReply.svelte";
   import TextboxTyping from "./TextboxTyping.svelte";
   import TextboxUploaded from "./TextboxUploaded.svelte";
@@ -305,24 +305,20 @@
           if (takeBottom) selectBottom();
         }}
       />
-      <div
-        class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
-        style="background-color:{$Theme['primary-header']};"
-        bind:this={UploaderButton}
-        on:click={handleUpload}
-        on:touchend={handleUpload}
-      >
-        <IconPaperclip />
-      </div>
+      <TextboxButton
+        color={$Theme["primary-header"]}
+        onclick={handleUpload}
+        icon={IconPaperclip}
+        bind:button={UploaderButton}
+        {standalone}
+      />
     {:else}
-      <div
-        class="btn btn-square btn-secondary rounded-none border-none h-12 mb-auto"
-        style="background-color:{$Theme['error']};"
-        on:click={() => isEditing.set(null)}
-        on:touchend|preventDefault={() => isEditing.set(null)}
-      >
-        <IconX />
-      </div>
+      <TextboxButton
+        color={$Theme["error"]}
+        onclick={() => isEditing.set(null)}
+        icon={IconX}
+        {standalone}
+      />
     {/if}
     <div class="flex-1 flex items-center relative" style:background-color={$Theme["message-box"]}>
       <textarea
@@ -386,37 +382,28 @@
       </div>
     </div>
     {#if !standalone}
-      <div
-        class="btn btn-square btn-secondary rounded-none border-none h-12 mt-auto"
-        style="background-color:{$Theme['primary-header']};"
-        bind:this={EmojiPickerButton}
-        on:click={handleEmojiPicker}
-        on:touchend={handleEmojiPicker}
-      >
-        <IconMoodHappy />
-      </div>
-      <div
-        class="btn btn-square btn-primary rounded-none border-none h-12 mt-auto"
-        style:background-color={$Theme["accent"]}
-        style:color={tinycolor($Theme["accent"]).isDark()
-          ? $Theme["foreground"]
-          : $Theme["background"]}
-        bind:this={SendButton}
-        on:touchend|preventDefault={sendMessage}
-        on:click={sendMessage}
-      >
-        <IconArrowBigRightLine />
-      </div>
+      <TextboxButton
+        color={$Theme["primary-header"]}
+        onclick={handleEmojiPicker}
+        icon={IconMoodHappy}
+        bind:button={EmojiPickerButton}
+        {standalone}
+      />
+      <TextboxButton
+        color={$Theme["accent"]}
+        onclick={sendMessage}
+        icon={IconArrowBigRightLine}
+        bind:button={SendButton}
+        {standalone}
+      />
     {:else}
-      <div
-        class="btn btn-square btn-primary rounded-none border-none h-12 mb-auto"
-        style="background-color:{$Theme['success']};"
-        bind:this={SendButton}
-        on:touchend|preventDefault={sendMessage}
-        on:click={sendMessage}
-      >
-        <IconCheck />
-      </div>
+      <TextboxButton
+        color={$Theme["success"]}
+        onclick={sendMessage}
+        icon={IconCheck}
+        bind:button={SendButton}
+        {standalone}
+      />
     {/if}
   </div>
 </div>
