@@ -212,6 +212,7 @@
 
   function handleEmojiPicker(e: MouseEvent | TouchEvent) {
     e.preventDefault();
+    if ($floatingMenu?.type == "emoji_picker") return floatingMenu.set(null);
     MessageInput?.blur();
     floatingMenu.set({
       type: "emoji_picker",
