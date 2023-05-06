@@ -9,27 +9,48 @@
 
   export let message: Message;
 
-  let replies = writable<(BaseMessage | undefined)[]>([]);
-  $: (async () => {
-    $replies = await Promise.all(
-      message.replyIDs?.map(async (i) => {
-        if (!message.channel) return;
-        return message.channel.messages.get(i) || (await message.channel.fetchMessage(i));
-      })
-    );
-  })();
+  let replies = writable<(BaseMessage | string)[]>([]);
+  $: replies.set(
+    message.replyIDs?.map((id, i) => {
+      const msg = message.channel?.messages.get(id);
+      if (msg) return msg;
+      else {
+        message.channel.fetchMessage(id).then((msg) => {
+          $replies[i] = msg || id;
+        });
+        return id;
+      }
+    })
+  );
 </script>
 
 <div class="mt-3 -mb-2.5 pl-1.5">
-  {#each $replies.sort((r1, r2) => (r1?.createdAt || 0) - (r2?.createdAt || 0)) as reply (reply?.id)}
-    {#if reply?.isUser()}
+  {#each $replies.sort((r1, r2) => (typeof r1 == "string" ? 0 : r1.createdAt) - (typeof r2 == "string" ? 0 : r2.createdAt)) as reply (typeof reply == "string" ? reply : reply.id)}
+    {#if typeof reply == "string"}
+      <div class="flex gap-2 items-center">
+        <IconCornerLeftDown size={18} />
+        <div class="flex gap-2 items-center text-[14px]">
+          <img
+            class="w-4 h-4 rounded-full -ml-1"
+            src="https://api.revolt.chat/users/${reply}/default_avatar"
+            alt=""
+          />
+        </div>
+        <div
+          class="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap cursor-pointer"
+          data-clickable
+        >
+          <i>Unknown Message</i>
+        </div>
+      </div>
+    {:else if reply?.isUser()}
       <div class="flex gap-2 items-center">
         <IconCornerLeftDown size={18} />
         <div
           class="cursor-pointer flex gap-2 items-center text-[14px] hover:[--u:underline]"
           data-clickable
           on:click={(e) => {
-            if (!reply?.isUser()) return;
+            if (typeof reply == "string" || !reply.isUser()) return;
             if (reply.member) showMemberContext(reply.member, e.clientX, e.clientY, e.target);
             else ModalStack.push({ type: "user", id: reply.authorID });
             e.preventDefault();
