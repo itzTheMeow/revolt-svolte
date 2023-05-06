@@ -35,7 +35,7 @@
   $: {
     const previousMessage =
       $SelectedChannel!.messages.ordered[$SelectedChannel!.messages.ordered.indexOf(message) - 1];
-    isReply = message.isUser() && !!message.replies.length;
+    isReply = message.isUser() && !!message.replyIDs.length;
     shouldSeparate =
       !message.isUser() ||
       isReply ||
