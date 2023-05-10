@@ -37,7 +37,7 @@
             <img
               src={client.users.get(uid)?.generateAvatarURL({ max_side: 256 })}
               alt={client.users.get(uid)?.username}
-              class="rounded-full w-full h-full"
+              class="rounded-full w-full h-full object-cover"
             />
             {#if (client.user?.id === uid && $voiceState.isDeaf()) || !$voiceState.participants.get(uid)?.audio}
               <div
