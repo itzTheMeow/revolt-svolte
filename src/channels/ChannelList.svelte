@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { VoiceStatus } from "@revkit/voice";
   import {
     IconBrandGithub,
     IconChevronDown,
@@ -12,16 +13,16 @@
     IconSettingsFilled,
   } from "@tabler/icons-svelte";
   import { client } from "Client";
+  import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
+  import { BRAND_COLOR, Theme } from "Theme";
   import UserTag from "extra/UserTag.svelte";
   import { ModalStack } from "modals/ModalStack";
   import { SettingsServerPage } from "modals/Settings";
   import { RevoltServerFlags, type Channel } from "revkit";
-  import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "State";
   import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
-  import { BRAND_COLOR, Theme } from "Theme";
   import { BRAND_NAME, COMMIT_HASH, GIT_URL, ServerManagePermissions } from "utils";
-  import { voiceState, VoiceStatus } from "voice/VoiceState";
+  import { voiceState } from "voice/VoiceState";
   import ChannelIcon from "./ChannelIcon.svelte";
   import ChannelItem from "./ChannelItem.svelte";
   import VoiceBarIcon from "./VoiceBarIcon.svelte";
@@ -49,10 +50,7 @@
 
   let voiceConnection: Channel | null = null;
   $: {
-    voiceConnection =
-      $voiceState.status == VoiceStatus.CONNECTED
-        ? client.channels.get($voiceState.roomId || "") || null
-        : null;
+    voiceConnection = $voiceState.status == VoiceStatus.CONNECTED ? $voiceState.channel : null;
   }
 
   let si = false;
@@ -225,14 +223,14 @@
                 src={client.users.get(uid)?.generateAvatarURL({ max_side: 64 })}
                 alt={client.users.get(uid)?.username}
                 class="rounded-full w-full h-full {(client.user?.id === uid &&
-                  $voiceState.isDeaf()) ||
+                  $voiceState.deafened) ||
                 !$voiceState.participants.get(uid)?.audio
                   ? 'brightness-50'
                   : ''}"
               />
-              {#if (client.user?.id === uid && $voiceState.isDeaf()) || !$voiceState.participants.get(uid)?.audio}
+              {#if (client.user?.id === uid && $voiceState.deafened) || !$voiceState.participants.get(uid)?.audio}
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  {#if client.user?.id === uid && $voiceState.isDeaf()}
+                  {#if client.user?.id === uid && $voiceState.deafened}
                     <IconHeadphonesOff size={14} />
                   {:else if !$voiceState.participants.get(uid)?.audio}
                     <IconMicrophoneOff size={14} />

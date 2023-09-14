@@ -1,22 +1,24 @@
 <script lang="ts">
+  import { VoiceStatus } from "@revkit/voice";
   import { IconAlertTriangle, IconHeadphonesOff, IconMicrophoneOff } from "@tabler/icons-svelte";
   import { client } from "Client";
   import Loader from "Loader.svelte";
+  import { Theme } from "Theme";
   import Markdown from "markdown/Markdown.svelte";
   import type { VoiceChannel } from "revkit";
-  import { Theme } from "Theme";
-  import { voiceState, VoiceStatus } from "../voice/VoiceState";
+  import { voiceState } from "../voice/VoiceState";
   import VoiceChannelIcon from "./VoiceChannelIcon.svelte";
 
   let isConnectedHere = false;
   $: isConnectedHere =
-    $voiceState.status == VoiceStatus.CONNECTED && $voiceState.roomId == channel.id;
+    $voiceState.status == VoiceStatus.CONNECTED && $voiceState.channelID == channel.id;
 
   export let channel: VoiceChannel;
 </script>
 
 <div class="flex flex-col items-center justify-center w-full h-full">
-  {#await $voiceState.loadVoice()}
+  {#await new Promise((r) => r(void 0))}
+    <!--TODO: remove and actually async the client-->
     <div>Loading...</div>
   {:then _}
     <div
@@ -39,12 +41,12 @@
               alt={client.users.get(uid)?.username}
               class="rounded-full w-full h-full object-cover"
             />
-            {#if (client.user?.id === uid && $voiceState.isDeaf()) || !$voiceState.participants.get(uid)?.audio}
+            {#if (client.user?.id === uid && $voiceState.deafened) || !$voiceState.participants.get(uid)?.audio}
               <div
                 class="absolute right-0 bottom-0 p-1 rounded-full"
                 style:background={$Theme["error"]}
               >
-                {#if client.user?.id === uid && $voiceState.isDeaf()}
+                {#if client.user?.id === uid && $voiceState.deafened}
                   <IconHeadphonesOff size={14} />
                 {:else if !$voiceState.participants.get(uid)?.audio}
                   <IconMicrophoneOff size={14} />

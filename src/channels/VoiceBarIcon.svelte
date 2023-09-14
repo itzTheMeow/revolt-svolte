@@ -16,7 +16,7 @@
     isDeaf = false;
   $: {
     isMuted = !$voiceState.isProducing("audio");
-    isDeaf = !!$voiceState.isDeaf();
+    isDeaf = !!$voiceState.deafened;
   }
 </script>
 
@@ -27,8 +27,8 @@
   on:click={() => {
     switch (action) {
       case "mute":
-        if (isMuted) $voiceState.startProducing("audio");
-        else $voiceState.stopProducing("audio");
+        if (isMuted) $voiceState.play("audio");
+        else $voiceState.stopProduce("audio");
         break;
       case "deafen":
         if (isDeaf) $voiceState.stopDeafen();

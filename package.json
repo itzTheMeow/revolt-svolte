@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/itzTheMeow/svelte-daisyui-template#readme",
   "dependencies": {
+    "@revkit/voice": "^0.0.8",
     "@tabler/icons-svelte": "2.16.0",
     "@tsconfig/svelte": "^4.0.1",
     "@tweenjs/tween.js": "^19.0.0",
