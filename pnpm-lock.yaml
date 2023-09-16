@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@revkit/voice':
-    specifier: ^0.1.0
-    version: 0.1.0(ws@8.13.0)
+    specifier: ^0.1.1
+    version: 0.1.1(ws@8.13.0)
   '@tabler/icons-svelte':
     specifier: 2.16.0
     version: 2.16.0(svelte@3.58.0)
@@ -1591,8 +1591,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@revkit/voice@0.1.0(ws@8.13.0):
-    resolution: {integrity: sha512-XRn2ngq/e9NdUeaaBo53u0zDS/ZHE5Mq54pmNNwP94hAPN+N+sHD5ewY3v0kwxXDOBC3Giev6NQKLHbPuf08/g==}
+  /@revkit/voice@0.1.1(ws@8.13.0):
+    resolution: {integrity: sha512-5DRGMy4WfiZZNc28fyqjPObiRZ2DlrJJ89e7eU9dswvsFxkezm+0f6eXrfoR5GH2PsJs2yplm+G4JTtUNFLSmw==}
     dependencies:
       '@insertish/isomorphic-ws': 4.0.1(ws@8.13.0)
       dgram: 1.0.1
