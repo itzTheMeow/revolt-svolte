@@ -105,7 +105,7 @@ export function MemberOrUserDetails(user?: User, member?: Member) {
 export function UserDetails(user: User | undefined) {
   return {
     online: user?.online && (!user?.presence || user.presence !== "Invisible"),
-    name: user?.username || "Unknown User",
+    name: user?.displayName || user?.username || "Unknown User",
     avatar: user?.generateAvatarURL({ max_side: 256 }),
   };
 }

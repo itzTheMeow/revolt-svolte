@@ -272,7 +272,7 @@
           id={u.id}
           icon={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).avatar || ""}
           name={MemberOrUserDetails(u, $SelectedServer?.members.get(u.id)).name}
-          detail={$SelectedServer?.members.get(u.id)?.nickname ? u.username : ""}
+          detail={u.tag}
           rounded
           onclick={() => handleAutocompleteTab(u.id)}
         />

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@revkit/voice':
-    specifier: ^0.0.8
-    version: 0.0.8(ws@8.13.0)
+    specifier: ^0.1.0
+    version: 0.1.0(ws@8.13.0)
   '@tabler/icons-svelte':
     specifier: 2.16.0
     version: 2.16.0(svelte@3.58.0)
@@ -108,8 +108,8 @@ dependencies:
     specifier: ^10.1.0
     version: 10.1.0
   revkit:
-    specifier: ^1.1.7
-    version: 1.1.7(ws@8.13.0)
+    specifier: ^1.1.10
+    version: 1.1.10(ws@8.13.0)
   rimraf:
     specifier: ^5.0.0
     version: 5.0.0
@@ -1591,8 +1591,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@revkit/voice@0.0.8(ws@8.13.0):
-    resolution: {integrity: sha512-4YmKpw6oNDROLsxt72cJbOzZdNTks7/r2HUi2MfbwfO8ADgN+CZryGosJxD/s9W/ZGSs/p+cOa14nwDl/Mm7dA==}
+  /@revkit/voice@0.1.0(ws@8.13.0):
+    resolution: {integrity: sha512-XRn2ngq/e9NdUeaaBo53u0zDS/ZHE5Mq54pmNNwP94hAPN+N+sHD5ewY3v0kwxXDOBC3Giev6NQKLHbPuf08/g==}
     dependencies:
       '@insertish/isomorphic-ws': 4.0.1(ws@8.13.0)
       dgram: 1.0.1
@@ -1601,7 +1601,7 @@ packages:
       mediasoup-client: 3.6.100
       msc-node: 0.0.10
       prism-media: github.com/itzTheMeow/prism-media/f3e33538bbd00cd9f2a2184a75a832f961ba5409(ffmpeg-static@5.2.0)
-      revkit: 1.1.7(ws@8.13.0)
+      revkit: 1.1.10(ws@8.13.0)
     transitivePeerDependencies:
       - '@discordjs/opus'
       - debug
@@ -5042,8 +5042,8 @@ packages:
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: false
 
-  /revkit@1.1.7(ws@8.13.0):
-    resolution: {integrity: sha512-kcDxGv3Qiquq79zCSkEtkxVM1b+q8iD6lOa8W4gfIYXetMi32BD2ZagVEA4rjRWpmCL26XCKGVAkukq3O2D6ng==}
+  /revkit@1.1.10(ws@8.13.0):
+    resolution: {integrity: sha512-9GLWoBO1pA7U68ZF0g1Ezt3e5XMbcQzeLupqxhXpK/cPAB1AmvQnSSoNl7vkFRgO8eo9hF09oX15Pj8n7UHt+A==}
     dependencies:
       '@insertish/exponential-backoff': 3.1.0-patch.2
       '@insertish/isomorphic-ws': 4.0.1(ws@8.13.0)
@@ -5052,15 +5052,15 @@ packages:
       form-data: 4.0.0
       long: 5.2.3
       luxon: 3.3.0
-      revolt-api: 0.5.17
+      revolt-api: 0.6.7
       ulid: 2.3.0
     transitivePeerDependencies:
       - debug
       - ws
     dev: false
 
-  /revolt-api@0.5.17:
-    resolution: {integrity: sha512-AkceDCK+6c8Ie+psmG8KA1VTx+DJJRk99jsve9SIBCeCxZ7CizdgBdG3fJ4KM/UA4H+IvPa3PdFzgrBeBuTOWQ==}
+  /revolt-api@0.6.7:
+    resolution: {integrity: sha512-CfMs8xCy9VcZIzyaJ9/t6ixcUR+YJ1hahIiunHd2FcoSKKiPgJNZvCXSV2vSWW1b8y2ftFeFygU/+AfdZocOeQ==}
     dependencies:
       '@insertish/oapi': 0.1.18
       axios: 0.26.1
