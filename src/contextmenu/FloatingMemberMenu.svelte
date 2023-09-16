@@ -109,7 +109,7 @@
     <div
       class="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis"
       use:tippy={{
-        content: "@" + member.user.username,
+        content: member.user.tag,
       }}
     >
       {MemberDetails(member).name}

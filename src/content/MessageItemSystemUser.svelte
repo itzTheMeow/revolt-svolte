@@ -37,7 +37,7 @@
       alt=""
     />
     <div style={UserColor(MemberDetails(member).color || "inherit")}>
-      {user.username}
+      {user.displayName || user.username}
     </div>
   </div>
   {text}.
