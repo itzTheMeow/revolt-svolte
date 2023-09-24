@@ -17,12 +17,16 @@
     item = item;
   }
   onMount(() => {
-    if (item instanceof Member) item.onUpdate(update);
-    else item[0].onUpdate(update);
+    if (item instanceof Member) {
+      item.onUpdate(update);
+      item.user.onUpdate(update);
+    } else item[0].onUpdate(update);
   });
   onDestroy(() => {
-    if (item instanceof Member) item.offUpdate(update);
-    else item[0].offUpdate(update);
+    if (item instanceof Member) {
+      item.offUpdate(update);
+      item.user.offUpdate(update);
+    } else item[0].offUpdate(update);
   });
 
   function handleClick(e: MouseEvent) {
