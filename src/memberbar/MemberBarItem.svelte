@@ -5,12 +5,25 @@
   import { ModalStack } from "modals/ModalStack";
   import { Member, Role } from "revkit";
   import { AppHeight, AppWidth } from "State";
+  import { onDestroy, onMount } from "svelte";
   import { tippy } from "svelte-tippy";
   import { Theme } from "Theme";
   import { MemberDetails, StatusColor, UserColor, UserDetails } from "utils";
 
   export let item: [Role, number] | Member;
   let BarItem: HTMLDivElement;
+
+  function update() {
+    item = item;
+  }
+  onMount(() => {
+    if (item instanceof Member) item.onUpdate(update);
+    else item[0].onUpdate(update);
+  });
+  onDestroy(() => {
+    if (item instanceof Member) item.offUpdate(update);
+    else item[0].offUpdate(update);
+  });
 
   function handleClick(e: MouseEvent) {
     if (!(item instanceof Member)) return;
