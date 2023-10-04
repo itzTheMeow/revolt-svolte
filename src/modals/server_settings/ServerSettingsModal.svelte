@@ -1,14 +1,14 @@
 <script lang="ts">
   import { IconX } from "@tabler/icons-svelte";
-  import Header from "extra/Header.svelte";
   import { MobileLayout } from "State";
   import { Theme } from "Theme";
-  import ModalBase from "./ModalBase.svelte";
-  import type { Modal, ModalData } from "./ModalStack";
+  import Header from "extra/Header.svelte";
+  import ModalBase from "../ModalBase.svelte";
+  import type { Modal, ModalData } from "../ModalStack";
+  import { ServerSettingsCategories, SettingsServerPage } from "../Settings";
+  import ServerSettingsModalOverview from "./PageOverview.svelte";
   import ServerSettingsModalButton from "./ServerSettingsModalButton.svelte";
-  import ServerSettingsModalOverview from "./ServerSettingsModalOverview.svelte";
   import ServerSettingsModalSave from "./ServerSettingsModalSave.svelte";
-  import { ServerSettingsCategories, SettingsServerPage } from "./Settings";
 
   export let modal: Extract<ModalData, { type: "settings_server" }>;
   let item: Modal;

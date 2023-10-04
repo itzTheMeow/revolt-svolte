@@ -1,18 +1,18 @@
 <script lang="ts">
   import { IconPlus, IconUpload, IconX } from "@tabler/icons-svelte";
-  import byteSize from "byte-size";
   import { client } from "Client";
+  import { AutumnService, MobileLayout, fetchAutumn } from "State";
+  import { Theme } from "Theme";
+  import byteSize from "byte-size";
   import Header from "extra/Header.svelte";
   import type { ExportedImageUploader } from "extra/ImageUploader";
   import ImageUploader from "extra/ImageUploader.svelte";
   import type { API, Server } from "revkit";
-  import { AutumnService, fetchAutumn, MobileLayout } from "State";
   import { onMount } from "svelte";
-  import { Theme } from "Theme";
   import { ServerDetails } from "utils";
-  import Input from "../extra/Input.svelte";
-  import { ModalStack } from "./ModalStack";
-  import { ServerSettingsChanges } from "./Settings";
+  import Input from "../../extra/Input.svelte";
+  import { ModalStack } from "../ModalStack";
+  import { ServerSettingsChanges } from "../Settings";
 
   type SysKey = keyof API.SystemMessageChannels;
   const systemKeys: SysKey[] = ["user_joined", "user_banned", "user_kicked", "user_left"],

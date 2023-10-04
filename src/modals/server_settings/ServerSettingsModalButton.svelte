@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Theme } from "Theme";
-  import { ModalStack, type ModalData } from "./ModalStack";
-  import { SettingsServerPage } from "./Settings";
+  import { ModalStack, type ModalData } from "../ModalStack";
+  import { SettingsServerPage } from "../Settings";
 
   export let category: SettingsServerPage,
     icon: ConstructorOfATypedSvelteComponent,

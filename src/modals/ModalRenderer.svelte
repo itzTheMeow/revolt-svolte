@@ -3,7 +3,7 @@
   import CropModal from "./CropModal.svelte";
   import MarkdownModal from "./MarkdownModal.svelte";
   import { ModalStack, type ModalData } from "./ModalStack";
-  import ServerSettingsModal from "./ServerSettingsModal.svelte";
+  import ServerSettingsModal from "./server_settings/ServerSettingsModal.svelte";
   import UserModal from "./UserModal.svelte";
 
   let stack: ModalData[] = [];

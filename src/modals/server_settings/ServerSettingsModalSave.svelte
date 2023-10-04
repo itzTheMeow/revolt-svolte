@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Theme } from "Theme";
-  import { ServerSettingsChanges } from "./Settings";
+  import { ServerSettingsChanges } from "../Settings";
 </script>
 
 {#if $ServerSettingsChanges}
