@@ -53,9 +53,6 @@ dependencies:
   esbuild-svelte:
     specifier: ^0.7.1
     version: 0.7.3(esbuild@0.14.54)(svelte@3.58.0)
-  eventemitter3:
-    specifier: ^5.0.0
-    version: 5.0.0
   express:
     specifier: ^4.18.1
     version: 4.18.2
@@ -68,12 +65,6 @@ dependencies:
   mdast-util-to-hast:
     specifier: ^12.3.0
     version: 12.3.0
-  mediasoup-client:
-    specifier: ^3.6.57
-    version: 3.6.70
-  mobx:
-    specifier: ^6.9.0
-    version: 6.9.0
   postcss:
     specifier: ^8.4.23
     version: 8.4.23
@@ -1983,15 +1974,6 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: false
 
-  /awaitqueue@3.0.1(supports-color@9.3.1):
-    resolution: {integrity: sha512-w3uWpUVI/7Q/gS7SrW8UCkZBDC+JPxSjVSFVqlty+OEo4tSEOGPB6jHWXxsi+bRktDXFaFiVKFBvMVzPhUhvqA==}
-    engines: {node: '>=14'}
-    dependencies:
-      debug: 4.3.4(supports-color@9.3.1)
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /awaitqueue@3.0.1(supports-color@9.4.0):
     resolution: {integrity: sha512-w3uWpUVI/7Q/gS7SrW8UCkZBDC+JPxSjVSFVqlty+OEo4tSEOGPB6jHWXxsi+bRktDXFaFiVKFBvMVzPhUhvqA==}
     engines: {node: '>=14'}
@@ -2453,19 +2435,6 @@ packages:
       supports-color: 8.1.1
     dev: false
 
-  /debug@4.3.4(supports-color@9.3.1):
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-      supports-color: 9.3.1
-    dev: false
-
   /debug@4.3.4(supports-color@9.4.0):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -2908,11 +2877,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /event-target-shim@5.0.1:
-    resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
-    engines: {node: '>=6'}
-    dev: false
-
   /event-target-shim@6.0.2:
     resolution: {integrity: sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA==}
     engines: {node: '>=10.13.0'}
@@ -2968,13 +2932,6 @@ packages:
 
   /extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
-    dev: false
-
-  /fake-mediastreamtrack@1.1.6:
-    resolution: {integrity: sha512-lcoO5oPsW57istAsnjvQxNjBEahi18OdUhWfmEewwfPfzNZnji5OXuodQM+VnUPi/1HnQRJ6gBUjbt1TNXrkjQ==}
-    dependencies:
-      event-target-shim: 5.0.1
-      uuid: 8.3.2
     dev: false
 
   /fake-mediastreamtrack@1.2.0:
@@ -3285,15 +3242,6 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       debug: 4.3.4(supports-color@8.1.1)
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /h264-profile-level-id@1.0.1(supports-color@9.3.1):
-    resolution: {integrity: sha512-D3Rln/jKNjKDW5ZTJTK3niSoOGE+pFqPvRHHVgQN3G7umcn/zWGPUo8Q8VpDj16x3hKz++zVviRNRmXu5cpN+Q==}
-    engines: {node: '>=8.0.0'}
-    dependencies:
-      debug: 4.3.4(supports-color@9.3.1)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4043,22 +3991,6 @@ packages:
       ua-parser-js: 1.0.36
     dev: false
 
-  /mediasoup-client@3.6.70:
-    resolution: {integrity: sha512-780fU2Zgh+kiGFiivni13g32ceEnaoqF/CIdvJTTGrK9aG6DCx0iQZPJUkqk+rCQWFu8S4ptHTMyKAGK3EdK/A==}
-    engines: {node: '>=14'}
-    dependencies:
-      '@types/debug': 4.1.7
-      awaitqueue: 3.0.1(supports-color@9.3.1)
-      bowser: 2.11.0
-      debug: 4.3.4(supports-color@9.3.1)
-      events: 3.3.0
-      fake-mediastreamtrack: 1.1.6
-      h264-profile-level-id: 1.0.1(supports-color@9.3.1)
-      sdp-transform: 2.14.1
-      supports-color: 9.3.1
-      uuid: 3.4.0
-    dev: false
-
   /merge-descriptors@1.0.1:
     resolution: {integrity: sha512-cCi6g3/Zr1iqQi6ySbseM1Xvooa98N0w31jzUYrXPX2xqObmFGHJ0tQ5u74H3mVh7wLouTseZyYIq39g8cNp1w==}
     dev: false
@@ -4419,10 +4351,6 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.7
-    dev: false
-
-  /mobx@6.9.0:
-    resolution: {integrity: sha512-HdKewQEREEJgsWnErClfbFoVebze6rGazxFLU/XUyrII8dORfVszN1V0BMRnQSzcgsNNtkX8DHj3nC6cdWE9YQ==}
     dev: false
 
   /mri@1.2.0:
@@ -5407,11 +5335,6 @@ packages:
       has-flag: 4.0.0
     dev: false
 
-  /supports-color@9.3.1:
-    resolution: {integrity: sha512-knBY82pjmnIzK3NifMo3RxEIRD9E0kIzV4BKcyTZ9+9kWgLMxd4PrsTSMoFQUabgRBbF8KOLRDCyKgNV+iK44Q==}
-    engines: {node: '>=12'}
-    dev: false
-
   /supports-color@9.4.0:
     resolution: {integrity: sha512-VL+lNrEoIXww1coLPOmiEmK/0sGigko5COxI09KzHc2VJXJsQ37UaQ+8quuxjDeA7+KnLGTWRyOXSLLR2Wb4jw==}
     engines: {node: '>=12'}
@@ -5842,12 +5765,6 @@ packages:
   /utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
-    dev: false
-
-  /uuid@3.4.0:
-    resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-    hasBin: true
     dev: false
 
   /uuid@8.3.2:
