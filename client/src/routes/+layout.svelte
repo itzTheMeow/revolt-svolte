@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ClientReady, UseUserState, client } from "$lib/Client";
+	import listenClientEvents from "$lib/ClientEvents";
 	import Loader from "$lib/Loader.svelte";
 	import Login from "$lib/Login.svelte";
 	import { ElectronFullscreen, Native } from "$lib/Native";
@@ -57,6 +58,7 @@
 			const data = <ClientSession>JSON.parse(session);
 			client.login(data.token, data.type || "user", true, data);
 		}
+		listenClientEvents();
 
 		requestAnimationFrame(function animate(time: number) {
 			requestAnimationFrame(animate);
