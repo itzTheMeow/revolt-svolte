@@ -36,22 +36,29 @@
 		// reverse so newest is first
 		messages = channel.messages.ordered.reverse();
 	}
+	$: channel && fetchMessages("bottom");
 
 	let MessageList: HTMLDivElement,
 		fetching: 1 | 0 | -1 = 0;
 
 	async function fetchMessages(from: "top" | "bottom") {
 		if (fetching) return;
-		fetching = from == "top" ? 1 : -1;
 
 		const first = from == "top" ? messages[messages.length - 1] : messages[0];
+		if (first) {
+			if (from == "top" && ChannelTops[channel.id] == first.id) return;
+			if (from == "bottom" && channel.lastMessageID == first.id) return;
+		}
+
+		fetching = from == "top" ? 1 : -1;
+
 		const fetched = await channel.messages.fetchMultiple({
 			limit: MSG_PER_PAGE,
 			include_users: true,
 			...(first ? { [from == "top" ? "before" : "after"]: first.id } : {}),
 		});
-		if (!fetched.length && from == "top") ChannelTops[channel.id] = first.id;
-		if (!fetched.length && from == "bottom") channel.update({ last_message_id: first.id });
+		if (!fetched.length && from == "top") ChannelTops[channel.id] = first?.id;
+		if (!fetched.length && from == "bottom") channel.update({ last_message_id: first?.id });
 
 		if (top) {
 			// to save position on adding items to top we need to calculate

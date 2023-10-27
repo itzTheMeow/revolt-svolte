@@ -8,7 +8,9 @@ const config = {
 	preprocess: [vitePreprocess({})],
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			fallback: "index.html",
+		}),
 	},
 	onwarn: (warning, handler) => {
 		if (warning.code.startsWith("a11y-")) {
