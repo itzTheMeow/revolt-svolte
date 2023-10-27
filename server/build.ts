@@ -7,7 +7,6 @@ import fs from "fs";
 import sveltePreprocess from "svelte-preprocess";
 import useTailwind from "tailwindcss";
 import { injectManifest } from "workbox-build";
-import config from "./config";
 import { init } from "./server";
 
 const standalone = process.argv.includes("--standalone");
@@ -54,7 +53,7 @@ esbuild
     fs.copyFileSync("svolte-logo.ico", "dist/favicon.ico");
     fs.writeFileSync(
       "dist/index.html",
-      html.replace("%CommitHash%", hash).replace(/%BrandName%/g, config.brandName)
+      html.replace("%CommitHash%", hash)
     );
     const sw = esbuild.buildSync({
       entryPoints: ["./src/sw.ts"],

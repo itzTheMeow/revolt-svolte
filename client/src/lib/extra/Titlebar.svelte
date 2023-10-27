@@ -1,8 +1,7 @@
 <script lang="ts">
+	import { ElectronFullscreen, Native } from "$lib/Native";
 	import { Theme } from "$lib/Theme";
-	import { BRAND_NAME } from "$lib/utils";
 	import { IconMaximize, IconMinimize, IconMinus, IconX } from "@tabler/icons-svelte";
-	import { ElectronFullscreen, Native } from "Native";
 </script>
 
 <div
@@ -11,7 +10,7 @@
 >
 	<div class="flex-1 flex items-center gap-1" style="-webkit-app-region:drag;">
 		<img class="w-5 h-5" src="./logo.svg" />
-		<div class="font-semibold">{BRAND_NAME}</div>
+		<div class="font-semibold">Svolte</div>
 	</div>
 	<div
 		class="cursor-pointer hover:brightness-75 bg-inherit active:brightness-50 rounded-none h-full flex items-center justify-center"

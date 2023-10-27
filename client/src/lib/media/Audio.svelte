@@ -13,9 +13,9 @@
 		IconVolume3,
 	} from "@tabler/icons-svelte";
 	import byteSize from "byte-size";
-	import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
 	import type { Attachment } from "revkit";
 	import { onDestroy, onMount } from "svelte";
+	import { mediaContext, showOptionContext } from "../contextmenu/ContextMenus";
 	import Slider from "./Slider.svelte";
 
 	export let src: Attachment;

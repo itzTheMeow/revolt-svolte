@@ -5,11 +5,11 @@
 	import { ServerDetails } from "$lib/utils";
 	import { IconPlus, IconUpload, IconX } from "@tabler/icons-svelte";
 	import byteSize from "byte-size";
-	import Header from "extra/Header.svelte";
-	import type { ExportedImageUploader } from "extra/ImageUploader";
-	import ImageUploader from "extra/ImageUploader.svelte";
 	import type { API, Server } from "revkit";
 	import { onMount } from "svelte";
+	import Header from "../../extra/Header.svelte";
+	import type { ExportedImageUploader } from "../../extra/ImageUploader";
+	import ImageUploader from "../../extra/ImageUploader.svelte";
 	import Input from "../../extra/Input.svelte";
 	import { ModalStack } from "../ModalStack";
 	import { ServerSettingsChanges } from "../Settings";

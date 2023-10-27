@@ -11,10 +11,6 @@
 		IconUserX,
 		IconX,
 	} from "@tabler/icons-svelte";
-	import Loader from "Loader.svelte";
-	import Header from "extra/Header.svelte";
-	import Indicator from "extra/Indicator.svelte";
-	import Markdown from "markdown/Markdown.svelte";
 	import {
 		GroupDMChannel,
 		RelationshipStatus,
@@ -26,6 +22,10 @@
 	} from "revkit";
 	import { onDestroy } from "svelte";
 	import { tippy } from "svelte-tippy";
+	import Loader from "../Loader.svelte";
+	import Header from "../extra/Header.svelte";
+	import Indicator from "../extra/Indicator.svelte";
+	import Markdown from "../markdown/Markdown.svelte";
 	import ModalBase from "./ModalBase.svelte";
 	import type { Modal, ModalData } from "./ModalStack";
 	import UserModalAction from "./UserModalAction.svelte";

@@ -5,9 +5,9 @@
 	import { Theme } from "$lib/Theme";
 	import { downloadFile } from "$lib/utils";
 	import byteSize from "byte-size";
-	import { mediaContext, showOptionContext } from "contextmenu/ContextMenus";
 	import { Attachment } from "revkit";
 	import { scale } from "svelte/transition";
+	import { mediaContext, showOptionContext } from "../contextmenu/ContextMenus";
 	import { imagePreview } from "./ImagePreview";
 
 	const zoomSettings = {

@@ -8,11 +8,7 @@ import {
 	type Message,
 	type ThemeSettings,
 } from "revkit";
-
-export const BRAND_NAME =
-	document.querySelector<HTMLMetaElement>(`meta[name="brand-name"]`)?.content || "Client";
-export const COMMIT_HASH =
-	document.querySelector<HTMLMetaElement>(`meta[name="git-hash"]`)?.content || "UNKNOWN";
+export const COMMIT_HASH: string = "%CommitHash%";
 export const GIT_URL = "https://github.com/itzTheMeow/revolt-svolte";
 export const API_URL = "https://api.revolt.chat";
 

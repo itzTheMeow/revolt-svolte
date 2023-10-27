@@ -1,5 +1,8 @@
+import replace from "@rollup/plugin-replace";
 import { sveltekit } from "@sveltejs/kit/vite";
+import { execSync } from "child_process";
 import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
 	plugins: [
@@ -9,63 +12,25 @@ export default defineConfig({
 			filename: "sw.ts",
 			strategies: "injectManifest",
 			manifest: {
-				name: "Revolt",
-				short_name: "Revolt",
-				description: "User-first, privacy-focused chat platform.",
-				categories: ["communication", "chat", "messaging"],
-				start_url: "/",
-				orientation: "portrait",
-				/*display_override: ["window-controls-overlay"],*/
+				background_color: "#242424",
+				description: "A simpler Revolt client.",
 				display: "standalone",
-				background_color: "#101823",
-				theme_color: "#101823",
 				icons: [
 					{
-						src: `/assets/icons/android-chrome-192x192.png`,
-						type: "image/png",
-						sizes: "192x192",
-					},
-					{
-						src: `/assets/icons/android-chrome-512x512.png`,
-						type: "image/png",
+						src: "logo.svg",
 						sizes: "512x512",
-					},
-					{
-						src: `/assets/icons/monochrome.svg`,
 						type: "image/svg+xml",
-						sizes: "48x48 72x72 96x96 128x128 256x256",
-						purpose: "monochrome",
-					},
-					{
-						src: `/assets/icons/masking-512x512.png`,
-						type: "image/png",
-						sizes: "512x512",
 						purpose: "maskable",
 					},
 				],
-				//TODO: add shortcuts relating to your last opened direct messages
-				/*shortcuts: [
-							{
-								"name": "Open Play Later",
-								"short_name": "Play Later",
-								"description": "View the list of podcasts you saved for later",
-								"url": "/play-later?utm_source=homescreen",
-								"icons": [{ "src": "/icons/play-later.png", "sizes": "192x192" }]
-							},
-							{
-								"name": "View Subscriptions",
-								"short_name": "Subscriptions",
-								"description": "View the list of podcasts you listen to",
-								"url": "/subscriptions?utm_source=homescreen",
-								"icons": [{ "src": "/icons/subscriptions.png", "sizes": "192x192" }]
-							}
-						]*/
+				name: "Svolte",
+				start_url: "/",
+				theme_color: "#242424",
+				orientation: "portrait",
 			},
 		}),
 		replace({
-			__GIT_REVISION__: getGitRevision(),
-			__GIT_BRANCH__: getGitBranch(),
-			__APP_VERSION__: getVersion(),
+			"%CommitHash%": execSync("git rev-parse --short HEAD").toString().trim(),
 			preventAssignment: true,
 		}) as any,
 	],

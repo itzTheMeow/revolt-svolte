@@ -3,7 +3,7 @@
 	import { Client } from "revkit";
 	import Loader from "./Loader.svelte";
 	import { BRAND_COLOR } from "./Theme";
-	import { API_URL, BRAND_NAME, GIT_URL } from "./utils";
+	import { API_URL, GIT_URL } from "./utils";
 
 	let signinBtn: HTMLDivElement,
 		userInput: HTMLInputElement,
@@ -37,7 +37,7 @@
 				const loginResult = await client.authenticate({
 					email,
 					password,
-					friendly_name: `${BRAND_NAME}`,
+					friendly_name: `Svolte`,
 				});
 				if (loginResult.type === "mfa") {
 					if (!mfaToken) return (errtxt = "Input your MFA token.");
@@ -82,7 +82,7 @@
 				style:color={BRAND_COLOR}
 			>
 				<img class="w-10 h-10" src="./logo.svg" alt="" />
-				<div class="text-4xl font-[Nevis]">{BRAND_NAME}</div>
+				<div class="text-4xl font-[Nevis]">Svolte</div>
 				<a class="ml-auto hover:brightness-75" href={GIT_URL} target="_blank" rel="noreferrer">
 					<IconBrandGithub size={28} />
 				</a>

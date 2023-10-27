@@ -2,7 +2,7 @@
 	import { MobileLayout } from "$lib/State";
 	import { Theme } from "$lib/Theme";
 	import { IconX } from "@tabler/icons-svelte";
-	import Header from "extra/Header.svelte";
+	import Header from "../../extra/Header.svelte";
 	import ModalBase from "../ModalBase.svelte";
 	import type { Modal, ModalData } from "../ModalStack";
 	import { ServerSettingsCategories, SettingsServerPage } from "../Settings";

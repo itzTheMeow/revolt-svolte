@@ -3,12 +3,12 @@
 	import { MobileLayout, SelectedServer } from "$lib/State";
 	import { Theme } from "$lib/Theme";
 	import { MemberDetails, MemberOrUserDetails, UserColor } from "$lib/utils";
-	import { showEmojiContext } from "contextmenu/FloatingMenu";
 	import type { Processor } from "remark-rehype";
 	import { RevoltEmojiDictionary, RevoltEmojiLib, unicodeEmojiURL } from "revkit";
 	import { afterUpdate } from "svelte";
 	import { tippy } from "svelte-tippy";
 	import { visit } from "unist-util-visit";
+	import { showEmojiContext } from "../contextmenu/FloatingMenu";
 	import { CUSTOM_EMOJI_REGEX, DENY_TAGS, MarkdownRenderer } from "./renderer";
 
 	type Child =

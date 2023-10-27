@@ -2,7 +2,7 @@
 	import { client } from "$lib/Client";
 	import { CollapsedCategories, HomeChannel, SelectedChannel, SelectedServer } from "$lib/State";
 	import { BRAND_COLOR, Theme } from "$lib/Theme";
-	import { BRAND_NAME, COMMIT_HASH, GIT_URL, ServerManagePermissions } from "$lib/utils";
+	import { COMMIT_HASH, GIT_URL, ServerManagePermissions } from "$lib/utils";
 	import { VoiceStatus } from "@revkit/voice";
 	import {
 		IconBrandGithub,
@@ -144,7 +144,7 @@
 	{:else}
 		<div class="flex gap-1.5 px-2 py-1.5 items-center">
 			<img class="w-8 h-8" src="./logo.svg" alt="" />
-			<div class="text-xl font-bold" style:color={BRAND_COLOR}>{BRAND_NAME}</div>
+			<div class="text-xl font-bold" style:color={BRAND_COLOR}>Svolte</div>
 			<div class="flex items-center gap-0.5 ml-auto self-start">
 				<div
 					use:tippy={{

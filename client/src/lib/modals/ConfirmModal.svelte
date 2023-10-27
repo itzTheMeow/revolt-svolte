@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { Theme } from "Theme";
-  import ModalBase from "./ModalBase.svelte";
-  import type { Modal, ModalData } from "./ModalStack";
-ck";
+	import { Theme } from "$lib/Theme";
+	import ModalBase from "./ModalBase.svelte";
+	import type { Modal, ModalData } from "./ModalStack";
 
-  export let modal: Extract<ModalData, { type: "confirm" }>;
-  let item: Modal, confirmer: HTMLDivElement;
+	export let modal: Extract<ModalData, { type: "confirm" }>;
+	let item: Modal, confirmer: HTMLDivElement;
 </script>
 
 <ModalBase

@@ -3,12 +3,12 @@
 	import { Theme } from "$lib/Theme";
 	import { MemberDetails, StatusColor, UserColor, UserDetails } from "$lib/utils";
 	import { IconCrown, IconRobot } from "@tabler/icons-svelte";
-	import { floatingMenu } from "contextmenu/FloatingMenu";
-	import Indicator from "extra/Indicator.svelte";
-	import { ModalStack } from "modals/ModalStack";
 	import { Member, Role } from "revkit";
 	import { onDestroy, onMount } from "svelte";
 	import { tippy } from "svelte-tippy";
+	import { floatingMenu } from "../contextmenu/FloatingMenu";
+	import Indicator from "../extra/Indicator.svelte";
+	import { ModalStack } from "../modals/ModalStack";
 
 	export let item: [Role, number] | Member;
 	let BarItem: HTMLDivElement;
@@ -117,7 +117,7 @@
 								placement: "left",
 							}}
 						>
-							<IconCrown size={16} color="gold" fill="gold" stroke={1} />
+							<IconCrown size={16} color="gold" stroke={1} /><!--TODO: fill color-->
 						</div>
 					{/if}
 				</div>

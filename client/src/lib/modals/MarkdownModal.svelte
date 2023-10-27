@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Theme } from "$lib/Theme";
-	import Markdown from "markdown/Markdown.svelte";
+	import Markdown from "../markdown/Markdown.svelte";
 	import ModalBase from "./ModalBase.svelte";
 	import type { Modal, ModalData } from "./ModalStack";
 
