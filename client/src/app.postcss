@@ -1,4 +1,33 @@
-/* Write your global styles here, in PostCSS syntax */
+@import "./tippy.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+	font-family: "Nevis";
+	src: url(./Nevis.ttf);
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--accent) transparent;
+}
+*:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: -2px;
+}
+*::-webkit-scrollbar {
+	width: var(--scroll-width, 8px);
+	background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: var(--accent);
+}
+*::-webkit-scrollbar-button {
+	display: none;
+}
+
+.overflow-y-auto {
+	overflow-x: hidden;
+}
