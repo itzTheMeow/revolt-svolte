@@ -3,8 +3,8 @@
 	import { Theme } from "$lib/Theme";
 	import { MessageDetails } from "$lib/utils";
 	import { IconAt, IconAtOff, IconCircleX, IconCornerUpLeft } from "@tabler/icons-svelte";
-	import Markdown from "markdown/Markdown.svelte";
 	import type { BaseMessage } from "revkit";
+	import Markdown from "../markdown/Markdown.svelte";
 
 	export let reply: [BaseMessage, boolean];
 </script>

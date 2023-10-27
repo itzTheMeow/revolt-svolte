@@ -4,8 +4,6 @@
 	import { Theme } from "$lib/Theme";
 	import { MemberDetails, UserDetails } from "$lib/utils";
 	import { Permissions, Role, type Member } from "revkit";
-	import VirtualList from "../extra/VirtualList.svelte";
-	import MemberBarItem from "./MemberBarItem.svelte";
 
 	let membar: HTMLDivElement;
 
@@ -54,13 +52,13 @@
 	bind:this={membar}
 >
 	{#if $SelectedServer}
-		<VirtualList
+		<!--TODO: <VirtualList
 			className="py-1.5 -:- flex flex-col w-[calc(100%-1rem)] mx-auto"
 			items={memberList.map((i) => [[i[0], i[1].length], ...i[1]]).flat(1)}
 			let:item
 		>
 			<MemberBarItem {item} />
-		</VirtualList>
+		</VirtualList>-->
 	{:else}
 		<div class="text-sm ml-1.5">No members.</div>
 	{/if}

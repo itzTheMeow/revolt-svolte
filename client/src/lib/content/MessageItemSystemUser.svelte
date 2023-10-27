@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { MemberDetails, UserColor } from "$lib/utils";
-	import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
-	import { ModalStack } from "modals/ModalStack";
 	import type { Channel, Member, User } from "revkit";
+	import { floatingMenu, showMemberContext } from "../contextmenu/FloatingMenu";
+	import { ModalStack } from "../modals/ModalStack";
 
 	export let user: User, channel: Channel, icon: ConstructorOfATypedSvelteComponent, text: string;
 

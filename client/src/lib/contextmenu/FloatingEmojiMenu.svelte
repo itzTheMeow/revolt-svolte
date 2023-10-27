@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SelectedServer } from "$lib/State";
-	import Image from "media/Image.svelte";
 	import { DefaultEmoji, type Emoji } from "revkit";
+	import Image from "../media/Image.svelte";
 	import { floatingMenu } from "./FloatingMenu";
 
 	export let emoji: Emoji | DefaultEmoji;

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { MessageDetails, UserColor } from "$lib/utils";
 	import { IconCornerLeftDown } from "@tabler/icons-svelte";
-	import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
-	import Markdown from "markdown/Markdown.svelte";
-	import { ModalStack } from "modals/ModalStack";
 	import type { BaseMessage, Message } from "revkit";
 	import { writable } from "svelte/store";
+	import { floatingMenu, showMemberContext } from "../contextmenu/FloatingMenu";
+	import Markdown from "../markdown/Markdown.svelte";
+	import { ModalStack } from "../modals/ModalStack";
 
 	export let message: Message;
 

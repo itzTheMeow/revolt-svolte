@@ -13,14 +13,14 @@
 		IconLayoutSidebarRightCollapse,
 		IconLayoutSidebarRightExpand,
 	} from "@tabler/icons-svelte";
-	import Loader from "Loader.svelte";
-	import ChannelIcon from "channels/ChannelIcon.svelte";
-	import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
-	import Markdown from "markdown/Markdown.svelte";
-	import { ModalStack } from "modals/ModalStack";
 	import type { BaseMessage, Channel } from "revkit";
 	import { tick } from "svelte";
 	import VirtualScroll from "svelte-virtual-scroll-list";
+	import Loader from "../Loader.svelte";
+	import ChannelIcon from "../channels/ChannelIcon.svelte";
+	import { channelContext, showOptionContext } from "../contextmenu/ContextMenus";
+	import Markdown from "../markdown/Markdown.svelte";
+	import { ModalStack } from "../modals/ModalStack";
 	import MessageItem from "./MessageItem.svelte";
 	import Textbox from "./Textbox.svelte";
 

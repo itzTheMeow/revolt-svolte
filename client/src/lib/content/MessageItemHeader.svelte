@@ -2,11 +2,11 @@
 	import { Theme } from "$lib/Theme";
 	import { FULL_DATE_FORMAT, MessageDetails, UserColor } from "$lib/utils";
 	import { IconLink, IconRobot, IconSpy } from "@tabler/icons-svelte";
-	import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
 	import { DateTime } from "luxon";
-	import { ModalStack } from "modals/ModalStack";
 	import type { Message } from "revkit";
 	import { tippy } from "svelte-tippy";
+	import { floatingMenu, showMemberContext } from "../contextmenu/FloatingMenu";
+	import { ModalStack } from "../modals/ModalStack";
 
 	export let message: Message;
 </script>

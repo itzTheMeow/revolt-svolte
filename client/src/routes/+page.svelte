@@ -1,2 +1,16 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { MembersCollapsed, MobileLayout, PaneState, PaneStates } from "$lib/State";
+	import ChannelList from "$lib/channels/ChannelList.svelte";
+	import ContentList from "$lib/content/ContentList.svelte";
+	import MemberBar from "$lib/memberbar/MemberBar.svelte";
+	import ServerList from "$lib/servers/ServerList.svelte";
+</script>
+
+{#if !$MobileLayout || $PaneState !== PaneStates.RIGHT}
+	<ServerList />
+	<ChannelList />
+{/if}
+<ContentList />
+{#if !$MobileLayout ? !$MembersCollapsed : $PaneState !== PaneStates.LEFT}
+	<MemberBar />
+{/if}

@@ -3,9 +3,9 @@
 	import { Theme } from "$lib/Theme";
 	import { VoiceStatus } from "@revkit/voice";
 	import { IconAlertTriangle, IconHeadphonesOff, IconMicrophoneOff } from "@tabler/icons-svelte";
-	import Loader from "Loader.svelte";
-	import Markdown from "markdown/Markdown.svelte";
 	import type { VoiceChannel } from "revkit";
+	import Loader from "../Loader.svelte";
+	import Markdown from "../markdown/Markdown.svelte";
 	import { voiceState } from "../voice/VoiceState";
 	import VoiceChannelIcon from "./VoiceChannelIcon.svelte";
 

@@ -10,9 +10,9 @@
 	} from "$lib/State";
 	import { Theme } from "$lib/Theme";
 	import { UserDetails, testMuted } from "$lib/utils";
-	import { channelContext, showOptionContext } from "contextmenu/ContextMenus";
-	import Indicator from "extra/Indicator.svelte";
 	import type { Channel } from "revkit";
+	import { channelContext, showOptionContext } from "../contextmenu/ContextMenus";
+	import Indicator from "../extra/Indicator.svelte";
 	import ChannelIcon from "./ChannelIcon.svelte";
 
 	export let channel: Channel;

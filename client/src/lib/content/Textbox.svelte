@@ -29,11 +29,11 @@
 		IconVolume,
 		IconX,
 	} from "@tabler/icons-svelte";
-	import { CMState } from "contextmenu/ContextMenuState";
-	import { floatingMenu } from "contextmenu/FloatingMenu";
-	import { ModalStack } from "modals/ModalStack";
 	import { Emoji, Message, parseAutocomplete, type AutocompleteResult } from "revkit";
 	import { onMount, tick } from "svelte";
+	import { CMState } from "../contextmenu/ContextMenuState";
+	import { floatingMenu } from "../contextmenu/FloatingMenu";
+	import { ModalStack } from "../modals/ModalStack";
 	import AutocompleteItem from "./AutocompleteItem.svelte";
 	import TextboxButton from "./TextboxButton.svelte";
 	import TextboxReply from "./TextboxReply.svelte";

@@ -4,9 +4,9 @@
 	import { Theme } from "$lib/Theme";
 	import { ZIndexes } from "$lib/utils";
 	import { IconCornerUpLeft, IconDots, IconPencil, IconTrash } from "@tabler/icons-svelte";
-	import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
-	import { ModalStack } from "modals/ModalStack";
 	import { BaseMessage, Permissions } from "revkit";
+	import { messageContext, showOptionContext } from "../contextmenu/ContextMenus";
+	import { ModalStack } from "../modals/ModalStack";
 	import MessageItemToolbarItem from "./MessageItemToolbarItem.svelte";
 
 	export let message: BaseMessage;

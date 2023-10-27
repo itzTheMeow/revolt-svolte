@@ -1,13 +1,9 @@
 <script lang="ts">
 	import { client } from "$lib/Client";
 	import { MobileLayout } from "$lib/State";
-	import { Theme } from "$lib/Theme";
-	import VirtualList from "extra/VirtualList.svelte";
 	import { RevoltEmojiLib, type AnyEmoji } from "revkit";
-	import { OrderedServers } from "state/orderedServers";
 	import { onDestroy, onMount } from "svelte";
-	import tinycolor from "tinycolor2";
-	import { floatingMenu } from "./FloatingMenu";
+	import { OrderedServers } from "../state/orderedServers";
 
 	export let targetInput: HTMLInputElement | HTMLTextAreaElement, cursorPos: number;
 
@@ -53,6 +49,7 @@
 		style:height={$MobileLayout ? "50vh" : "60vh"}
 		style:width={$MobileLayout ? "100%" : "60vh"}
 	>
+		<!--TODO
 		<VirtualList className="px-2" items={emojiChunks} let:item={cat}>
 			{#if !Array.isArray(cat)}
 				<div class="uppercase font-semibold text-xs flex mb-2">
@@ -86,6 +83,6 @@
 					{/each}
 				</div>
 			{/if}
-		</VirtualList>
+		</VirtualList>-->
 	</div>
 {/key}

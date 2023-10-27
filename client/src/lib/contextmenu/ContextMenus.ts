@@ -12,8 +12,8 @@ import {
 	IconPhotoDown,
 	IconTrash,
 } from "@tabler/icons-svelte";
-import { ModalStack } from "modals/ModalStack";
 import { Attachment, Channel, Permissions, type BaseMessage, type BaseObject } from "revkit";
+import { ModalStack } from "../modals/ModalStack";
 import { CMState, type ContextMenuStateOption } from "./ContextMenuState";
 
 export function showOptionContext(

@@ -11,9 +11,6 @@ dependencies:
   express:
     specifier: ^4.18.1
     version: 4.18.2
-  pwasplash:
-    specifier: ^0.0.1
-    version: 0.0.1
   rimraf:
     specifier: ^5.0.0
     version: 5.0.0
@@ -2562,10 +2559,6 @@ packages:
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
     engines: {node: '>=6'}
-    dev: false
-
-  /pwasplash@0.0.1:
-    resolution: {integrity: sha512-VWjBzll1S/rtg92MNBZWiSZyM1bGzGYnk+ADRMlYRVvbrVWn+dk1g+sL+DbxuzF/K+cQDtq3YY8H7cnCpDS4Cg==}
     dev: false
 
   /qs@6.11.0:

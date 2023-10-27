@@ -16,13 +16,13 @@
 		IconMicrophoneOff,
 		IconSettingsFilled,
 	} from "@tabler/icons-svelte";
-	import UserTag from "extra/UserTag.svelte";
-	import { ModalStack } from "modals/ModalStack";
-	import { SettingsServerPage } from "modals/Settings";
 	import { RevoltServerFlags, type Channel } from "revkit";
 	import { onDestroy, onMount } from "svelte";
 	import { tippy } from "svelte-tippy";
-	import { voiceState } from "voice/VoiceState";
+	import UserTag from "../extra/UserTag.svelte";
+	import { ModalStack } from "../modals/ModalStack";
+	import { SettingsServerPage } from "../modals/Settings";
+	import { voiceState } from "../voice/VoiceState";
 	import ChannelIcon from "./ChannelIcon.svelte";
 	import ChannelItem from "./ChannelItem.svelte";
 	import VoiceBarIcon from "./VoiceBarIcon.svelte";
@@ -48,9 +48,9 @@
 	}
 	$: h = useBanner ? (scrolledTop ? 112 : Math.max(112 - scrollTop, 40)) : 40;
 
-	let voiceConnection: Channel | null = null;
+	let voiceConnection: Channel | undefined = undefined;
 	$: {
-		voiceConnection = $voiceState.status == VoiceStatus.CONNECTED ? $voiceState.channel : null;
+		voiceConnection = $voiceState.status == VoiceStatus.CONNECTED ? $voiceState.channel : undefined;
 	}
 
 	let si = false;
@@ -181,7 +181,7 @@
 				<ChannelItem channel={savedMessages} />
 			{/if}
 			{#each client.channels
-				.filter((c) => c.isDMBased() && c.active)
+				.filter((c) => (c.isDM() && c.active) || c.isGroupDM())
 				.sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1), ) as channel (channel.id)}
 				<ChannelItem {channel} />
 			{/each}
@@ -194,7 +194,7 @@
 					class="flex items-center gap-1 overflow-hidden cursor-pointer hover:underline"
 					on:click={() => {
 						SelectedServer.set(voiceConnection?.isServerBased() ? voiceConnection.server : null);
-						SelectedChannel.set(voiceConnection);
+						SelectedChannel.set(voiceConnection || null);
 					}}
 				>
 					<ChannelIcon channel={voiceConnection} />

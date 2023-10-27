@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Theme } from "$lib/Theme";
-	import Markdown from "markdown/Markdown.svelte";
 	import { EmbedWeb, type Embed } from "revkit";
+	import Markdown from "../markdown/Markdown.svelte";
 	import MessageItemAttachment from "./MessageItemAttachment.svelte";
 	import MessageItemEmbedMedia from "./MessageItemEmbedMedia.svelte";
 

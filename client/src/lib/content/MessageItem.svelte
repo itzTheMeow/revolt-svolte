@@ -10,10 +10,7 @@
 	import { Theme } from "$lib/Theme";
 	import { MessageDetails } from "$lib/utils";
 	import { IconDoorEnter, IconDoorExit } from "@tabler/icons-svelte";
-	import { messageContext, showOptionContext } from "contextmenu/ContextMenus";
-	import { floatingMenu, showMemberContext } from "contextmenu/FloatingMenu";
 	import { DateTime } from "luxon";
-	import { ModalStack } from "modals/ModalStack";
 	import {
 		Attachment,
 		EmbedMedia,
@@ -22,6 +19,9 @@
 		type BaseMessage,
 		type Embed,
 	} from "revkit";
+	import { messageContext, showOptionContext } from "../contextmenu/ContextMenus";
+	import { floatingMenu, showMemberContext } from "../contextmenu/FloatingMenu";
+	import { ModalStack } from "../modals/ModalStack";
 	import MessageItemAttachment from "./MessageItemAttachment.svelte";
 	import MessageItemContent from "./MessageItemContent.svelte";
 	import MessageItemEmbed from "./MessageItemEmbed.svelte";

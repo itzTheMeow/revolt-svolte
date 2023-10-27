@@ -1,32 +1,32 @@
 <script lang="ts">
-  import Image from "media/Image.svelte";
-  import Video from "media/Video.svelte";
-  import type { EmbedWeb } from "revkit";
+	import type { EmbedWeb } from "revkit";
+	import Image from "../media/Image.svelte";
+	import Video from "../media/Video.svelte";
 
-  export let embed: EmbedWeb;
-  export let height: number;
+	export let embed: EmbedWeb;
+	export let height: number;
 </script>
 
 {#if embed.special?.type == "YouTube"}
-  <iframe
-    loading="lazy"
-    src={`https://www.youtube-nocookie.com/embed/${embed.special.id}?modestbranding=1${
-      embed.special.timestamp ? `&start=${embed.special.timestamp}` : ""
-    }`}
-    allowFullScreen
-    style:height="{height}px"
-  />
+	<iframe
+		loading="lazy"
+		src={`https://www.youtube-nocookie.com/embed/${embed.special.id}?modestbranding=1${
+			embed.special.timestamp ? `&start=${embed.special.timestamp}` : ""
+		}`}
+		allowFullScreen
+		style:height="{height}px"
+	/>
 {:else if embed.special?.type == "Twitch"}
-  <iframe
-    src="https://player.twitch.tv/?{embed.special.content_type.toLowerCase()}={embed.special
-      .id}&parent={window.location.hostname}&autoplay=false"
-    frameBorder="0"
-    allowFullScreen
-    scrolling="no"
-    loading="lazy"
-    style:height="{height}px"
-  />
-  <!--
+	<iframe
+		src="https://player.twitch.tv/?{embed.special.content_type.toLowerCase()}={embed.special
+			.id}&parent={window.location.hostname}&autoplay=false"
+		frameBorder="0"
+		allowFullScreen
+		scrolling="no"
+		loading="lazy"
+		style:height="{height}px"
+	/>
+	<!--
         case "Lightspeed":
             return (
                 <iframe
@@ -75,21 +75,21 @@
         }
         -->
 {:else if embed.media?.type == "Video"}
-  <Video src={embed.media.url} />
+	<Video src={embed.media.url} />
 {:else if embed.media?.type == "Image"}
-  <Image
-    src={embed.media.proxyURL}
-    width={embed.media.width}
-    height={embed.media.height}
-    className="max-w-[480px]"
-  />
+	<Image
+		src={embed.media.proxyURL}
+		width={embed.media.width}
+		height={embed.media.height}
+		className="max-w-[480px]"
+	/>
 {/if}
 
 <style>
-  iframe {
-    width: 100%;
-    max-width: 40vw;
-    max-height: 50vh;
-    border-radius: 0.25rem;
-  }
+	iframe {
+		width: 100%;
+		max-width: 40vw;
+		max-height: 50vh;
+		border-radius: 0.25rem;
+	}
 </style>
