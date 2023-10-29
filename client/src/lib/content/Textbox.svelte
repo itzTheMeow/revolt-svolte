@@ -238,7 +238,7 @@
 	});
 </script>
 
-<div class="flex flex-col relative {className}">
+<div class="flex flex-col relative shrink-0 {className}">
 	{#if !standalone}
 		<TextboxTyping />
 		<TextboxUploaded />

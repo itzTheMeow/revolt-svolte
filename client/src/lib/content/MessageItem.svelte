@@ -103,7 +103,7 @@
 </script>
 
 {#if $SelectedChannel}
-	<div class="flex flex-col gap-0.5" id={message.id}>
+	<div class="flex flex-col gap-0.5 w-full" id={message.id}>
 		{#if isReply && message.isUser()}
 			<MessageItemReplies {message} />
 		{/if}

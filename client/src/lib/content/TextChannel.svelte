@@ -34,7 +34,7 @@
 	$: {
 		$MessageState;
 		// reverse so newest is first
-		messages = channel.messages.ordered.reverse();
+		messages = channel.messages.ordered;
 	}
 	$: channel && fetchMessages("bottom");
 
@@ -60,7 +60,7 @@
 		if (!fetched.length && from == "top") ChannelTops[channel.id] = first?.id;
 		if (!fetched.length && from == "bottom") channel.update({ last_message_id: first?.id });
 
-		if (top) {
+		if (from == "top") {
 			// to save position on adding items to top we need to calculate
 			// new top offset based on added items
 			//
@@ -84,7 +84,7 @@
 </script>
 
 <div
-	class="flex items-center px-3 {channel.description ? 'cursor-pointer' : ''}"
+	class="flex items-center px-3 shrink-0 {channel.description ? 'cursor-pointer' : ''}"
 	style:background={$Theme["secondary-background"]}
 	style:height="{barHeight}px"
 	on:click={() =>
@@ -119,38 +119,46 @@
 	{/if}
 </div>
 <div
-	class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1 ? 'pt-8' : ''}"
+	class="flex-1 overflow-hidden p-1.5 pb-1"
 	style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
 	id="MessageList"
 	bind:this={MessageList}
 	bind:offsetHeight
 >
-	<VirtualScroll
-		data={messages}
-		bind:this={list}
-		on:bottom={() => fetchMessages("bottom")}
-		on:top={() => fetchMessages("top")}
-		let:data
+	<div
+		class="w-full"
+		style:height="{offsetHeight -
+			(MessageList
+				? parseInt(getComputedStyle(MessageList).paddingTop) +
+				  parseInt(getComputedStyle(MessageList).paddingBottom)
+				: 0)}px"
 	>
-		<svelte:fragment slot="header">
-			{#if fetching == -1}
-				<div class="w-full flex items-center justify-center h-8">
-					<Loader size={24} />
-				</div>
-			{/if}
-		</svelte:fragment>
-		<div class="flex flex-col-reverse">
-			{#each data as message (message.id)}
-				<MessageItem {message} />
-			{/each}
-		</div>
-		<svelte:fragment slot="footer">
-			{#if fetching == 1}
-				<div class="w-full flex items-center justify-center h-8">
-					<Loader size={24} />
-				</div>
-			{/if}
-		</svelte:fragment>
-	</VirtualScroll>
+		<VirtualScroll
+			data={messages}
+			bind:this={list}
+			on:bottom={() => fetchMessages("bottom")}
+			on:top={() => fetchMessages("top")}
+			let:data
+			keeps={50}
+		>
+			<svelte:fragment slot="header">
+				{#if fetching == -1}
+					<div class="w-full flex items-center justify-center h-8">
+						<Loader size={24} />
+					</div>
+				{/if}
+			</svelte:fragment>
+			<div class="flex">
+				<MessageItem message={data} />
+			</div>
+			<svelte:fragment slot="footer">
+				{#if fetching == 1}
+					<div class="w-full flex items-center justify-center h-8">
+						<Loader size={24} />
+					</div>
+				{/if}
+			</svelte:fragment>
+		</VirtualScroll>
+	</div>
 </div>
 <Textbox />

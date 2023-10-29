@@ -24,6 +24,7 @@ export default defineConfig({
 					},
 				],
 				name: "Svolte",
+				short_name: "Svolte",
 				start_url: "/",
 				theme_color: "#242424",
 				orientation: "portrait",
