@@ -9,6 +9,7 @@
 		AppWidth,
 		HoveredMessage,
 		MessageInputSelected,
+		MessageList,
 		MessageOffset,
 		MessageState,
 		MobileLayout,
@@ -37,7 +38,7 @@
 	import ImagePreview from "$lib/modals/ImagePreview.svelte";
 	import ModalRenderer from "$lib/modals/ModalRenderer.svelte";
 	import { ModalStack } from "$lib/modals/ModalStack";
-	import { hasBottom, scrollTo, testMuted } from "$lib/utils";
+	import { hasBottom, testMuted } from "$lib/utils";
 	import TWEEN from "@tweenjs/tween.js";
 	import { disableBodyScroll } from "body-scroll-lock";
 	import generateSplash from "pwasplash";
@@ -188,7 +189,7 @@
 				else {
 					if ($SelectedChannel?.checkUnread(testMuted($NotifSettings)))
 						$SelectedChannel.markRead(true);
-					scrollTo("bottom", true);
+					$MessageList?.scrollToBottom();
 					MessageOffset.set(ulid());
 				}
 			}

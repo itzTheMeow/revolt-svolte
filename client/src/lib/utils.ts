@@ -199,15 +199,6 @@ export function hasBottom(off = 2) {
 	if (!ListMessages) return false;
 	return ListMessages.scrollTop <= off;
 }
-export function scrollTo(pos: number | "bottom", instant = false) {
-	const ListMessages = document.getElementById("MessageList");
-	if (ListMessages) {
-		ListMessages.scroll({
-			top: pos == "bottom" ? ListMessages.scrollHeight : pos,
-			behavior: instant ? "auto" : "smooth",
-		});
-	}
-}
 export function clickoutside(
 	node: HTMLElement,
 	onEventFunction: (e: MouseEvent | TouchEvent) => any,

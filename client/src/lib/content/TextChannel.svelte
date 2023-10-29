@@ -3,6 +3,7 @@
 	import {
 		ChannelTops,
 		MembersCollapsed,
+		MessageList,
 		MessageState,
 		MobileLayout,
 		SelectedChannel,
@@ -27,8 +28,7 @@
 	export let channel: Channel;
 
 	const barHeight = 40;
-	let offsetHeight = 0,
-		list: VirtualScroll;
+	let offsetHeight = 0;
 
 	let messages: BaseMessage[] = [];
 	$: {
@@ -38,7 +38,7 @@
 	}
 	$: channel && fetchMessages("bottom");
 
-	let MessageList: HTMLDivElement,
+	let MessageContainer: HTMLDivElement,
 		fetching: 1 | 0 | -1 = 0;
 
 	async function fetchMessages(from: "top" | "bottom") {
@@ -68,16 +68,17 @@
 			tick().then(() => {
 				const sids = fetched.map((m) => m.id);
 				const offset = sids.reduce(
-					(previousValue, currentSid) => previousValue + list.getSize(<any>currentSid),
+					(previousValue, currentSid) =>
+						previousValue + ($MessageList?.getSize(<any>currentSid) || 0),
 					0,
 				);
-				list.scrollToOffset(offset);
+				$MessageList?.scrollToOffset(offset);
 			});
 		} else {
 			// timeout needs because sometimes when you scroll down `scroll` event fires twice
 			// and changes list.virtual.direction from BEHIND to FRONT
 			// maybe there is a better solution
-			setTimeout(() => list.scrollToOffset(list.getOffset() + 1), 3);
+			setTimeout(() => $MessageList?.scrollToOffset($MessageList.getOffset() + 1), 3);
 		}
 		fetching = 0;
 	}
@@ -121,21 +122,20 @@
 <div
 	class="flex-1 overflow-hidden p-1.5 pb-1"
 	style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
-	id="MessageList"
-	bind:this={MessageList}
+	bind:this={MessageContainer}
 	bind:offsetHeight
 >
 	<div
 		class="w-full"
 		style:height="{offsetHeight -
-			(MessageList
-				? parseInt(getComputedStyle(MessageList).paddingTop) +
-				  parseInt(getComputedStyle(MessageList).paddingBottom)
+			(MessageContainer
+				? parseInt(getComputedStyle(MessageContainer).paddingTop) +
+				  parseInt(getComputedStyle(MessageContainer).paddingBottom)
 				: 0)}px"
 	>
 		<VirtualScroll
 			data={messages}
-			bind:this={list}
+			bind:this={$MessageList}
 			on:bottom={() => fetchMessages("bottom")}
 			on:top={() => fetchMessages("top")}
 			let:data

@@ -3,6 +3,7 @@
 	import {
 		AppWidth,
 		MessageInputSelected,
+		MessageList,
 		MessageOffset,
 		MobileLayout,
 		SelectedChannel,
@@ -17,7 +18,7 @@
 		uploadedFiles,
 	} from "$lib/State";
 	import { Theme } from "$lib/Theme";
-	import { MemberOrUserDetails, ZIndexes, scrollTo } from "$lib/utils";
+	import { MemberOrUserDetails, ZIndexes } from "$lib/utils";
 	import {
 		IconArrowBigRightLine,
 		IconCheck,
@@ -138,7 +139,7 @@
 
 		if (!standalone) {
 			MessageOffset.set(channel.lastMessageID);
-			tick().then(() => scrollTo("bottom", true));
+			tick().then(() => $MessageList?.scrollToBottom());
 		}
 
 		const message = standalone
@@ -153,7 +154,7 @@
 
 		if (!standalone) {
 			MessageOffset.set(message.id);
-			tick().then(() => scrollTo("bottom", true));
+			tick().then(() => $MessageList?.scrollToBottom());
 		}
 		SendButton.classList.remove("loading");
 		fc.style.display = "";
