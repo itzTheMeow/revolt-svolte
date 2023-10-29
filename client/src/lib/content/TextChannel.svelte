@@ -78,7 +78,12 @@
 			// timeout needs because sometimes when you scroll down `scroll` event fires twice
 			// and changes list.virtual.direction from BEHIND to FRONT
 			// maybe there is a better solution
-			setTimeout(() => $MessageList?.scrollToOffset($MessageList.getOffset() + 1), 3);
+			setTimeout(() => {
+				if (!$MessageList) return;
+				// if there are already messages in the channel, dont scroll the whole way down
+				if (first) $MessageList.scrollToOffset($MessageList.getOffset() + 1);
+				else $MessageList.scrollToBottom();
+			}, 3);
 		}
 		fetching = 0;
 	}
