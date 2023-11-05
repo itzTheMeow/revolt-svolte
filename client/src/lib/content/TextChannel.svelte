@@ -125,7 +125,7 @@
 	{/if}
 </div>
 <div
-	class="flex-1 overflow-hidden p-1.5 pb-1"
+	class="flex-1 overflow-hidden px-1.5 pb-1"
 	style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
 	bind:this={MessageContainer}
 	bind:offsetHeight
