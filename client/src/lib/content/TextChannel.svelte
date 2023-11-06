@@ -44,7 +44,7 @@
 	async function fetchMessages(from: "top" | "bottom") {
 		if (fetching) return;
 
-		const first = from == "top" ? messages[messages.length - 1] : messages[0];
+		const first = from == "top" ? messages[0] : messages[messages.length - 1];
 		if (first) {
 			if (from == "top" && ChannelTops[channel.id] == first.id) return;
 			if (from == "bottom" && channel.lastMessageID == first.id) return;
@@ -59,6 +59,7 @@
 		});
 		if (!fetched.length && from == "top") ChannelTops[channel.id] = first?.id;
 		if (!fetched.length && from == "bottom") channel.update({ last_message_id: first?.id });
+		messages = channel.messages.ordered;
 
 		if (from == "top") {
 			// to save position on adding items to top we need to calculate
@@ -147,7 +148,7 @@
 			keeps={50}
 		>
 			<svelte:fragment slot="header">
-				{#if fetching == -1}
+				{#if fetching == 1}
 					<div class="w-full flex items-center justify-center h-8">
 						<Loader size={24} />
 					</div>
@@ -157,7 +158,7 @@
 				<MessageItem message={data} />
 			</div>
 			<svelte:fragment slot="footer">
-				{#if fetching == 1}
+				{#if fetching == -1}
 					<div class="w-full flex items-center justify-center h-8">
 						<Loader size={24} />
 					</div>
