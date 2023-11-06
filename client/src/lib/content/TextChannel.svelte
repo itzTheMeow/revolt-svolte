@@ -1,97 +1,111 @@
 <script lang="ts">
-	import { UseTypingState } from "$lib/Client";
-	import {
-		ChannelTops,
-		MembersCollapsed,
-		MessageList,
-		MessageState,
-		MobileLayout,
-		SelectedChannel,
-	} from "$lib/State";
-	import { Theme } from "$lib/Theme";
-	import { MSG_PER_PAGE } from "$lib/utils";
 	import {
 		IconLayoutSidebarRightCollapse,
 		IconLayoutSidebarRightExpand,
 	} from "@tabler/icons-svelte";
 	import type { BaseMessage, Channel } from "revkit";
-	import { tick } from "svelte";
-	import VirtualScroll from "svelte-virtual-scroll-list";
+	import { onDestroy, onMount, tick } from "svelte";
+	import { ulid } from "ulid";
+	import { UseTypingState } from "../Client";
 	import Loader from "../Loader.svelte";
+	import {
+		ChannelTops,
+		MembersCollapsed,
+		MessageOffset,
+		MessageState,
+		MobileLayout,
+		SelectedChannel,
+	} from "../State";
+	import { Theme } from "../Theme";
 	import ChannelIcon from "../channels/ChannelIcon.svelte";
 	import { channelContext, showOptionContext } from "../contextmenu/ContextMenus";
 	import Markdown from "../markdown/Markdown.svelte";
 	import { ModalStack } from "../modals/ModalStack";
+	import { MSG_PER_PAGE, scrollTo } from "../utils";
 	import MessageItem from "./MessageItem.svelte";
 	import Textbox from "./Textbox.svelte";
 
 	export let channel: Channel;
 
 	const barHeight = 40;
-	let offsetHeight = 0;
 
-	let messages: BaseMessage[] = [];
+	let messages: BaseMessage[] = [],
+		messageIndex = 0,
+		useMessages: BaseMessage[] = [];
 	$: {
 		$MessageState;
 		// reverse so newest is first
-		messages = channel.messages.ordered;
+		messages = channel.messages.ordered.reverse();
+		messageIndex = (
+			channel.messages.get($MessageOffset) // if the offset isnt arbitrary (not a real message)
+				? messages.map((m) => m.id) // we can just get the messages
+				: // otherwise we need to factor in the arbitrary offset and re-sort
+				  [...messages.map((m) => m.id), $MessageOffset].sort().reverse()
+		).indexOf($MessageOffset);
+		// use the messages from the offset (arbitrary offsets will still work)
+		useMessages = messages.slice(messageIndex, messageIndex + MSG_PER_PAGE);
 	}
-	$: channel && fetchMessages("bottom");
 
-	let MessageContainer: HTMLDivElement,
+	let MessageList: HTMLDivElement,
+		i: NodeJS.Timer,
 		fetching: 1 | 0 | -1 = 0;
 
-	async function fetchMessages(from: "top" | "bottom") {
-		if (fetching) return;
-
-		const first = from == "top" ? messages[0] : messages[messages.length - 1];
-		if (first) {
-			if (from == "top" && ChannelTops[channel.id] == first.id) return;
-			if (from == "bottom" && channel.lastMessageID == first.id) return;
-		}
-
-		fetching = from == "top" ? 1 : -1;
-
-		const fetched = await channel.messages.fetchMultiple({
-			limit: MSG_PER_PAGE,
-			include_users: true,
-			...(first ? { [from == "top" ? "before" : "after"]: first.id } : {}),
-		});
-		if (!fetched.length && from == "top") ChannelTops[channel.id] = first?.id;
-		if (!fetched.length && from == "bottom") channel.update({ last_message_id: first?.id });
-		messages = channel.messages.ordered;
-
-		if (from == "top") {
-			// to save position on adding items to top we need to calculate
-			// new top offset based on added items
-			//
-			// it works ONLY if newly added items was rendered
-			tick().then(() => {
-				const sids = fetched.map((m) => m.id);
-				const offset = sids.reduce(
-					(previousValue, currentSid) =>
-						previousValue + ($MessageList?.getSize(<any>currentSid) || 0),
-					0,
-				);
-				$MessageList?.scrollToOffset(offset);
-			});
-		} else {
-			// timeout needs because sometimes when you scroll down `scroll` event fires twice
-			// and changes list.virtual.direction from BEHIND to FRONT
-			// maybe there is a better solution
-			setTimeout(() => {
-				if (!$MessageList) return;
-				// if there are already messages in the channel, dont scroll the whole way down
-				if (first) $MessageList.scrollToOffset($MessageList.getOffset() + 1);
-				else $MessageList.scrollToBottom();
-			}, 3);
-		}
-		fetching = 0;
-	}
+	onMount(() => {
+		i = setInterval(async () => {
+			if (fetching) return; // don't fire if we are already fetching messages
+			// be within 30px of the top of the scroll container
+			const isUp =
+				-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30;
+			const isDown = MessageList.scrollTop >= -15;
+			if (isUp || isDown) {
+				// get the first "reference" message
+				// (the message at the top/bottom of the scroll container)
+				const first = useMessages[isUp ? useMessages.length - 1 : 0];
+				if (
+					first &&
+					(isUp ? ChannelTops[channel.id] == first.id : channel.lastMessageID == first.id)
+				)
+					return; // there's no (more) messages in the channel
+				fetching = isUp ? 1 : -1; // block future fetches
+				const fetched = await channel.messages.fetchMultiple({
+					limit: MSG_PER_PAGE,
+					include_users: true,
+					...(first ? { [isUp ? "before" : "after"]: first.id } : {}),
+				});
+				// add an offset so there's still messages below the reference (1/4 of the total per page)
+				// (use 1/2 of the page for scrolling back down)
+				const newOff = useMessages.slice(
+					first && fetched.length ? -Math.round(MSG_PER_PAGE / 2) : 0,
+				)[0];
+				if (newOff) MessageOffset.set(newOff.id);
+				await tick(); // wait for DOM update
+				// prevent repeat requests
+				if (fetched.length && !useMessages.length) MessageOffset.set(ulid());
+				await tick();
+				if (first) {
+					if (MessageList) {
+						const ref = document.getElementById(first.id);
+						// scroll the message list back to the reference message
+						scrollTo(
+							(ref?.offsetTop || 0) + (isUp ? 0 : MessageList.offsetHeight) - barHeight,
+							true,
+						);
+					}
+					// mark the channel as done
+					if (!fetched.length && isUp) ChannelTops[channel.id] = first.id;
+					if (!fetched.length && isDown) channel.update({ last_message_id: first.id });
+				} else {
+					scrollTo("bottom", true);
+				}
+				fetching = 0;
+			}
+		}, 3);
+	});
+	onDestroy(() => clearInterval(i));
 </script>
 
 <div
-	class="flex items-center px-3 shrink-0 {channel.description ? 'cursor-pointer' : ''}"
+	class="flex items-center px-3 {channel.description ? 'cursor-pointer' : ''}"
 	style:background={$Theme["secondary-background"]}
 	style:height="{barHeight}px"
 	on:click={() =>
@@ -126,45 +140,25 @@
 	{/if}
 </div>
 <div
-	class="flex-1 overflow-hidden px-1.5 pb-1"
+	class="overflow-y-auto flex-1 p-1.5 pb-1 flex flex-col-reverse {fetching !== 1 ? 'pt-8' : ''}"
 	style:padding-bottom={$UseTypingState && $SelectedChannel?.typing?.length ? "" : "1.75rem"}
-	bind:this={MessageContainer}
-	bind:offsetHeight
+	id="MessageList"
+	bind:this={MessageList}
 >
-	<div
-		class="w-full"
-		style:height="{offsetHeight -
-			(MessageContainer
-				? parseInt(getComputedStyle(MessageContainer).paddingTop) +
-				  parseInt(getComputedStyle(MessageContainer).paddingBottom)
-				: 0)}px"
-	>
-		<VirtualScroll
-			data={messages}
-			bind:this={$MessageList}
-			on:bottom={() => fetchMessages("bottom")}
-			on:top={() => fetchMessages("top")}
-			let:data
-			keeps={50}
-		>
-			<svelte:fragment slot="header">
-				{#if fetching == 1}
-					<div class="w-full flex items-center justify-center h-8">
-						<Loader size={24} />
-					</div>
-				{/if}
-			</svelte:fragment>
-			<div class="flex">
-				<MessageItem message={data} />
-			</div>
-			<svelte:fragment slot="footer">
-				{#if fetching == -1}
-					<div class="w-full flex items-center justify-center h-8">
-						<Loader size={24} />
-					</div>
-				{/if}
-			</svelte:fragment>
-		</VirtualScroll>
+	{#if fetching == -1}
+		<div class="w-full flex items-center justify-center h-8">
+			<Loader size={24} />
+		</div>
+	{/if}
+	<div class="flex flex-col-reverse">
+		{#each useMessages as message (message.id)}
+			<MessageItem {message} />
+		{/each}
 	</div>
+	{#if fetching == 1}
+		<div class="w-full flex items-center justify-center h-8">
+			<Loader size={24} />
+		</div>
+	{/if}
 </div>
 <Textbox />

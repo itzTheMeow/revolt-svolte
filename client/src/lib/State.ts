@@ -6,7 +6,6 @@ import {
 	type BaseMessage,
 	type Server,
 } from "revkit";
-import type VirtualScroll from "svelte-virtual-scroll-list";
 import { writable } from "svelte/store";
 import { ulid } from "ulid";
 import { client } from "./Client";
@@ -119,7 +118,6 @@ export const MessageInputSelected = writable<boolean>(false);
 let mselect = false;
 MessageInputSelected.subscribe((i) => (mselect = i));
 export const HoveredMessage = writable<string | null>(null);
-export const MessageList = writable<VirtualScroll | null>(null);
 export function addScroll(amt: number) {
 	const list = document.getElementById("MessageList");
 	if (list) list.scrollTop += amt;
