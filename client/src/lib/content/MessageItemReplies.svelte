@@ -20,19 +20,23 @@
 				});
 				return id;
 			}
-		}),
+		}) || [],
 	);
 </script>
 
 <div class="mt-3 -mb-2.5 pl-1.5">
-	{#each $replies.sort((r1, r2) => (typeof r1 == "string" ? 0 : r1.createdAt) - (typeof r2 == "string" ? 0 : r2.createdAt)) as reply (typeof reply == "string" ? reply : reply.id)}
+	{#each $replies
+		.filter((reply, i) => {
+			return $replies.findIndex((r) => (typeof r == "string" ? r : r.id) == (typeof reply == "string" ? reply : reply.id)) >= i;
+		})
+		.sort((r1, r2) => (typeof r1 == "string" ? 0 : r1.createdAt) - (typeof r2 == "string" ? 0 : r2.createdAt)) as reply (typeof reply == "string" ? reply : reply.id)}
 		{#if typeof reply == "string"}
 			<div class="flex gap-2 items-center">
 				<IconCornerLeftDown size={18} />
 				<div class="flex gap-2 items-center text-[14px]">
 					<img
 						class="w-4 h-4 rounded-full -ml-1"
-						src="https://api.revolt.chat/users/${reply}/default_avatar"
+						src="https://api.revolt.chat/users/{reply}/default_avatar"
 						alt=""
 					/>
 				</div>
