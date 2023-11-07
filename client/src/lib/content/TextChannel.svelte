@@ -79,11 +79,11 @@
 					const newOff = isUp
 						? // if fetching from the top, keep 1/4 of the messages below the reference
 						  first && fetched.length
-							? useMessages.slice(-Math.round(useMessages.length / 4))[0]
+							? useMessages.slice(-Math.round(MSG_PER_PAGE / 4))[0]
 							: useMessages[0]
 						: // if fetching from the bottom, keep 1/2 of the messages above the reference
 						first && fetched.length
-						? fetched.slice(0, Math.round(fetched.length / 2)).pop()
+						? fetched.slice(-Math.round(MSG_PER_PAGE / 2))[0]
 						: useMessages[useMessages.length - 1];
 					if (newOff) MessageOffset.set(newOff.id);
 					await tick(); // wait for DOM update
