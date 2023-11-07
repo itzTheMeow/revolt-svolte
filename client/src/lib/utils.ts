@@ -244,3 +244,16 @@ export enum ZIndexes {
 	Modal,
 	ContextMenu,
 }
+
+/*//TODO:
+window.addEventListener("error", function (e) {
+	e.preventDefault();
+	console.log("Error occurred: " + e.error.message);
+	return false;
+});
+window.addEventListener("unhandledrejection", function (e) {
+	e.preventDefault();
+	console.log("Error occurred: " + e.reason.message);
+	return false;
+});
+*/
