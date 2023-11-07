@@ -52,51 +52,63 @@
 
 	onMount(() => {
 		i = setInterval(async () => {
-			if (fetching) return; // don't fire if we are already fetching messages
-			// be within 30px of the top of the scroll container
-			const isUp =
-				-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30;
-			const isDown = MessageList.scrollTop >= -15;
-			if (isUp || isDown) {
-				// get the first "reference" message
-				// (the message at the top/bottom of the scroll container)
-				const first = useMessages[isUp ? useMessages.length - 1 : 0];
-				if (
-					first &&
-					(isUp ? ChannelTops[channel.id] == first.id : channel.lastMessageID == first.id)
-				)
-					return; // there's no (more) messages in the channel
-				fetching = isUp ? 1 : -1; // block future fetches
-				const fetched = await channel.messages.fetchMultiple({
-					limit: MSG_PER_PAGE,
-					include_users: true,
-					...(first ? { [isUp ? "before" : "after"]: first.id } : {}),
-				});
-				// add an offset so there's still messages below the reference (1/4 of the total per page)
-				// (use 1/2 of the page for scrolling back down)
-				const newOff = useMessages.slice(
-					first && fetched.length ? -Math.round(MSG_PER_PAGE / 2) : 0,
-				)[0];
-				if (newOff) MessageOffset.set(newOff.id);
-				await tick(); // wait for DOM update
-				// prevent repeat requests
-				if (fetched.length && !useMessages.length) MessageOffset.set(ulid());
-				await tick();
-				if (first) {
-					if (MessageList) {
-						const ref = document.getElementById(first.id);
-						// scroll the message list back to the reference message
-						scrollTo(
-							(ref?.offsetTop || 0) + (isUp ? 0 : MessageList.offsetHeight) - barHeight,
-							true,
-						);
+			try {
+				if (fetching) return; // don't fire if we are already fetching messages
+				// be within 30px of the top of the scroll container
+				const isUp =
+					-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30;
+				const isDown = MessageList.scrollTop >= -15;
+				if (isUp || isDown) {
+					// get the first "reference" message
+					// (the message at the top/bottom of the scroll container)
+					const first = useMessages[isUp ? useMessages.length - 1 : 0];
+					if (
+						first &&
+						(isUp ? ChannelTops[channel.id] == first.id : channel.lastMessageID == first.id)
+					)
+						return; // there's no (more) messages in the channel
+					fetching = isUp ? 1 : -1; // block future fetches
+					const fetched = await channel.messages.fetchMultiple({
+						limit: MSG_PER_PAGE,
+						include_users: true,
+						...(first ? { [isUp ? "before" : "after"]: first.id } : {}),
+					});
+					// add an offset so there's still messages below/above the reference
+					const newOff = isUp
+						? // if fetching from the top, keep 1/4 of the messages below the reference
+						  first && fetched.length
+							? useMessages.slice(-Math.round(useMessages.length / 4))[0]
+							: useMessages[0]
+						: // if fetching from the bottom, keep 1/2 of the messages above the reference
+						first && fetched.length
+						? fetched.slice(0, Math.round(fetched.length / 2)).pop()
+						: useMessages[useMessages.length - 1];
+					if (newOff) MessageOffset.set(newOff.id);
+					await tick(); // wait for DOM update
+					// prevent repeat requests
+					if (fetched.length && !useMessages.length) MessageOffset.set(ulid());
+					await tick();
+					if (first) {
+						if (MessageList) {
+							const ref = document.getElementById(first.id),
+								top = ref?.offsetTop || 0;
+							// scroll the message list back to the reference message
+							scrollTo(
+								isUp ? top - barHeight : top - barHeight + MessageList.offsetHeight,
+								//(ref?.offsetTop || 0) - (isUp ? 0 : MessageList.offsetHeight) - barHeight,
+								true,
+							);
+						}
+						// mark the channel as done
+						if (!fetched.length && isUp) ChannelTops[channel.id] = first.id;
+						if (!fetched.length && isDown) channel.update({ last_message_id: first.id });
+					} else {
+						scrollTo("bottom", true);
 					}
-					// mark the channel as done
-					if (!fetched.length && isUp) ChannelTops[channel.id] = first.id;
-					if (!fetched.length && isDown) channel.update({ last_message_id: first.id });
-				} else {
-					scrollTo("bottom", true);
+					fetching = 0;
 				}
+			} catch (err) {
+				console.error(err);
 				fetching = 0;
 			}
 		}, 3);
