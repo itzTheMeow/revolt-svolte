@@ -54,9 +54,11 @@
 		i = setInterval(async () => {
 			try {
 				if (fetching) return; // don't fire if we are already fetching messages
+				// the reverse flex container has its scrollTop values as negative numbers
 				// be within 30px of the top of the scroll container
 				const isUp =
 					-(MessageList.scrollHeight - MessageList.offsetHeight) >= MessageList.scrollTop - 30;
+				// be within 15px of the bottom of the scroll container
 				const isDown = MessageList.scrollTop >= -15;
 				if (isUp || isDown) {
 					// get the first "reference" message
@@ -94,8 +96,11 @@
 								top = ref?.offsetTop || 0;
 							// scroll the message list back to the reference message
 							scrollTo(
-								isUp ? top - barHeight : top - barHeight + MessageList.offsetHeight,
-								//(ref?.offsetTop || 0) - (isUp ? 0 : MessageList.offsetHeight) - barHeight,
+								isUp
+									? // when fetching from the top, the reference message should be at the top of the scroll area
+									  top - barHeight
+									: // when fetching from the bottom, the reference message should be at the bottom of the scroll area
+									  top - barHeight - MessageList.offsetHeight + (ref?.offsetHeight || 0) + 10,
 								true,
 							);
 						}
