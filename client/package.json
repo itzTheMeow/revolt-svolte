@@ -13,7 +13,7 @@
 	},
 	"dependencies": {
 		"@revkit/voice": "^0.1.2",
-		"@tabler/icons-svelte": "2.16.0",
+		"@tabler/icons-svelte": "3.0.0-alpha.1",
 		"@tweenjs/tween.js": "^19.0.0",
 		"@types/body-scroll-lock": "^3.1.0",
 		"@types/byte-size": "^8.1.0",

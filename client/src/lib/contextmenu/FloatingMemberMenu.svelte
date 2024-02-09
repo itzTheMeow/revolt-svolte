@@ -103,8 +103,7 @@
 	>
 		{#if member.server.ownerID == member.id}
 			<div use:tippy={{ content: "Server Owner" }}>
-				<!--TODO: fill-->
-				<IconCrown color="gold" stroke={1} />
+				<IconCrown color="gold" stroke={1} class="[fill:gold]" />
 			</div>
 		{/if}
 		<div

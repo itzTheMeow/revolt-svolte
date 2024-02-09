@@ -117,7 +117,7 @@
 								placement: "left",
 							}}
 						>
-							<IconCrown size={16} color="gold" stroke={1} /><!--TODO: fill color-->
+							<IconCrown size={16} color="gold" stroke={1} class="[fill:gold]" />
 						</div>
 					{/if}
 				</div>

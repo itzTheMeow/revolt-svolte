@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.1.2
     version: 0.1.2(ws@8.13.0)
   '@tabler/icons-svelte':
-    specifier: 2.16.0
-    version: 2.16.0(svelte@4.2.2)
+    specifier: 3.0.0-alpha.1
+    version: 3.0.0-alpha.1(svelte@4.2.2)
   '@tweenjs/tween.js':
     specifier: ^19.0.0
     version: 19.0.0
@@ -1977,17 +1977,17 @@ packages:
       - supports-color
     dev: true
 
-  /@tabler/icons-svelte@2.16.0(svelte@4.2.2):
-    resolution: {integrity: sha512-gOhGl8c53ao7Y7ZsjRNCRMogTVlzGf8B7qkzX+52CVeGCYBR1wIu2cDIz9Nq51lVTmZBzr5Ogr5Bv89H2a7heg==}
+  /@tabler/icons-svelte@3.0.0-alpha.1(svelte@4.2.2):
+    resolution: {integrity: sha512-2OgdDtd/13XxIWC2o7Ympe3pvKkkbuDcXtf0AMDFMGZSsMTZaGyCjKcg4DXKgpdKTyP1j7zKXYfbj9DNcy4Olw==}
     peerDependencies:
-      svelte: ^3.49.0
+      svelte: '>=3 <5'
     dependencies:
-      '@tabler/icons': 2.16.0
+      '@tabler/icons': 3.0.0-alpha.1
       svelte: 4.2.2
     dev: false
 
-  /@tabler/icons@2.16.0:
-    resolution: {integrity: sha512-1kaPH5APIWGtXe0W0eQ9g4MdfaQJ2gh95TAa94lNAqRR0JeC3fkD0yXGCcUiNK4GnGDv3UtPSCd3dbdKTe1b2A==}
+  /@tabler/icons@3.0.0-alpha.1:
+    resolution: {integrity: sha512-ayMv7lPZkRgPv3nRkqLAt0cYL8G/3nPnQMcoGYCV6s6ztDBHs9bTB6AY2ZafevLMjhvPgFa+w/7B/9jWvbV+dg==}
     dev: false
 
   /@tweenjs/tween.js@19.0.0:
