@@ -4,6 +4,8 @@
 	import { Theme } from "$lib/Theme";
 	import { MemberDetails, UserDetails } from "$lib/utils";
 	import { Permissions, Role, type Member } from "revkit";
+	import VirtualScroll from "svelte-virtual-scroll-list";
+	import MemberBarItem from "./MemberBarItem.svelte";
 
 	let membar: HTMLDivElement;
 
@@ -24,12 +26,20 @@
 				});
 			l.sort((l1, l2) => l1[0].rank - l2[0].rank);
 			l.push([
-				new Role(client, $SelectedServer, <any>{ name: "Online", permissions: { a: 0, d: 0 } }),
+				new Role(client, $SelectedServer, <any>{
+					_id: "online",
+					name: "Online",
+					permissions: { a: 0, d: 0 },
+				}),
 				members.filter((m) => !m.hoistedRole && !offline.includes(m)),
 			]);
 			if (!l[l.length - 1][1].length) l.pop();
 			l.push([
-				new Role(client, $SelectedServer, <any>{ name: "Offline", permissions: { a: 0, d: 0 } }),
+				new Role(client, $SelectedServer, <any>{
+					_id: "offline",
+					name: "Offline",
+					permissions: { a: 0, d: 0 },
+				}),
 				offline,
 			]);
 			if (!l[l.length - 1][1].length) l.pop();
@@ -41,10 +51,18 @@
 			memberList = l;
 		} else memberList = [];
 	}
+
+	let compiledMemberList: ([Role, number] | Member)[];
+	$: compiledMemberList = memberList
+		// either [Role, memberCount] or Member
+		.map((i): typeof compiledMemberList => [[i[0], i[1].length], ...i[1]])
+		.flat(1);
 </script>
 
 <div
-	class="overflow-y-auto h-full w-64 {$MobileLayout ? 'absolute' : ''}"
+	class="overflow-y-auto h-full w-64 px-2 [&>:first-child]:pt-1.5 [&>:last-child]:pb-1.5 {$MobileLayout
+		? 'absolute'
+		: ''}"
 	style="background-color:{$Theme['secondary-background']};{$MobileLayout
 		? `left:${$PaneLeft + $AppWidth}px;`
 		: ''}"
@@ -52,14 +70,21 @@
 	bind:this={membar}
 >
 	{#if $SelectedServer}
-		<!--TODO: <VirtualList
-			className="py-1.5 -:- flex flex-col w-[calc(100%-1rem)] mx-auto"
-			items={memberList.map((i) => [[i[0], i[1].length], ...i[1]]).flat(1)}
-			let:item
+		<VirtualScroll
+			data={compiledMemberList.map((item) => ({
+				// create a unique ID from each entry
+				id: Array.isArray(item) ? item[0].id : item.id,
+				item,
+			}))}
+			key="id"
+			let:data
 		>
-			<MemberBarItem {item} />
-		</VirtualList>-->
+			<MemberBarItem item={data.item} />
+		</VirtualScroll>
 	{:else}
 		<div class="text-sm ml-1.5">No members.</div>
 	{/if}
 </div>
+
+<style>
+</style>
