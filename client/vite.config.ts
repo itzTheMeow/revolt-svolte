@@ -1,8 +1,8 @@
-import replace from "@rollup/plugin-replace";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { execSync } from "child_process";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { replaceCodePlugin } from "vite-plugin-replace";
 
 export default defineConfig({
 	plugins: [
@@ -30,10 +30,14 @@ export default defineConfig({
 				orientation: "portrait",
 			},
 		}),
-		replace({
-			"%CommitHash%": execSync("git rev-parse --short HEAD").toString().trim(),
-			preventAssignment: true,
-		}) as any,
+		replaceCodePlugin({
+			replacements: [
+				{
+					from: "%CommitHash%",
+					to: execSync("git rev-parse --short HEAD").toString().trim(),
+				},
+			],
+		}),
 	],
 	server: {
 		port: 7859,
