@@ -9,15 +9,21 @@
 
 	export let message: Message;
 
+	const fetching = new Set<string>();
+
 	let replies = writable<(BaseMessage | string)[]>([]);
 	$: replies.set(
 		message.replyIDs?.map((id, i) => {
 			const msg = message.channel?.messages.get(id);
 			if (msg) return msg;
 			else {
-				message.channel.fetchMessage(id).then((msg) => {
-					$replies[i] = msg || id;
-				});
+				if (!fetching.has(id)) {
+					fetching.add(id);
+					message.channel?.fetchMessage(id).then((msg) => {
+						$replies[i] = msg || id;
+						fetching.delete(id);
+					});
+				}
 				return id;
 			}
 		}) || [],
