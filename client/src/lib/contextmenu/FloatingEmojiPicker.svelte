@@ -53,14 +53,26 @@
 		style:height={$MobileLayout ? "50vh" : "60vh"}
 		style:width={$MobileLayout ? "100%" : "60vh"}
 	>
-		<VirtualScroll data={emojiChunks} let:data={cat}>
-			{#if !Array.isArray(cat)}
+		<VirtualScroll
+			data={emojiChunks.map((chunk) =>
+				// map all emojis to their ID
+				({
+					id: Array.isArray(chunk)
+						? chunk.map((e) => (typeof e == "string" ? e : e.id)).join(".")
+						: chunk.id,
+					chunk,
+				}),
+			)}
+			key="id"
+			let:data={cat}
+		>
+			{#if !Array.isArray(cat.chunk)}
 				<div class="uppercase font-semibold text-xs flex mb-2">
-					{cat.name}
+					{cat.chunk.name}
 				</div>
 			{:else}
 				<div class="flex gap-1 mb-1">
-					{#each cat as emoji}
+					{#each cat.chunk as emoji}
 						<div
 							class="p-1 rounded cursor-pointer hover:bg-[var(--hv)]"
 							style:--hv={tinycolor($Theme["accent"]).setAlpha(0.2).toRgbString()}
