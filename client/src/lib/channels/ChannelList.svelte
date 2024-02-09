@@ -181,7 +181,7 @@
 				<ChannelItem channel={savedMessages} />
 			{/if}
 			{#each client.channels
-				.filter((c) => (c.isDM() && c.active) || c.isGroupDM())
+				.filter((c) => (c.isDM() && c.active !== false) || c.isGroupDM())
 				.sort( (c1, c2) => ((c1.lastMessageID || "") < (c2.lastMessageID || "") ? 1 : -1), ) as channel (channel.id)}
 				<ChannelItem {channel} />
 			{/each}
