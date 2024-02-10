@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Theme } from "$lib/Theme";
+	import IcoBot from "$lib/icons/IcoBot.svelte";
 	import { FULL_DATE_FORMAT, MessageDetails, UserColor } from "$lib/utils";
-	import { IconLink, IconRobot, IconSpy } from "@tabler/icons-svelte";
+	import { IconLink, IconSpy } from "@tabler/icons-svelte";
 	import { DateTime } from "luxon";
 	import type { Message } from "revkit";
 	import { tippy } from "svelte-tippy";
@@ -52,7 +53,7 @@
 				content: "Bot",
 			}}
 		>
-			<IconRobot size={16} color={$Theme["accent"]} />
+			<IcoBot />
 		</div>
 	{/if}
 	<div class="text-xs cursor-default" style:color={$Theme["tertiary-foreground"]}>

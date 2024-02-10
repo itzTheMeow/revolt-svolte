@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { AppHeight, AppWidth } from "$lib/State";
 	import { Theme } from "$lib/Theme";
+	import IcoBot from "$lib/icons/IcoBot.svelte";
 	import { MemberDetails, StatusColor, UserColor, UserDetails } from "$lib/utils";
-	import { IconCrown, IconRobot } from "@tabler/icons-svelte";
+	import { IconCrown } from "@tabler/icons-svelte";
 	import { Member, Role } from "revkit";
 	import { onDestroy, onMount } from "svelte";
 	import { tippy } from "svelte-tippy";
@@ -107,7 +108,7 @@
 								placement: "left",
 							}}
 						>
-							<IconRobot size={16} color={$Theme["accent"]} />
+							<IcoBot />
 						</div>
 					{/if}
 					{#if item.id == item.server?.ownerID}
@@ -117,7 +118,7 @@
 								placement: "left",
 							}}
 						>
-							<IconCrown size={16} color="gold" stroke={1} class="[fill:gold]" />
+							<IconCrown size={16} color="gold" stroke="1" class="[fill:gold]" />
 						</div>
 					{/if}
 				</div>
