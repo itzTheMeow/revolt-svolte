@@ -4,8 +4,6 @@
 
 	/** Size for the icon. (default: 16) */
 	export let size = 16;
-	/** Color for the icon. (default: Theme.accent) */
-	export let color = $Theme["accent"];
 </script>
 
-<IconRobotFace {size} {color} />
+<IconRobotFace {size} color={$Theme["accent"]} />

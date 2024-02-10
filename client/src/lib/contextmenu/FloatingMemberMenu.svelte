@@ -1,15 +1,9 @@
 <script lang="ts">
 	import { MobileLayout } from "$lib/State";
 	import { Theme } from "$lib/Theme";
+	import IcoOwner from "$lib/icons/IcoOwner.svelte";
 	import { MemberDetails, StatusColor, UserColor } from "$lib/utils";
-	import {
-		IconCrown,
-		IconEye,
-		IconPencil,
-		IconPlus,
-		IconSettings,
-		IconX,
-	} from "@tabler/icons-svelte";
+	import { IconEye, IconPencil, IconPlus, IconSettings, IconX } from "@tabler/icons-svelte";
 	import { Permissions, type Member, type UserProfile } from "revkit";
 	import { tippy } from "svelte-tippy";
 	import tinycolor from "tinycolor2";
@@ -103,7 +97,7 @@
 	>
 		{#if member.server.ownerID == member.id}
 			<div use:tippy={{ content: "Server Owner" }}>
-				<IconCrown color="gold" stroke={1} class="[fill:gold]" />
+				<IcoOwner />
 			</div>
 		{/if}
 		<div
@@ -164,9 +158,9 @@
 								: $Theme["background"]}
 						>
 							{#if roleList.has(role.id)}
-								<IconX size={$MobileLayout ? 16 : 14} stroke={3} />
+								<IconX size={$MobileLayout ? 16 : 14} stroke="3" />
 							{:else}
-								<IconPlus size={$MobileLayout ? 16 : 14} stroke={3} />
+								<IconPlus size={$MobileLayout ? 16 : 14} stroke="3" />
 							{/if}
 						</div>
 					{/if}
