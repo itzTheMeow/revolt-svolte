@@ -237,7 +237,7 @@
 	$: {
 	    // set document height/width
 		document.documentElement.style.width = document.body.style.width = `${$AppWidth}px`;
-		document.documentElement.style.height = document.body.style.height = `${$AppHeight}px`;
+		document.documentElement.style.maxHeight = document.body.style.height = `${$AppHeight}px`;
 	}
 	AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
 	AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
