@@ -133,12 +133,14 @@ export const AppWidth = writable<number>(window.innerWidth);
 function recalcMobileLayout() {
 	//if (mselect && window.innerWidth <= 700) return;
 	MobileLayout.set(window.innerWidth <= 700);
+	// use Visual Viewport where possible
 	AppHeight.set(window.visualViewport?.height || window.innerHeight);
-	AppWidth.set(window.innerWidth);
+	AppWidth.set(window.visualViewport?.width || window.innerWidth);
 }
 window.addEventListener("resize", recalcMobileLayout);
 window.addEventListener("orientationchange", recalcMobileLayout);
 window.addEventListener("focus", recalcMobileLayout);
+window.visualViewport?.addEventListener("resize", recalcMobileLayout);
 recalcMobileLayout();
 setInterval(recalcMobileLayout, 65);
 

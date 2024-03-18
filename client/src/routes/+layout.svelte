@@ -61,8 +61,8 @@
 		listenClientEvents();
 
 		requestAnimationFrame(function animate(time: number) {
-			// keep root element scrolled to top (fixes keyboard issue on ios)
-		    if((document.documentElement?.scrollTop || 0) !== 0) document.documentElement.scrollTop = 0;
+			// keep root element scrolled to top (fixes viewport issue on ios)
+			if ((document.documentElement?.scrollTop || 0) !== 0) document.documentElement.scrollTop = 0;
 			requestAnimationFrame(animate);
 			TWEEN.update(time);
 		});
@@ -224,7 +224,7 @@
 	});
 
 	$: {
-	    // set document colors
+		// set document colors
 		document.body.style.backgroundColor = $Theme["primary-background"]!;
 		document.body.style.caretColor = $Theme["accent"]!;
 		Object.entries($Theme).forEach((e) => {
@@ -235,9 +235,9 @@
 			?.setAttribute("content", $Theme["primary-background"]!);
 	}
 	$: {
-	    // set document height/width
+		// set document height/width to calculated app size
 		document.documentElement.style.width = document.body.style.width = `${$AppWidth}px`;
-		document.documentElement.style.maxHeight = document.documentElement.style.height = document.body.style.height = `${$AppHeight}px`;
+		document.documentElement.style.height = document.body.style.height = `${$AppHeight}px`;
 	}
 	AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
 	AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
