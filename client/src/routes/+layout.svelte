@@ -61,6 +61,8 @@
 		listenClientEvents();
 
 		requestAnimationFrame(function animate(time: number) {
+			// keep root element scrolled to top (fixes keyboard issue on ios)
+		    if((document.documentElement?.scrollTop || 0) !== 0) document.documentElement.scrollTop = 0;
 			requestAnimationFrame(animate);
 			TWEEN.update(time);
 		});
