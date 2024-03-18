@@ -222,16 +222,20 @@
 	});
 
 	$: {
+	    // set document colors
 		document.body.style.backgroundColor = $Theme["primary-background"]!;
 		document.body.style.caretColor = $Theme["accent"]!;
-		document.body.style.width = `${$AppWidth}px`;
-		document.body.style.height = `${$AppHeight}px`;
 		Object.entries($Theme).forEach((e) => {
 			document.body.style.setProperty("--" + e[0], e[1] ?? null);
 		});
 		document
 			.querySelector('meta[name="theme-color"]')
 			?.setAttribute("content", $Theme["primary-background"]!);
+	}
+	$: {
+	    // set document height/width
+		document.documentElement.style.width = document.body.style.width = `${$AppWidth}px`;
+		document.documentElement.style.height = document.body.style.height = `${$AppHeight}px`;
 	}
 	AppHeight.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
 	AppWidth.subscribe(async () => ElectronFullscreen.set(await Native.isMaximized()));
